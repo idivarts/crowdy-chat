@@ -1,14 +1,25 @@
-import { StyleSheet } from 'react-native';
+import { Platform, StyleSheet } from 'react-native';
 
 import EditScreenInfo from '@/components/EditScreenInfo';
 import { Text, View } from '@/components/Themed';
+// import App from '@/components/board/App';
+
+// const Component = Platform.select({
+//   web: require('../components/board/App'),
+//   default: require('../components/board/FallbackApp')
+// })()
+
+const Component = Platform.select({
+  ios: () => require('../components/board/FallbackApp').default,
+  android: () => require('../components/board/FallbackApp').default,
+  default: () => require('../components/board/App').default
+})();
 
 export default function TabOneScreen() {
+
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Tab One</Text>
-      <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
-      <EditScreenInfo path="app/(tabs)/index.tsx" />
+    <View>
+      <Component />
     </View>
   );
 }
