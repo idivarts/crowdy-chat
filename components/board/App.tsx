@@ -1,41 +1,18 @@
-import React from 'react';
-import { StyleSheet, Text, View, ScrollView } from 'react-native';
-import { DragDropContext } from 'react-beautiful-dnd';
-import Column from './Column';
+import React from 'react'
+import { Text, View } from 'react-native'
+import EditScreenInfo from '../EditScreenInfo'
+import { SafeAreaView } from 'react-native-safe-area-context'
 
 const App = () => {
     return (
-        <DragDropContext onDragEnd={() => { }}>
-            <View style={styles.container}>
-                <Text style={styles.header}>TRENDSHUB</Text>
-                <ScrollView horizontal style={styles.board}>
-                    <Column title="Initial" items={['th_chat1', 'Rahul Sinha', 'Creato AI']} />
-                    <Column title="Take Action" items={[]} />
-                    <Column title="Data Collection" items={[]} />
-                    <Column title="Beta Intro" items={['Rahul']} />
-                    <Column title="Brands" items={[]} />
-                    <Column title="Wait Stage" items={[]} />
-                </ScrollView>
+        <SafeAreaView>
+            <View >
+                <Text >Tab One</Text>
+                {/* <View /> */}
+                <EditScreenInfo path="app/(tabs)/index.tsx" />
             </View>
-        </DragDropContext>
-    );
-};
+        </SafeAreaView>
+    )
+}
 
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        backgroundColor: '#fff',
-        paddingTop: 50,
-    },
-    header: {
-        fontSize: 24,
-        fontWeight: 'bold',
-        textAlign: 'center',
-        marginBottom: 20,
-    },
-    board: {
-        flexDirection: 'row',
-    },
-});
-
-export default App;
+export default App
