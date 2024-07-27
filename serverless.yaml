@@ -14,7 +14,7 @@ plugins:
 constructs:
   crowdyChat:
     type: single-page-app
-    path: build
+    path: dist
     domain:
       - app.crowdy.chat
     # certificate: arn:aws:acm:us-east-1:730335628944:certificate/579b6563-5ff5-4a43-8094-a65a190a0cc2
