@@ -1,0 +1,286 @@
+{
+  "AWSTemplateFormatVersion": "2010-09-09",
+  "Description": "The AWS CloudFormation template for this Serverless application",
+  "Resources": {
+    "ServerlessDeploymentBucket": {
+      "Type": "AWS::S3::Bucket",
+      "Properties": {
+        "BucketEncryption": {
+          "ServerSideEncryptionConfiguration": [
+            {
+              "ServerSideEncryptionByDefault": {
+                "SSEAlgorithm": "AES256"
+              }
+            }
+          ]
+        }
+      }
+    },
+    "ServerlessDeploymentBucketPolicy": {
+      "Type": "AWS::S3::BucketPolicy",
+      "Properties": {
+        "Bucket": {
+          "Ref": "ServerlessDeploymentBucket"
+        },
+        "PolicyDocument": {
+          "Statement": [
+            {
+              "Action": "s3:*",
+              "Effect": "Deny",
+              "Principal": "*",
+              "Resource": [
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "arn:",
+                      {
+                        "Ref": "AWS::Partition"
+                      },
+                      ":s3:::",
+                      {
+                        "Ref": "ServerlessDeploymentBucket"
+                      },
+                      "/*"
+                    ]
+                  ]
+                },
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "arn:",
+                      {
+                        "Ref": "AWS::Partition"
+                      },
+                      ":s3:::",
+                      {
+                        "Ref": "ServerlessDeploymentBucket"
+                      }
+                    ]
+                  ]
+                }
+              ],
+              "Condition": {
+                "Bool": {
+                  "aws:SecureTransport": false
+                }
+              }
+            }
+          ]
+        }
+      }
+    },
+    "Route53Record": {
+      "Type": "AWS::Route53::RecordSet",
+      "Properties": {
+        "HostedZoneId": "Z08929472ONQ8YE8XDCVA",
+        "Name": "app.crowdy.chat",
+        "Type": "A",
+        "AliasTarget": {
+          "HostedZoneId": "Z2FDTNDATAQYW2",
+          "DNSName": {
+            "Fn::GetAtt": [
+              "crowdyChatCDNB56EAF32",
+              "DomainName"
+            ]
+          }
+        }
+      }
+    },
+    "crowdyChatBucket08939A33": {
+      "Type": "AWS::S3::Bucket",
+      "UpdateReplacePolicy": "Delete",
+      "DeletionPolicy": "Delete"
+    },
+    "crowdyChatBucketPolicy775596E4": {
+      "Type": "AWS::S3::BucketPolicy",
+      "Properties": {
+        "Bucket": {
+          "Ref": "crowdyChatBucket08939A33"
+        },
+        "PolicyDocument": {
+          "Statement": [
+            {
+              "Action": "s3:GetObject",
+              "Effect": "Allow",
+              "Principal": {
+                "CanonicalUser": {
+                  "Fn::GetAtt": [
+                    "crowdyChatCDNOrigin1S3Origin75E14802",
+                    "S3CanonicalUserId"
+                  ]
+                }
+              },
+              "Resource": {
+                "Fn::Join": [
+                  "",
+                  [
+                    {
+                      "Fn::GetAtt": [
+                        "crowdyChatBucket08939A33",
+                        "Arn"
+                      ]
+                    },
+                    "/*"
+                  ]
+                ]
+              }
+            }
+          ],
+          "Version": "2012-10-17"
+        }
+      }
+    },
+    "crowdyChatResponseFunctionE8B2F29D": {
+      "Type": "AWS::CloudFront::Function",
+      "Properties": {
+        "AutoPublish": true,
+        "FunctionCode": "function handler(event) {\n    var response = event.response;\n    response.headers = Object.assign({}, {\n    \"x-frame-options\": {\n        \"value\": \"SAMEORIGIN\"\n    },\n    \"x-content-type-options\": {\n        \"value\": \"nosniff\"\n    },\n    \"x-xss-protection\": {\n        \"value\": \"1; mode=block\"\n    },\n    \"strict-transport-security\": {\n        \"value\": \"max-age=63072000\"\n    }\n}, response.headers);\n    return response;\n}",
+        "FunctionConfig": {
+          "Comment": "crowdy-chat-dev-us-east-1-crowdyChat-response",
+          "Runtime": "cloudfront-js-1.0"
+        },
+        "Name": "crowdy-chat-dev-us-east-1-crowdyChat-response"
+      }
+    },
+    "crowdyChatCDNOrigin1S3Origin75E14802": {
+      "Type": "AWS::CloudFront::CloudFrontOriginAccessIdentity",
+      "Properties": {
+        "CloudFrontOriginAccessIdentityConfig": {
+          "Comment": "Identity for crowdyChatCDNOrigin18C399594"
+        }
+      }
+    },
+    "crowdyChatCDNB56EAF32": {
+      "Type": "AWS::CloudFront::Distribution",
+      "Properties": {
+        "DistributionConfig": {
+          "Aliases": [
+            "app.crowdy.chat"
+          ],
+          "Comment": "crowdy-chat-dev crowdyChat website CDN",
+          "CustomErrorResponses": [
+            {
+              "ErrorCachingMinTTL": 0,
+              "ErrorCode": 404,
+              "ResponseCode": 200,
+              "ResponsePagePath": "/index.html"
+            }
+          ],
+          "DefaultCacheBehavior": {
+            "AllowedMethods": [
+              "GET",
+              "HEAD",
+              "OPTIONS"
+            ],
+            "CachePolicyId": "658327ea-f89d-4fab-a63d-7e88639e58f6",
+            "Compress": true,
+            "FunctionAssociations": [
+              {
+                "EventType": "viewer-response",
+                "FunctionARN": {
+                  "Fn::GetAtt": [
+                    "crowdyChatResponseFunctionE8B2F29D",
+                    "FunctionARN"
+                  ]
+                }
+              },
+              {
+                "EventType": "viewer-request",
+                "FunctionARN": {
+                  "Fn::GetAtt": [
+                    "crowdyChatRequestFunction1B255A48",
+                    "FunctionARN"
+                  ]
+                }
+              }
+            ],
+            "TargetOriginId": "crowdyChatCDNOrigin18C399594",
+            "ViewerProtocolPolicy": "redirect-to-https"
+          },
+          "DefaultRootObject": "index.html",
+          "Enabled": true,
+          "HttpVersion": "http2",
+          "IPV6Enabled": true,
+          "Origins": [
+            {
+              "DomainName": {
+                "Fn::GetAtt": [
+                  "crowdyChatBucket08939A33",
+                  "RegionalDomainName"
+                ]
+              },
+              "Id": "crowdyChatCDNOrigin18C399594",
+              "S3OriginConfig": {
+                "OriginAccessIdentity": {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "origin-access-identity/cloudfront/",
+                      {
+                        "Ref": "crowdyChatCDNOrigin1S3Origin75E14802"
+                      }
+                    ]
+                  ]
+                }
+              }
+            }
+          ],
+          "ViewerCertificate": {
+            "AcmCertificateArn": "arn:aws:acm:us-east-1:730335628944:certificate/7b2f37d6-5fe9-4f27-8dd0-f23eab5878f6",
+            "MinimumProtocolVersion": "TLSv1.2_2021",
+            "SslSupportMethod": "sni-only"
+          }
+        }
+      }
+    },
+    "crowdyChatRequestFunction1B255A48": {
+      "Type": "AWS::CloudFront::Function",
+      "Properties": {
+        "AutoPublish": true,
+        "FunctionCode": "var REDIRECT_REGEX = /^[^.]+$|\\.(?!(css|gif|ico|jpg|jpeg|js|png|txt|svg|woff|woff2|ttf|map|json|webp|xml|pdf|webmanifest|avif|wasm)$)([^.]+$)/;\n\nfunction handler(event) {\n    var uri = event.request.uri;\n    var request = event.request;\n    var isUriToRedirect = REDIRECT_REGEX.test(uri);\n\n    if (isUriToRedirect) {\n        request.uri = \"/index.html\";\n    }\n\n    return event.request;\n}",
+        "FunctionConfig": {
+          "Comment": "crowdy-chat-dev-us-east-1-crowdyChat-request",
+          "Runtime": "cloudfront-js-1.0"
+        },
+        "Name": "crowdy-chat-dev-us-east-1-crowdyChat-request"
+      }
+    }
+  },
+  "Outputs": {
+    "ServerlessDeploymentBucketName": {
+      "Value": {
+        "Ref": "ServerlessDeploymentBucket"
+      },
+      "Export": {
+        "Name": "sls-crowdy-chat-dev-ServerlessDeploymentBucketName"
+      }
+    },
+    "crowdyChatBucketName4006B03F": {
+      "Description": "Name of the bucket that stores the static website.",
+      "Value": {
+        "Ref": "crowdyChatBucket08939A33"
+      }
+    },
+    "crowdyChatDomain4B8C6219": {
+      "Description": "Website domain name.",
+      "Value": "app.crowdy.chat"
+    },
+    "crowdyChatCloudFrontCName70FA2DA8": {
+      "Description": "CloudFront CNAME.",
+      "Value": {
+        "Fn::GetAtt": [
+          "crowdyChatCDNB56EAF32",
+          "DomainName"
+        ]
+      }
+    },
+    "crowdyChatDistributionId670245BC": {
+      "Description": "ID of the CloudFront distribution.",
+      "Value": {
+        "Ref": "crowdyChatCDNB56EAF32"
+      }
+    }
+  }
+}
