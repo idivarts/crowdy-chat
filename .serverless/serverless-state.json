@@ -169,6 +169,9 @@
             "Type": "AWS::CloudFront::Distribution",
             "Properties": {
               "DistributionConfig": {
+                "Aliases": [
+                  "app.crowdy.chat"
+                ],
                 "Comment": "crowdy-chat-dev crowdyChat website CDN",
                 "CustomErrorResponses": [
                   {
@@ -236,7 +239,12 @@
                       }
                     }
                   }
-                ]
+                ],
+                "ViewerCertificate": {
+                  "AcmCertificateArn": "arn:aws:acm:us-east-1:730335628944:certificate/7b2f37d6-5fe9-4f27-8dd0-f23eab5878f6",
+                  "MinimumProtocolVersion": "TLSv1.2_2021",
+                  "SslSupportMethod": "sni-only"
+                }
               }
             }
           },
@@ -270,12 +278,7 @@
           },
           "crowdyChatDomain4B8C6219": {
             "Description": "Website domain name.",
-            "Value": {
-              "Fn::GetAtt": [
-                "crowdyChatCDNB56EAF32",
-                "DomainName"
-              ]
-            }
+            "Value": "app.crowdy.chat"
           },
           "crowdyChatCloudFrontCName70FA2DA8": {
             "Description": "CloudFront CNAME.",
@@ -487,6 +490,9 @@
           "Type": "AWS::CloudFront::Distribution",
           "Properties": {
             "DistributionConfig": {
+              "Aliases": [
+                "app.crowdy.chat"
+              ],
               "Comment": "crowdy-chat-dev crowdyChat website CDN",
               "CustomErrorResponses": [
                 {
@@ -554,7 +560,12 @@
                     }
                   }
                 }
-              ]
+              ],
+              "ViewerCertificate": {
+                "AcmCertificateArn": "arn:aws:acm:us-east-1:730335628944:certificate/7b2f37d6-5fe9-4f27-8dd0-f23eab5878f6",
+                "MinimumProtocolVersion": "TLSv1.2_2021",
+                "SslSupportMethod": "sni-only"
+              }
             }
           }
         },
@@ -580,12 +591,7 @@
         },
         "crowdyChatDomain4B8C6219": {
           "Description": "Website domain name.",
-          "Value": {
-            "Fn::GetAtt": [
-              "crowdyChatCDNB56EAF32",
-              "DomainName"
-            ]
-          }
+          "Value": "app.crowdy.chat"
         },
         "crowdyChatCloudFrontCName70FA2DA8": {
           "Description": "CloudFront CNAME.",
@@ -623,7 +629,9 @@
       "constructs": {
         "crowdyChat": {
           "type": "single-page-app",
-          "path": "dist"
+          "path": "dist",
+          "domain": "app.crowdy.chat",
+          "certificate": "arn:aws:acm:us-east-1:730335628944:certificate/7b2f37d6-5fe9-4f27-8dd0-f23eab5878f6"
         }
       },
       "custom": {
@@ -654,7 +662,7 @@
               "Type": "A",
               "AliasTarget": {
                 "HostedZoneId": "Z2FDTNDATAQYW2",
-                "DNSName": "${Token[TOKEN.11]}"
+                "DNSName": "${Token[TOKEN.13]}"
               }
             }
           }
@@ -665,7 +673,7 @@
     "isDashboardMonitoringPreconfigured": false
   },
   "package": {
-    "artifactDirectoryName": "serverless/crowdy-chat/dev/1722070750867-2024-07-27T08:59:10.867Z",
+    "artifactDirectoryName": "serverless/crowdy-chat/dev/1722071806751-2024-07-27T09:16:46.751Z",
     "artifact": ""
   }
 }

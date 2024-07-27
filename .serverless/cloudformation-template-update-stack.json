@@ -156,6 +156,9 @@
       "Type": "AWS::CloudFront::Distribution",
       "Properties": {
         "DistributionConfig": {
+          "Aliases": [
+            "app.crowdy.chat"
+          ],
           "Comment": "crowdy-chat-dev crowdyChat website CDN",
           "CustomErrorResponses": [
             {
@@ -223,7 +226,12 @@
                 }
               }
             }
-          ]
+          ],
+          "ViewerCertificate": {
+            "AcmCertificateArn": "arn:aws:acm:us-east-1:730335628944:certificate/7b2f37d6-5fe9-4f27-8dd0-f23eab5878f6",
+            "MinimumProtocolVersion": "TLSv1.2_2021",
+            "SslSupportMethod": "sni-only"
+          }
         }
       }
     },
@@ -257,12 +265,7 @@
     },
     "crowdyChatDomain4B8C6219": {
       "Description": "Website domain name.",
-      "Value": {
-        "Fn::GetAtt": [
-          "crowdyChatCDNB56EAF32",
-          "DomainName"
-        ]
-      }
+      "Value": "app.crowdy.chat"
     },
     "crowdyChatCloudFrontCName70FA2DA8": {
       "Description": "CloudFront CNAME.",

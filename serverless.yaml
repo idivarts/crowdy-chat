@@ -15,29 +15,29 @@ constructs:
   crowdyChat:
     type: single-page-app
     path: dist
-    # domain:
-    #   - app.crowdy.chat
-    # certificate: arn:aws:acm:us-east-1:730335628944:certificate/579b6563-5ff5-4a43-8094-a65a190a0cc2
+    domain:
+      - app.crowdy.chat
+    certificate: arn:aws:acm:us-east-1:730335628944:certificate/7b2f37d6-5fe9-4f27-8dd0-f23eab5878f6
 
-
-custom:
-  customCertificate:
-    certificateName: 'app.crowdy.chat'
-    # idempotencyToken: 'abcsomedomainio' //optional
-    # hostedZoneNames: 'trendshub.co.in'
-    hostedZoneIds: Z08929472ONQ8YE8XDCVA
-    # region: eu-west-1 // optional - default is us-east-1 which is required for custom api gateway domains of Type Edge (default)
-    enabled: true
-    rewriteRecords: false
-  customDomain:
-    domainName: app.crowdy.chat
-    basePath: ''
-    stage: dev
-    certificateName: 'app.crowdy.chat'
-    createRoute53Record: true
-    createRoute53IPv6Record: true
-    endpointType: 'regional'
-    securityPolicy: tls_1_2
+# Create certificate from AWS dashboard
+# custom:
+#   customCertificate:
+#     certificateName: 'app.crowdy.chat'
+#     # idempotencyToken: 'abcsomedomainio' //optional
+#     # hostedZoneNames: 'trendshub.co.in'
+#     hostedZoneIds: Z08929472ONQ8YE8XDCVA
+#     # region: eu-west-1 // optional - default is us-east-1 which is required for custom api gateway domains of Type Edge (default)
+#     enabled: true
+#     rewriteRecords: false
+#   customDomain:
+#     domainName: app.crowdy.chat
+#     basePath: ''
+#     stage: dev
+#     certificateName: 'app.crowdy.chat'
+#     createRoute53Record: true
+#     createRoute53IPv6Record: true
+#     endpointType: 'regional'
+#     securityPolicy: tls_1_2
 
 
 
