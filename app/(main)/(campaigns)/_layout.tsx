@@ -1,4 +1,4 @@
-import DrawerToggle from '@/components/ui/drawer-toggle';
+import { DrawerToggle } from '@/components/ui';
 import { useBreakPoints } from '@/hooks';
 import { Stack } from 'expo-router';
 
