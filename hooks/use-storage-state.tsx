@@ -50,8 +50,8 @@ export function useStorageState(key: string): UseStateHook<string> {
       }
     } else {
       SecureStore.getItemAsync(key).then(value => {
-        setState('xxx'); // Set initial session state to 'xxx'
-        // setState(value);
+        // setState('xxx'); // Set initial session state to 'xxx'
+        setState(value);
       });
     }
   }, [key]);

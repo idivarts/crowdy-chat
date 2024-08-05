@@ -1,48 +1,35 @@
 import { Drawer } from "expo-router/drawer";
 import SideBarMenu from "@/layouts/side-bar-menu";
-import { useAuthContext } from "@/contexts";
-import { router } from "expo-router";
-import { useEffect } from "react";
+import { useBreakPoints } from "@/hooks";
 
 const DrawerLayout = () => {
-  const { session } = useAuthContext();
-
-  // useEffect(() => {
-  //   if (!session) {
-  //     router.replace('(auth)/login');
-  //   }
-  // }, [session]);
+  const { lg } = useBreakPoints();
 
   return (
     <Drawer
       backBehavior="history"
-      drawerContent={(props) => <SideBarMenu {...props} />}
+      drawerContent={() => <SideBarMenu />}
       screenOptions={{
+        drawerType: lg ? 'permanent' : 'slide',
         headerShown: false,
       }}
     >
       <Drawer.Screen
-        name="(tabs)"
-        options={{
-          headerShown: false,
-        }}
-      />
-      <Drawer.Screen
-        name="(campaigns)"
+        name="(campaigns)/campaigns"
         options={{
           headerShown: true,
           title: 'Campaigns',
         }}
       />
       <Drawer.Screen
-        name="(sources)"
+        name="(sources)/sources"
         options={{
           headerShown: true,
           title: 'Sources',
         }}
       />
       <Drawer.Screen
-        name="(leads)"
+        name="(leads)/leads"
         options={{
           headerShown: true,
           title: 'Leads',

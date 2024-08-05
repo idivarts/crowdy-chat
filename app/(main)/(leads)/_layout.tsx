@@ -1,13 +1,23 @@
+import DrawerToggle from '@/components/ui/drawer-toggle';
+import { useBreakPoints } from '@/hooks';
 import { Stack } from 'expo-router';
-import 'react-native-reanimated';
 
 const LeadsLayout = () => {
+  const { lg } = useBreakPoints();
+
   return (
-    <Stack>
+    <Stack
+      screenOptions={{
+        animation: 'ios',
+        headerShown: true,
+        headerTitleAlign: 'center',
+      }}
+    >
       <Stack.Screen
-        name="index"
+        name="leads"
         options={{
-          headerShown: false,
+          headerLeft: () => lg ? null : <DrawerToggle />,
+          title: 'Leads',
         }}
       />
       <Stack.Screen

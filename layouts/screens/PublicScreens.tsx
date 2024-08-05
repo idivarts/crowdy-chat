@@ -1,11 +1,13 @@
 import { Stack } from "expo-router";
 
 const PublicScreens = () => (
-  <>
-    <Stack.Screen name="index" options={{ headerShown: false }} />
-    <Stack.Screen name="modal" options={{ presentation: 'modal' }} />
+  <Stack
+    screenOptions={{
+      animation: "ios",
+    }}
+  >
     <Stack.Screen name="+not-found" />
-  </>
+  </Stack>
 );
 
 export default PublicScreens;

@@ -7,7 +7,8 @@ import { useEffect } from 'react';
 import 'react-native-reanimated';
 
 import { useColorScheme } from '@/components/useColorScheme';
-import { AuthContextProvider } from '@/contexts/auth-context.provider';
+import { AuthContextProvider, useAuthContext } from '@/contexts/auth-context.provider';
+import { AuthScreens, MainScreens, PublicScreens } from '@/layouts/screens';
 
 export {
   // Catch any errors thrown by the Layout component.
@@ -43,27 +44,28 @@ const RootLayout = () => {
     return null;
   }
 
-  return <RootLayoutStack />;
+  return (
+    <AuthContextProvider>
+      <RootLayoutStack />
+    </AuthContextProvider>
+  );
 }
 
 const RootLayoutStack = () => {
   const colorScheme = useColorScheme();
+  const { session } = useAuthContext();
 
   return (
     <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-      <AuthContextProvider>
-        <Stack
-          screenOptions={{
-            animation: 'ios',
-          }}
-        >
-          {/* <Stack.Screen name="index" options={{ headerShown: false }} /> */}
-          <Stack.Screen name="(auth)" options={{ headerShown: false }} />
-          <Stack.Screen name="(main)" options={{ headerShown: false }} />
-          <Stack.Screen name="modal" options={{ presentation: 'modal' }} />
-          <Stack.Screen name="+not-found" />
-        </Stack>
-      </AuthContextProvider>
+      <Stack
+        screenOptions={{
+          animation: 'ios',
+          headerShown: false,
+        }}
+      >
+        { session ? <MainScreens /> : <AuthScreens /> }
+        <PublicScreens />
+      </Stack>
     </ThemeProvider>
   );
 };

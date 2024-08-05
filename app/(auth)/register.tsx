@@ -2,14 +2,14 @@ import AppLayout from "@/layouts/app-layout";
 
 import { Text, View } from "@/components/Themed";
 
-const Home = () => {
+const Register = () => {
   return (
     <AppLayout>
       <View>
-        <Text>Home</Text>
+        <Text>Register</Text>
       </View>
     </AppLayout>
   );
 };
 
-export default Home;
+export default Register;

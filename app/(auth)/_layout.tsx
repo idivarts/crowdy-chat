@@ -1,17 +1,6 @@
-import { useAuthContext } from '@/contexts';
-import { router, Stack } from 'expo-router';
-import { useEffect } from 'react';
-import 'react-native-reanimated';
+import { Stack } from 'expo-router';
 
 const AuthLayout = () => {
-  const { session } = useAuthContext();
-
-  // useEffect(() => {
-  //   if (session) {
-  //     router.replace('(main)/(tabs)');
-  //   }
-  // }, [session]);
-
   return (
     <Stack
       screenOptions={{
@@ -20,6 +9,12 @@ const AuthLayout = () => {
     >
       <Stack.Screen
         name="login"
+        options={{
+          headerShown: false,
+        }}
+      />
+      <Stack.Screen
+        name="register"
         options={{
           headerShown: false,
         }}

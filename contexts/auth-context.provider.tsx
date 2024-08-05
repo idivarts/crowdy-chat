@@ -1,4 +1,4 @@
-import { useStorageState } from '@/hooks/useStorageState';
+import { useStorageState } from '@/hooks';
 import { useContext, createContext, type PropsWithChildren } from 'react';
 
 interface AuthContextProps {
