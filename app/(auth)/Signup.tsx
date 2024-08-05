@@ -1,9 +1,9 @@
-import LoginUI from "@/shared-uis/components/AuthenticationUI/LoginUI";
-import { styles } from "@/styles/Login.styles";
+import SignupUI from "@/shared-uis/components/AuthenticationUI/SignupUI";
+import { styles } from "@/styles/Signup.styles";
 
-const Login = () => {
+const Signup = () => {
   return (
-    <LoginUI
+    <SignupUI
       styles={styles}
       formData={{}}
       error={""}
@@ -17,4 +17,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default Signup;

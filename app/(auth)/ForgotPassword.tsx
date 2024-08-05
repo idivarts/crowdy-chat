@@ -1,9 +1,9 @@
-import LoginUI from "@/shared-uis/components/AuthenticationUI/LoginUI";
-import { styles } from "@/styles/Login.styles";
+import ForgotPasswordUI from "@/shared-uis/components/AuthenticationUI/ForgotPasswordUI";
+import { styles } from "@/styles/ForgotPassword.styles";
 
-const Login = () => {
+const ForgotPassword = () => {
   return (
-    <LoginUI
+    <ForgotPasswordUI
       styles={styles}
       formData={{}}
       error={""}
@@ -17,4 +17,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default ForgotPassword;
