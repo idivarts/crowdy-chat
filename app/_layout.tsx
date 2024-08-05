@@ -7,6 +7,8 @@ import { useEffect } from 'react';
 import 'react-native-reanimated';
 
 import { useColorScheme } from '@/components/useColorScheme';
+import { AuthContextProvider, useAuthContext } from '@/contexts/auth-context.provider';
+import { AuthScreens, MainScreens, PublicScreens } from '@/layouts/screens';
 
 export {
   // Catch any errors thrown by the Layout component.
@@ -21,7 +23,7 @@ export const unstable_settings = {
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
 
-export default function RootLayout() {
+const RootLayout = () => {
   const [loaded, error] = useFonts({
     SpaceMono: require('../assets/fonts/SpaceMono-Regular.ttf'),
     ...FontAwesome.font,
@@ -42,18 +44,30 @@ export default function RootLayout() {
     return null;
   }
 
-  return <RootLayoutNav />;
+  return (
+    <AuthContextProvider>
+      <RootLayoutStack />
+    </AuthContextProvider>
+  );
 }
 
-function RootLayoutNav() {
+const RootLayoutStack = () => {
   const colorScheme = useColorScheme();
+  const { session } = useAuthContext();
 
   return (
     <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-      <Stack>
-        <Stack.Screen name="index" options={{ headerShown: false }} />
-        <Stack.Screen name="modal" options={{ presentation: 'modal' }} />
+      <Stack
+        screenOptions={{
+          animation: 'ios',
+          headerShown: false,
+        }}
+      >
+        { session ? <MainScreens /> : <AuthScreens /> }
+        <PublicScreens />
       </Stack>
     </ThemeProvider>
   );
-}
+};
+
+export default RootLayout;
