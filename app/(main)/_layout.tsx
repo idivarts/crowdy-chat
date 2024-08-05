@@ -15,6 +15,7 @@ const DrawerLayout = () => {
       }}
     >
       <Drawer.Screen
+        key="campaigns"
         name="(campaigns)/campaigns"
         options={{
           headerShown: true,
@@ -22,6 +23,7 @@ const DrawerLayout = () => {
         }}
       />
       <Drawer.Screen
+        key="sources"
         name="(sources)/sources"
         options={{
           headerShown: true,
@@ -29,6 +31,7 @@ const DrawerLayout = () => {
         }}
       />
       <Drawer.Screen
+        key="leads"
         name="(leads)/leads"
         options={{
           headerShown: true,
