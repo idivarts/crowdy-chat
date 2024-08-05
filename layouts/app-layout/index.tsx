@@ -1,12 +1,12 @@
 import { PropsWithChildren, useMemo } from "react";
-import { Platform, SafeAreaView, StatusBar } from "react-native";
+import { Platform, SafeAreaView, StatusBar, StyleSheet } from "react-native";
 import { StatusBar as ExpoStatusBar } from 'expo-status-bar';
 
 import Colors from "@/constants/Colors";
 import { useColorScheme } from "@/components/useColorScheme";
 import { useThemeColor } from "@/components/Themed";
 
-interface AppLayoutProps extends PropsWithChildren<{}> {}
+interface AppLayoutProps extends PropsWithChildren<Record<string, unknown>> {}
 
 const AppLayout: React.FC<AppLayoutProps> = ({
   children,
@@ -19,11 +19,13 @@ const AppLayout: React.FC<AppLayoutProps> = ({
 
   return (
     <SafeAreaView
-      style={{
-        flex: 1,
-        backgroundColor: backgroundColor,
-        paddingTop: isAndroid ? StatusBar.currentHeight : 0,
-      }}
+      style={[
+        styles.container,
+        {
+          backgroundColor,
+          paddingTop: isAndroid ? StatusBar.currentHeight : 0,
+        },
+      ]}
     >
       {children}
       <ExpoStatusBar style={colorScheme === 'light' ? "dark" : 'light'} />
@@ -32,3 +34,9 @@ const AppLayout: React.FC<AppLayoutProps> = ({
 };
 
 export default AppLayout;
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
+});
