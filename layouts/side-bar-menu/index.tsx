@@ -1,4 +1,4 @@
-import { TouchableWithoutFeedback } from "react-native";
+import { Pressable } from "react-native";
 import { router, usePathname } from "expo-router";
 import { DrawerContentScrollView } from "@react-navigation/drawer";
 import { Ionicons } from "@expo/vector-icons";
@@ -47,7 +47,7 @@ const SideBarMenu: React.FC = () => {
           >
             {
               SIDE_BAR_MENU.map((sideBarMenuItem, index) => (
-                <TouchableWithoutFeedback
+                <Pressable
                   key={index}
                   onPress={() => {
                     router.push(sideBarMenuItem.href);
@@ -83,7 +83,7 @@ const SideBarMenu: React.FC = () => {
                       />
                     </View>
                   </View>
-                </TouchableWithoutFeedback>
+                </Pressable>
               ))
             }
           </View>

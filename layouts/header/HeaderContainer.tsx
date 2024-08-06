@@ -1,17 +1,28 @@
 import { View } from "@/components/Themed";
+import useBreakpoints from "@/hooks/use-breakpoints";
+import styles from "@/styles/header/Header.styles";
 import { PropsWithChildren } from "react";
 
-const HeaderContainer: React.FC<PropsWithChildren> = ({
+interface HeaderContainerProps extends PropsWithChildren {
+  gap?: number;
+};
+
+const HeaderContainer: React.FC<HeaderContainerProps> = ({
   children,
+  gap = 10,
 }) => {
+  const { lg } = useBreakpoints();
+
   return (
     <View
-      style={{
-        flex: 1,
-        flexDirection: 'row',
-        gap: 6,
-        justifyContent: 'space-between',
-      }}
+      style={[
+        styles.headerContainer,
+        {
+          gap,
+          paddingHorizontal: lg ? 20 : 10,
+          paddingVertical: lg ? 20 : 10,
+        },
+      ]}
     >
       {children}
     </View>

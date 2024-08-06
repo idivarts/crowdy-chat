@@ -1,43 +1,43 @@
-import { useAuthContext } from "@/contexts";
-import { router, Stack } from "expo-router";
-import { useEffect } from "react";
-import "react-native-reanimated";
+import { View } from "@/components/Themed";
+import Header from "@/layouts/header";
+import { Stack } from "expo-router";
 
 const AuthLayout = () => {
-  const { session } = useAuthContext();
-
-  // useEffect(() => {
-  //   if (session) {
-  //     router.replace('(main)/(tabs)');
-  //   }
-  // }, [session]);
-
   return (
-    <Stack
-      screenOptions={{
-        animation: "ios",
-        headerShown: false,
-      }}
-    >
-      <Stack.Screen
-        name="Login"
-        options={{
-          headerShown: false,
+    <>
+      <Header />
+      <View
+        style={{
+          flex: 1,
         }}
-      />
-      <Stack.Screen
-        name="ForgotPassword"
-        options={{
-          headerShown: false,
-        }}
-      />
-      <Stack.Screen
-        name="Signup"
-        options={{
-          headerShown: false,
-        }}
-      />
-    </Stack>
+      >
+        <Stack
+          screenOptions={{
+            animation: "ios",
+            headerShown: false,
+          }}
+        >
+          <Stack.Screen
+            name="login"
+            options={{
+              headerShown: false,
+            }}
+          />
+          <Stack.Screen
+            name="signup"
+            options={{
+              headerShown: false,
+            }}
+          />
+          <Stack.Screen
+            name="ForgotPassword"
+            options={{
+              headerShown: false,
+            }}
+          />
+        </Stack>
+      </View>
+    </>
   );
 };
 
