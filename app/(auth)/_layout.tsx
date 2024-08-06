@@ -1,8 +1,18 @@
 import { View } from "@/components/Themed";
+import { useAuthContext } from "@/contexts";
 import Header from "@/layouts/header";
-import { Stack } from "expo-router";
+import { Stack, useRouter } from "expo-router";
+import { useEffect } from "react";
 
 const AuthLayout = () => {
+  const { isLoading, session } = useAuthContext()
+  const router = useRouter()
+  useEffect(() => {
+    if (!isLoading && session) {
+      router.replace("/(main)/(campaigns)/campaigns")
+    }
+  }, [isLoading, session])
+
   return (
     <>
       <Header />
