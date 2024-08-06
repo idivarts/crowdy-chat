@@ -57,19 +57,19 @@ const RootLayoutStack = () => {
   const colorScheme = useColorScheme();
   const { session } = useAuthContext();
 
-  const router = useRouter();
-  const pathname = usePathname();
+  // const router = useRouter();
+  // const pathname = usePathname();
 
 
-  useEffect(() => {
-    // Redirect from root (/) to /login
-    if (pathname === '/') {
-      if (!session)
-        router.replace('/(auth)/login');
-      else
-        router.replace('/(main)/compaigns');
-    }
-  }, [router, session]);
+  // useEffect(() => {
+  //   // Redirect from root (/) to /login
+  //   if (pathname === '/') {
+  //     if (!session)
+  //       router.replace('/(auth)/login');
+  //     else
+  //       router.replace('/(main)/compaigns');
+  //   }
+  // }, [router, session]);
 
   return (
     <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
