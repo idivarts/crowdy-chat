@@ -1,8 +1,9 @@
 import { View } from "@/components/Themed";
 import Colors from "@/constants/Colors";
+import styles from "@/styles/profile/Profile.styles";
 import { Ionicons } from "@expo/vector-icons";
 import { ComponentProps } from "react";
-import { Pressable, StyleSheet } from "react-native";
+import { Pressable } from "react-native";
 
 interface ProfileIconProps {
   iconColor?: string;
@@ -25,7 +26,7 @@ const ProfileIcon: React.FC<ProfileIconProps> = ({
         zIndex: 1,
       }}
     >
-      <View style={[styles.iconContainer, { width: size, height: size, borderRadius: size / 2 }]}>
+      <View style={[styles.profileIconContainer, { width: size, height: size, borderRadius: size / 2 }]}>
         <Ionicons
           color={iconColor ? iconColor : Colors.regular.white}
           name={iconName}
@@ -35,13 +36,5 @@ const ProfileIcon: React.FC<ProfileIconProps> = ({
     </Pressable>
   );
 };
-
-const styles = StyleSheet.create({
-  iconContainer: {
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: Colors.regular.primary,
-  },
-});
 
 export default ProfileIcon;

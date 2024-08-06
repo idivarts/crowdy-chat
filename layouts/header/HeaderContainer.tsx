@@ -1,5 +1,6 @@
 import { View } from "@/components/Themed";
 import useBreakpoints from "@/hooks/use-breakpoints";
+import styles from "@/styles/header/Header.styles";
 import { PropsWithChildren } from "react";
 
 interface HeaderContainerProps extends PropsWithChildren {
@@ -14,17 +15,14 @@ const HeaderContainer: React.FC<HeaderContainerProps> = ({
 
   return (
     <View
-      style={{
-        alignItems: 'center',
-        borderBottomColor: 'lightgray',
-        borderBottomWidth: 1,
-        flexDirection: 'row',
-        gap,
-        justifyContent: 'space-between',
-        paddingHorizontal: lg ? 20 : 10,
-        paddingVertical: lg ? 20 : 10,
-        zIndex: 1000,
-      }}
+      style={[
+        styles.headerContainer,
+        {
+          gap,
+          paddingHorizontal: lg ? 20 : 10,
+          paddingVertical: lg ? 20 : 10,
+        },
+      ]}
     >
       {children}
     </View>

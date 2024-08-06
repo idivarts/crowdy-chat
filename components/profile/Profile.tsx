@@ -1,8 +1,8 @@
-import { StyleSheet } from "react-native";
 import { View } from "../Themed";
 import ProfileIcon from "./ProfileIcon";
 import { useState } from "react";
 import ProfileDropdown from "./ProfileDropdown";
+import styles from "@/styles/profile/Profile.styles";
 
 const Profile = () => {
   const [isDropdownVisible, setDropdownVisible] = useState(false);
@@ -25,11 +25,5 @@ const Profile = () => {
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    position: 'relative',
-  },
-});
 
 export default Profile;
