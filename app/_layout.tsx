@@ -5,6 +5,8 @@ import { Stack } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
 import { useEffect } from 'react';
 import 'react-native-reanimated';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 import { useColorScheme } from '@/components/useColorScheme';
 import { AuthContextProvider, useAuthContext } from '@/contexts/auth-context.provider';
@@ -63,9 +65,10 @@ const RootLayoutStack = () => {
           headerShown: false,
         }}
       >
-        { session ? <MainScreens /> : <AuthScreens /> }
         <PublicScreens />
+        { session ? <MainScreens /> : <AuthScreens /> }
       </Stack>
+      <ToastContainer />
     </ThemeProvider>
   );
 };
