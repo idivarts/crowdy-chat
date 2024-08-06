@@ -1,15 +1,23 @@
 import { View } from "@/components/Themed";
+import styles from "@/styles/header/Header.styles";
 import { PropsWithChildren } from "react";
 
-const HeaderSection: React.FC<PropsWithChildren> = ({
+interface HeaderSectionProps extends PropsWithChildren {
+  gap?: number;
+}
+
+const HeaderSection: React.FC<HeaderSectionProps> = ({
   children,
+  gap = 10,
 }) => {
   return (
     <View
-      style={{
-        flexDirection: 'row',
-        gap: 6,
-      }}
+      style={[
+        styles.headerSection,
+        {
+          gap,
+        },
+      ]}
     >
       {children}
     </View>
