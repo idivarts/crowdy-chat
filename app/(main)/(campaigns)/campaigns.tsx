@@ -3,6 +3,7 @@ import AppLayout from "@/layouts/app-layout";
 import { Text, View } from "@/components/Themed";
 import { Button } from "react-native";
 import { useRouter } from "expo-router";
+import CreateCampaign from "@/components/modals/CampaignCreate";
 
 const Campaigns = () => {
   const router = useRouter();
@@ -10,14 +11,11 @@ const Campaigns = () => {
     <AppLayout>
       <View
         style={{
-          alignItems: 'center',
+          alignItems: "center",
         }}
       >
         <Text>Campaigns</Text>
-        <Button
-          title="Create Campaign"
-          onPress={() => router.push('/campaign')}
-        />
+        <CreateCampaign />
       </View>
     </AppLayout>
   );
