@@ -16,6 +16,7 @@ const Signup = () => {
       handleChange={function (field: string, value: any): void {
         throw new Error("Function not implemented.");
       }}
+      // @ts-ignore
       handleSubmit={(data: any) => {
         signIn();
         console.log("Signup data:", data);

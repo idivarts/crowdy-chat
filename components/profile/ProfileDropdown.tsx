@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { Button } from "react-native";
 import { useRouter } from "expo-router";
 
 import { View } from "../Themed";
@@ -7,6 +6,7 @@ import { useAuthContext } from "@/contexts";
 import ProfilePopup from "./ProfilePopup";
 import { toast } from "react-toastify";
 import styles from "@/styles/profile/Profile.styles";
+import DropdownButton from "../ui/dropdown-button/DropdownButton";
 
 const ProfileDropdown = () => {
   const [isProfilePopupVisible, setProfilePopupVisible] = useState(false);
@@ -22,16 +22,15 @@ const ProfileDropdown = () => {
   return (
     <>
       <View style={styles.dropdown}>
-        <Button
-          title="Edit Profile"
+        <DropdownButton
           onPress={() => setProfilePopupVisible(true)}
+          title="Edit Profile"
         />
-        <Button
-          title="Logout"
+        <DropdownButton
           onPress={handleSignout}
+          title="Logout"
         />
       </View>
-
       {
         isProfilePopupVisible && (
           <ProfilePopup
