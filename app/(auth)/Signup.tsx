@@ -1,8 +1,8 @@
 import { useAuthContext } from "@/contexts";
 import SignupUI from "@/shared-uis/components/AuthenticationUI/SignupUI";
+import Toaster from "@/shared-uis/components/toaster/Toaster";
 import { styles } from "@/styles/Signup.styles";
 import { useRouter } from "expo-router";
-import { toast } from "react-toastify";
 
 const Signup = () => {
   const { signIn } = useAuthContext();
@@ -20,7 +20,7 @@ const Signup = () => {
       handleSubmit={(data: any) => {
         signIn();
         console.log("Signup data:", data);
-        toast.success("Account created!");
+        Toaster.success("Signed up successfully!");
         router.replace("/(main)/(campaigns)/campaigns");
       }}
     />
