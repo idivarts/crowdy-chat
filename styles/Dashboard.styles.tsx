@@ -13,11 +13,13 @@ export const CreateCampaignstyles = StyleSheet.create({
     alignItems: "center",
   },
   modalContainer: {
-    width: "80%",
+    width: "100%",
     backgroundColor: "white",
     borderRadius: 8,
     padding: 16,
-    maxHeight: "80%",
+    height: "80%",
+    position: "absolute",
+    bottom: 0,
   },
   header: {
     fontSize: 24,
@@ -31,7 +33,8 @@ export const CreateCampaignstyles = StyleSheet.create({
     marginBottom: 16,
   },
   stepContainer: {
-    marginBottom: 16,
+    // marginBottom: 16,
+    flex: 1,
   },
   input: {
     borderColor: "#ccc",
@@ -90,6 +93,10 @@ export const CreateCampaignstyles = StyleSheet.create({
   stageActive: {
     backgroundColor: "#101010",
     padding: 8,
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
     marginVertical: 4,
     borderRadius: 4,
   },
@@ -97,6 +104,11 @@ export const CreateCampaignstyles = StyleSheet.create({
     padding: 8,
     marginVertical: 4,
     borderRadius: 4,
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
     backgroundColor: "#ccc",
   },
+  error: {},
 });

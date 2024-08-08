@@ -11,7 +11,7 @@ const ForgotPassword = () => {
         throw new Error("Function not implemented.");
       }}
       handleSubmit={function (): void {
-        throw new Error("Function not implemented.");
+        // throw new Error("Function not implemented.");
       }}
     />
   );

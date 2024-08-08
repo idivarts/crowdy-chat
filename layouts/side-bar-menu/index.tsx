@@ -5,16 +5,20 @@ import SideBarMenuItem from "./SideBarMenuItem";
 
 const SIDE_BAR_MENU = [
   {
-    href: '/campaigns',
-    label: 'Campaigns',
+    href: "/campaigns",
+    label: "Campaigns",
   },
   {
-    href: '/sources',
-    label: 'Sources',
+    href: "/sources",
+    label: "Sources",
   },
   {
-    href: '/leads',
-    label: 'Leads',
+    href: "/leads",
+    label: "Leads",
+  },
+  {
+    href: "/open-ai",
+    label: "OpenAI",
   },
   {
     href: '/members',

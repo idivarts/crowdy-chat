@@ -1,11 +1,13 @@
 import AppLayout from "@/layouts/app-layout";
 import { Text, View } from "@/components/Themed";
-import CampaignCard from "@/components/campaigns/CampaignCard";
+import { Button, Image, TouchableOpacity } from "react-native";
+import { useRouter } from "expo-router";
 import { useState } from "react";
 import { campaigns as initialCampaigns } from "@/constants/Campaigns";
-import { Image, TouchableOpacity } from "react-native";
-import styles from "@/styles/campaigns/CampaignsList.styles";
+import CreateCampaign from "@/components/modals/CampaignCreate";
+import CampaignCard from "@/components/campaigns/CampaignCard";
 import SearchInput from "@/shared-uis/components/search-input/SearchInput";
+import styles from "@/styles/campaigns/CampaignsList.styles";
 
 const Campaigns = () => {
   const [searchQuery, setSearchQuery] = useState("");
@@ -51,9 +53,7 @@ const Campaigns = () => {
             onChangeText={handleSearch}
             style={{ flex: 1, marginRight: 10 }}
           />
-          <TouchableOpacity style={styles.createButton}>
-            <Text style={styles.createButtonText}>Create Campaign</Text>
-          </TouchableOpacity>
+          <CreateCampaign />
         </View>
         <View style={styles.campaignsSection}>
           {filteredCampaigns.length > 0 ? renderFilledState() : renderEmptyState()}
