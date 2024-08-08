@@ -4,6 +4,11 @@ import Toaster from "@/shared-uis/components/toaster/Toaster";
 import { styles } from "@/styles/Signup.styles";
 import { useRouter } from "expo-router";
 
+interface SignupData {
+  email: string;
+  password: string;
+}
+
 const Signup = () => {
   const { signIn } = useAuthContext();
   const router = useRouter();
@@ -16,11 +21,10 @@ const Signup = () => {
       handleChange={function (field: string, value: any): void {
         throw new Error("Function not implemented.");
       }}
-      // @ts-ignore
-      handleSubmit={(data: any) => {
+      handleSubmit={(data: SignupData) => {
         signIn();
         console.log("Signup data:", data);
-        Toaster.success("Signed up successfully!");
+        Toaster.success("Signed Up Successfully!");
         router.replace("/(main)/(campaigns)/campaigns");
       }}
     />

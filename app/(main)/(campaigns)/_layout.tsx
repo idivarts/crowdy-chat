@@ -1,9 +1,19 @@
 import { DrawerToggle } from '@/components/ui';
+import { useAuthContext } from '@/contexts';
 import { useBreakPoints } from '@/hooks';
-import { Stack } from 'expo-router';
+import { Stack, useRouter } from 'expo-router';
+import { useEffect } from 'react';
 
 const CampaignsLayout = () => {
   const { lg } = useBreakPoints();
+
+  const { isLoading, session } = useAuthContext()
+  const router = useRouter()
+  useEffect(() => {
+    if (!isLoading && !session) {
+      router.replace("/(auth)/login")
+    }
+  }, [isLoading, session])
 
   return (
     <Stack

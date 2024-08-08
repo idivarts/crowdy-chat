@@ -1,10 +1,11 @@
 import FontAwesome from '@expo/vector-icons/FontAwesome';
 import { DarkTheme, DefaultTheme, ThemeProvider } from '@react-navigation/native';
 import { useFonts } from 'expo-font';
-import { Stack } from 'expo-router';
+import { Stack, usePathname, useRouter } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
 import { useEffect } from 'react';
 import 'react-native-reanimated';
+import Toast from 'react-native-toast-message';
 
 import { useColorScheme } from '@/components/useColorScheme';
 import { AuthContextProvider, useAuthContext } from '@/contexts/auth-context.provider';
@@ -56,6 +57,20 @@ const RootLayoutStack = () => {
   const colorScheme = useColorScheme();
   const { session } = useAuthContext();
 
+  // const router = useRouter();
+  // const pathname = usePathname();
+
+
+  // useEffect(() => {
+  //   // Redirect from root (/) to /login
+  //   if (pathname === '/') {
+  //     if (!session)
+  //       router.replace('/(auth)/login');
+  //     else
+  //       router.replace('/(main)/compaigns');
+  //   }
+  // }, [router, session]);
+
   return (
     <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
       <Stack
@@ -65,7 +80,7 @@ const RootLayoutStack = () => {
         }}
       >
         <PublicScreens />
-        { session ? <MainScreens /> : <AuthScreens /> }
+        {session ? <MainScreens /> : <AuthScreens />}
       </Stack>
       <Toast />
     </ThemeProvider>
