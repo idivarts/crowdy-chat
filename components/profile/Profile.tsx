@@ -31,15 +31,13 @@ const Profile = () => {
           />
         </DropdownTrigger>
         <DropdownOptions>
-          <DropdownOption onSelect={() => {}}>
+          <DropdownOption onSelect={() => setProfilePopupVisible(true)}>
             <DropdownButton
-              onPress={() => setProfilePopupVisible(true)}
               title="Edit Profile"
             />
           </DropdownOption>
-          <DropdownOption onSelect={() => {}}>
+          <DropdownOption onSelect={handleSignout}>
             <DropdownButton
-              onPress={handleSignout}
               title="Logout"
             />
           </DropdownOption>

@@ -40,7 +40,7 @@ const styles = StyleSheet.create({
   filledStateContainer: {
     gap: 16,
     flexDirection: 'row',
-    justifyContent: 'space-between',
+    justifyContent: 'space-evenly',
     flexWrap: 'wrap',
   },
 });
