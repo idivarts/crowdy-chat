@@ -30,7 +30,12 @@ const Profile = () => {
             size={40}
           />
         </DropdownTrigger>
-        <DropdownOptions>
+        <DropdownOptions
+          position={{
+            top: '100%',
+            right: 0,
+          }}
+        >
           <DropdownOption>
             <DropdownButton
               title="Edit Profile"

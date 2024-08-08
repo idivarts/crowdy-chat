@@ -63,7 +63,12 @@ const CampaignCard = ({
             <DropdownTrigger>
               <MaterialIcons name="more-vert" size={24} color="black" />
             </DropdownTrigger>
-            <DropdownOptions>
+            <DropdownOptions
+              position={{
+                top: '100%',
+                right: 0,
+              }}
+            >
               <DropdownOption>
                 <DropdownButton
                   onPress={() => { console.log('Edit') }}
