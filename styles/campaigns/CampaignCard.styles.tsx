@@ -28,10 +28,12 @@ const styles = StyleSheet.create({
   cardHeaderContainer: {
     flex: 1,
     flexDirection: 'row',
+    alignItems: 'center',
     zIndex: 1000,
   },
   cardHeaderText: {
     flex: 1,
+    gap: 2,
   },
   campaignName: {
     fontSize: 18,
@@ -44,13 +46,22 @@ const styles = StyleSheet.create({
   chatAssistantId: {
     marginRight: 8,
   },
+  copyIdIcon: {
+    marginTop: 4,
+  },
   cardBody: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     marginBottom: 16,
+    gap: 8,
+    flexWrap: 'wrap',
   },
   analyticsCard: {
+    flexDirection: 'row',
     alignItems: 'center',
+  },
+  analyticsCardTitle: {
+    fontWeight: 500,
   },
   cardFooter: {
     alignItems: 'center',

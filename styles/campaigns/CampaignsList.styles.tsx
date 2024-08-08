@@ -38,7 +38,10 @@ const styles = StyleSheet.create({
     marginBottom: 16,
   },
   filledStateContainer: {
-    paddingBottom: 16,
+    gap: 16,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    flexWrap: 'wrap',
   },
 });
 

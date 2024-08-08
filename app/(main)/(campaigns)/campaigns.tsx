@@ -3,9 +3,9 @@ import { Text, View } from "@/components/Themed";
 import CampaignCard from "@/components/campaigns/CampaignCard";
 import { useState } from "react";
 import { campaigns as initialCampaigns } from "@/constants/Campaigns";
-import { FlatList, Image, TouchableOpacity } from "react-native";
+import { Image, TouchableOpacity } from "react-native";
 import styles from "@/styles/campaigns/CampaignsList.styles";
-import SearchInput from "@/components/ui/search-input/SearchInput";
+import SearchInput from "@/shared-uis/components/search-input/SearchInput";
 
 const Campaigns = () => {
   const [searchQuery, setSearchQuery] = useState("");
@@ -34,12 +34,11 @@ const Campaigns = () => {
   );
 
   const renderFilledState = () => (
-    <FlatList
-      data={filteredCampaigns}
-      renderItem={({ item }) => <CampaignCard item={item} />}
-      keyExtractor={(item) => item.id}
-      contentContainerStyle={styles.filledStateContainer}
-    />
+    <View style={styles.filledStateContainer}>
+      {filteredCampaigns.map((campaign) => (
+        <CampaignCard key={campaign.id} item={campaign} />
+      ))}
+    </View>
   );
 
   return (

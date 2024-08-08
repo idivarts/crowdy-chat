@@ -5,8 +5,8 @@ import { useRouter } from "expo-router";
 import { View } from "../Themed";
 import { useAuthContext } from "@/contexts";
 import ProfilePopup from "./ProfilePopup";
-import { toast } from "react-toastify";
 import styles from "@/styles/profile/Profile.styles";
+import Toaster from "@/shared-uis/components/toaster/Toaster";
 
 const ProfileDropdown = () => {
   const [isProfilePopupVisible, setProfilePopupVisible] = useState(false);
@@ -15,7 +15,7 @@ const ProfileDropdown = () => {
 
   const handleSignout = () => {
     signOut();
-    toast.success("Logged out successfully!");
+    Toaster.success('Logged out successfully!');
     router.replace('/(auth)/login');
   }
 
