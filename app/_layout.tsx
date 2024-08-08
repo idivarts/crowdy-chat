@@ -10,7 +10,6 @@ import Toast from 'react-native-toast-message';
 import { useColorScheme } from '@/components/useColorScheme';
 import { AuthContextProvider, useAuthContext } from '@/contexts/auth-context.provider';
 import { AuthScreens, MainScreens, PublicScreens } from '@/layouts/screens';
-import Toast from 'react-native-toast-message';
 
 export {
   // Catch any errors thrown by the Layout component.
