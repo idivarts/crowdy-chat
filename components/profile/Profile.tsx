@@ -9,7 +9,6 @@ import { useAuthContext } from "@/contexts";
 import { useRouter } from "expo-router";
 import DropdownButton from "@/shared-uis/components/dropdown/DropdownButton";
 import { useProfilePopupContext } from "@/contexts/profile-popup-context.provider";
-import Toast from "react-native-toast-message";
 import Toaster from "@/shared-uis/components/toaster/Toaster";
 
 const Profile = () => {
@@ -31,17 +30,24 @@ const Profile = () => {
             size={40}
           />
         </DropdownTrigger>
-        <DropdownOptions>
-          <DropdownOption onSelect={() => {}}>
+        <DropdownOptions
+          position={{
+            top: '100%',
+            right: 0,
+          }}
+        >
+          <DropdownOption>
             <DropdownButton
-              onPress={() => setProfilePopupVisible(true)}
               title="Edit Profile"
+              onPress={() => {
+                setProfilePopupVisible(true)
+              }}
             />
           </DropdownOption>
-          <DropdownOption onSelect={() => {}}>
+          <DropdownOption>
             <DropdownButton
-              onPress={handleSignout}
               title="Logout"
+              onPress={handleSignout}
             />
           </DropdownOption>
         </DropdownOptions>
