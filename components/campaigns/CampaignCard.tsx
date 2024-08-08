@@ -64,15 +64,15 @@ const CampaignCard = ({
               <MaterialIcons name="more-vert" size={24} color="black" />
             </DropdownTrigger>
             <DropdownOptions>
-              <DropdownOption onSelect={() => { console.log('Edit') }}>
+              <DropdownOption>
                 <DropdownButton
-                  onPress={() => null}
+                  onPress={() => { console.log('Edit') }}
                   title="Edit"
                 />
               </DropdownOption>
-              <DropdownOption onSelect={() => { console.log('Delete') }}>
+              <DropdownOption>
                 <DropdownButton
-                  onPress={() => null}
+                  onPress={() => { console.log('Delete') }}
                   title="Delete"
                 />
               </DropdownOption>
