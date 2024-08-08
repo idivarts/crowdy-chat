@@ -9,6 +9,7 @@ import DropdownTrigger from "@/shared-uis/components/dropdown/DropdownTrigger";
 import Dropdown from "@/shared-uis/components/dropdown/Dropdown";
 import Toaster from "@/shared-uis/components/toaster/Toaster";
 import { useBreakPoints } from "@/hooks";
+import Clipboard from "@react-native-clipboard/clipboard";
 
 type Campaign = {
   chatAssistantId: string;
@@ -30,8 +31,7 @@ const CampaignCard = ({
   const { xl } = useBreakPoints();
 
   const copyToClipboard = (textToCopy: string) => {
-    // Clipboard.setString(textToCopy);
-    console.log('Copied to clipboard:', textToCopy);
+    Clipboard.setString(textToCopy);
     Toaster.success('Copied to clipboard!');
   };
 
