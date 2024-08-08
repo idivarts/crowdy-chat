@@ -16,7 +16,7 @@ export const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: "#ccc",
     borderRadius: 5,
-    padding: 20,
+    padding: 50,
     position: "relative",
   },
   title: {
@@ -32,6 +32,7 @@ export const styles = StyleSheet.create({
     marginVertical: 10,
     borderWidth: 1,
     borderColor: "#ccc",
+    width: 300,
     borderRadius: 5,
   },
   link: {
