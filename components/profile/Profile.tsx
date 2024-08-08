@@ -39,7 +39,9 @@ const Profile = () => {
           <DropdownOption>
             <DropdownButton
               title="Edit Profile"
-              onPress={() => setProfilePopupVisible(true)}
+              onPress={() => {
+                setProfilePopupVisible(true)
+              }}
             />
           </DropdownOption>
           <DropdownOption>
