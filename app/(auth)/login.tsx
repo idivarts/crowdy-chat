@@ -1,8 +1,13 @@
 import { useAuthContext } from "@/contexts";
 import LoginUI from "@/shared-uis/components/AuthenticationUI/LoginUI";
+import Toaster from "@/shared-uis/components/toaster/Toaster";
 import { styles } from "@/styles/Login.styles";
 import { useRouter } from "expo-router";
-import { toast } from "react-toastify";
+
+interface LoginData {
+  email: string;
+  password: string;
+}
 
 const Login = () => {
   const { signIn } = useAuthContext();
@@ -16,10 +21,10 @@ const Login = () => {
       handleChange={function (field: string, value: any): void {
         throw new Error("Function not implemented.");
       }}
-      handleSubmit={(data: any) => {
+      handleSubmit={(data: LoginData) => {
         signIn();
         console.log("Signin data:", data);
-        toast.success("Logged In Successfully!");
+        Toaster.success("Signed In Successfully!");
         router.replace("/(main)/(campaigns)/campaigns");
       }}
     />
