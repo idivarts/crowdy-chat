@@ -19,7 +19,7 @@ const DrawerLayout = () => {
           backBehavior="history"
           drawerContent={() => <SideBarMenu />}
           screenOptions={{
-            drawerType: lg ? 'permanent' : 'slide',
+            drawerType: lg ? "permanent" : "slide",
             headerShown: false,
           }}
         >
@@ -28,7 +28,7 @@ const DrawerLayout = () => {
             name="(campaigns)/campaigns"
             options={{
               headerShown: true,
-              title: 'Campaigns',
+              title: "Campaigns",
             }}
           />
           <Drawer.Screen
@@ -36,7 +36,7 @@ const DrawerLayout = () => {
             name="(sources)/sources"
             options={{
               headerShown: true,
-              title: 'Sources',
+              title: "Sources",
             }}
           />
           <Drawer.Screen
@@ -44,7 +44,15 @@ const DrawerLayout = () => {
             name="(leads)/leads"
             options={{
               headerShown: true,
-              title: 'Leads',
+              title: "Leads",
+            }}
+          />
+          <Drawer.Screen
+            key="open-ai"
+            name="(openAI)/open-ai"
+            options={{
+              headerShown: true,
+              title: "OpenAI",
             }}
           />
         </Drawer>

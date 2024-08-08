@@ -10,16 +10,20 @@ import { styles } from "./side-bar.styles";
 
 const SIDE_BAR_MENU = [
   {
-    href: '/campaigns',
-    label: 'Campaigns',
+    href: "/campaigns",
+    label: "Campaigns",
   },
   {
-    href: '/sources',
-    label: 'Sources',
+    href: "/sources",
+    label: "Sources",
   },
   {
-    href: '/leads',
-    label: 'Leads',
+    href: "/leads",
+    label: "Leads",
+  },
+  {
+    href: "/open-ai",
+    label: "OpenAI",
   },
 ];
 
@@ -45,47 +49,59 @@ const SideBarMenu: React.FC = () => {
               gap: 8,
             }}
           >
-            {
-              SIDE_BAR_MENU.map((sideBarMenuItem, index) => (
-                <Pressable
-                  key={index}
-                  onPress={() => {
-                    router.push(sideBarMenuItem.href);
-                  }}
+            {SIDE_BAR_MENU.map((sideBarMenuItem, index) => (
+              <Pressable
+                key={index}
+                onPress={() => {
+                  router.push(sideBarMenuItem.href);
+                }}
+              >
+                <View
+                  style={[
+                    styles.sideBarMenuItem,
+                    {
+                      backgroundColor: sideBarMenuItem.href.includes(pathname)
+                        ? Colors[colorScheme].tint
+                        : Colors[colorScheme].background,
+                    },
+                  ]}
                 >
                   <View
-                    style={[
-                      styles.sideBarMenuItem,
-                      {
-                        backgroundColor: sideBarMenuItem.href.includes(pathname) ? Colors[colorScheme].tint : Colors[colorScheme].background,
-                      }
-                    ]}
+                    style={{
+                      alignItems: "center",
+                      cursor: "pointer",
+                      flexDirection: "row",
+                      justifyContent: "space-between",
+                      backgroundColor: "transparent",
+                    }}
                   >
-                    <View
-                      style={{
-                        alignItems: 'center',
-                        cursor: 'pointer',
-                        flexDirection: 'row',
-                        justifyContent: 'space-between',
-                        backgroundColor: 'transparent',
-                      }}
+                    <Text
+                      darkColor={
+                        sideBarMenuItem.href.includes(pathname)
+                          ? Colors.regular.white
+                          : Colors[colorScheme].tint
+                      }
+                      lightColor={
+                        sideBarMenuItem.href.includes(pathname)
+                          ? Colors.regular.white
+                          : Colors[colorScheme].tint
+                      }
                     >
-                      <Text
-                        darkColor={sideBarMenuItem.href.includes(pathname) ? Colors.regular.white : Colors[colorScheme].tint}
-                        lightColor={sideBarMenuItem.href.includes(pathname) ? Colors.regular.white : Colors[colorScheme].tint}
-                      >
-                        {sideBarMenuItem.label}
-                      </Text>
-                      <Ionicons
-                        name={"chevron-forward"}
-                        size={24}
-                        color={sideBarMenuItem.href.includes(pathname) ? Colors.regular.white : Colors[colorScheme].tint}
-                      />
-                    </View>
+                      {sideBarMenuItem.label}
+                    </Text>
+                    <Ionicons
+                      name={"chevron-forward"}
+                      size={24}
+                      color={
+                        sideBarMenuItem.href.includes(pathname)
+                          ? Colors.regular.white
+                          : Colors[colorScheme].tint
+                      }
+                    />
                   </View>
-                </Pressable>
-              ))
-            }
+                </View>
+              </Pressable>
+            ))}
           </View>
         </View>
       </DrawerContentScrollView>
