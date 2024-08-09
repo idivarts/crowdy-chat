@@ -16,10 +16,10 @@ import {
   stepTwoSchema,
   stepThreeSchema,
 } from "../schemas/CampaignCreateSchema";
-import { renderStepOne } from "./CreateCampaignStages/CampaignStageOne";
-import { renderStepTwo } from "./CreateCampaignStages/CampaignStageTwo";
-import { renderStepThree } from "./CreateCampaignStages/CampaignStageThree";
-import { toast, ToastContainer } from "react-toastify";
+import { CampaignStepOne } from "./CreateCampaignStages/CampaignStageOne";
+import { CampaignStepTwo } from "./CreateCampaignStages/CampaignStageTwo";
+import { CampaignStepThree } from "./CreateCampaignStages/CampaignStageThree";
+import Toaster from "@/shared-uis/components/toaster/Toaster";
 
 type Stage = {
   name: string;
@@ -109,7 +109,8 @@ const CreateCampaign = () => {
 
     if (validation?.success) {
       if (currentStep >= 3) {
-        toast.success("Campaign Created Successfully");
+        // toast.success("Campaign Created Successfully");
+        Toaster.success("Campaign Created Successfully");
         setCampaignName("");
         setCampaignObjective("");
         setReplySpeed({ min: "", max: "" });
@@ -138,13 +139,14 @@ const CreateCampaign = () => {
       }
     } else {
       // validation?.error.issues.forEach((issue) => (issue.message));
-      toast.error(validation?.error.issues[0].message);
+      // toast.error(validation?.error.issues[0].message);
+      Toaster.error(validation?.error.issues[0].message);
     }
   };
 
   const renderStepContent = () => {
     if (currentStep === 1) {
-      return renderStepOne(
+      return CampaignStepOne(
         campaignName,
         setCampaignName,
         campaignObjective,
@@ -155,7 +157,7 @@ const CreateCampaign = () => {
         setReminderTiming
       );
     } else if (currentStep === 2) {
-      return renderStepTwo(
+      return CampaignStepTwo(
         prescript,
         setPrescript,
         campaignPurpose,
@@ -166,7 +168,7 @@ const CreateCampaign = () => {
         setDialogues
       );
     } else {
-      return renderStepThree(
+      return CampaignStepThree(
         stages,
         currentStep,
         setCurrentStep,
