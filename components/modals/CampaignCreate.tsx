@@ -16,9 +16,9 @@ import {
   stepTwoSchema,
   stepThreeSchema,
 } from "../schemas/CampaignCreateSchema";
-import { renderStepOne } from "./CreateCampaignStages/CampaignStageOne";
-import { renderStepTwo } from "./CreateCampaignStages/CampaignStageTwo";
-import { renderStepThree } from "./CreateCampaignStages/CampaignStageThree";
+import { CampaignStepOne } from "./CreateCampaignStages/CampaignStageOne";
+import { CampaignStepTwo } from "./CreateCampaignStages/CampaignStageTwo";
+import { CampaignStepThree } from "./CreateCampaignStages/CampaignStageThree";
 import Toaster from "@/shared-uis/components/toaster/Toaster";
 
 type Stage = {
@@ -146,7 +146,7 @@ const CreateCampaign = () => {
 
   const renderStepContent = () => {
     if (currentStep === 1) {
-      return renderStepOne(
+      return CampaignStepOne(
         campaignName,
         setCampaignName,
         campaignObjective,
@@ -157,7 +157,7 @@ const CreateCampaign = () => {
         setReminderTiming
       );
     } else if (currentStep === 2) {
-      return renderStepTwo(
+      return CampaignStepTwo(
         prescript,
         setPrescript,
         campaignPurpose,
@@ -168,7 +168,7 @@ const CreateCampaign = () => {
         setDialogues
       );
     } else {
-      return renderStepThree(
+      return CampaignStepThree(
         stages,
         currentStep,
         setCurrentStep,

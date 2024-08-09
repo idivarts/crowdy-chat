@@ -3,7 +3,7 @@ import { View, Text, TextInput } from "react-native";
 import { CreateCampaignstyles as styles } from "@/styles/Dashboard.styles";
 import Toast from "react-native-toast-message";
 
-export const renderStepOne = (
+export const CampaignStepOne = (
   campaignName: string,
   setCampaignName: (newCampaignName: string) => void,
   campaignObjective: string,

@@ -25,6 +25,10 @@ const SIDE_BAR_MENU = [
     href: "/open-ai",
     label: "OpenAI",
   },
+  {
+    href: "/members",
+    label: "Members",
+  },
 ];
 
 const SideBarMenu: React.FC = () => {

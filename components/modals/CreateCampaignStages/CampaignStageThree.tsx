@@ -13,7 +13,7 @@ type Stage = {
   leadConversion: boolean;
 };
 
-export const renderStepThree = (
+export const CampaignStepThree = (
   stages: Stage[],
   currentStep: number,
   setCurrentStep: (step: number) => void,
