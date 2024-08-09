@@ -55,6 +55,14 @@ const DrawerLayout = () => {
               title: "OpenAI",
             }}
           />
+          <Drawer.Screen
+            key="create-new-organization"
+            name="(organization)/create-new-organization"
+            options={{
+              headerShown: true,
+              title: 'Create New Organization',
+            }}
+          />
         </Drawer>
       </View>
     </>

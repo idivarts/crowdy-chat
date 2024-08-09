@@ -22,5 +22,6 @@ export default {
     white: '#fff',
     lightgray: 'lightgray',
     black: '#000',
+    backdrop: 'rgba(0, 0, 0, 0.5)'
   }
 };

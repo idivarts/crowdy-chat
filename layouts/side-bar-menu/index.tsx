@@ -17,10 +17,6 @@ const SIDE_BAR_MENU = [
     label: "Leads",
   },
   {
-    href: "/open-ai",
-    label: "OpenAI",
-  },
-  {
     href: '/members',
     label: 'Members',
   },
