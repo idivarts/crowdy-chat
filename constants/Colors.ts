@@ -20,5 +20,8 @@ export default {
     primary: '#2f95dc',
     orange: '#F64740',
     white: '#fff',
+    lightgray: 'lightgray',
+    black: '#000',
+    backdrop: 'rgba(0, 0, 0, 0.5)'
   }
 };

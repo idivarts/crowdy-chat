@@ -1,17 +1,20 @@
 import React, { useState } from "react";
-import { Button } from "react-native";
+import { Pressable } from "react-native";
 import OrganizationSwitcherModal from "./OrganizationSwitcherModal";
+import { Text } from "@/components/Themed";
+import { Ionicons } from "@expo/vector-icons";
 
 interface OrganizationSwitcherProps {}
 
 const OrganizationSwitcher: React.FC<OrganizationSwitcherProps> = () => {
   const [isOrganizationModalVisible, setOrganizationModalVisible] = useState(false);
-
   const organizations = [
-    { id: 1, name: "Organization 1", image: "https://via.placeholder.com/40" },
-    { id: 2, name: "Organization 2", image: "https://via.placeholder.com/40" },
-    { id: 3, name: "Organization 3", image: "https://via.placeholder.com/40" },
+    { id: 1, communityName: "Trendly.pro", image: "https://via.placeholder.com/40" },
+    { id: 2, communityName: "Organization 1", image: "https://via.placeholder.com/40" },
+    { id: 3, communityName: "Organization 2", image: "https://via.placeholder.com/40" },
   ];
+
+  const [currentOrganization] = useState(organizations[0]);
 
   const handleSwitchOrganization = (id: number) => {
     console.log(`Switched to organization with id: ${id}`);
@@ -20,10 +23,45 @@ const OrganizationSwitcher: React.FC<OrganizationSwitcherProps> = () => {
 
   return (
     <>
-      <Button
-        title="Switch Organization"
+      <Pressable
         onPress={() => setOrganizationModalVisible(true)}
-      />
+        style={{
+          flex: 1,
+          flexDirection: "row",
+          alignItems: "center",
+          gap: 14,
+        }}
+      >
+        <Text
+          style={{
+            fontSize: 24,
+            fontWeight: "600",
+          }}
+        >
+          {currentOrganization.communityName} - Users
+        </Text>
+        {
+          isOrganizationModalVisible ? (
+            <Ionicons
+              name="chevron-up"
+              size={24}
+              color="black"
+              style={{
+                marginTop: 6,
+              }}
+            />
+          ) : (
+            <Ionicons
+              name="chevron-down"
+              size={24}
+              color="black"
+              style={{
+                marginTop: 6,
+              }}
+            />
+          )
+        }
+      </Pressable>
       <OrganizationSwitcherModal
         organizations={organizations}
         visible={isOrganizationModalVisible}

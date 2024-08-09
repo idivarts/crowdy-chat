@@ -4,7 +4,7 @@ import { Modal, View, Text, FlatList, Image, TouchableOpacity, StyleSheet } from
 
 type Organization = {
   id: number;
-  name: string;
+  communityName: string;
   image: string;
 };
 
@@ -37,7 +37,7 @@ const OrganizationSwitcherModal: React.FC<OrganizationSwitcherModalProps> = ({
             renderItem={({ item }) => (
               <View style={styles.card}>
                 <Image source={{ uri: item.image }} style={styles.image} />
-                <Text style={styles.name}>{item.name}</Text>
+                <Text style={styles.name}>{item.communityName}</Text>
                 <TouchableOpacity
                   style={styles.switchButton}
                   onPress={() => onSwitch(item.id)}

@@ -12,12 +12,13 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.1,
     shadowRadius: 8,
     elevation: 2,
+    zIndex: 1,
   },
   cardHeader: {
     flexDirection: 'row',
     alignItems: 'center',
     marginBottom: 16,
-    zIndex: 999,
+    zIndex: 2,
   },
   campaignImage: {
     width: 50,
@@ -29,7 +30,7 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'row',
     alignItems: 'center',
-    zIndex: 1000,
+    zIndex: 3,
   },
   cardHeaderText: {
     flex: 1,
