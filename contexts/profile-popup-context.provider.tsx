@@ -1,5 +1,10 @@
-import ProfilePopup from '@/components/profile/ProfilePopup';
-import { useContext, createContext, type PropsWithChildren, useState } from 'react';
+import ProfilePopup from "@/components/profile/ProfilePopup";
+import {
+  useContext,
+  createContext,
+  type PropsWithChildren,
+  useState,
+} from "react";
 
 interface ProfilePopupContextProps {
   setProfilePopupVisible: React.Dispatch<React.SetStateAction<boolean>>;
@@ -23,14 +28,12 @@ export const ProfilePopupContextProvider: React.FC<PropsWithChildren> = ({
       }}
     >
       {children}
-      {
-        isProfilePopupVisible && (
-          <ProfilePopup
-            visible={isProfilePopupVisible}
-            onClose={() => setProfilePopupVisible(false)}
-          />
-        )
-      }
+      {isProfilePopupVisible && (
+        <ProfilePopup
+          isVisible={isProfilePopupVisible}
+          onClose={() => setProfilePopupVisible(false)}
+        />
+      )}
     </ProfilePopupContext.Provider>
   );
-}
+};
