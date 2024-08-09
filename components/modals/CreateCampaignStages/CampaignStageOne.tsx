@@ -1,7 +1,7 @@
 import React from "react";
 import { View, Text, TextInput } from "react-native";
 import { CreateCampaignstyles as styles } from "@/styles/Dashboard.styles";
-import { ToastContainer } from "react-toastify";
+import Toast from "react-native-toast-message";
 
 export const renderStepOne = (
   campaignName: string,
@@ -14,7 +14,7 @@ export const renderStepOne = (
   setReminderTiming: (newReminderTiming: { min: string; max: string }) => void
 ) => (
   <View style={styles.stepContainer}>
-    <ToastContainer />
+    <Toast />
     <Text>Campaign Name</Text>
     <TextInput
       style={styles.input}

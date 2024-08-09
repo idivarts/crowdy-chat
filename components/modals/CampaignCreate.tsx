@@ -19,7 +19,7 @@ import {
 import { renderStepOne } from "./CreateCampaignStages/CampaignStageOne";
 import { renderStepTwo } from "./CreateCampaignStages/CampaignStageTwo";
 import { renderStepThree } from "./CreateCampaignStages/CampaignStageThree";
-import { toast, ToastContainer } from "react-toastify";
+import Toaster from "@/shared-uis/components/toaster/Toaster";
 
 type Stage = {
   name: string;
@@ -109,7 +109,8 @@ const CreateCampaign = () => {
 
     if (validation?.success) {
       if (currentStep >= 3) {
-        toast.success("Campaign Created Successfully");
+        // toast.success("Campaign Created Successfully");
+        Toaster.success("Campaign Created Successfully");
         setCampaignName("");
         setCampaignObjective("");
         setReplySpeed({ min: "", max: "" });
@@ -138,7 +139,8 @@ const CreateCampaign = () => {
       }
     } else {
       // validation?.error.issues.forEach((issue) => (issue.message));
-      toast.error(validation?.error.issues[0].message);
+      // toast.error(validation?.error.issues[0].message);
+      Toaster.error(validation?.error.issues[0].message);
     }
   };
 
