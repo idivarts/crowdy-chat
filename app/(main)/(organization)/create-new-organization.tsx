@@ -13,6 +13,11 @@ const CreateNewOrganization = () => {
     console.log(image);
   }
 
+  const handleSubmit = () => {
+    // Validate form fields
+    // Handle form submission
+  };
+
   return (
     <AppLayout>
       <ScrollView
@@ -68,7 +73,7 @@ const CreateNewOrganization = () => {
             placeholder="Enter website URL"
           />
 
-          <Button title="Submit" onPress={() => {}} />
+          <Button title="Submit" onPress={handleSubmit} />
         </View>
       </ScrollView>
     </AppLayout>

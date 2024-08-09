@@ -33,8 +33,8 @@ const ImagePicker: React.FC<ImagePickerProps> = ({ onUploadImage }) => {
         setOpenModal(false);
         Toaster.success("Image is uploaded successfully!");
       }
-    } catch (error) {
-      Toaster.error(error as string);
+    } catch (error: any) {
+      Toaster.error(`Failed to upload image: ${error.message}`);
     }
   };
 
