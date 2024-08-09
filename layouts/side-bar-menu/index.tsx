@@ -35,6 +35,10 @@ const SIDE_BAR_MENU_BOTTOM = [
     href: '/organization-profile',
     label: 'Organization Profile',
   },
+  {
+    href: "/members",
+    label: "Members",
+  },
 ];
 
 const SideBarMenu: React.FC = () => {

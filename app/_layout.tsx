@@ -1,17 +1,22 @@
-import FontAwesome from '@expo/vector-icons/FontAwesome';
-import { DarkTheme, DefaultTheme, ThemeProvider } from '@react-navigation/native';
-import { useFonts } from 'expo-font';
-import { Stack, usePathname, useRouter } from 'expo-router';
-import * as SplashScreen from 'expo-splash-screen';
-import { useEffect } from 'react';
-import 'react-native-reanimated';
-import Toast from 'react-native-toast-message';
+import FontAwesome from "@expo/vector-icons/FontAwesome";
+import {
+  DarkTheme,
+  DefaultTheme,
+  ThemeProvider,
+} from "@react-navigation/native";
+import { useFonts } from "expo-font";
+import { Stack, usePathname, useRouter } from "expo-router";
+import * as SplashScreen from "expo-splash-screen";
+import { useEffect } from "react";
+import "react-native-reanimated";
+import Toast from "react-native-toast-message";
 
 import { useColorScheme } from "@/components/useColorScheme";
 import {
   AuthContextProvider,
   useAuthContext,
 } from "@/contexts/auth-context.provider";
+import { PaperProvider } from "react-native-paper";
 import { AuthScreens, MainScreens, PublicScreens } from "@/layouts/screens";
 
 export {
@@ -26,6 +31,26 @@ export const unstable_settings = {
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
+
+const customTheme = {
+  ...DefaultTheme,
+  colors: {
+    ...DefaultTheme.colors,
+    primary: "#1976d2",
+    background: "#ffffff",
+    text: "#000000",
+    surface: "#ffffff",
+    onSurface: "#1976d2",
+  },
+};
+
+declare global {
+  namespace ReactNativePaper {
+    interface ThemeColors {
+      onSurface: string;
+    }
+  }
+}
 
 const RootLayout = () => {
   const [loaded, error] = useFonts({
@@ -50,7 +75,9 @@ const RootLayout = () => {
 
   return (
     <AuthContextProvider>
-      <RootLayoutStack />
+      <PaperProvider theme={customTheme}>
+        <RootLayoutStack />
+      </PaperProvider>
     </AuthContextProvider>
   );
 };
@@ -61,7 +88,6 @@ const RootLayoutStack = () => {
 
   // const router = useRouter();
   // const pathname = usePathname();
-
 
   // useEffect(() => {
   //   // Redirect from root (/) to /login
