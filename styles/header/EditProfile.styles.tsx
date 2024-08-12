@@ -1,4 +1,4 @@
-import { StyleSheet } from "react-native";
+import { StyleSheet, Dimensions } from "react-native";
 
 export const styles = StyleSheet.create({
   container: {
@@ -9,7 +9,8 @@ export const styles = StyleSheet.create({
     width: "100%",
   },
   popup: {
-    width: "40%",
+    // width: "100%",
+    width: 400,
     padding: 40,
     backgroundColor: "white",
     borderRadius: 10,

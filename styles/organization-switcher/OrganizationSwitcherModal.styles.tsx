@@ -1,63 +1,37 @@
-import { StyleSheet } from "react-native";
+import { StyleSheet, Dimensions } from "react-native";
 
-const styles = StyleSheet.create({
-  modalOverlay: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    backgroundColor: "rgba(0, 0, 0, 0.5)",
-  },
-  modalContent: {
-    width: "90%",
+export const styles = StyleSheet.create({
+  modalContainer: {
     backgroundColor: "white",
-    borderRadius: 10,
-    padding: 20,
-    alignItems: "center",
-  },
-  title: {
-    fontSize: 20,
-    fontWeight: "bold",
-    marginBottom: 20,
+    position: "absolute",
+    top: 50,
+    left: 10,
+    right: 10,
+    width: 300,
+    borderWidth: 0,
   },
   card: {
+    width: "100%",
+    backgroundColor: "white",
+    padding: 10,
+  },
+  cardContent: {
+    paddingHorizontal: 0,
+    paddingVertical: 10,
+  },
+  organizationCard: {
+    display: "flex",
     flexDirection: "row",
     alignItems: "center",
-    marginBottom: 10,
     padding: 10,
-    borderWidth: 1,
-    borderColor: "#ddd",
-    borderRadius: 8,
-    width: "100%",
   },
-  image: {
-    width: 40,
-    height: 40,
-    borderRadius: 20,
-    marginRight: 10,
-  },
-  name: {
-    flex: 1,
+  organizationName: {
+    marginLeft: 10,
     fontSize: 16,
   },
-  switchButton: {
-    backgroundColor: "#007BFF",
-    paddingVertical: 5,
-    paddingHorizontal: 10,
-    borderRadius: 5,
-  },
-  switchButtonText: {
-    color: "white",
-  },
-  closeButton: {
-    marginTop: 20,
-    paddingVertical: 10,
-    paddingHorizontal: 20,
-    backgroundColor: "#FF4444",
-    borderRadius: 5,
-  },
-  closeButtonText: {
-    color: "white",
+  separator: {
+    height: 1,
+    backgroundColor: "#e0e0e0",
+    marginVertical: 8,
   },
 });
-
-export default styles;

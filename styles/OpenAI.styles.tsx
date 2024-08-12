@@ -6,6 +6,7 @@ export const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     padding: 20,
+    width: "100%",
     backgroundColor: "#fff",
   },
   title: {
@@ -22,9 +23,15 @@ export const styles = StyleSheet.create({
     width: "100%",
     height: 40,
     borderColor: "#ccc",
-    borderWidth: 1,
     borderRadius: 5,
     paddingHorizontal: 10,
     marginBottom: 20,
+  },
+  card: {
+    width: 400,
+    justifyContent: "center",
+    alignItems: "center",
+    textAlign: "center",
+    padding: 16,
   },
 });

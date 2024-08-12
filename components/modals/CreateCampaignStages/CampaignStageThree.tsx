@@ -1,8 +1,8 @@
 import React from "react";
-import { View, Text, TextInput, Button, TouchableOpacity } from "react-native";
+import { View, Button, TouchableOpacity } from "react-native";
+import { Text, TextInput } from "react-native-paper";
 import Checkbox from "expo-checkbox";
 import { CreateCampaignstyles as styles } from "@/styles/Dashboard.styles";
-import { ToastContainer } from "react-toastify";
 
 type Stage = {
   name: string;
@@ -26,9 +26,24 @@ export const CampaignStepThree = (
   ) => void
 ) => (
   <View style={styles.step3Container}>
-    <ToastContainer />
     <View style={styles.sidebar}>
-      <Button title="Add Stage" onPress={handleAddStage} />
+      <View
+        style={{
+          display: "flex",
+          flexDirection: "row",
+          justifyContent: "space-between",
+          alignItems: "center",
+        }}
+      >
+        <Text
+          style={{
+            color: "#1b1b1b",
+          }}
+        >
+          Stages
+        </Text>
+        <Button title="Add Stage" onPress={handleAddStage} />
+      </View>
       {stages.map((stage, index) => (
         <TouchableOpacity
           key={index}
@@ -60,23 +75,23 @@ export const CampaignStepThree = (
         >
           <Text>Stage Name</Text>
           <TextInput
-            style={styles.input}
+            style={styles.input3}
             value={stage.name}
             onChangeText={(text) => handleStageChange(index, "name", text)}
           />
 
           <Text>Purpose of the Stage</Text>
           <TextInput
-            style={styles.input}
+            style={styles.input3}
             value={stage.purpose}
             onChangeText={(text) => handleStageChange(index, "purpose", text)}
           />
 
           <Text>Collectibles</Text>
           {stage.collectibles.map((collectible, i) => (
-            <View key={i} style={styles.row}>
+            <View key={i} style={styles.rowStage3}>
               <TextInput
-                style={styles.input}
+                style={styles.textAreaStage3}
                 value={collectible}
                 onChangeText={(text) => {
                   const updatedCollectibles = [...stage.collectibles];
@@ -84,15 +99,23 @@ export const CampaignStepThree = (
                   handleStageChange(index, "collectibles", updatedCollectibles);
                 }}
               />
-              <Button
-                title="Remove"
+              <TouchableOpacity
                 onPress={() => {
                   const updatedCollectibles = stage.collectibles.filter(
                     (_, j) => j !== i
                   );
                   handleStageChange(index, "collectibles", updatedCollectibles);
                 }}
-              />
+                style={styles.removeCollectible}
+              >
+                <Text
+                  style={{
+                    color: "#fff",
+                  }}
+                >
+                  Remove
+                </Text>
+              </TouchableOpacity>
             </View>
           ))}
           <Button
@@ -107,7 +130,7 @@ export const CampaignStepThree = (
 
           <Text>Reminder Timing</Text>
           <TextInput
-            style={styles.input}
+            style={styles.input3}
             keyboardType="numeric"
             value={stage.reminderTiming}
             onChangeText={(text) =>
