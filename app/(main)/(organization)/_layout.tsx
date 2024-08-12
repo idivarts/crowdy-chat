@@ -14,10 +14,17 @@ const OrganizationLayout = () => {
       }}
     >
       <Stack.Screen
-        name="create-new-organization"
+        name="create-existing-organization"
         options={{
           headerLeft: () => lg ? null : <DrawerToggle />,
           title: 'Create New Organization',
+        }}
+      />
+      <Stack.Screen
+        name="organization-profile"
+        options={{
+          headerLeft: () => lg ? null : <DrawerToggle />,
+          title: 'Organization Profile',
         }}
       />
     </Stack>

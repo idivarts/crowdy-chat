@@ -15,10 +15,10 @@ import {
   stepOneSchema,
   stepTwoSchema,
   stepThreeSchema,
-} from "../schemas/CampaignCreateSchema";
-import { CampaignStepOne } from "./CreateCampaignStages/CampaignStageOne";
-import { CampaignStepTwo } from "./CreateCampaignStages/CampaignStageTwo";
-import { CampaignStepThree } from "./CreateCampaignStages/CampaignStageThree";
+} from "@/components/schemas/CampaignCreateSchema";
+import { CampaignStepOne } from "@/components/modals/CreateCampaignStages/CampaignStageOne";
+import { CampaignStepTwo } from "@/components/modals/CreateCampaignStages/CampaignStageTwo";
+import { CampaignStepThree } from "@/components/modals/CreateCampaignStages/CampaignStageThree";
 import Toaster from "@/shared-uis/components/toaster/Toaster";
 import { Icon, Portal } from "react-native-paper";
 import { Ionicons } from "@expo/vector-icons";
@@ -203,55 +203,39 @@ const CreateCampaign = () => {
 
   return (
     <View style={styles.container}>
-      <Button title="Create Campaign" onPress={() => setModalVisible(true)} />
-      <Portal>
-        <Modal transparent={true} visible={modalVisible} animationType="fade">
-          <View style={styles.backdrop}>
-            <View style={styles.modalContainer}>
-              <Text style={styles.header}>Create Campaign</Text>
-              <TouchableOpacity
-                style={{
-                  position: "absolute",
-                  top: 10,
-                  right: 10,
-                  zIndex: 1,
-                }}
-                onPress={() => setModalVisible(false)}
-              >
-                <Ionicons name="close" size={24} color="black" />
-              </TouchableOpacity>
-              <ScrollView contentContainerStyle={styles.modalContent}>
-                {renderStepContent()}
-                <View style={styles.BottomRow}>
-                  <Button
-                    title={currentStep === 1 ? "Close" : "Previous"}
-                    onPress={() => {
-                      if (currentStep === 1) {
-                        setModalVisible(false);
-                      } else if (
-                        currentStep > 3 &&
-                        currentStep < 3 + stages.length
-                      ) {
-                        setCurrentStep(2);
-                      } else {
-                        setCurrentStep(currentStep - 1);
-                      }
-                    }}
-                  />
-                  <Button
-                    title={currentStep < 3 ? "Next" : "Submit"}
-                    onPress={() => {
-                      console.log("currentStep", currentStep);
-                      handleNext();
-                    }}
-                  />
-                </View>
-                {renderProgressDots()}
-              </ScrollView>
-            </View>
-          </View>
-        </Modal>
-      </Portal>
+      <ScrollView
+        style={{
+          width: "100%",
+        }}
+        contentContainerStyle={{
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+      >
+        {renderStepContent()}
+      </ScrollView>
+      {renderProgressDots()}
+      <View style={styles.BottomRow}>
+        <Button
+          title={currentStep === 1 ? "Close" : "Previous"}
+          onPress={() => {
+            if (currentStep === 1) {
+              setModalVisible(false);
+            } else if (currentStep > 3 && currentStep < 3 + stages.length) {
+              setCurrentStep(2);
+            } else {
+              setCurrentStep(currentStep - 1);
+            }
+          }}
+        />
+        <Button
+          title={currentStep < 3 ? "Next" : "Submit"}
+          onPress={() => {
+            console.log("currentStep", currentStep);
+            handleNext();
+          }}
+        />
+      </View>
     </View>
   );
 };

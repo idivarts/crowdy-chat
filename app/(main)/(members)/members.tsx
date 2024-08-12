@@ -21,6 +21,8 @@ import { z, ZodError } from "zod";
 import { styles } from "@/styles/Members";
 import { MemberSchema } from "@/components/schemas/MemberPageSchema";
 import Toaster from "@/shared-uis/components/toaster/Toaster";
+import { DrawerToggle } from "@/components/ui";
+import { useBreakPoints } from "@/hooks";
 
 const customTheme = {
   ...DefaultTheme,
@@ -40,6 +42,7 @@ const MemberPage: React.FC = () => {
   const [members, setMembers] = useState<Member[]>([]);
   const [searchTerm, setSearchTerm] = useState<string>("");
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+  const { lg } = useBreakPoints();
   const [newMember, setNewMember] = useState<Member>({
     username: "",
     name: "",
@@ -184,6 +187,7 @@ const MemberPage: React.FC = () => {
   return (
     <Provider theme={customTheme}>
       <Appbar.Header>
+        {!lg && <DrawerToggle />}
         <Appbar.Content title="Members" />
         <Appbar.Action icon="plus" onPress={handleAddMemberClick} />
       </Appbar.Header>

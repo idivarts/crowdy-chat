@@ -1,7 +1,7 @@
 import AppLayout from "@/layouts/app-layout";
 import { Text, View } from "@/components/Themed";
 import { Button, Image, TouchableOpacity } from "react-native";
-import { useRouter } from "expo-router";
+import { Link, router, useRouter } from "expo-router";
 import { useState } from "react";
 import { campaigns as initialCampaigns } from "@/constants/Campaigns";
 import CreateCampaign from "@/components/modals/CampaignCreate";
@@ -27,7 +27,10 @@ const Campaigns = () => {
 
   const renderEmptyState = () => (
     <View style={styles.emptyStateContainer}>
-      <Image source={{ uri: 'https://via.placeholder.com/300' }} style={styles.emptyImage} />
+      <Image
+        source={{ uri: "https://via.placeholder.com/300" }}
+        style={styles.emptyImage}
+      />
       <Text style={styles.emptyText}>No Campaigns yet</Text>
       <TouchableOpacity style={styles.createButton}>
         <Text style={styles.createButtonText}>Create Campaign</Text>
@@ -53,10 +56,18 @@ const Campaigns = () => {
             onChangeText={handleSearch}
             style={{ flex: 1, marginRight: 10 }}
           />
-          <CreateCampaign />
+          {/* <CreateCampaign /> */}
+          <TouchableOpacity
+            style={styles.createButton}
+            onPress={() => router.push("/campaigns/create")}
+          >
+            <Text style={styles.createButtonText}>Create Campaign</Text>
+          </TouchableOpacity>
         </View>
         <View style={styles.campaignsSection}>
-          {filteredCampaigns.length > 0 ? renderFilledState() : renderEmptyState()}
+          {filteredCampaigns.length > 0
+            ? renderFilledState()
+            : renderEmptyState()}
         </View>
       </View>
     </AppLayout>
