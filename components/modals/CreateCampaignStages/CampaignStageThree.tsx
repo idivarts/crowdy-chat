@@ -3,7 +3,6 @@ import { View, Button, TouchableOpacity } from "react-native";
 import { Text, TextInput } from "react-native-paper";
 import Checkbox from "expo-checkbox";
 import { CreateCampaignstyles as styles } from "@/styles/Dashboard.styles";
-import Toast from "react-native-toast-message";
 
 type Stage = {
   name: string;
@@ -27,7 +26,6 @@ export const CampaignStepThree = (
   ) => void
 ) => (
   <View style={styles.step3Container}>
-    <Toast />
     <View style={styles.sidebar}>
       <View
         style={{
@@ -93,7 +91,7 @@ export const CampaignStepThree = (
           {stage.collectibles.map((collectible, i) => (
             <View key={i} style={styles.rowStage3}>
               <TextInput
-                style={styles.input3}
+                style={styles.textAreaStage3}
                 value={collectible}
                 onChangeText={(text) => {
                   const updatedCollectibles = [...stage.collectibles];
@@ -101,15 +99,23 @@ export const CampaignStepThree = (
                   handleStageChange(index, "collectibles", updatedCollectibles);
                 }}
               />
-              <Button
-                title="Remove"
+              <TouchableOpacity
                 onPress={() => {
                   const updatedCollectibles = stage.collectibles.filter(
                     (_, j) => j !== i
                   );
                   handleStageChange(index, "collectibles", updatedCollectibles);
                 }}
-              />
+                style={styles.removeCollectible}
+              >
+                <Text
+                  style={{
+                    color: "#fff",
+                  }}
+                >
+                  Remove
+                </Text>
+              </TouchableOpacity>
             </View>
           ))}
           <Button

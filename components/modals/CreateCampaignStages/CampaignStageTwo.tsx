@@ -2,7 +2,6 @@ import React from "react";
 import { View } from "react-native";
 import { Text, TextInput } from "react-native-paper";
 import { CreateCampaignstyles as styles } from "@/styles/Dashboard.styles";
-import Toast from "react-native-toast-message";
 
 export const CampaignStepTwo = (
   prescript: string,
@@ -14,8 +13,7 @@ export const CampaignStepTwo = (
   dialogues: string,
   setDialogues: (newDialogues: string) => void
 ) => (
-  <View style={styles.stepContainer}>
-    <Toast />
+  <View style={styles.stepContainer2}>
     <Text>Prescript</Text>
     <TextInput
       style={styles.textArea}
