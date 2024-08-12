@@ -28,7 +28,7 @@ const SIDE_BAR_MENU = [
 
 const SIDE_BAR_MENU_BOTTOM = [
   {
-    href: '/create-new-organization',
+    href: '/create-existing-organization',
     label: 'Create New Organization',
   },
   {

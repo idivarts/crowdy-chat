@@ -1,12 +1,18 @@
 import AppLayout from "@/layouts/app-layout";
 import { View } from "@/components/Themed";
 import { Button, ScrollView } from "react-native";
-import styles from "@/styles/organization/CreateNewOrganization.styles";
+import styles from "@/styles/organization/CreateOrganizationForm.styles";
 import ImagePicker from "@/components/ui/image-picker/ImagePicker";
 import InputField from "@/components/ui/input/InputField";
 import { useBreakPoints } from "@/hooks";
 
-const CreateNewOrganization = () => {
+interface CreateOrganizationFormProps {
+  onSubmit: () => void;
+}
+
+const CreateOrganizationForm: React.FC<CreateOrganizationFormProps> = ({
+  onSubmit,
+}) => {
   const { lg } = useBreakPoints();
 
   const onUploadImage = (image: string) => {
@@ -14,8 +20,7 @@ const CreateNewOrganization = () => {
   }
 
   const handleSubmit = () => {
-    // Validate form fields
-    // Handle form submission
+    onSubmit();
   };
 
   return (
@@ -24,7 +29,7 @@ const CreateNewOrganization = () => {
         contentContainerStyle={[
           styles.scrollViewContent,
           {
-            marginTop: lg ? 40 : 0,
+            paddingTop: lg ? 40 : 0,
           }
         ]}
       >
@@ -32,7 +37,7 @@ const CreateNewOrganization = () => {
           style={[
             styles.container,
             {
-              maxWidth: lg ? 1000 : '100%', 
+              maxWidth: lg ? 1000 : '100%',
             }
           ]}
         >
@@ -80,4 +85,4 @@ const CreateNewOrganization = () => {
   );
 };
 
-export default CreateNewOrganization;
+export default CreateOrganizationForm;

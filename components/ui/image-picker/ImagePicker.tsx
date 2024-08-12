@@ -9,13 +9,19 @@ import Toaster from "@/shared-uis/components/toaster/Toaster";
 import styles from "@/styles/image-picker/ImagePicker.styles";
 
 interface ImagePickerProps {
+  editable?: boolean;
+  initialImage?: string;
   onUploadImage: (image: string) => void;
 }
 
 const placeholderImage = "https://via.placeholder.com/300";
 
-const ImagePicker: React.FC<ImagePickerProps> = ({ onUploadImage }) => {
-  const [image, setImage] = useState<string>(placeholderImage);
+const ImagePicker: React.FC<ImagePickerProps> = ({
+  editable = true,
+  initialImage = placeholderImage,
+  onUploadImage,
+}) => {
+  const [image, setImage] = useState<string>(initialImage);
   const [openModal, setOpenModal] = useState(false);
 
   const uploadImage = async () => {
@@ -52,9 +58,13 @@ const ImagePicker: React.FC<ImagePickerProps> = ({ onUploadImage }) => {
         }}
         style={styles.image}
       />
-      <Pressable onPress={() => setOpenModal(true)} style={styles.cameraButton}>
-        <Ionicons name="camera" color={Colors.regular.white} size={28} />
-      </Pressable>
+      {
+        editable && (
+          <Pressable onPress={() => setOpenModal(true)} style={styles.cameraButton}>
+            <Ionicons name="camera" color={Colors.regular.white} size={28} />
+          </Pressable>
+        )
+      }
       <Modal animationType="fade" transparent={true} visible={openModal}>
         <View style={styles.modalOverlay}>
           <View style={styles.modalContent}>
