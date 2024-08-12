@@ -5,10 +5,23 @@ import { Stack, useRouter } from "expo-router";
 import { useEffect } from "react";
 import { useNavigation } from "@react-navigation/native";
 import { IconButton } from "react-native-paper";
+import { View } from "@/components/Themed";
 
 const GoBackButton = () => {
   const navigation = useNavigation();
-  return <IconButton icon="arrow-left" onPress={() => navigation.goBack()} />;
+  const { lg } = useBreakPoints();
+  return (
+    <View
+      style={{
+        display: "flex",
+        flexDirection: "row",
+        alignItems: "center",
+      }}
+    >
+      {!lg && <DrawerToggle />}
+      <IconButton icon="arrow-left" onPress={() => navigation.goBack()} />
+    </View>
+  );
 };
 
 const CampaignsLayout = () => {
