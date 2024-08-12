@@ -17,27 +17,23 @@ const SIDE_BAR_MENU = [
     label: "Leads",
   },
   {
-    href: '/members',
-    label: 'Members',
+    href: "/members",
+    label: "Members",
   },
   {
-    href: '/open-ai',
-    label: 'OpenAI',
+    href: "/open-ai",
+    label: "OpenAI",
   },
 ];
 
 const SIDE_BAR_MENU_BOTTOM = [
   {
-    href: '/create-new-organization',
-    label: 'Create New Organization',
+    href: "/create-new-organization",
+    label: "Create New Organization",
   },
   {
-    href: '/organization-profile',
-    label: 'Organization Profile',
-  },
-  {
-    href: "/members",
-    label: "Members",
+    href: "/organization-profile",
+    label: "Organization Profile",
   },
 ];
 
@@ -59,35 +55,31 @@ const SideBarMenu: React.FC = () => {
               gap: 8,
             }}
           >
-            {
-              SIDE_BAR_MENU.map((sideBarMenuItem, index) => (
-                <SideBarMenuItem
-                  key={index}
-                  href={sideBarMenuItem.href}
-                  label={sideBarMenuItem.label}
-                />
-              ))
-            }
+            {SIDE_BAR_MENU.map((sideBarMenuItem, index) => (
+              <SideBarMenuItem
+                key={index}
+                href={sideBarMenuItem.href}
+                label={sideBarMenuItem.label}
+              />
+            ))}
           </View>
         </View>
       </DrawerContentScrollView>
       <View
         style={{
-          borderTopColor: 'lightgray',
+          borderTopColor: "lightgray",
           borderTopWidth: 1,
           paddingBottom: 16,
           paddingTop: 16,
         }}
       >
-        {
-          SIDE_BAR_MENU_BOTTOM.map((sideBarMenuItem, index) => (
-            <SideBarMenuItem
-              key={index}
-              href={sideBarMenuItem.href}
-              label={sideBarMenuItem.label}
-            />
-          ))
-        }
+        {SIDE_BAR_MENU_BOTTOM.map((sideBarMenuItem, index) => (
+          <SideBarMenuItem
+            key={index}
+            href={sideBarMenuItem.href}
+            label={sideBarMenuItem.label}
+          />
+        ))}
       </View>
     </View>
   );
