@@ -17,12 +17,12 @@ const SIDE_BAR_MENU = [
     label: "Leads",
   },
   {
-    href: '/members',
-    label: 'Members',
-  },
-  {
     href: '/open-ai',
     label: 'OpenAI',
+  },
+  {
+    href: '/members',
+    label: 'Members',
   },
 ];
 
@@ -34,10 +34,6 @@ const SIDE_BAR_MENU_BOTTOM = [
   {
     href: '/organization-profile',
     label: 'Organization Profile',
-  },
-  {
-    href: "/members",
-    label: "Members",
   },
 ];
 
