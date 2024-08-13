@@ -65,7 +65,7 @@ const styles = StyleSheet.create({
     fontWeight: 500,
   },
   cardFooter: {
-    alignItems: 'center',
+    alignItems: 'flex-end',
   },
   campaignBoardButton: {
     backgroundColor: Colors.regular.primary,

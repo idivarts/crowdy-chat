@@ -1,10 +1,11 @@
-import ImagePicker from '@/components/ui/image-picker/ImagePicker';
+import React, { useState } from 'react';
+import { View, Text, Button, ScrollView } from 'react-native';
+
+import ImagePicker from '@/shared-uis/components/image-picker/ImagePicker';
 import InputField from '@/components/ui/input/InputField';
 import useBreakpoints from '@/hooks/use-breakpoints';
 import AppLayout from '@/layouts/app-layout';
 import styles from '@/styles/organization/OrganizationProfile.styles';
-import React, { useState } from 'react';
-import { View, Text, Button, ScrollView } from 'react-native';
 
 const OrganizationProfile: React.FC = () => {
   const organization = {
