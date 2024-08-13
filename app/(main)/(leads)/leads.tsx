@@ -1,17 +1,17 @@
+import React, { useEffect, useState } from 'react';
+import { View, Text, FlatList } from 'react-native';
+import { Appbar, Portal } from 'react-native-paper';
+
 import CreateLeadModal from '@/components/leads/CreateLeadModal';
 import CreateTagModal from '@/components/leads/CreateTagModal';
 import LeadTableHeader from '@/components/leads/LeadTableHeader';
 import LeadTableRow from '@/components/leads/LeadTableRow';
 import InputField from '@/components/ui/input/InputField';
 import Colors from '@/constants/Colors';
-import React, { useEffect, useState } from 'react';
-import { View, Text, Button, FlatList } from 'react-native';
-import { Appbar, Portal } from 'react-native-paper';
 
 const Leads = () => {
   const [isCreateLeadVisible, setCreateLeadVisible] = useState(false);
   const [isCreateTagVisible, setCreateTagVisible] = useState(false);
-  const [selectedLeads, setSelectedLeads] = useState<any>([]);
   const [leads, setLeads] = useState<any[]>([
     {
       id: '1',
@@ -28,6 +28,7 @@ const Leads = () => {
       image: 'https://via.placeholder.com/50',
     },
   ]);
+  const [selectedLeads, setSelectedLeads] = useState<any>([]);
   const [filteredLeads, setFilteredLeads] = useState<any[]>(leads);
   const [searchQuery, setSearchQuery] = useState('');
 
@@ -38,9 +39,25 @@ const Leads = () => {
   const hideCreateTagModal = () => setCreateTagVisible(false);
 
   const handleDeleteLead = (leadId: string) => {
-    setLeads(leads.filter(lead => !selectedLeads?.includes(leadId)));
+    setLeads(leads.filter((lead) => lead.id === leadId));
     setSelectedLeads([]);
   };
+
+  const handleSelectLead = (leadId: string) => {
+    if (selectedLeads?.includes(leadId)) {
+      setSelectedLeads(selectedLeads.filter((id: string) => id !== leadId));
+    } else {
+      setSelectedLeads([...selectedLeads, leadId]);
+    }
+  }
+
+  const handleSelectAll = () => {
+    if (selectedLeads?.length === leads?.length) {
+      setSelectedLeads([]);
+    } else {
+      setSelectedLeads(leads.map(lead => lead.id));
+    }
+  }
 
   const handleSearch = (query: string) => {
     setSearchQuery(query);
@@ -58,15 +75,6 @@ const Leads = () => {
     setFilteredLeads(leads);
   }, [leads]);
 
-  if (!leads?.length) {
-    return (
-      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-        <Text>No Leads yet</Text>
-        <Button title="Create Lead" onPress={showCreateLeadModal} />
-      </View>
-    );
-  }
-
   return (
     <View
       style={{
@@ -82,40 +90,67 @@ const Leads = () => {
         <Appbar.Action icon="tag" onPress={showCreateTagModal} />
       </Appbar.Header>
 
-      <View
-        style={{
-          gap: 10,
-        }}
-      >
-        <InputField
-          placeholder="Search Leads"
-          value={searchQuery}
-          onChangeText={handleSearch}
-        />
-
-        <FlatList
-          data={filteredLeads}
-          ListHeaderComponent={() => <LeadTableHeader />}
-          renderItem={({ item }) => (
-            <LeadTableRow
-              item={item}
-              backgroundColor={selectedLeads?.includes(item.id) ? Colors.regular.lightgray : Colors.regular.white}
-              onDelete={handleDeleteLead}
-            />
-          )}
-          keyExtractor={item => item.id}
-          extraData={selectedLeads}
-          style={{ marginBottom: 60 }}
-          ItemSeparatorComponent={() => (
-            <View
+      {
+        !leads?.length ? (
+          <View
+            style={{
+              flex: 1,
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}
+          >
+            <Text
               style={{
-                height: 1,
-                backgroundColor: Colors.regular.white,
+                fontSize: 18,
+                fontWeight: '400',
               }}
+            >
+              No leads yet
+            </Text>
+          </View>
+        ) : (
+          <View
+            style={{
+              gap: 20,
+            }}
+          >
+            <InputField
+              placeholder="Search Leads"
+              value={searchQuery}
+              onChangeText={handleSearch}
             />
-          )}
-        />
-      </View>
+
+            <FlatList
+              data={filteredLeads}
+              ListHeaderComponent={() => (
+                <LeadTableHeader
+                  isSelected={selectedLeads?.length === leads?.length}
+                  onSelect={handleSelectAll}
+                />
+              )}
+              renderItem={({ item }) => (
+                <LeadTableRow
+                  isSelected={selectedLeads?.includes(item.id)}
+                  item={item}
+                  onDelete={handleDeleteLead}
+                  onSelect={handleSelectLead}
+                />
+              )}
+              keyExtractor={item => item.id}
+              extraData={selectedLeads}
+              style={{ marginBottom: 60 }}
+              ItemSeparatorComponent={() => (
+                <View
+                  style={{
+                    height: 1,
+                    backgroundColor: Colors.regular.white,
+                  }}
+                />
+              )}
+            />
+          </View>
+        )
+      }
 
       <Portal>
         {
