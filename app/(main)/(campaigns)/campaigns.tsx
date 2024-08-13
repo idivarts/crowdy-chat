@@ -1,12 +1,12 @@
+import { useState } from "react";
+import { Image, TouchableOpacity } from "react-native";
+import { TextInput } from "react-native-paper";
+import { router } from "expo-router";
+
 import AppLayout from "@/layouts/app-layout";
 import { Text, View } from "@/components/Themed";
-import { Button, Image, TouchableOpacity } from "react-native";
-import { Link, router, useRouter } from "expo-router";
-import { useState } from "react";
 import { campaigns as initialCampaigns } from "@/constants/Campaigns";
-import CreateCampaign from "@/components/modals/CampaignCreate";
 import CampaignCard from "@/components/campaigns/CampaignCard";
-import SearchInput from "@/shared-uis/components/search-input/SearchInput";
 import styles from "@/styles/campaigns/CampaignsList.styles";
 
 const Campaigns = () => {
@@ -50,13 +50,14 @@ const Campaigns = () => {
     <AppLayout>
       <View style={styles.container}>
         <View style={styles.topSection}>
-          <SearchInput
-            placeholder="Search Campaigns"
+          <TextInput
+            label="Search Campaigns"
             value={searchQuery}
             onChangeText={handleSearch}
-            style={{ flex: 1, marginRight: 10 }}
+            mode="outlined"
+            outlineStyle={styles.inputOutline}
+            style={styles.input}
           />
-          {/* <CreateCampaign /> */}
           <TouchableOpacity
             style={styles.createButton}
             onPress={() => router.push("/campaigns/create")}
