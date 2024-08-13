@@ -67,6 +67,7 @@ const CreateCampaign = () => {
         leadConversion: false,
       },
     ]);
+    setCurrentStep(3.1 + stages.length);
   };
 
   const handleRemoveStage = (index: number) => {

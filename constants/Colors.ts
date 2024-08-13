@@ -23,5 +23,7 @@ export default {
     lightgray: "lightgray",
     black: "#000",
     backdrop: "rgba(0, 0, 0, 0.5)",
+    platinum: "#DBDBDB",
+    aliceBlue: "#E9F1F7",
   },
 };
