@@ -18,21 +18,19 @@ const Profile = () => {
 
   const handleSignout = () => {
     signOut();
-    Toaster.success('Logged out successfully!');
-    router.replace('/(auth)/login');
-  }
+    Toaster.success("Logged out successfully!");
+    router.replace("/(auth)/login");
+  };
 
   return (
     <View style={styles.container}>
       <Dropdown>
         <DropdownTrigger>
-          <ProfileIcon
-            size={40}
-          />
+          <ProfileIcon size={40} />
         </DropdownTrigger>
         <DropdownOptions
           position={{
-            top: '100%',
+            top: "100%",
             right: 0,
           }}
         >
@@ -40,15 +38,12 @@ const Profile = () => {
             <DropdownButton
               title="Edit Profile"
               onPress={() => {
-                setProfilePopupVisible(true)
+                setProfilePopupVisible(true);
               }}
             />
           </DropdownOption>
           <DropdownOption>
-            <DropdownButton
-              title="Logout"
-              onPress={handleSignout}
-            />
+            <DropdownButton title="Logout" onPress={handleSignout} />
           </DropdownOption>
         </DropdownOptions>
       </Dropdown>

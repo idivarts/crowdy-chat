@@ -22,6 +22,7 @@ import { CampaignStepThree } from "@/components/modals/CreateCampaignStages/Camp
 import Toaster from "@/shared-uis/components/toaster/Toaster";
 import { Icon, Portal } from "react-native-paper";
 import { Ionicons } from "@expo/vector-icons";
+import { useNavigation } from "expo-router";
 
 type Stage = {
   name: string;
@@ -33,6 +34,7 @@ type Stage = {
 };
 
 const CreateCampaign = () => {
+  const navigation = useNavigation();
   const [currentStep, setCurrentStep] = useState(1);
   const [campaignName, setCampaignName] = useState("");
   const [campaignObjective, setCampaignObjective] = useState("");
@@ -220,7 +222,7 @@ const CreateCampaign = () => {
           title={currentStep === 1 ? "Close" : "Previous"}
           onPress={() => {
             if (currentStep === 1) {
-              setModalVisible(false);
+              navigation.goBack();
             } else if (currentStep > 3 && currentStep < 3 + stages.length) {
               setCurrentStep(2);
             } else {

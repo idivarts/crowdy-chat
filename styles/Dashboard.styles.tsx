@@ -33,8 +33,9 @@ export const CreateCampaignstyles = StyleSheet.create({
   },
   stepContainer: {
     padding: 16,
-    textAlign: "left",
     width: "100%",
+    justifyContent: "center",
+    alignItems: "center",
     flex: 1,
   },
   stepContainer2: {
@@ -48,9 +49,25 @@ export const CreateCampaignstyles = StyleSheet.create({
     borderColor: "#ccc",
     borderWidth: 1,
     borderRadius: 4,
-
     height: 40,
     marginVertical: 8,
+    // width: 200,
+  },
+  inputcampaign1: {
+    borderColor: "#ccc",
+    borderWidth: 1,
+    borderRadius: 4,
+    height: 40,
+    marginVertical: 8,
+    width: 300,
+  },
+  inputTextcampaign1: {
+    borderColor: "#ccc",
+    borderWidth: 1,
+    borderRadius: 4,
+    height: 40,
+    marginVertical: 8,
+    width: 150,
   },
   stageContainer: {
     borderColor: "#ccc",
@@ -66,12 +83,15 @@ export const CreateCampaignstyles = StyleSheet.create({
     borderRadius: 4,
     width: "100%",
     marginVertical: 8,
+    resizeMode: "contain",
+    padding: 0,
   },
   row: {
     flexDirection: "row",
     gap: 8,
     alignItems: "center",
     display: "flex",
+    width: "100%",
   },
   rowCampaignOne: {
     flexDirection: "row",

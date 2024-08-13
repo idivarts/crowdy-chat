@@ -6,32 +6,39 @@ export const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     padding: 20,
-    width: "100%",
-    backgroundColor: "#fff",
+    backgroundColor: "#ffffff",
   },
-  title: {
-    fontSize: 24,
+  card: {
+    width: "90%",
+    maxWidth: 400,
+    elevation: 4,
+    borderRadius: 12,
+  },
+  cardTitle: {
+    color: "#2196F3", // Default blue color
     fontWeight: "bold",
-    marginBottom: 20,
   },
   instructions: {
     fontSize: 16,
     textAlign: "center",
     marginBottom: 20,
+    lineHeight: 24,
+    color: "#333",
   },
-  input: {
-    width: "100%",
-    height: 40,
-    borderColor: "#ccc",
-    borderRadius: 5,
-    paddingHorizontal: 10,
+  inputContainer: {
     marginBottom: 20,
   },
-  card: {
-    width: 400,
+  input: {
+    backgroundColor: "#fff",
+  },
+  cardActions: {
     justifyContent: "center",
-    alignItems: "center",
-    textAlign: "center",
-    padding: 16,
+    paddingBottom: 16,
+  },
+  button: {
+    width: "50%",
+    borderRadius: 25,
+    backgroundColor: "#2196F3",
+    color: "#FFF",
   },
 });
