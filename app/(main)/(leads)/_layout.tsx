@@ -9,7 +9,7 @@ const LeadsLayout = () => {
     <Stack
       screenOptions={{
         animation: 'ios',
-        headerShown: true,
+        headerShown: false,
         headerTitleAlign: 'center',
       }}
     >
