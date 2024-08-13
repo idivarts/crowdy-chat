@@ -42,7 +42,13 @@ export const CampaignStepThree = (
         >
           Stages
         </Text>
-        <Button title="Add Stage" onPress={handleAddStage} />
+        <Button
+          title="Add Stage"
+          onPress={() => {
+            handleAddStage();
+            setCurrentStep(3.1 + stages.length);
+          }}
+        />
       </View>
       {stages.map((stage, index) => (
         <TouchableOpacity

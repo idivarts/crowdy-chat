@@ -6,23 +6,7 @@ import { useEffect } from "react";
 import { useNavigation } from "@react-navigation/native";
 import { IconButton } from "react-native-paper";
 import { View } from "@/components/Themed";
-
-const GoBackButton = () => {
-  const navigation = useNavigation();
-  const { lg } = useBreakPoints();
-  return (
-    <View
-      style={{
-        display: "flex",
-        flexDirection: "row",
-        alignItems: "center",
-      }}
-    >
-      {!lg && <DrawerToggle />}
-      <IconButton icon="arrow-left" onPress={() => navigation.goBack()} />
-    </View>
-  );
-};
+import GoBackButton from "@/components/ui/go-back-button";
 
 const CampaignsLayout = () => {
   const { lg } = useBreakPoints();
@@ -53,7 +37,12 @@ const CampaignsLayout = () => {
       <Stack.Screen
         name="campaign"
         options={{
-          headerLeft: () => <GoBackButton />,
+          headerLeft: () => (
+            <View style={{ flexDirection: "row", alignItems: "center" }}>
+              <GoBackButton />
+              {!lg && <DrawerToggle />}
+            </View>
+          ),
           headerBackTitleVisible: false,
           title: "Campaign",
         }}
@@ -61,7 +50,12 @@ const CampaignsLayout = () => {
       <Stack.Screen
         name="campaigns/create"
         options={{
-          headerLeft: () => <GoBackButton />,
+          headerLeft: () => (
+            <View style={{ flexDirection: "row", alignItems: "center" }}>
+              <GoBackButton />
+              {!lg && <DrawerToggle />}
+            </View>
+          ),
           title: "Create Campaign",
         }}
       />
