@@ -9,7 +9,18 @@ const styles = StyleSheet.create({
   topSection: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    alignItems: 'center',
+    alignItems: 'flex-end',
+  },
+  input: {
+    height: 40,
+    flex: 1,
+    marginRight: 10,
+    color: Colors.regular.black,
+    marginTop: 0,
+  },
+  inputOutline: {
+    borderRadius: 10,
+    borderColor: Colors.regular.lightgray,
   },
   createButton: {
     backgroundColor: Colors.regular.primary,

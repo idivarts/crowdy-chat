@@ -56,14 +56,6 @@ const DrawerLayout = () => {
             }}
           />
           <Drawer.Screen
-            key="create-existing-organization"
-            name="(organization)/create-existing-organization"
-            options={{
-              headerShown: true,
-              title: 'Create New Organization',
-            }}
-          />
-          <Drawer.Screen
             key="organization-profile"
             name="(organization)/organization-profile"
             options={{

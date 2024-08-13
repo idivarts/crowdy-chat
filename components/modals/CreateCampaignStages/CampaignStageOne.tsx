@@ -15,7 +15,7 @@ export const CampaignStepOne = (
 ) => (
   <View
     style={{
-      width: "50%",
+      maxWidth: "50%",
       justifyContent: "center",
       alignItems: "center",
     }}
@@ -23,14 +23,14 @@ export const CampaignStepOne = (
     <View style={styles.stepContainer}>
       <Text>Campaign Name</Text>
       <TextInput
-        style={styles.input}
+        style={styles.inputcampaign1}
         value={campaignName}
         onChangeText={setCampaignName}
       />
 
       <Text>Campaign Objective</Text>
       <TextInput
-        style={styles.input}
+        style={styles.inputcampaign1}
         value={campaignObjective}
         onChangeText={setCampaignObjective}
       />
@@ -38,14 +38,14 @@ export const CampaignStepOne = (
       <Text>Reply Speed</Text>
       <View style={styles.rowCampaignOne}>
         <TextInput
-          style={styles.input}
+          style={styles.inputTextcampaign1}
           placeholder="Min"
           keyboardType="numeric"
           value={replySpeed.min}
           onChangeText={(text) => setReplySpeed({ ...replySpeed, min: text })}
         />
         <TextInput
-          style={styles.input}
+          style={styles.inputTextcampaign1}
           placeholder="Max"
           keyboardType="numeric"
           value={replySpeed.max}
@@ -56,7 +56,7 @@ export const CampaignStepOne = (
       <Text>Reminder Timing</Text>
       <View style={styles.rowCampaignOne}>
         <TextInput
-          style={styles.input}
+          style={styles.inputTextcampaign1}
           placeholder="Min"
           keyboardType="numeric"
           value={reminderTiming.min}
@@ -65,7 +65,7 @@ export const CampaignStepOne = (
           }
         />
         <TextInput
-          style={styles.input}
+          style={styles.inputTextcampaign1}
           placeholder="Max"
           keyboardType="numeric"
           value={reminderTiming.max}

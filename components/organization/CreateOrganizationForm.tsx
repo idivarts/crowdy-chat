@@ -2,7 +2,7 @@ import AppLayout from "@/layouts/app-layout";
 import { View } from "@/components/Themed";
 import { Button, ScrollView } from "react-native";
 import styles from "@/styles/organization/CreateOrganizationForm.styles";
-import ImagePicker from "@/components/ui/image-picker/ImagePicker";
+import ImagePicker from "@/shared-uis/components/image-picker/ImagePicker";
 import InputField from "@/components/ui/input/InputField";
 import { useBreakPoints } from "@/hooks";
 
