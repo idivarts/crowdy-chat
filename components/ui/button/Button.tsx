@@ -1,6 +1,7 @@
 import {
   Button as PaperButton,
 } from "react-native-paper";
+import styles from "@/styles/button/Button.styles";
 
 interface ButtonProps extends React.ComponentProps<typeof PaperButton> { }
 
@@ -10,9 +11,7 @@ const Button: React.FC<ButtonProps> = ({
 }) => {
   return (
     <PaperButton
-      style={{
-        borderRadius: 4,
-      }}
+      style={styles.button}
       {...props}
     >
       {children}

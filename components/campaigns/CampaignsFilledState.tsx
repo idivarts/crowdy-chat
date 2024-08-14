@@ -1,10 +1,11 @@
-import { View } from "react-native"
-import CampaignCard from "./CampaignCard"
+import { View } from "react-native";
+import CampaignCard from "./CampaignCard";
 import styles from "@/styles/campaigns/CampaignsList.styles";
+import { Campaign } from "@/types/campaign";
 
 interface CampaignsFilledStateProps {
-  campaigns: any[];
-}
+  campaigns: Campaign[];
+};
 
 const CampaignsFilledState: React.FC<CampaignsFilledStateProps> = ({
   campaigns,

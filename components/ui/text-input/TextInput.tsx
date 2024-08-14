@@ -4,10 +4,6 @@ import {
 
 interface TextInputProps extends React.ComponentProps<typeof PaperTextInput> { }
 
-const TextInput: React.FC<TextInputProps> = ({
-  ...props
-}) => {
-  return <TextInput {...props} />;
-};
+const TextInput: React.FC<TextInputProps> = (props) => <TextInput {...props} />;
 
 export default TextInput;

@@ -11,20 +11,11 @@ import Toaster from "@/shared-uis/components/toaster/Toaster";
 import { useBreakPoints } from "@/hooks";
 import * as Clipboard from 'expo-clipboard';
 import Button from "../ui/button/Button";
-
-type Campaign = {
-  chatAssistantId: string;
-  id: string;
-  image: string;
-  name: string;
-  totalConversions: number;
-  totalLeads: number;
-  totalPages: number;
-}
+import { Campaign } from "@/types/campaign";
 
 interface CampaignCardProps {
   item: Campaign;
-}
+};
 
 const CampaignCard = ({
   item,

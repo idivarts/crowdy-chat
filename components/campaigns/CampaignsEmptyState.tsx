@@ -1,4 +1,4 @@
-import { Image, TouchableOpacity } from "react-native";
+import { Image } from "react-native";
 import { View } from "react-native";
 import { Text } from "react-native-paper";
 import styles from "@/styles/campaigns/CampaignsList.styles";
