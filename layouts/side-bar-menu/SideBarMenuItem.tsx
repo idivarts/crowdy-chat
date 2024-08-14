@@ -29,7 +29,7 @@ const SideBarMenuItem: React.FC<SideBarMenuItemProps> = ({
         style={[
           styles.sideBarMenuItem,
           {
-            backgroundColor: href.includes(pathname) ? Colors[colorScheme].tint : Colors[colorScheme].background,
+            backgroundColor: href.includes(pathname) ? Colors.regular.primary : Colors[colorScheme].background,
           }
         ]}
       >
@@ -43,15 +43,15 @@ const SideBarMenuItem: React.FC<SideBarMenuItemProps> = ({
           }}
         >
           <Text
-            darkColor={href.includes(pathname) ? Colors.regular.white : Colors[colorScheme].tint}
-            lightColor={href.includes(pathname) ? Colors.regular.white : Colors[colorScheme].tint}
+            darkColor={href.includes(pathname) ? Colors.regular.white : Colors.regular.primary}
+            lightColor={href.includes(pathname) ? Colors.regular.white : Colors.regular.primary}
           >
             {label}
           </Text>
           <Ionicons
             name={"chevron-forward"}
             size={24}
-            color={href.includes(pathname) ? Colors.regular.white : Colors[colorScheme].tint}
+            color={href.includes(pathname) ? Colors.regular.white : Colors.regular.primary}
           />
         </View>
       </View>

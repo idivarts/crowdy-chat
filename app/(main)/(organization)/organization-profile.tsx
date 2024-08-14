@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
-import { View, Text, Button, ScrollView } from 'react-native';
+import { View, ScrollView } from 'react-native';
 
 import ImagePicker from '@/shared-uis/components/image-picker/ImagePicker';
 import InputField from '@/components/ui/input/InputField';
 import useBreakpoints from '@/hooks/use-breakpoints';
 import AppLayout from '@/layouts/app-layout';
 import styles from '@/styles/organization/OrganizationProfile.styles';
+import Button from '@/components/ui/button/Button';
 
 const OrganizationProfile: React.FC = () => {
   const organization = {
@@ -108,16 +109,32 @@ const OrganizationProfile: React.FC = () => {
               flexDirection: 'row',
               gap: 16,
               justifyContent: 'flex-end',
+              alignItems: 'flex-end',
               width: '100%',
             }}
           >
             {isEditable ? (
               <>
-                <Button title="Save" onPress={handleSave} />
-                <Button title="Cancel" onPress={handleCancel} />
+                <Button
+                  mode="contained"
+                  onPress={handleSave}
+                >
+                  Save
+                </Button>
+                <Button
+                  mode="contained"
+                  onPress={handleCancel}
+                >
+                  Cancel
+                </Button>
               </>
             ) : (
-              <Button title="Edit" onPress={handleEdit} />
+              <Button
+                mode='contained'
+                onPress={handleEdit}
+              >
+                Edit
+              </Button>
             )}
           </View>
         </View>
