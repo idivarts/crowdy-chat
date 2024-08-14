@@ -1,4 +1,5 @@
 import { DrawerToggle } from "@/components/ui";
+import CustomHeader from "@/components/ui/custom-header";
 import { useBreakPoints } from "@/hooks";
 import { Stack } from "expo-router";
 
@@ -16,12 +17,11 @@ const OpenAILayout = () => {
       <Stack.Screen
         name="open-ai"
         options={{
-          headerLeft: () => (lg ? null : <DrawerToggle />),
+          header: (props) => <CustomHeader {...props} title="OpenAI" />,
           title: "OpenAI",
         }}
       />
     </Stack>
   );
 };
-
 export default OpenAILayout;
