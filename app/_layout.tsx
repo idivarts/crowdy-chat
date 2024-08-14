@@ -1,7 +1,7 @@
 import FontAwesome from "@expo/vector-icons/FontAwesome";
 import {
   DarkTheme,
-  DefaultTheme,
+  DefaultTheme as ExpoDefaultTheme,
   ThemeProvider,
 } from "@react-navigation/native";
 import { useFonts } from "expo-font";
@@ -18,6 +18,7 @@ import {
 } from "@/contexts/auth-context.provider";
 import { PaperProvider } from "react-native-paper";
 import { AuthScreens, MainScreens, PublicScreens } from "@/layouts/screens";
+import CustomPaperTheme from "@/constants/Theme";
 
 export {
   // Catch any errors thrown by the Layout component.
@@ -31,18 +32,6 @@ export const unstable_settings = {
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
-
-const customTheme = {
-  ...DefaultTheme,
-  colors: {
-    ...DefaultTheme.colors,
-    primary: "#1976d2",
-    background: "#ffffff",
-    text: "#000000",
-    surface: "#ffffff",
-    onSurface: "#1976d2",
-  },
-};
 
 declare global {
   namespace ReactNativePaper {
@@ -75,7 +64,7 @@ const RootLayout = () => {
 
   return (
     <AuthContextProvider>
-      <PaperProvider theme={customTheme}>
+      <PaperProvider theme={CustomPaperTheme}>
         <RootLayoutStack />
       </PaperProvider>
     </AuthContextProvider>
@@ -100,7 +89,7 @@ const RootLayoutStack = () => {
   // }, [router, session]);
 
   return (
-    <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
+    <ThemeProvider value={colorScheme === "dark" ? DarkTheme : ExpoDefaultTheme}>
       <Stack
         screenOptions={{
           animation: "ios",

@@ -9,7 +9,7 @@ const OrganizationLayout = () => {
     <Stack
       screenOptions={{
         animation: 'ios',
-        headerShown: true,
+        headerShown: false,
         headerTitleAlign: 'center',
       }}
     >
@@ -17,7 +17,6 @@ const OrganizationLayout = () => {
         name="organization-profile"
         options={{
           headerLeft: () => lg ? null : <DrawerToggle />,
-          title: 'Organization Profile',
         }}
       />
     </Stack>

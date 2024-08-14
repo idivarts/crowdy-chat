@@ -10,20 +10,12 @@ import Dropdown from "@/shared-uis/components/dropdown/Dropdown";
 import Toaster from "@/shared-uis/components/toaster/Toaster";
 import { useBreakPoints } from "@/hooks";
 import * as Clipboard from 'expo-clipboard';
-
-type Campaign = {
-  chatAssistantId: string;
-  id: string;
-  image: string;
-  name: string;
-  totalConversions: number;
-  totalLeads: number;
-  totalPages: number;
-}
+import Button from "../ui/button/Button";
+import { Campaign } from "@/types/campaign";
 
 interface CampaignCardProps {
   item: Campaign;
-}
+};
 
 const CampaignCard = ({
   item,
@@ -100,9 +92,12 @@ const CampaignCard = ({
         </View>
       </View>
       <View style={styles.cardFooter}>
-        <TouchableOpacity style={styles.campaignBoardButton}>
-          <Text style={styles.campaignBoardButtonText}>Open Campaign Board</Text>
-        </TouchableOpacity>
+        <Button
+          mode="contained"
+          onPress={() => { console.log('Open Campaign Board') }}
+        >
+          Open Campaign Board
+        </Button>
       </View>
     </View>
   );

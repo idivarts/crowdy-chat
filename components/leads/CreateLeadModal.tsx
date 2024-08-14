@@ -3,11 +3,12 @@ import { View, Text, Modal, Pressable } from 'react-native';
 import { Checkbox, Menu, PaperProvider } from 'react-native-paper';
 import { Ionicons } from '@expo/vector-icons';
 
-import PressableButton from '../ui/pressable-button';
 import FileUploadInput from '../ui/file-upload-input/FileUploadInput';
 import styles from '@/styles/leads/CreateLeadModal.styles';
 import Colors from '@/constants/Colors';
 import { useBreakPoints } from '@/hooks';
+import CustomPaperTheme from '@/constants/Theme';
+import Button from '../ui/button/Button';
 
 const sources = [
   { id: '1', name: 'Facebook' },
@@ -71,7 +72,7 @@ const CreateLeadModal: React.FC<CreateLeadModalProps> = ({
       animationType="slide"
       transparent={true}
     >
-      <PaperProvider>
+      <PaperProvider theme={CustomPaperTheme}>
         <View style={styles.modalContainer}>
           <View
             style={[
@@ -151,8 +152,18 @@ const CreateLeadModal: React.FC<CreateLeadModalProps> = ({
                 }
               </Menu>
               <View style={styles.actions}>
-                <PressableButton title="Create Lead" onPress={handleCreateLeads} />
-                <PressableButton title="Cancel" onPress={onDismiss} />
+                <Button
+                  mode='contained'
+                  onPress={handleCreateLeads}
+                >
+                  Create Lead
+                </Button>
+                <Button
+                  mode='contained'
+                  onPress={onDismiss}
+                >
+                  Cancel
+                </Button>
               </View>
             </View>
 

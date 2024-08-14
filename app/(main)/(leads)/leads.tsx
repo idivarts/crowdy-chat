@@ -1,13 +1,14 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, FlatList } from 'react-native';
-import { Appbar, Portal } from 'react-native-paper';
+import { View, Text } from 'react-native';
+import { Appbar, Checkbox, DataTable, Portal, TextInput } from 'react-native-paper';
 
 import CreateLeadModal from '@/components/leads/CreateLeadModal';
 import CreateTagModal from '@/components/leads/CreateTagModal';
-import LeadTableHeader from '@/components/leads/LeadTableHeader';
-import LeadTableRow from '@/components/leads/LeadTableRow';
-import InputField from '@/components/ui/input/InputField';
 import Colors from '@/constants/Colors';
+import { DrawerToggle } from '@/components/ui';
+import { useBreakPoints } from '@/hooks';
+import styles from '@/styles/leads/LeadsTable.styles';
+import Button from '@/components/ui/button/Button';
 
 const Leads = () => {
   const [isCreateLeadVisible, setCreateLeadVisible] = useState(false);
@@ -31,6 +32,7 @@ const Leads = () => {
   const [selectedLeads, setSelectedLeads] = useState<any>([]);
   const [filteredLeads, setFilteredLeads] = useState<any[]>(leads);
   const [searchQuery, setSearchQuery] = useState('');
+  const { lg } = useBreakPoints();
 
   const showCreateLeadModal = () => setCreateLeadVisible(true);
   const hideCreateLeadModal = () => setCreateLeadVisible(false);
@@ -79,78 +81,147 @@ const Leads = () => {
     <View
       style={{
         flex: 1,
-        paddingHorizontal: 20,
-        paddingVertical: 10,
         backgroundColor: Colors.regular.white,
       }}
     >
       <Appbar.Header>
+        {!lg && <DrawerToggle />}
         <Appbar.Content title="Leads" />
         <Appbar.Action icon="plus" onPress={showCreateLeadModal} />
         <Appbar.Action icon="tag" onPress={showCreateTagModal} />
       </Appbar.Header>
 
-      {
-        !leads?.length ? (
-          <View
-            style={{
-              flex: 1,
-              justifyContent: 'center',
-              alignItems: 'center',
-            }}
-          >
-            <Text
+      <View
+        style={{
+          padding: 16,
+        }}
+      >
+        {
+          !leads?.length ? (
+            <View
               style={{
-                fontSize: 18,
-                fontWeight: '400',
+                flex: 1,
+                justifyContent: 'center',
+                alignItems: 'center',
               }}
             >
-              No leads yet
-            </Text>
-          </View>
-        ) : (
-          <View
-            style={{
-              gap: 20,
-            }}
-          >
-            <InputField
-              placeholder="Search Leads"
-              value={searchQuery}
-              onChangeText={handleSearch}
-            />
+              <Text
+                style={{
+                  fontSize: 18,
+                  fontWeight: '400',
+                }}
+              >
+                No leads yet
+              </Text>
+            </View>
+          ) : (
+            <View
+              style={{
+                gap: 16,
+              }}
+            >
+              <TextInput
+                label="Search Leads"
+                mode="outlined"
+                onChangeText={handleSearch}
+                value={searchQuery}
+              />
 
-            <FlatList
-              data={filteredLeads}
-              ListHeaderComponent={() => (
-                <LeadTableHeader
-                  isSelected={selectedLeads?.length === leads?.length}
-                  onSelect={handleSelectAll}
-                />
-              )}
-              renderItem={({ item }) => (
-                <LeadTableRow
-                  isSelected={selectedLeads?.includes(item.id)}
-                  item={item}
-                  onDelete={handleDeleteLead}
-                  onSelect={handleSelectLead}
-                />
-              )}
-              keyExtractor={item => item.id}
-              extraData={selectedLeads}
-              style={{ marginBottom: 60 }}
-              ItemSeparatorComponent={() => (
-                <View
-                  style={{
-                    height: 1,
-                    backgroundColor: Colors.regular.white,
-                  }}
-                />
-              )}
-            />
-          </View>
-        )
-      }
+              <DataTable>
+                <DataTable.Header
+                  style={styles.headerContainer}
+                >
+                  <DataTable.Title
+                    style={styles.checkboxContainer}
+                    textStyle={styles.checkboxText}
+                  >
+                    <Checkbox
+                      status={selectedLeads?.length === leads?.length ? 'checked' : 'unchecked'}
+                      onPress={() => {
+                        handleSelectAll();
+                      }}
+                    />
+                  </DataTable.Title>
+                  <DataTable.Title
+                    style={styles.headerTitleContainer}
+                    textStyle={styles.headerTitle}
+                  >
+                    Name
+                  </DataTable.Title>
+                  <DataTable.Title
+                    style={styles.headerTitleContainer}
+                    textStyle={styles.headerTitle}
+                  >
+                    Source
+                  </DataTable.Title>
+                  <DataTable.Title
+                    style={styles.headerTitleContainer}
+                    textStyle={styles.headerTitle}
+                  >
+                    Campaigns
+                  </DataTable.Title>
+                  <DataTable.Title
+                    style={styles.actionContainer}
+                    textStyle={styles.actionText}
+                  >
+                    Actions
+                  </DataTable.Title>
+                </DataTable.Header>
+
+                {
+                  filteredLeads.map((lead, index) => (
+                    <DataTable.Row
+                      key={index}
+                      style={styles.rowContainer}
+                    >
+                      <DataTable.Cell
+                        style={styles.checkboxContainer}
+                        textStyle={styles.checkboxText}
+                      >
+                        <Checkbox
+                          status={selectedLeads?.includes(lead.id) ? 'checked' : 'unchecked'}
+                          onPress={() => {
+                            handleSelectLead(lead.id);
+                          }}
+                        />
+                      </DataTable.Cell>
+                      <DataTable.Cell
+                        style={styles.rowTextContainer}
+                        textStyle={styles.rowText}
+                      >
+                        {lead.name}
+                      </DataTable.Cell>
+                      <DataTable.Cell
+                        style={styles.rowTextContainer}
+                        textStyle={styles.rowText}
+                      >
+                        {lead.source}
+                      </DataTable.Cell>
+                      <DataTable.Cell
+                        style={styles.rowTextContainer}
+                        textStyle={styles.rowText}
+                      >
+                        {lead.campaigns.join(', ')}
+                      </DataTable.Cell>
+                      <DataTable.Cell
+                        style={styles.actionContainer}
+                        textStyle={styles.actionText}
+                      >
+                        <Button
+                          mode='contained'
+                          onPress={() => handleDeleteLead(lead.id)}
+                        >
+                          Delete
+                        </Button>
+                      </DataTable.Cell>
+                    </DataTable.Row>
+                  ))
+                }
+              </DataTable>
+            </View>
+          )
+        }
+      </View>
 
       <Portal>
         {

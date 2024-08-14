@@ -1,10 +1,11 @@
 import AppLayout from "@/layouts/app-layout";
 import { View } from "@/components/Themed";
-import { Button, ScrollView } from "react-native";
+import { ScrollView } from "react-native";
 import styles from "@/styles/organization/CreateOrganizationForm.styles";
 import ImagePicker from "@/shared-uis/components/image-picker/ImagePicker";
 import InputField from "@/components/ui/input/InputField";
 import { useBreakPoints } from "@/hooks";
+import Button from "../ui/button/Button";
 
 interface CreateOrganizationFormProps {
   onSubmit: () => void;
@@ -78,7 +79,12 @@ const CreateOrganizationForm: React.FC<CreateOrganizationFormProps> = ({
             placeholder="Enter website URL"
           />
 
-          <Button title="Submit" onPress={handleSubmit} />
+          <Button
+            mode="contained"
+            onPress={handleSubmit}
+          >
+            Submit
+          </Button>
         </View>
       </ScrollView>
     </AppLayout>

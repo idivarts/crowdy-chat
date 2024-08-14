@@ -51,6 +51,7 @@ const styles = StyleSheet.create({
   },
   actions: {
     flexDirection: 'row',
+    alignItems: 'center',
     justifyContent: 'flex-end',
     gap: 20,
   },

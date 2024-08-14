@@ -1,17 +1,22 @@
 import { useState } from "react";
-import { Image, TouchableOpacity } from "react-native";
-import { TextInput } from "react-native-paper";
+import { Appbar } from "react-native-paper";
 import { router } from "expo-router";
 
 import AppLayout from "@/layouts/app-layout";
-import { Text, View } from "@/components/Themed";
+import { View } from "@/components/Themed";
 import { campaigns as initialCampaigns } from "@/constants/Campaigns";
-import CampaignCard from "@/components/campaigns/CampaignCard";
 import styles from "@/styles/campaigns/CampaignsList.styles";
+import { DrawerToggle } from "@/components/ui";
+import { useBreakPoints } from "@/hooks";
+import CampaignsEmptyState from "@/components/campaigns/CampaignsEmptyState";
+import CampaignsFilledState from "@/components/campaigns/CampaignsFilledState";
+// import TextInput from "@/components/ui/text-input/TextInput";
+import { TextInput } from "react-native-paper";
 
 const Campaigns = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [filteredCampaigns, setFilteredCampaigns] = useState(initialCampaigns);
+  const { lg } = useBreakPoints();
 
   const handleSearch = (query: string) => {
     setSearchQuery(query);
@@ -25,50 +30,24 @@ const Campaigns = () => {
     }
   };
 
-  const renderEmptyState = () => (
-    <View style={styles.emptyStateContainer}>
-      <Image
-        source={{ uri: "https://via.placeholder.com/300" }}
-        style={styles.emptyImage}
-      />
-      <Text style={styles.emptyText}>No Campaigns yet</Text>
-      <TouchableOpacity style={styles.createButton}>
-        <Text style={styles.createButtonText}>Create Campaign</Text>
-      </TouchableOpacity>
-    </View>
-  );
-
-  const renderFilledState = () => (
-    <View style={styles.filledStateContainer}>
-      {filteredCampaigns.map((campaign) => (
-        <CampaignCard key={campaign.id} item={campaign} />
-      ))}
-    </View>
-  );
-
   return (
     <AppLayout>
+      <Appbar.Header>
+        {!lg && <DrawerToggle />}
+        <Appbar.Content title="Campaigns" />
+        <Appbar.Action icon="plus" onPress={() => router.push("/campaigns/create")} />
+      </Appbar.Header>
       <View style={styles.container}>
-        <View style={styles.topSection}>
-          <TextInput
-            label="Search Campaigns"
-            value={searchQuery}
-            onChangeText={handleSearch}
-            mode="outlined"
-            outlineStyle={styles.inputOutline}
-            style={styles.input}
-          />
-          <TouchableOpacity
-            style={styles.createButton}
-            onPress={() => router.push("/campaigns/create")}
-          >
-            <Text style={styles.createButtonText}>Create Campaign</Text>
-          </TouchableOpacity>
-        </View>
+        <TextInput
+          label="Search Campaigns"
+          mode="outlined"
+          onChangeText={handleSearch}
+          value={searchQuery}
+        />
         <View style={styles.campaignsSection}>
           {filteredCampaigns.length > 0
-            ? renderFilledState()
-            : renderEmptyState()}
+            ? <CampaignsFilledState campaigns={filteredCampaigns} />
+            : <CampaignsEmptyState />}
         </View>
       </View>
     </AppLayout>
