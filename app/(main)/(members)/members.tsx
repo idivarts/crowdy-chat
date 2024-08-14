@@ -9,6 +9,7 @@ import {
   Provider,
   Chip,
   DefaultTheme,
+  Text,
 } from "react-native-paper";
 import { View, ScrollView } from "react-native";
 import Dropdown from "@/shared-uis/components/dropdown/Dropdown";
@@ -184,6 +185,10 @@ const MemberPage: React.FC = () => {
     </DataTable.Row>
   );
 
+  const filteredMembers = members.filter((member) =>
+    member.name.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
   return (
     <Provider theme={customTheme}>
       <Appbar.Header>
@@ -192,7 +197,7 @@ const MemberPage: React.FC = () => {
         <Appbar.Action icon="plus" onPress={handleAddMemberClick} />
       </Appbar.Header>
 
-      <View style={styles.container}>
+      <ScrollView style={styles.container}>
         <TextInput
           label="Search by name"
           mode="outlined"
@@ -205,21 +210,22 @@ const MemberPage: React.FC = () => {
             <DataTable.Title>Name</DataTable.Title>
             <DataTable.Title>Username</DataTable.Title>
             <DataTable.Title>Permissions</DataTable.Title>
-            <DataTable.Title>Actions</DataTable.Title>
+            <DataTable.Title numeric>Actions</DataTable.Title>
           </DataTable.Header>
-
-          <ScrollView
-            contentContainerStyle={styles.scrollViewContent}
-            style={styles.scrollView}
-          >
-            {members
-              .filter((member) =>
-                member.name.toLowerCase().includes(searchTerm.toLowerCase())
-              )
-              .map((member, index) => renderMember(member, index))}
-          </ScrollView>
+          {filteredMembers.length === 0 ? (
+            <View style={styles.noDataContainer}>
+              <Text style={styles.noDataText}>No members found</Text>
+            </View>
+          ) : (
+            <ScrollView
+              contentContainerStyle={styles.scrollViewContent}
+              style={styles.scrollView}
+            >
+              {filteredMembers.map(renderMember)}
+            </ScrollView>
+          )}
         </DataTable>
-      </View>
+      </ScrollView>
 
       <Portal>
         <Modal

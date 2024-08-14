@@ -67,14 +67,6 @@ const styles = StyleSheet.create({
   cardFooter: {
     alignItems: 'flex-end',
   },
-  campaignBoardButton: {
-    backgroundColor: Colors.regular.primary,
-    padding: 12,
-    borderRadius: 8,
-  },
-  campaignBoardButtonText: {
-    color: '#fff',
-  },
 });
 
 export default styles;

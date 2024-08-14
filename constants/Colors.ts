@@ -1,4 +1,4 @@
-const tintColorLight = "#2f95dc";
+const tintColorLight = "#1976d2";
 const tintColorDark = "#fff";
 
 export default {
@@ -17,13 +17,19 @@ export default {
     tabIconSelected: tintColorDark,
   },
   regular: {
-    primary: "#2f95dc",
-    orange: "#F64740",
-    white: "#fff",
-    lightgray: "lightgray",
-    black: "#000",
-    backdrop: "rgba(0, 0, 0, 0.5)",
-    platinum: "#DBDBDB",
     aliceBlue: "#E9F1F7",
+    backdrop: "rgba(0, 0, 0, 0.5)",
+    background: "#ffffff",
+    black: "#000",
+    lightgray: "lightgray",
+    onSurface: "#1976d2",
+    orange: "#F64740",
+    platinum: "#DBDBDB",
+    primary: "#1976d2",
+    red: "red",
+    surface: "#ffffff",
+    surfaceVariant: "#ffffff",
+    text: "#000000",
+    white: "#ffffff",
   },
 };

@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { View, Text, Modal } from 'react-native';
-import PressableButton from '../ui/pressable-button';
 import InputField from '../ui/input/InputField';
 import { useBreakPoints } from '@/hooks';
 import styles from '@/styles/leads/CreateTagModal.styles';
+import Button from '../ui/button/Button';
 
 interface CreateTagModalProps {
   visible: boolean;
@@ -45,14 +45,18 @@ const CreateTagModal: React.FC<CreateTagModalProps> = ({
             onChangeText={setTagName}
           />
           <View style={styles.actions}>
-            <PressableButton
-              title="Create Tag"
+            <Button
+              mode="contained"
               onPress={handleCreateTag}
-            />
-            <PressableButton
-              title="Cancel"
+            >
+              Create Tag
+            </Button>
+            <Button
+              mode="contained"
               onPress={onDismiss}
-            />
+            >
+              Cancel
+            </Button>
           </View>
         </View>
       </View>
