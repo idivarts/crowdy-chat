@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Appbar, TextInput } from "react-native-paper";
+import { Appbar } from "react-native-paper";
 import { router } from "expo-router";
 
 import AppLayout from "@/layouts/app-layout";
@@ -10,6 +10,7 @@ import { DrawerToggle } from "@/components/ui";
 import { useBreakPoints } from "@/hooks";
 import CampaignsEmptyState from "@/components/campaigns/CampaignsEmptyState";
 import CampaignsFilledState from "@/components/campaigns/CampaignsFilledState";
+import TextInput from "@/components/ui/text-input/TextInput";
 
 const Campaigns = () => {
   const [searchQuery, setSearchQuery] = useState("");
