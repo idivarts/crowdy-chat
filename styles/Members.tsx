@@ -10,10 +10,11 @@ export const styles = StyleSheet.create({
     marginBottom: 16,
   },
   scrollView: {
-    height: Dimensions.get("window").height - 200,
+    paddingBottom: 160,
+    width: "100%",
   },
   scrollViewContent: {
-    flexGrow: 1,
+    paddingBottom: 16,
   },
   actionsCell: {
     flexDirection: "row",
@@ -41,5 +42,14 @@ export const styles = StyleSheet.create({
   },
   addButton: {
     marginTop: 10,
+  },
+  noDataContainer: {
+    flex: 1,
+    justifyContent: "center",
+    marginTop: 16,
+    alignItems: "center",
+  },
+  noDataText: {
+    fontSize: 17,
   },
 });
