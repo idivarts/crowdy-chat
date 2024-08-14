@@ -27,7 +27,7 @@ const DrawerLayout = () => {
             key="campaigns"
             name="(campaigns)/campaigns"
             options={{
-              headerShown: true,
+              headerShown: false,
               title: "Campaigns",
             }}
           />

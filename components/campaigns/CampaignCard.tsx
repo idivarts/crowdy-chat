@@ -10,6 +10,7 @@ import Dropdown from "@/shared-uis/components/dropdown/Dropdown";
 import Toaster from "@/shared-uis/components/toaster/Toaster";
 import { useBreakPoints } from "@/hooks";
 import * as Clipboard from 'expo-clipboard';
+import Button from "../ui/button/Button";
 
 type Campaign = {
   chatAssistantId: string;
@@ -100,9 +101,12 @@ const CampaignCard = ({
         </View>
       </View>
       <View style={styles.cardFooter}>
-        <TouchableOpacity style={styles.campaignBoardButton}>
-          <Text style={styles.campaignBoardButtonText}>Open Campaign Board</Text>
-        </TouchableOpacity>
+        <Button
+          mode="contained"
+          onPress={() => { console.log('Open Campaign Board') }}
+        >
+          Open Campaign Board
+        </Button>
       </View>
     </View>
   );

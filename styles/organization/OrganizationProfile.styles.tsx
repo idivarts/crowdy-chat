@@ -27,12 +27,6 @@ const styles = StyleSheet.create({
   imagePickerContainer: {
     alignItems: 'center',
   },
-  title: {
-    fontSize: 18,
-    fontWeight: '600',
-    textAlign: 'center',
-    paddingBottom: 20,
-  },
 });
 
 export default styles;

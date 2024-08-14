@@ -3,8 +3,6 @@ import { useAuthContext } from "@/contexts";
 import { useBreakPoints } from "@/hooks";
 import { Stack, useRouter } from "expo-router";
 import { useEffect } from "react";
-import { useNavigation } from "@react-navigation/native";
-import { IconButton } from "react-native-paper";
 import { View } from "@/components/Themed";
 import GoBackButton from "@/components/ui/go-back-button";
 
@@ -23,7 +21,7 @@ const CampaignsLayout = () => {
     <Stack
       screenOptions={{
         animation: "ios",
-        headerShown: true,
+        headerShown: false,
         headerTitleAlign: "center",
       }}
     >
@@ -31,20 +29,6 @@ const CampaignsLayout = () => {
         name="campaigns"
         options={{
           headerLeft: () => (lg ? null : <DrawerToggle />),
-          title: "Campaigns",
-        }}
-      />
-      <Stack.Screen
-        name="campaign"
-        options={{
-          headerLeft: () => (
-            <View style={{ flexDirection: "row", alignItems: "center" }}>
-              <GoBackButton />
-              {!lg && <DrawerToggle />}
-            </View>
-          ),
-          headerBackTitleVisible: false,
-          title: "Campaign",
         }}
       />
       <Stack.Screen

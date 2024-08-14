@@ -5,30 +5,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 16,
-  },
-  topSection: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'flex-end',
-  },
-  input: {
-    height: 40,
-    flex: 1,
-    marginRight: 10,
-    color: Colors.regular.black,
-    marginTop: 0,
-  },
-  inputOutline: {
-    borderRadius: 10,
-    borderColor: Colors.regular.lightgray,
-  },
-  createButton: {
-    backgroundColor: Colors.regular.primary,
-    padding: 12,
-    borderRadius: 8,
-  },
-  createButtonText: {
-    color: '#fff',
+    gap: 16,
   },
   campaignsSection: {
     flex: 1,

@@ -1,8 +1,8 @@
 import { Text, View } from "@/components/Themed";
 import * as DocumentPicker from "expo-document-picker";
-import PressableButton from "../pressable-button";
 import { useState } from "react";
 import styles from "@/styles/file-upload-input/FileUploadInput.styles";
+import Button from "../button/Button";
 
 interface FileUploadInputProps {
   description?: string;
@@ -45,7 +45,12 @@ const FileUploadInput: React.FC<FileUploadInputProps> = ({
         <Text style={styles.descriptionText}>
           {description} {importedFileName && `(${importedFileName})`}
         </Text>
-        <PressableButton title={buttonText} onPress={handleImportFromCSV} />
+        <Button
+          mode="contained"
+          onPress={handleImportFromCSV}
+        >
+          {buttonText}
+        </Button>
       </View>
     </View>
   );

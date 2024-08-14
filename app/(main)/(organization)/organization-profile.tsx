@@ -58,9 +58,6 @@ const OrganizationProfile: React.FC = () => {
             }
           ]}
         >
-          <View>
-            <Text style={styles.title}>{isEditable ? 'Edit Profile' : 'View Profile'}</Text>
-          </View>
           <View
             style={styles.row}
           >
