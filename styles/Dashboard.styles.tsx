@@ -36,6 +36,7 @@ export const CreateCampaignstyles = StyleSheet.create({
     width: "100%",
     justifyContent: "center",
     alignItems: "center",
+    gap: 16,
     flex: 1,
   },
   stepContainer2: {
