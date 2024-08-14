@@ -10,7 +10,8 @@ import { DrawerToggle } from "@/components/ui";
 import { useBreakPoints } from "@/hooks";
 import CampaignsEmptyState from "@/components/campaigns/CampaignsEmptyState";
 import CampaignsFilledState from "@/components/campaigns/CampaignsFilledState";
-import TextInput from "@/components/ui/text-input/TextInput";
+// import TextInput from "@/components/ui/text-input/TextInput";
+import { TextInput } from "react-native-paper";
 
 const Campaigns = () => {
   const [searchQuery, setSearchQuery] = useState("");
