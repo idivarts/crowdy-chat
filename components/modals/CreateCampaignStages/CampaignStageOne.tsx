@@ -45,14 +45,20 @@ export const CampaignStepOne = (
             placeholder="Min"
             keyboardType="numeric"
             value={replySpeed.min}
-            onChangeText={(text) => setReplySpeed({ ...replySpeed, min: text })}
+            onChangeText={(text) => {
+              const numericValue = text.replace(/[^0-9]/g, "");
+              setReplySpeed({ ...replySpeed, min: numericValue });
+            }}
           />
           <TextInput
             style={styles.inputTextcampaign1}
             placeholder="Max"
             keyboardType="numeric"
             value={replySpeed.max}
-            onChangeText={(text) => setReplySpeed({ ...replySpeed, max: text })}
+            onChangeText={(text) => {
+              const numericValue = text.replace(/[^0-9]/g, "");
+              setReplySpeed({ ...replySpeed, max: numericValue });
+            }}
           />
         </View>
       </View>
@@ -64,18 +70,20 @@ export const CampaignStepOne = (
             placeholder="Min"
             keyboardType="numeric"
             value={reminderTiming.min}
-            onChangeText={(text) =>
-              setReminderTiming({ ...reminderTiming, min: text })
-            }
+            onChangeText={(text) => {
+              const numericValue = text.replace(/[^0-9]/g, "");
+              setReminderTiming({ ...reminderTiming, min: numericValue });
+            }}
           />
           <TextInput
             style={styles.inputTextcampaign1}
             placeholder="Max"
             keyboardType="numeric"
             value={reminderTiming.max}
-            onChangeText={(text) =>
-              setReminderTiming({ ...reminderTiming, max: text })
-            }
+            onChangeText={(text) => {
+              const numericValue = text.replace(/[^0-9]/g, "");
+              setReminderTiming({ ...reminderTiming, max: numericValue });
+            }}
           />
         </View>
       </View>
