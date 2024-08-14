@@ -205,7 +205,7 @@ const MemberPage: React.FC = () => {
             <DataTable.Title>Name</DataTable.Title>
             <DataTable.Title>Username</DataTable.Title>
             <DataTable.Title>Permissions</DataTable.Title>
-            <DataTable.Title>Actions</DataTable.Title>
+            <DataTable.Title numeric>Actions</DataTable.Title>
           </DataTable.Header>
 
           <ScrollView

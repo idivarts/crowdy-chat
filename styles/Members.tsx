@@ -9,42 +9,37 @@ export const styles = StyleSheet.create({
   searchInput: {
     marginBottom: 16,
   },
+  scrollView: {
+    height: Dimensions.get("window").height - 200,
+  },
+  scrollViewContent: {
+    flexGrow: 1,
+  },
+  actionsCell: {
+    flexDirection: "row",
+    justifyContent: "flex-end",
+  },
   modalContent: {
-    padding: 16,
-    backgroundColor: "#FFF",
-    borderRadius: 8,
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
+    backgroundColor: "white",
+    padding: 20,
+    borderRadius: 10,
+    width: 300,
   },
   modalInputContainer: {
-    display: "flex",
-    flexDirection: "column",
-    justifyContent: "center",
-    backgroundColor: "#FFF",
-    alignItems: "center",
+    marginBottom: 10,
   },
   input: {
-    marginBottom: 16,
-    width: "100%",
+    marginBottom: 10,
   },
   chipContainer: {
     flexDirection: "row",
     flexWrap: "wrap",
-    marginBottom: 16,
+    marginBottom: 10,
   },
   chip: {
-    marginRight: 8,
-    marginBottom: 8,
+    margin: 4,
   },
   addButton: {
-    marginTop: 16,
+    marginTop: 10,
   },
-  scrollViewContent: {
-    paddingBottom: 20,
-  },
-  scrollView: {
-    height: Dimensions.get("window").height - 200,
-  },
-  actionsCell: {},
 });
