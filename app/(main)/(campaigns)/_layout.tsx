@@ -21,7 +21,7 @@ const CampaignsLayout = () => {
     <Stack
       screenOptions={{
         animation: "ios",
-        headerShown: false,
+        headerShown: true,
         headerTitleAlign: "center",
       }}
     >
@@ -29,6 +29,8 @@ const CampaignsLayout = () => {
         name="campaigns"
         options={{
           headerLeft: () => (lg ? null : <DrawerToggle />),
+          title: "Campaigns",
+          headerShown: false,
         }}
       />
       <Stack.Screen
@@ -41,6 +43,7 @@ const CampaignsLayout = () => {
             </View>
           ),
           title: "Create Campaign",
+          headerShown: true,
         }}
       />
     </Stack>
