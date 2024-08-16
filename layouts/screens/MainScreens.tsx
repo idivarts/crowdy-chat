@@ -8,6 +8,7 @@ const MainScreens = () => (
   >
     <Stack.Screen name="(main)" options={{ headerShown: false }} />
     <Stack.Screen name="(organization)" options={{ headerShown: false }} />
+    <Stack.Screen name="(campaigns)" options={{ headerShown: false }} />
   </Stack>
 );
 
