@@ -24,6 +24,11 @@ export const styles = StyleSheet.create({
     flex: 1,
     alignItems: "flex-end",
   },
+  loadingOverlay: {
+    ...StyleSheet.absoluteFillObject,
+    justifyContent: "center",
+    alignItems: "center",
+  },
   title: {
     fontSize: 16,
     fontWeight: "bold",

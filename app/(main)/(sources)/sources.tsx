@@ -1,10 +1,22 @@
 import ConnectedPage from "@/components/sources/ConnectedPage";
 import { DrawerToggle } from "@/components/ui";
 import { useBreakPoints } from "@/hooks";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { View, Text } from "react-native";
-import { Appbar, Modal, Portal, Button, TextInput } from "react-native-paper";
+import {
+  Appbar,
+  Modal,
+  Portal,
+  Button,
+  TextInput,
+  ActivityIndicator,
+  IconButton,
+} from "react-native-paper";
 import { styles } from "@/styles/sources/Sources.styles";
+import { HttpService } from "@/services/httpService";
+import Toaster from "@/shared-uis/components/toaster/Toaster";
+import { PageUnit } from "@/interfaces/SourcePageInterfaces";
+import FacebookLoginButton from "@/components/sources/ConnectWithFacebook";
 
 const Sources = () => {
   const { lg } = useBreakPoints();
@@ -12,7 +24,31 @@ const Sources = () => {
   const [emailModalVisible, setEmailModalVisible] = useState(false);
   const [sendGridApiKey, setSendGridApiKey] = useState("");
   const [sendGridDomain, setSendGridDomain] = useState("");
+  const [loading, setLoading] = useState(true);
   const [emailUsername, setEmailUsername] = useState("");
+  const [myPages, setMyPages] = useState<PageUnit[]>([]);
+  const [otherPages, setOtherPages] = useState<PageUnit[]>([]);
+
+  const getPages = async (userId: string) => {
+    try {
+      // const response = await axios.get("https://backend.trendshub.co.in/business/pages?userId=" + (userId ? userId : "TEMP"))
+      let pData = await HttpService.getPages(userId);
+      setMyPages(pData.myPages);
+      setOtherPages(pData.otherPages);
+      setLoading(false);
+    } catch (e) {
+      // addToast("Something went wrong while fetching pages", { appearance: "error" })
+      Toaster.error("Something went wrong while fetching pages");
+      console.log(e);
+    }
+  };
+
+  console.log("MyPages", myPages);
+  console.log("OtherPages", otherPages);
+
+  useEffect(() => {
+    getPages("TEMP");
+  }, []);
 
   const handleAddSource = () => {
     setModalVisible(true);
@@ -50,14 +86,11 @@ const Sources = () => {
             alignItems: "center",
           }}
         >
-          <ConnectedPage
-            page={{
-              name: "Trendy Page",
-              userName: "Trendly.Pro",
-              ownerName: "Owner Name",
-              pageType: "Instagram",
-            }}
-          />
+          {loading && <ActivityIndicator animating={true} color="#000" />}
+          {!loading &&
+            otherPages.map((page, index) => (
+              <ConnectedPage key={index} page={page} />
+            ))}
         </View>
       </View>
       <Portal>
@@ -68,14 +101,17 @@ const Sources = () => {
         >
           <View style={styles.modalContent}>
             <Text style={styles.modalTitle}>Connect to a Source</Text>
-            <Button
-              icon="facebook"
-              mode="contained"
-              style={styles.modalButton}
-              onPress={() => handleConnectSource("Facebook")}
-            >
-              Connect with Facebook
-            </Button>
+            <View style={styles.faceBookView}>
+              <IconButton
+                icon="facebook"
+                onPress={handleConnectSource}
+                iconColor="#FFF"
+              />
+              <FacebookLoginButton
+                onFacebookLogin={(userId) => getPages(userId ? userId : "TEMP")}
+                isConnected={false}
+              />
+            </View>
             <Button
               icon="instagram"
               mode="contained"

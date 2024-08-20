@@ -19,8 +19,18 @@ export const styles = StyleSheet.create({
   },
   modalButton: {
     marginVertical: 10,
+    paddingVertical: 5,
+    fontSize: 13,
   },
   modalInput: {
     marginVertical: 10,
+  },
+  faceBookView: {
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "center",
+    marginBottom: 10,
+    borderRadius: 20,
+    backgroundColor: "#1976D2",
   },
 });
