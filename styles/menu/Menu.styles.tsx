@@ -6,16 +6,21 @@ const styles = StyleSheet.create({
   },
   menuContentStyle: {
     backgroundColor: Colors.regular.white,
-    padding: 0,
+    borderRadius: 8,
+    borderTopColor: Colors.regular.lightgray,
+    borderTopWidth: 1,
+    overflow: "hidden",
+    paddingVertical: 0,
   },
   menuItem: {
-    margin: 0,
     backgroundColor: Colors.regular.white,
     borderBottomColor: Colors.regular.lightgray,
     borderBottomWidth: 1,
+    margin: 0,
   },
   menuItemText: {
     color: Colors.regular.black,
+    fontWeight: "500",
   },
 });
 
