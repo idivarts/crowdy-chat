@@ -6,12 +6,12 @@ import CampaignsBoardWeb from "@/components/campaigns-open-view/CampaignsBoard.w
 import CampaignsListWeb from "@/components/campaigns-open-view/CampaignsList.web";
 import CampaignsList from "@/components/campaigns-open-view/CampaignsList";
 import CampaignsBoard from "@/components/campaigns-open-view/CampaignsBoard";
-import { Appbar } from "react-native-paper";
-import { DrawerToggle } from "@/components/ui";
+import Header from "@/layouts/header";
+import CampaignsOpenViewHeader from "@/components/campaigns-open-view/CampaignsOpenViewHeader";
 
-enum TabView {
-  CAMPAIGNS_BOARD_VIEW = 0,
-  CAMPAIGNS_LIST_VIEW = 1,
+export enum TabView {
+  CAMPAIGNS_BOARD_VIEW = "Board",
+  CAMPAIGNS_LIST_VIEW = "List",
 }
 
 const CampaignsOpenViewScreen: React.FC = () => {
@@ -21,11 +21,11 @@ const CampaignsOpenViewScreen: React.FC = () => {
 
   return (
     <AppLayout>
-      <Appbar.Header>
-        {<DrawerToggle />}
-        <Appbar.Content title="Campaigns Open view" />
-        <Appbar.Action icon="plus" />
-      </Appbar.Header>
+      <Header />
+      <CampaignsOpenViewHeader
+        tabView={tabView}
+        setTabView={setTabView}
+      />
       {
         tabView === TabView.CAMPAIGNS_BOARD_VIEW && (
           isWeb ? <CampaignsBoardWeb /> : <CampaignsBoard />
