@@ -12,6 +12,7 @@ import { useBreakPoints } from "@/hooks";
 import * as Clipboard from 'expo-clipboard';
 import Button from "../ui/button/Button";
 import { Campaign } from "@/types/campaign";
+import { useRouter } from "expo-router";
 
 interface CampaignCardProps {
   item: Campaign;
@@ -21,6 +22,7 @@ const CampaignCard = ({
   item,
 }: CampaignCardProps) => {
   const { xl } = useBreakPoints();
+  const router = useRouter();
 
   const copyToClipboard = (textToCopy: string) => {
     Clipboard.setStringAsync(textToCopy);
@@ -94,7 +96,9 @@ const CampaignCard = ({
       <View style={styles.cardFooter}>
         <Button
           mode="contained"
-          onPress={() => { console.log('Open Campaign Board') }}
+          onPress={() => {
+            router.push(`/campaigns-open-view`);
+          }}
         >
           Open Campaign Board
         </Button>

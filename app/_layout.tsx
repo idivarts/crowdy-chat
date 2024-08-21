@@ -19,7 +19,6 @@ import {
 import { PaperProvider } from "react-native-paper";
 import { AuthScreens, MainScreens, PublicScreens } from "@/layouts/screens";
 import CustomPaperTheme from "@/constants/Theme";
-import { GestureHandlerRootView } from "react-native-gesture-handler";
 
 export {
   // Catch any errors thrown by the Layout component.
@@ -64,13 +63,11 @@ const RootLayout = () => {
   }
 
   return (
-    <GestureHandlerRootView>
-      <AuthContextProvider>
-        <PaperProvider theme={CustomPaperTheme}>
-          <RootLayoutStack />
-        </PaperProvider>
-      </AuthContextProvider>
-    </GestureHandlerRootView>
+    <AuthContextProvider>
+      <PaperProvider theme={CustomPaperTheme}>
+        <RootLayoutStack />
+      </PaperProvider>
+    </AuthContextProvider>
   );
 };
 

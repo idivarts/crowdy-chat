@@ -26,11 +26,9 @@ const CampaignsLayout = () => {
           }}
         >
           <Stack.Screen
-            name="campaigns-board"
+            name="campaigns-open-view"
             options={{
-              headerShown: true,
-              title: "Campaigns Board",
-              headerTitleAlign: "center",
+              headerShown: false,
             }}
           />
         </Stack>
