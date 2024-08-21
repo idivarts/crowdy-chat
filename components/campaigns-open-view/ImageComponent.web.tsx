@@ -1,5 +1,7 @@
 import React from 'react'
 
+import PlaceHolderImage from '@/assets/images/placeholder-image.png'
+
 const ImageComponent: React.FC<{
   url: any,
   className?: any,
@@ -12,11 +14,8 @@ const ImageComponent: React.FC<{
     return (
       <img
         className={className}
-        src={url}
+        src={url || PlaceHolderImage}
         style={style}
-        onError={(ev) => {
-          ev.currentTarget.src = "/images/placeholder-image.png"
-        }}
       />
     )
   }
