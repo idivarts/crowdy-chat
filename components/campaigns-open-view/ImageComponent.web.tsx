@@ -15,7 +15,7 @@ const ImageComponent: React.FC<{
         src={url}
         style={style}
         onError={(ev) => {
-          ev.currentTarget.src = "/images/placeholder-image/png"
+          ev.currentTarget.src = "/images/placeholder-image.png"
         }}
       />
     )

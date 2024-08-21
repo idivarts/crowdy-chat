@@ -11,7 +11,7 @@ export default class APIService {
       this.appHost = "http://localhost:8080";
     }
     this.apiUrl = APIService.getAxiosInstance({
-      baseURL: `${this.appHost}/api`,
+      baseURL: `${this.appHost}`,
     });
   }
 

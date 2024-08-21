@@ -29,9 +29,8 @@ const CampaignsBoardWeb: React.FC = () => {
     pageId,
     // x,
   } = useParams<any>()
-  console.log("Params", pageId)
 
-  const PhaseMap: any = {
+  const PhaseMap: Record<number, number> = {
     0: 0, 1: 0, 2: 2, 3: 3, 4: 4, 5: 5, 6: 6, 7: 1
   }
 
@@ -39,7 +38,17 @@ const CampaignsBoardWeb: React.FC = () => {
     ConversationService.getConversations({
       pageId: pageId
     }).then(res => {
-      setAllConversation(res)
+      setAllConversation([...res])
+
+      const cols: CampaignsBoardColumn = CAMPAIGNS_BOARD_COLUMNS;
+
+      for (let i = 0; i < res.length; i++) {
+        const ele = res[i];
+        let colIndex = PhaseMap[ele.currentPhase]
+        cols[colIndex].tasks.push(ele)
+      }
+
+      setColumns(cols)
     }).catch(e => {
 
     })
@@ -68,18 +77,6 @@ const CampaignsBoardWeb: React.FC = () => {
   }
 
   useEffect(() => {
-    const cols: CampaignsBoardColumn = CAMPAIGNS_BOARD_COLUMNS;
-
-    for (let i = 0; i < allConversation.length; i++) {
-      const ele = allConversation[i];
-      let colIndex = PhaseMap[ele.currentPhase]
-      cols[colIndex].tasks.push(ele)
-    }
-
-    setColumns(cols)
-  }, [allConversation])
-
-  useEffect(() => {
     UpdateConversationSubject.subscribe(data => {
       getAllConversations()
     })
@@ -89,20 +86,20 @@ const CampaignsBoardWeb: React.FC = () => {
     getAllConversations()
   }, [pageId])
 
-  if (!allConversation || allConversation.length === 0) {
-    return (
-      <div
-        style={{
-          alignItems: 'center',
-          display: 'flex',
-          height: '240px',
-          justifyContent: 'center',
-        }}
-      >
-        <ActivityIndicator />
-      </div>
-    )
-  }
+  // if (!allConversation || allConversation.length === 0) {
+  //   return (
+  //     <div
+  //       style={{
+  //         alignItems: 'center',
+  //         display: 'flex',
+  //         height: '240px',
+  //         justifyContent: 'center',
+  //       }}
+  //     >
+  //       <ActivityIndicator size="large" />
+  //     </div>
+  //   )
+  // }
 
   return (
     <>
