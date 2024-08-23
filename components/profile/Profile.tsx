@@ -1,20 +1,19 @@
-import { View } from "../Themed";
-import ProfileIcon from "./ProfileIcon";
-import styles from "@/styles/profile/Profile.styles";
-import Dropdown from "@/shared-uis/components/dropdown/Dropdown";
-import DropdownTrigger from "@/shared-uis/components/dropdown/DropdownTrigger";
-import DropdownOptions from "@/shared-uis/components/dropdown/DropdownOptions";
-import DropdownOption from "@/shared-uis/components/dropdown/DropdownOption";
-import { useAuthContext } from "@/contexts";
+import { useState } from "react";
+import { Pressable } from "react-native";
 import { useRouter } from "expo-router";
-import DropdownButton from "@/shared-uis/components/dropdown/DropdownButton";
-import { useProfilePopupContext } from "@/contexts/profile-popup-context.provider";
+
 import Toaster from "@/shared-uis/components/toaster/Toaster";
+import { useAuthContext } from "@/contexts";
+import { useProfilePopupContext } from "@/contexts/profile-popup-context.provider";
+import ProfileIcon from "./ProfileIcon";
+import MenuItem from "../ui/menu/MenuItem";
+import Menu from "../ui/menu/Menu";
 
 const Profile = () => {
   const { signOut } = useAuthContext();
   const { setProfilePopupVisible } = useProfilePopupContext();
   const router = useRouter();
+  const [menuVisible, setMenuVisible] = useState(false);
 
   const handleSignout = () => {
     signOut();
@@ -23,31 +22,32 @@ const Profile = () => {
   };
 
   return (
-    <View style={styles.container}>
-      <Dropdown>
-        <DropdownTrigger>
+    <Menu
+      visible={menuVisible}
+      onDismiss={() => {
+        setMenuVisible(false);
+      }}
+      anchor={
+        <Pressable onPress={() => setMenuVisible(true)}>
           <ProfileIcon size={40} />
-        </DropdownTrigger>
-        <DropdownOptions
-          position={{
-            top: "100%",
-            right: 0,
+        </Pressable>
+      }
+    >
+      <>
+        <MenuItem
+          key="edit"
+          title="Edit Profile"
+          onPress={() => {
+            setProfilePopupVisible(true);
           }}
-        >
-          <DropdownOption>
-            <DropdownButton
-              title="Edit Profile"
-              onPress={() => {
-                setProfilePopupVisible(true);
-              }}
-            />
-          </DropdownOption>
-          <DropdownOption>
-            <DropdownButton title="Logout" onPress={handleSignout} />
-          </DropdownOption>
-        </DropdownOptions>
-      </Dropdown>
-    </View>
+        />
+        <MenuItem
+          key="delete"
+          title="Logout"
+          onPress={handleSignout}
+        />
+      </>
+    </Menu>
   );
 };
 

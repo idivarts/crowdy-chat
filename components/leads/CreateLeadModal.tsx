@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { View, Text, Modal, Pressable } from 'react-native';
-import { Checkbox, Menu, PaperProvider } from 'react-native-paper';
+import { Checkbox, PaperProvider } from 'react-native-paper';
 import { Ionicons } from '@expo/vector-icons';
 
 import FileUploadInput from '../ui/file-upload-input/FileUploadInput';
@@ -9,6 +9,8 @@ import Colors from '@/constants/Colors';
 import { useBreakPoints } from '@/hooks';
 import CustomPaperTheme from '@/constants/Theme';
 import Button from '../ui/button/Button';
+import Menu from '../ui/menu/Menu';
+import MenuItem from '../ui/menu/MenuItem';
 
 const sources = [
   { id: '1', name: 'Facebook' },
@@ -137,16 +139,13 @@ const CreateLeadModal: React.FC<CreateLeadModalProps> = ({
                     </View>
                   </Pressable>
                 }
-                contentStyle={styles.tagMenuContent}
               >
                 {
                   tags.map((tag) => (
-                    <Menu.Item
+                    <MenuItem
                       key={tag.id}
                       onPress={() => handleSelectTag(tag)}
                       title={tag.name}
-                      titleStyle={styles.menuItemText}
-                      style={styles.menuItem}
                     />
                   ))
                 }

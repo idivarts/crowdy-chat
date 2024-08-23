@@ -7,6 +7,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     gap: 12,
     paddingRight: 6,
+    paddingBottom: 10,
   },
   tabButtonsContainer: {
     alignItems: 'center',
