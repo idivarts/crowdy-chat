@@ -9,16 +9,10 @@ import { CampaignsBoardColumn, IConversationUnit } from '@/types/CampaignsBoard'
 import Colors from '@/constants/Colors';
 import Button from '../ui/button/Button';
 import { IconButton } from 'react-native-paper';
-import { useConversationContext } from '@/contexts/conversation-context.provider';
 import ChatModal from './ChatModal';
+import { ActivityIndicator, View } from 'react-native';
 
 const CampaignsBoardWeb: React.FC = () => {
-  // const {
-  // setAllConversation,
-  // allConversation,
-  // currentConversation,
-  // setCurrentConversation,
-  // } = useConversationContext();
   const [allConversation, setAllConversation] = useState<IConversationUnit[]>([]);
   const [currentConversation, setCurrentConversation] = useState<IConversationUnit | undefined>(undefined);
   const [columns, setColumns] = useState<CampaignsBoardColumn>([]);
@@ -55,11 +49,11 @@ const CampaignsBoardWeb: React.FC = () => {
         }
         return conversation;
       });
+
+      // Update the frontend columns
+      handleColumnsChange(updatedConversations);
       return updatedConversations;
     });
-
-    // Update the frontend columns
-    handleColumnsChange(allConversation);
   };
 
   const handleColumnsChange = (conversations: IConversationUnit[]) => {
@@ -90,6 +84,19 @@ const CampaignsBoardWeb: React.FC = () => {
 
   const handleCurrentConversation = (conversation: IConversationUnit) => {
     setCurrentConversation(conversation);
+  }
+
+  if (allConversation.length === 0) {
+    return (
+      <View
+        style={{
+          flexGrow: 1,
+          justifyContent: "center",
+        }}
+      >
+        <ActivityIndicator size="large" />
+      </View>
+    );
   }
 
   return (

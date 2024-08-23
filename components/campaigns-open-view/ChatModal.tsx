@@ -38,7 +38,7 @@ const ChatModal: React.FC<IProps> = (props: IProps) => {
         zIndex: 10000,
       }}
       contentContainerStyle={{
-        backgroundColor: Colors.regular.white,
+        backgroundColor: props.conversation || props.igsid ? Colors.regular.white : "transparent",
         borderRadius: 5,
         marginTop: 24,
       }}
