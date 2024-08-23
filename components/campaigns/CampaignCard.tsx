@@ -1,30 +1,29 @@
-import { Image, TouchableOpacity } from "react-native";
+import { Image, Pressable, TouchableOpacity } from "react-native";
 import { Text, View } from "../Themed";
 import { Ionicons, MaterialIcons } from "@expo/vector-icons";
 import styles from "@/styles/campaigns/CampaignCard.styles";
-import DropdownButton from "@/shared-uis/components/dropdown/DropdownButton";
-import DropdownOptions from "@/shared-uis/components/dropdown/DropdownOptions";
-import DropdownOption from "@/shared-uis/components/dropdown/DropdownOption";
-import DropdownTrigger from "@/shared-uis/components/dropdown/DropdownTrigger";
-import Dropdown from "@/shared-uis/components/dropdown/Dropdown";
 import Toaster from "@/shared-uis/components/toaster/Toaster";
 import { useBreakPoints } from "@/hooks";
-import * as Clipboard from 'expo-clipboard';
+import * as Clipboard from "expo-clipboard";
 import Button from "../ui/button/Button";
 import { Campaign } from "@/types/campaign";
+import { useRouter } from "expo-router";
+import MenuItem from "../ui/menu/MenuItem";
+import Menu from "../ui/menu/Menu";
+import { useState } from "react";
 
 interface CampaignCardProps {
   item: Campaign;
-};
+}
 
-const CampaignCard = ({
-  item,
-}: CampaignCardProps) => {
+const CampaignCard = ({ item }: CampaignCardProps) => {
   const { xl } = useBreakPoints();
+  const router = useRouter();
+  const [menuVisible, setMenuVisible] = useState(false);
 
   const copyToClipboard = (textToCopy: string) => {
     Clipboard.setStringAsync(textToCopy);
-    Toaster.success('Copied to clipboard!');
+    Toaster.success("Copied to clipboard!");
   };
 
   return (
@@ -32,8 +31,8 @@ const CampaignCard = ({
       style={[
         styles.cardContainer,
         {
-          width: xl ? '49%' : '100%',
-        }
+          width: xl ? "49%" : "100%",
+        },
       ]}
     >
       <View style={styles.cardHeader}>
@@ -51,30 +50,30 @@ const CampaignCard = ({
               </TouchableOpacity>
             </View>
           </View>
-          <Dropdown>
-            <DropdownTrigger>
-              <MaterialIcons name="more-vert" size={24} color="black" />
-            </DropdownTrigger>
-            <DropdownOptions
-              position={{
-                top: '100%',
-                right: 0,
-              }}
-            >
-              <DropdownOption>
-                <DropdownButton
-                  onPress={() => { console.log('Edit') }}
-                  title="Edit"
-                />
-              </DropdownOption>
-              <DropdownOption>
-                <DropdownButton
-                  onPress={() => { console.log('Delete') }}
-                  title="Delete"
-                />
-              </DropdownOption>
-            </DropdownOptions>
-          </Dropdown>
+          <Menu
+            visible={menuVisible}
+            onDismiss={() => {
+              setMenuVisible(false);
+            }}
+            anchor={
+              <Pressable onPress={() => setMenuVisible(true)}>
+                <MaterialIcons name="more-vert" size={24} color="black" />
+              </Pressable>
+            }
+          >
+            <>
+              <MenuItem
+                key="edit"
+                onPress={() => { console.log('Edit') }}
+                title="Edit"
+              />
+              <MenuItem
+                key="delete"
+                onPress={() => { console.log('Delete') }}
+                title="Delete"
+              />
+            </>
+          </Menu>
         </View>
       </View>
       <View style={styles.cardBody}>
@@ -94,7 +93,9 @@ const CampaignCard = ({
       <View style={styles.cardFooter}>
         <Button
           mode="contained"
-          onPress={() => { console.log('Open Campaign Board') }}
+          onPress={() => {
+            router.push(`/campaign-detailed-view`);
+          }}
         >
           Open Campaign Board
         </Button>
