@@ -9,24 +9,22 @@ import DropdownTrigger from "@/shared-uis/components/dropdown/DropdownTrigger";
 import Dropdown from "@/shared-uis/components/dropdown/Dropdown";
 import Toaster from "@/shared-uis/components/toaster/Toaster";
 import { useBreakPoints } from "@/hooks";
-import * as Clipboard from 'expo-clipboard';
+import * as Clipboard from "expo-clipboard";
 import Button from "../ui/button/Button";
 import { Campaign } from "@/types/campaign";
 import { useRouter } from "expo-router";
 
 interface CampaignCardProps {
   item: Campaign;
-};
+}
 
-const CampaignCard = ({
-  item,
-}: CampaignCardProps) => {
+const CampaignCard = ({ item }: CampaignCardProps) => {
   const { xl } = useBreakPoints();
   const router = useRouter();
 
   const copyToClipboard = (textToCopy: string) => {
     Clipboard.setStringAsync(textToCopy);
-    Toaster.success('Copied to clipboard!');
+    Toaster.success("Copied to clipboard!");
   };
 
   return (
@@ -34,8 +32,8 @@ const CampaignCard = ({
       style={[
         styles.cardContainer,
         {
-          width: xl ? '49%' : '100%',
-        }
+          width: xl ? "49%" : "100%",
+        },
       ]}
     >
       <View style={styles.cardHeader}>
@@ -59,19 +57,23 @@ const CampaignCard = ({
             </DropdownTrigger>
             <DropdownOptions
               position={{
-                top: '100%',
+                top: "100%",
                 right: 0,
               }}
             >
               <DropdownOption>
                 <DropdownButton
-                  onPress={() => { console.log('Edit') }}
+                  onPress={() => {
+                    console.log("Edit");
+                  }}
                   title="Edit"
                 />
               </DropdownOption>
               <DropdownOption>
                 <DropdownButton
-                  onPress={() => { console.log('Delete') }}
+                  onPress={() => {
+                    console.log("Delete");
+                  }}
                   title="Delete"
                 />
               </DropdownOption>
@@ -97,7 +99,7 @@ const CampaignCard = ({
         <Button
           mode="contained"
           onPress={() => {
-            router.push(`/campaigns-open-view`);
+            router.push(`/campaign-detailed-view`);
           }}
         >
           Open Campaign Board

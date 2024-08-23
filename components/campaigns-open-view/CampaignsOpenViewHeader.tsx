@@ -1,9 +1,9 @@
-import { TabView } from '@/app/(campaigns)/campaigns-open-view';
-import React from 'react';
-import { View } from 'react-native';
-import { Appbar, Button, TextInput } from 'react-native-paper';
-import GoBackButton from '../ui/go-back-button';
-import styles from '@/styles/campaigns/CampaignsOpenViewHeader.styles';
+import { TabView } from "@/app/(campaigns)/campaign-detailed-view/[pageID]";
+import React from "react";
+import { View } from "react-native";
+import { Appbar, Button, TextInput } from "react-native-paper";
+import GoBackButton from "../ui/go-back-button";
+import styles from "@/styles/campaigns/CampaignsOpenViewHeader.styles";
 
 interface CampaignsOpenViewHeaderProps {
   tabView: TabView;
@@ -20,14 +20,20 @@ const CampaignsOpenViewHeader: React.FC<CampaignsOpenViewHeaderProps> = ({
       <View style={styles.container}>
         <View style={styles.tabButtonsContainer}>
           <Button
-            mode={tabView === TabView.CAMPAIGNS_BOARD_VIEW ? "contained" : "elevated"}
+            mode={
+              tabView === TabView.CAMPAIGNS_BOARD_VIEW
+                ? "contained"
+                : "elevated"
+            }
             onPress={() => setTabView(TabView.CAMPAIGNS_BOARD_VIEW)}
             style={styles.button}
           >
             Board
           </Button>
           <Button
-            mode={tabView === TabView.CAMPAIGNS_LIST_VIEW ? "contained" : "elevated"}
+            mode={
+              tabView === TabView.CAMPAIGNS_LIST_VIEW ? "contained" : "elevated"
+            }
             onPress={() => setTabView(TabView.CAMPAIGNS_LIST_VIEW)}
             style={styles.button}
           >
@@ -41,11 +47,7 @@ const CampaignsOpenViewHeader: React.FC<CampaignsOpenViewHeaderProps> = ({
             />
           </View>
         </View>
-        <TextInput
-          label="Page"
-          mode="outlined"
-          style={styles.pageInput}
-        />
+        <TextInput label="Page" mode="outlined" style={styles.pageInput} />
       </View>
     </Appbar.Header>
   );

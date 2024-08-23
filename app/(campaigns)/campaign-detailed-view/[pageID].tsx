@@ -8,6 +8,8 @@ import CampaignsList from "@/components/campaigns-open-view/CampaignsList";
 import CampaignsBoard from "@/components/campaigns-open-view/CampaignsBoard";
 import Header from "@/layouts/header";
 import CampaignsOpenViewHeader from "@/components/campaigns-open-view/CampaignsOpenViewHeader";
+import CampaignListView from "@/components/campaigns-open-view/Campaign-List";
+import { useLocalSearchParams } from "expo-router";
 
 export enum TabView {
   CAMPAIGNS_BOARD_VIEW = "Board",
@@ -15,27 +17,26 @@ export enum TabView {
 }
 
 const CampaignsOpenViewScreen: React.FC = () => {
-  const [tabView, setTabView] = useState<TabView>(TabView.CAMPAIGNS_BOARD_VIEW);
-
+  const [tabView, setTabView] = useState<TabView>(TabView.CAMPAIGNS_LIST_VIEW);
+  const { pageID } = useLocalSearchParams();
+  const resolvedPageID = Array.isArray(pageID) ? pageID[0] : pageID;
   const isWeb = Platform.OS === "web";
+  if (!resolvedPageID) {
+    return null;
+  }
 
   return (
     <AppLayout>
       <Header />
-      <CampaignsOpenViewHeader
-        tabView={tabView}
-        setTabView={setTabView}
-      />
-      {
-        tabView === TabView.CAMPAIGNS_BOARD_VIEW && (
-          isWeb ? <CampaignsBoardWeb /> : <CampaignsBoard />
-        )
-      }
-      {
-        tabView === TabView.CAMPAIGNS_LIST_VIEW && (
-          isWeb ? <CampaignsListWeb /> : <CampaignsList />
-        )
-      }
+      <CampaignsOpenViewHeader tabView={tabView} setTabView={setTabView} />
+      {tabView === TabView.CAMPAIGNS_BOARD_VIEW &&
+        (isWeb ? <CampaignsBoardWeb /> : <CampaignsBoard />)}
+      {tabView === TabView.CAMPAIGNS_LIST_VIEW &&
+        (isWeb ? (
+          <CampaignListView pageID={resolvedPageID} />
+        ) : (
+          <CampaignsList />
+        ))}
     </AppLayout>
   );
 };
