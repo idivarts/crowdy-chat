@@ -7,6 +7,7 @@ import { useBreakPoints } from "@/hooks";
 import * as Clipboard from 'expo-clipboard';
 import Button from "../ui/button/Button";
 import { Campaign } from "@/types/campaign";
+import { useRouter } from "expo-router";
 import MenuItem from "../ui/menu/MenuItem";
 import Menu from "../ui/menu/Menu";
 import { useState } from "react";
@@ -19,6 +20,7 @@ const CampaignCard = ({
   item,
 }: CampaignCardProps) => {
   const { xl } = useBreakPoints();
+  const router = useRouter();
   const [menuVisible, setMenuVisible] = useState(false);
 
   const copyToClipboard = (textToCopy: string) => {
@@ -93,7 +95,9 @@ const CampaignCard = ({
       <View style={styles.cardFooter}>
         <Button
           mode="contained"
-          onPress={() => { console.log('Open Campaign Board') }}
+          onPress={() => {
+            router.push(`/campaigns-open-view`);
+          }}
         >
           Open Campaign Board
         </Button>

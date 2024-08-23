@@ -4,12 +4,14 @@ import OrganizationSwitcherModal from "./OrganizationSwitcherModal";
 import { Text } from "@/components/Themed";
 import { Ionicons } from "@expo/vector-icons";
 import { Portal } from "react-native-paper";
+import { useBreakPoints } from "@/hooks";
 
-interface OrganizationSwitcherProps {}
+interface OrganizationSwitcherProps { }
 
 const OrganizationSwitcher: React.FC<OrganizationSwitcherProps> = () => {
   const [isOrganizationModalVisible, setOrganizationModalVisible] =
     useState(false);
+  const { lg } = useBreakPoints();
   const organizations = [
     {
       id: 1,
@@ -42,12 +44,12 @@ const OrganizationSwitcher: React.FC<OrganizationSwitcherProps> = () => {
         style={{
           flexDirection: "row",
           alignItems: "center",
-          gap: 14,
+          gap: lg ? 14 : 8,
         }}
       >
         <Text
           style={{
-            fontSize: 24,
+            fontSize: lg ? 24 : 16,
             fontWeight: "600",
           }}
         >
@@ -56,7 +58,7 @@ const OrganizationSwitcher: React.FC<OrganizationSwitcherProps> = () => {
         {isOrganizationModalVisible ? (
           <Ionicons
             name="chevron-up"
-            size={24}
+            size={lg ? 24 : 16}
             color="black"
             style={{
               marginTop: 6,
@@ -65,7 +67,7 @@ const OrganizationSwitcher: React.FC<OrganizationSwitcherProps> = () => {
         ) : (
           <Ionicons
             name="chevron-down"
-            size={24}
+            size={lg ? 24 : 16}
             color="black"
             style={{
               marginTop: 6,

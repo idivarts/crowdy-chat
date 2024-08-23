@@ -1,5 +1,6 @@
 import { DefaultTheme as PaperDefaultTheme } from "react-native-paper";
 import Colors from "./Colors";
+console.log(PaperDefaultTheme);
 
 const CustomPaperTheme = {
   ...PaperDefaultTheme,
@@ -11,6 +12,9 @@ const CustomPaperTheme = {
     surface: Colors.regular.surface,
     onSurface: Colors.regular.onSurface,
     surfaceVariant: Colors.regular.surfaceVariant,
+    elevation: {
+      level1: Colors.regular.white,
+    },
   },
 };
 
