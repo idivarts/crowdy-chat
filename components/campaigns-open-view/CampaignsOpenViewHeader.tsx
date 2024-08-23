@@ -1,4 +1,4 @@
-import { TabView } from "@/app/(campaigns)/campaign-detailed-view/[pageID]";
+import { TabView } from './CampaignOpenView';
 import React from "react";
 import { View } from "react-native";
 import { Appbar, Button, TextInput } from "react-native-paper";
