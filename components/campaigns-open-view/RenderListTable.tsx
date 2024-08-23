@@ -182,10 +182,14 @@ const RenderTable = ({
                 </Menu>
               </DataTable.Cell>
               <DataTable.Cell style={styles.cell}>
-                <TimeAgo
-                  datetime={conversation.lastBotMessageTime}
-                  style={styles.timeAgo}
-                />
+                {conversation.lastBotMessageTime <= 0 ? (
+                  <Text>No messages</Text>
+                ) : (
+                  <TimeAgo
+                    datetime={conversation.lastBotMessageTime}
+                    style={styles.timeAgo}
+                  />
+                )}
               </DataTable.Cell>
               <DataTable.Cell style={styles.cell}>
                 <Text>{conversation.botMessageCount}</Text>
