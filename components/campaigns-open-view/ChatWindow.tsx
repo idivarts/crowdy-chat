@@ -16,7 +16,8 @@ import { MessageObject } from '@/types/Message';
 import { FlatList, View } from 'react-native';
 import { Text } from 'react-native';
 import MessageItem from './MessageItem';
-// import InformationPanel from './InformationPanel.web';
+import InformationPanel from './InformationPanel';
+import { useBreakPoints } from '@/hooks';
 
 interface IProps {
   handleCloseModal: () => void
@@ -32,6 +33,7 @@ const ChatWindow: React.FC<IProps> = (props) => {
   const [conversation, setConversation] = useState<IConversationByIdResponse | undefined>(undefined)
   const [msg, setMsg] = useState("")
   const [botInst, setBotInst] = useState("")
+  const { lg, sm, md } = useBreakPoints()
 
   const loadMessages = async (after: any) => {
     setLoading(true)
@@ -167,7 +169,7 @@ const ChatWindow: React.FC<IProps> = (props) => {
     <View
       style={{
         flex: 1,
-        width: 900,
+        width: lg ? 900 : ((sm || md) ? 540 : 320),
       }}
     >
       <View
@@ -288,6 +290,7 @@ const ChatWindow: React.FC<IProps> = (props) => {
           style={{
             padding: 12,
             maxHeight: 400,
+            flex: 1,
           }}
           keyExtractor={(item) => item.id.toString()}
           renderItem={({ item, index }) => (
@@ -317,7 +320,7 @@ const ChatWindow: React.FC<IProps> = (props) => {
           ) : null}
           inverted
         />
-        {/* {showInfo && <InformationPanel conversation={conversation} />} */}
+        {showInfo && <InformationPanel conversation={conversation} />}
       </View>
       {
         props.conversation.currentPhase == 7 ? (
