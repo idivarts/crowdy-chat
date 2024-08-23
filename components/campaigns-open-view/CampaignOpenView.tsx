@@ -8,6 +8,8 @@ import CampaignsList from "@/components/campaigns-open-view/CampaignsList";
 import CampaignsBoard from "@/components/campaigns-open-view/CampaignsBoard";
 import Header from "@/layouts/header";
 import CampaignsOpenViewHeader from "@/components/campaigns-open-view/CampaignsOpenViewHeader";
+import CampaignListView from "./Campaign-List";
+import { useLocalSearchParams } from "expo-router";
 
 export enum TabView {
   CAMPAIGNS_BOARD_VIEW = "Board",
@@ -18,6 +20,8 @@ const CampaignsOpenView: React.FC = () => {
   const [tabView, setTabView] = useState<TabView>(TabView.CAMPAIGNS_BOARD_VIEW);
 
   const isWeb = Platform.OS === "web";
+  const { pageId } = useLocalSearchParams();
+  const PID: any = pageId
 
   return (
     <AppLayout>
@@ -32,9 +36,8 @@ const CampaignsOpenView: React.FC = () => {
         )
       }
       {
-        tabView === TabView.CAMPAIGNS_LIST_VIEW && (
-          isWeb ? <CampaignsListWeb /> : <CampaignsList />
-        )
+        tabView === TabView.CAMPAIGNS_LIST_VIEW &&
+        <CampaignListView pageId={PID} />
       }
     </AppLayout>
   );

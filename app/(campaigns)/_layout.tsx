@@ -4,13 +4,13 @@ import { Stack, useRouter } from "expo-router";
 import { useEffect } from "react";
 
 const CampaignsLayout = () => {
-  const { isLoading, session } = useAuthContext()
-  const router = useRouter()
+  const { isLoading, session } = useAuthContext();
+  const router = useRouter();
   useEffect(() => {
     if (!isLoading && !session) {
-      router.replace("/(auth)/login")
+      router.replace("/(auth)/login");
     }
-  }, [isLoading, session])
+  }, [isLoading, session]);
 
   return (
     <>
@@ -26,17 +26,23 @@ const CampaignsLayout = () => {
           }}
         >
           <Stack.Screen
-            name="campaigns-open-view"
+            name="campaign-detailed-view"
             options={{
               headerShown: false,
             }}
           />
           <Stack.Screen
-            name="campaigns-open-view/:pageId"
+            name="campaign-detailed-view/:pageId"
             options={{
               headerShown: false,
             }}
           />
+          {/* <Stack.Screen
+            name="campaigns-open-view/:pageId"
+            options={{
+              headerShown: false,
+            }}
+          /> */}
         </Stack>
       </View>
     </>
