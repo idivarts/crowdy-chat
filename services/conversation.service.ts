@@ -78,7 +78,7 @@ const apiService = new APIService();
 
 export default class ConversationService {
   static getConversations = async (req: {
-    pageId?: string;
+    pageId?: string | null;
     phase?: number;
   }): Promise<IConversationUnit[]> => {
     const response = await apiService.apiUrl.get(
