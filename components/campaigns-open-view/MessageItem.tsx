@@ -1,3 +1,4 @@
+import Colors from "@/constants/Colors";
 import { MessageObject } from "@/types/Message";
 import { ResizeMode, Video } from "expo-av";
 import { useRef, useState } from "react";
@@ -63,13 +64,13 @@ const MessageItem: React.FC<MessageItemProps> = ({
                 paddingHorizontal: 20,
                 paddingVertical: 20,
                 borderRadius: 10,
-                backgroundColor: msg.from.id != igsid ? "#007bff" : "#ccc",
+                backgroundColor: msg.from.id != igsid ? Colors.regular.primary : Colors.regular.platinum,
                 maxWidth: "100%",
               }}
             >
               <Text
                 style={{
-                  color: msg.from.id != igsid ? "#fff" : "#000",
+                  color: msg.from.id != igsid ? Colors.regular.white : Colors.regular.black,
                   lineHeight: 24,
                   textAlign: msg.from.id != igsid ? 'left' : 'right',
                 }}

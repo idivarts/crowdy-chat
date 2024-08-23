@@ -38,8 +38,6 @@ const ChatModal: React.FC<IProps> = (props: IProps) => {
         zIndex: 10000,
       }}
       contentContainerStyle={{
-        backgroundColor: props.conversation || props.igsid ? Colors.regular.white : "transparent",
-        borderRadius: 5,
         marginTop: 24,
       }}
     >
@@ -47,7 +45,6 @@ const ChatModal: React.FC<IProps> = (props: IProps) => {
         style={{
           justifyContent: 'center',
           alignItems: 'center',
-          padding: 20,
         }}
       >
         <ChatWindow handleCloseModal={handleCloseModal} {...props} />

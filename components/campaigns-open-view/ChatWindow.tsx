@@ -1,6 +1,6 @@
-import React, { createRef, useEffect, useRef, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
-import { OpenConvfirmationModal } from '@/subjects/modal.subject';
+import { OpenConfirmationModal } from '@/subjects/modal.subject';
 import { UpdateConversationSubject } from '@/subjects/conversation.update.subject';
 import ImageComponent from './ImageComponent.web';
 import { ActivityIndicator, IconButton, Switch, TextInput, Tooltip } from 'react-native-paper';
@@ -18,6 +18,7 @@ import { Text } from 'react-native';
 import MessageItem from './MessageItem';
 import InformationPanel from './InformationPanel';
 import { useBreakPoints } from '@/hooks';
+import Colors from '@/constants/Colors';
 
 interface IProps {
   handleCloseModal: () => void
@@ -44,7 +45,8 @@ const ChatWindow: React.FC<IProps> = (props) => {
         setMessages([...messages, ...res.data])
       setAfter(res.paging.cursors.after)
     }).catch(e => {
-
+      props.handleCloseModal();
+      Toaster.error("Failed to load messages.");
     })
     setLoading(false)
   }
@@ -52,7 +54,10 @@ const ChatWindow: React.FC<IProps> = (props) => {
   const fetchUser = () => {
     ConversationService.getConversationById(props.igsid).then(res => {
       setConversation(res)
-    })
+    }).catch(e => {
+      props.handleCloseModal();
+      Toaster.error("Failed to fetch user data.");
+    });
   }
 
   useEffect(() => {
@@ -154,12 +159,7 @@ const ChatWindow: React.FC<IProps> = (props) => {
 
   if (!conversation || !messages || !props.igsid) {
     return (
-      <View
-        style={{
-          paddingTop: 10,
-          paddingBottom: 22,
-        }}
-      >
+      <View>
         <ActivityIndicator />
       </View>
     );
@@ -170,6 +170,9 @@ const ChatWindow: React.FC<IProps> = (props) => {
       style={{
         flex: 1,
         width: lg ? 900 : ((sm || md) ? 540 : 320),
+        backgroundColor: Colors.regular.white,
+        padding: 20,
+        borderRadius: 5,
       }}
     >
       <View
@@ -251,7 +254,7 @@ const ChatWindow: React.FC<IProps> = (props) => {
             >
               <IconButton
                 icon="download"
-                onPress={() => OpenConvfirmationModal.next({
+                onPress={() => OpenConfirmationModal.next({
                   message: "Are you sure you want to completely sync the instagram chat on backend?",
                   handleSubmit: syncChat
                 })}

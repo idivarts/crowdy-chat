@@ -15,9 +15,8 @@ const CampaignsOpenViewFilter = () => {
   const [menuVisible, setMenuVisible] = useState(false);
 
   const getAllPages = async () => {
-    await PageActionsService.getPages().then(res => {
-      setPages(res.otherPages)
-    })
+    const res = await PageActionsService.getPages();
+    setPages(res.otherPages);
   }
 
   useEffect(() => {

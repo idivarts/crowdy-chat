@@ -87,6 +87,7 @@ const GridRow: React.FC<IProps> = ({
         UpdateConversationSubject.next(newUpdateResponse.conversation);
       }
     } catch (e) {
+      console.error(e);
       Toaster.error('Something went wrong');
     }
   };

@@ -7,13 +7,13 @@ export interface IConfirmationModalProps {
 }
 
 const ConfirmationModal: React.FC<IConfirmationModalProps> = (props) => {
-  return <div className="modal">
-    <div className="modal-content">
+  return <div>
+    <div>
       <div style={{ marginBottom: "20px" }}>
         {props.message}
       </div>
-      <div className="modal-footer">
-        <button className="disconnect-button" onClick={props.handleCancel}>Cancel</button>
+      <div>
+        <button onClick={props.handleCancel}>Cancel</button>
         <button onClick={props.handleSubmit}>Proceed</button>
       </div>
     </div>

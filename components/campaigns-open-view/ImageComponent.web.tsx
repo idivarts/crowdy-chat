@@ -1,9 +1,9 @@
 import React from 'react'
 
 const ImageComponent: React.FC<{
-  url: any,
-  className?: any,
-  style?: any,
+  url: string,
+  className?: string,
+  style?: React.CSSProperties,
 }> = ({
   url,
   className,
