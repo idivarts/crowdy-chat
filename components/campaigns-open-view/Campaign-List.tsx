@@ -12,7 +12,7 @@ type ChatBoard = {
   tasks: IConversationUnit[];
 }[];
 
-const CampaignListView = (props: { pageID: string | null }) => {
+const CampaignListView = (props: { pageId: string | null }) => {
   const [columns, setColumns] = useState<ChatBoard>([]);
   const [allConversation, setAllConversation] = useState<IConversationUnit[]>(
     []
@@ -20,7 +20,7 @@ const CampaignListView = (props: { pageID: string | null }) => {
   const [groupBy, setGroupBy] = useState<string | null>(null);
   const [groupBySource, setGroupBySource] = useState<string | null>(null);
   const [menuVisible, setMenuVisible] = useState(false);
-  const { pageID } = props;
+  const { pageId } = props;
 
   const groupedTables = () => {
     if (groupBy === "phase") {
@@ -70,12 +70,12 @@ const CampaignListView = (props: { pageID: string | null }) => {
 
   const getAllConversations = () => {
     ConversationService.getConversations({
-      pageId: pageID,
+      pageId: pageId,
     })
       .then((res) => {
         setAllConversation(res);
       })
-      .catch((e) => {});
+      .catch((e) => { });
   };
 
   const PhaseMap = {

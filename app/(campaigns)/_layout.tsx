@@ -32,17 +32,17 @@ const CampaignsLayout = () => {
             }}
           />
           <Stack.Screen
-            name="campaign-detailed-view/[pageID]"
+            name="campaign-detailed-view/:pageId"
             options={{
               headerShown: false,
             }}
           />
-          <Stack.Screen
+          {/* <Stack.Screen
             name="campaigns-open-view/:pageId"
             options={{
               headerShown: false,
             }}
-          />
+          /> */}
         </Stack>
       </View>
     </>

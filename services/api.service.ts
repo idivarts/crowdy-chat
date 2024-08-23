@@ -8,7 +8,7 @@ export default class APIService {
     if (process.env.EXPO_PUBLIC_BACKEND_SERVER_URL) {
       this.appHost = process.env.EXPO_PUBLIC_BACKEND_SERVER_URL;
     } else {
-      this.appHost = "http://localhost:8080";
+      this.appHost = "https://backend.trendshub.co.in";
     }
     this.apiUrl = APIService.getAxiosInstance({
       baseURL: `${this.appHost}`,
