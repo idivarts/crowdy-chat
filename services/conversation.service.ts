@@ -63,13 +63,13 @@ interface Page {
 
 export interface IConversationByIdResponse {
   conversation: Conversation;
-  message: string;
-  page: Page;
+  message?: string;
+  page?: Page;
 }
 
 export interface IConversationUpdateResponse {
   conversation: Conversation;
-  message: string;
+  message?: string;
 }
 
 export type IConversationUpdateRequest = Partial<Conversation>;

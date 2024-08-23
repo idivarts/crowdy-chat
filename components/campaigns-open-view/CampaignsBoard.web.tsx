@@ -5,15 +5,41 @@ import { ConversationService } from '@/services';
 import { UpdateConversationSubject } from '@/subjects/conversation.update.subject';
 import ConversationCard from './ConversationCard.web';
 import { CAMPAIGNS_BOARD_COLUMNS } from '@/constants/CampaignsBoard';
-import { CampaignsBoardColumn } from '@/types/CampaignsBoard';
+import { CampaignsBoardColumn, IConversationUnit } from '@/types/CampaignsBoard';
 import Colors from '@/constants/Colors';
 import Button from '../ui/button/Button';
 import { IconButton } from 'react-native-paper';
 import { useConversationContext } from '@/contexts/conversation-context.provider';
-// import ChatModal from '@/components/chat-modal/ChatModal';
+import ChatModal from './ChatModal';
 
 const CampaignsBoardWeb: React.FC = () => {
-  const { setAllConversation, allConversation, currentConversation, setCurrentConversation } = useConversationContext();
+  // const {
+  // setAllConversation,
+  // allConversation,
+  // currentConversation,
+  // setCurrentConversation,
+  // } = useConversationContext();
+  const [allConversation, setAllConversation] = useState<IConversationUnit[]>([]);
+  const [currentConversation, setCurrentConversation] = useState<IConversationUnit>({
+    "igsid": "359518917106129",
+    "user": {
+      "name": "",
+      "userName": "th_chat1",
+      "profilePic": ""
+    },
+    "lastBotMessageTime": 0,
+    "botMessageCount": 0,
+    "currentPhase": 2,
+    "reminderCount": 0,
+    "status": 0,
+    "informationCount": 2,
+    "page": {
+      "id": "17841466618151294",
+      "name": "Trends Hub",
+      "userName": "trendshub.ai",
+      "isInstagram": true
+    }
+  });
   const [columns, setColumns] = useState<CampaignsBoardColumn>([]);
 
   const { pageId } = useParams<any>();
@@ -27,34 +53,48 @@ const CampaignsBoardWeb: React.FC = () => {
       const res = await ConversationService.getConversations({ pageId });
       setAllConversation(res);
 
-      // Create a copy of the columns
-      const cols: CampaignsBoardColumn = CAMPAIGNS_BOARD_COLUMNS.map(col => ({
-        ...col,
-        tasks: [], // Clear previous tasks
-      }));
-
-      for (let i = 0; i < res.length; i++) {
-        const ele = res[i];
-        let colIndex = PhaseMap[ele.currentPhase];
-        cols[colIndex].tasks.push(ele);
-      }
-
-      setColumns(cols);
+      handleColumnsChange(res);
     } catch (e) {
       console.error(e);
     }
   };
 
   const changePhase = (igsid: string, newPhase: number) => {
+    // Update the backend
     ConversationService.updateConversation(igsid, {
       currentPhase: newPhase,
       status: 0,
     });
 
-    setAllConversation((allCs) =>
-      allCs.map((c) => (c.igsid === igsid ? { ...c, currentPhase: newPhase, status: 0 } : c))
-    );
+    // Update the frontend state
+    setAllConversation((prevConversations) => {
+      const updatedConversations = prevConversations.map((conversation) => {
+        if (conversation.igsid === igsid) {
+          return { ...conversation, currentPhase: newPhase, status: 0 };
+        }
+        return conversation;
+      });
+      return updatedConversations;
+    });
+
+    // Update the frontend columns
+    handleColumnsChange(allConversation);
   };
+
+  const handleColumnsChange = (conversations: IConversationUnit[]) => {
+    const cols: CampaignsBoardColumn = CAMPAIGNS_BOARD_COLUMNS.map(col => ({
+      ...col,
+      tasks: [],
+    }));
+
+    for (let i = 0; i < conversations.length; i++) {
+      const ele = conversations[i];
+      let colIndex = PhaseMap[ele.currentPhase];
+      cols[colIndex].tasks.push(ele);
+    }
+
+    setColumns(cols);
+  }
 
   useEffect(() => {
     const subscription = UpdateConversationSubject.subscribe(() => {
@@ -67,16 +107,23 @@ const CampaignsBoardWeb: React.FC = () => {
     getAllConversations();
   }, [pageId]);
 
+  const handleCurrentConversation = (conversation: IConversationUnit) => {
+    setCurrentConversation(conversation);
+  }
+
   return (
     <>
       {
-        // currentConversation && (
-        //   <ChatModal
-        //     igsid={currentConversation.igsid}
-        //     onCloseModal={() => setCurrentConversation(undefined)}
-        //     conversation={currentConversation}
-        //   />
-        // )
+        currentConversation && (
+          <ChatModal
+            visible={currentConversation !== undefined}
+            igsid={currentConversation?.igsid || ''}
+            onCloseModal={() => {
+              setCurrentConversation({} as IConversationUnit)
+            }}
+            conversation={currentConversation}
+          />
+        )
       }
       <DragDropContext
         onDragEnd={(result) => {
@@ -123,7 +170,13 @@ const CampaignsBoardWeb: React.FC = () => {
                   >
                     <span>{column.title}</span>
                     <span style={{ flex: 1 }} />
-                    <IconButton icon="refresh" onPress={getAllConversations} />
+                    <IconButton
+                      style={{
+                        zIndex: 1,
+                      }}
+                      icon="refresh"
+                      onPress={getAllConversations}
+                    />
                   </div>
                   <div
                     style={{
@@ -138,10 +191,11 @@ const CampaignsBoardWeb: React.FC = () => {
                             ref={provided.innerRef}
                             {...provided.draggableProps}
                             {...provided.dragHandleProps}
+                            onClick={() => handleCurrentConversation(task)}
                           >
                             <ConversationCard
                               task={task}
-                              setCurrentConversation={setCurrentConversation}
+                              handlecurrentconversation={handleCurrentConversation}
                             />
                           </div>
                         )}

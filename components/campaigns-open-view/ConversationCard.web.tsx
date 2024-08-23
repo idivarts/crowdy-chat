@@ -5,15 +5,16 @@ import Colors from '@/constants/Colors';
 
 interface IProps {
   task: IConversationUnit;
-  setCurrentConversation: (task: IConversationUnit) => void;
+  handlecurrentconversation: (task: IConversationUnit) => void;
 }
 
 const ConversationCard: React.FC<IProps> = (props) => {
   const task = props.task;
+
   return (
     <div
       {...props}
-      onClick={() => props.setCurrentConversation(props.task)}
+      onClick={() => props.handlecurrentconversation(task)}
       style={{
         backgroundColor: Colors.regular.white,
         borderRadius: '10px',
