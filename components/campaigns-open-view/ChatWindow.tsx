@@ -19,7 +19,7 @@ import { Text } from 'react-native';
 import MessageItem from './MessageItem';
 
 interface IProps {
-  handleCloseModal?: () => any
+  handleCloseModal: () => void
   igsid: string
   conversation: IConversationUnit
 }
@@ -33,9 +33,6 @@ const ChatWindow: React.FC<IProps> = (props) => {
   const [msg, setMsg] = useState("")
   const [botInst, setBotInst] = useState("")
 
-  console.log("Messages", messages);
-  console.log("Conversation", conversation);
-
   const loadMessages = async (after: any) => {
     setLoading(true)
     await MessageService.getMessages(props.igsid, { limit: 10, after }).then(res => {
@@ -43,8 +40,6 @@ const ChatWindow: React.FC<IProps> = (props) => {
         setMessages(res.data)
       else
         setMessages([...messages, ...res.data])
-      console.log("After ", res.paging.cursors.after);
-
       setAfter(res.paging.cursors.after)
     }).catch(e => {
 
@@ -217,7 +212,7 @@ const ChatWindow: React.FC<IProps> = (props) => {
       >
         <IconButton
           icon="keyboard-backspace"
-          onPress={() => props.handleCloseModal}
+          onPress={props.handleCloseModal}
         />
         <ImageComponent
           url={props.conversation.user.profilePic}

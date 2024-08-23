@@ -6,7 +6,6 @@ import { View } from 'react-native';
 import Colors from '@/constants/Colors';
 
 interface IProps {
-  visible: boolean,
   igsid: string,
   conversation: IConversationUnit
   onCloseModal: () => void
@@ -25,13 +24,13 @@ const ChatModal: React.FC<IProps> = (props: IProps) => {
     // Additional logic on modal close
   };
 
-  if (!isOpen) {
-    return null; // Do not render the modal if it is closed
+  if (!props.conversation) {
+    return null;
   }
 
   return (
     <Modal
-      visible={isOpen || props.visible}
+      visible={isOpen}
       onDismiss={handleCloseModal}
       style={{
         justifyContent: 'center',

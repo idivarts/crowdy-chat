@@ -20,26 +20,7 @@ const CampaignsBoardWeb: React.FC = () => {
   // setCurrentConversation,
   // } = useConversationContext();
   const [allConversation, setAllConversation] = useState<IConversationUnit[]>([]);
-  const [currentConversation, setCurrentConversation] = useState<IConversationUnit>({
-    "igsid": "359518917106129",
-    "user": {
-      "name": "",
-      "userName": "th_chat1",
-      "profilePic": ""
-    },
-    "lastBotMessageTime": 0,
-    "botMessageCount": 0,
-    "currentPhase": 2,
-    "reminderCount": 0,
-    "status": 0,
-    "informationCount": 2,
-    "page": {
-      "id": "17841466618151294",
-      "name": "Trends Hub",
-      "userName": "trendshub.ai",
-      "isInstagram": true
-    }
-  });
+  const [currentConversation, setCurrentConversation] = useState<IConversationUnit | undefined>(undefined);
   const [columns, setColumns] = useState<CampaignsBoardColumn>([]);
 
   const { pageId } = useParams<any>();
@@ -116,10 +97,9 @@ const CampaignsBoardWeb: React.FC = () => {
       {
         currentConversation && (
           <ChatModal
-            visible={currentConversation !== undefined}
             igsid={currentConversation?.igsid || ''}
             onCloseModal={() => {
-              setCurrentConversation({} as IConversationUnit)
+              setCurrentConversation(undefined);
             }}
             conversation={currentConversation}
           />
@@ -191,11 +171,10 @@ const CampaignsBoardWeb: React.FC = () => {
                             ref={provided.innerRef}
                             {...provided.draggableProps}
                             {...provided.dragHandleProps}
-                            onClick={() => handleCurrentConversation(task)}
                           >
                             <ConversationCard
                               task={task}
-                              handlecurrentconversation={handleCurrentConversation}
+                              handleCurrentConversation={handleCurrentConversation}
                             />
                           </div>
                         )}
