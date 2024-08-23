@@ -1,9 +1,10 @@
-import { TabView } from '@/app/(campaigns)/campaigns-open-view';
+import { TabView } from './CampaignOpenView';
 import React from 'react';
 import { View } from 'react-native';
 import { Appbar, Button, TextInput } from 'react-native-paper';
 import GoBackButton from '../ui/go-back-button';
 import styles from '@/styles/campaigns/CampaignsOpenViewHeader.styles';
+import CampaignsOpenViewFilter from './CampaignsOpenViewFilter';
 
 interface CampaignsOpenViewHeaderProps {
   tabView: TabView;
@@ -41,11 +42,7 @@ const CampaignsOpenViewHeader: React.FC<CampaignsOpenViewHeaderProps> = ({
             />
           </View>
         </View>
-        <TextInput
-          label="Page"
-          mode="outlined"
-          style={styles.pageInput}
-        />
+        <CampaignsOpenViewFilter />
       </View>
     </Appbar.Header>
   );

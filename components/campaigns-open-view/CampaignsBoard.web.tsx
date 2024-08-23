@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
-import { useParams } from 'react-router-dom';
 import { ConversationService } from '@/services';
 import { UpdateConversationSubject } from '@/subjects/conversation.update.subject';
 import ConversationCard from './ConversationCard.web';
@@ -11,13 +10,14 @@ import Button from '../ui/button/Button';
 import { IconButton } from 'react-native-paper';
 import ChatModal from './ChatModal';
 import { ActivityIndicator, View } from 'react-native';
+import { useLocalSearchParams } from 'expo-router';
 
 const CampaignsBoardWeb: React.FC = () => {
   const [allConversation, setAllConversation] = useState<IConversationUnit[]>([]);
   const [currentConversation, setCurrentConversation] = useState<IConversationUnit | undefined>(undefined);
   const [columns, setColumns] = useState<CampaignsBoardColumn>([]);
 
-  const { pageId } = useParams<any>();
+  const { pageId } = useLocalSearchParams();
 
   const PhaseMap: Record<number, number> = {
     0: 0, 1: 0, 2: 2, 3: 3, 4: 4, 5: 5, 6: 6, 7: 1,
@@ -25,7 +25,9 @@ const CampaignsBoardWeb: React.FC = () => {
 
   const getAllConversations = async () => {
     try {
-      const res = await ConversationService.getConversations({ pageId });
+      const res = await ConversationService.getConversations({
+        pageId: pageId as string,
+      });
       setAllConversation(res);
 
       handleColumnsChange(res);

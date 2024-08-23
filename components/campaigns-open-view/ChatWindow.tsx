@@ -1,6 +1,5 @@
 import React, { createRef, useEffect, useRef, useState } from 'react';
 
-// import InformationPanel from './components/InformationPanel';
 import { OpenConvfirmationModal } from '@/subjects/modal.subject';
 import { UpdateConversationSubject } from '@/subjects/conversation.update.subject';
 import ImageComponent from './ImageComponent.web';
@@ -17,6 +16,7 @@ import { MessageObject } from '@/types/Message';
 import { FlatList, View } from 'react-native';
 import { Text } from 'react-native';
 import MessageItem from './MessageItem';
+// import InformationPanel from './InformationPanel.web';
 
 interface IProps {
   handleCloseModal: () => void
@@ -65,36 +65,6 @@ const ChatWindow: React.FC<IProps> = (props) => {
       })
     })
   }, [])
-
-  // const refObj = useRef<HTMLDivElement>()
-
-  // const handleScroll = () => {
-  //   const { scrollTop, scrollHeight, clientHeight } = refObj.current;
-  //   const scrollPercentage = (scrollTop / (scrollHeight - clientHeight)) * 100;
-
-  //   // console.log('Scrolled', scrollTop, scrollHeight, clientHeight);
-
-  //   if (scrollPercentage <= -80) {
-  //     // Trigger your function here
-  //     if (!loading && after != "") {
-  //       console.log('Scrolled to 80% or more', scrollPercentage, loading, after);
-  //       loadMessages(after)
-  //     }
-  //   }
-  // };
-
-  // useEffect(() => {
-  //   if (refObj?.current) {
-  //     const fnc = () => {
-  //       handleScroll()
-  //     }
-  //     refObj.current.addEventListener('scroll', fnc);
-  //     return () => {
-  //       if (refObj?.current)
-  //         refObj.current.removeEventListener('scroll', fnc);
-  //     };
-  //   }
-  // }, [after, loading]);
 
   const syncChat = () => {
     PageActionsService.syncPageMessages(conversation!.page!.pageId, {

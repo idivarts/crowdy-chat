@@ -22,11 +22,17 @@ const CampaignsLayout = () => {
         <Stack
           screenOptions={{
             animation: "ios",
-            headerShown: true,
+            headerShown: false,
           }}
         >
           <Stack.Screen
             name="campaigns-open-view"
+            options={{
+              headerShown: false,
+            }}
+          />
+          <Stack.Screen
+            name="campaigns-open-view/:pageId"
             options={{
               headerShown: false,
             }}
