@@ -1,6 +1,7 @@
-import { DrawerToggle } from '@/components/ui';
-import { useBreakPoints } from '@/hooks';
-import { Stack } from 'expo-router';
+import { DrawerToggle } from "@/components/ui";
+import { useBreakPoints } from "@/hooks";
+import { Stack } from "expo-router";
+import CustomHeader from "@/components/ui/custom-header";
 
 const SourcesLayout = () => {
   const { lg } = useBreakPoints();
@@ -8,23 +9,16 @@ const SourcesLayout = () => {
   return (
     <Stack
       screenOptions={{
-        animation: 'ios',
+        animation: "ios",
         headerShown: true,
-        headerTitleAlign: 'center',
+        headerTitleAlign: "center",
       }}
     >
       <Stack.Screen
         name="sources"
         options={{
-          headerLeft: () => lg ? null : <DrawerToggle />,
-          title: 'Sources',
-        }}
-      />
-      <Stack.Screen
-        name="source"
-        options={{
-          headerBackTitleVisible: false,
-          title: 'Source',
+          headerShown: false,
+          title: "Sources",
         }}
       />
     </Stack>

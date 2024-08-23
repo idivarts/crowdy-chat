@@ -12,6 +12,7 @@ export const styles = StyleSheet.create({
     width: "90%",
     maxWidth: 400,
     elevation: 4,
+    backgroundColor: "#ffffff",
     borderRadius: 12,
   },
   cardTitle: {
