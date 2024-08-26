@@ -1,10 +1,11 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Pressable } from "react-native";
 import OrganizationSwitcherModal from "./OrganizationSwitcherModal";
 import { Text } from "@/components/Themed";
 import { Ionicons } from "@expo/vector-icons";
 import { Portal } from "react-native-paper";
 import { useBreakPoints } from "@/hooks";
+import { useOrganizationContext } from "@/contexts/organization-context.provider";
 
 interface OrganizationSwitcherProps { }
 
@@ -12,30 +13,34 @@ const OrganizationSwitcher: React.FC<OrganizationSwitcherProps> = () => {
   const [isOrganizationModalVisible, setOrganizationModalVisible] =
     useState(false);
   const { lg } = useBreakPoints();
-  const organizations = [
-    {
-      id: 1,
-      communityName: "Trendly.pro",
-      image: "https://via.placeholder.com/40",
-    },
-    {
-      id: 2,
-      communityName: "Organization 1",
-      image: "https://via.placeholder.com/40",
-    },
-    {
-      id: 3,
-      communityName: "Organization 2",
-      image: "https://via.placeholder.com/40",
-    },
-  ];
+  const {
+    currentOrganization,
+    getOrganizations,
+    isOrganizationsLoading,
+    organizations,
+    setCurrentOrganization,
+  } = useOrganizationContext();
 
-  const [currentOrganization] = useState(organizations[0]);
+  useEffect(() => {
+    getOrganizations();
+  }, []);
 
-  const handleSwitchOrganization = (id: number) => {
-    console.log(`Switched to organization with id: ${id}`);
+  const handleSwitchOrganization = (id: string) => {
+    const currentOrg = organizations.find((org) => org.id === id);
+    if (!currentOrg) {
+      return;
+    }
+    setCurrentOrganization(currentOrg);
     setOrganizationModalVisible(false);
   };
+
+  if (!currentOrganization) {
+    return null;
+  }
+
+  if (isOrganizationsLoading) {
+    return <Text>Loading...</Text>;
+  }
 
   return (
     <>
@@ -53,7 +58,7 @@ const OrganizationSwitcher: React.FC<OrganizationSwitcherProps> = () => {
             fontWeight: "600",
           }}
         >
-          {currentOrganization.communityName} - Users
+          {currentOrganization.name} - Users
         </Text>
         {isOrganizationModalVisible ? (
           <Ionicons

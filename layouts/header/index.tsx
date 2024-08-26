@@ -9,6 +9,7 @@ import { useRouter } from "expo-router";
 import OrganizationSwitcher from "@/components/ui/organization-switcher";
 import useBreakpoints from "@/hooks/use-breakpoints";
 import { ProfilePopupContextProvider } from "@/contexts/profile-popup-context.provider";
+import { OrganizationContextProvider } from "@/contexts/organization-context.provider";
 
 const Header: React.FC = () => {
   const { session } = useAuthContext();
@@ -17,34 +18,36 @@ const Header: React.FC = () => {
 
   return (
     <ProfilePopupContextProvider>
-      <HeaderContainer>
-        <HeaderSection gap={lg ? 20 : 10}>
-          <Logo />
-          {
-            session && (
-              <OrganizationSwitcher />
-            )
-          }
-        </HeaderSection>
-        <HeaderSection gap={lg ? 20 : 10}>
-          {
-            session ? (
-              <Profile />
-            ) : (
-              <>
-                <Button
-                  title="Signup"
-                  onPress={() => router.push('/(auth)/signup')}
-                />
-                <Button
-                  title="Login"
-                  onPress={() => router.push('/(auth)/login')}
-                />
-              </>
-            )
-          }
-        </HeaderSection>
-      </HeaderContainer>
+      <OrganizationContextProvider>
+        <HeaderContainer>
+          <HeaderSection gap={lg ? 20 : 10}>
+            <Logo />
+            {
+              session && (
+                <OrganizationSwitcher />
+              )
+            }
+          </HeaderSection>
+          <HeaderSection gap={lg ? 20 : 10}>
+            {
+              session ? (
+                <Profile />
+              ) : (
+                <>
+                  <Button
+                    title="Signup"
+                    onPress={() => router.push('/(auth)/signup')}
+                  />
+                  <Button
+                    title="Login"
+                    onPress={() => router.push('/(auth)/login')}
+                  />
+                </>
+              )
+            }
+          </HeaderSection>
+        </HeaderContainer>
+      </OrganizationContextProvider>
     </ProfilePopupContextProvider>
   );
 };

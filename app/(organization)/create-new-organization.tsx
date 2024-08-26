@@ -1,23 +1,34 @@
 
-import CreateOrganizationForm from "@/components/organization/CreateOrganizationForm";
-import { IMembers } from "@/shared-libs/firestore/crowdy-chat/models/members";
+import CreateOrganizationForm, { OrganizationForm } from "@/components/organization/CreateOrganizationForm";
 import { IOrganizations } from "@/shared-libs/firestore/crowdy-chat/models/organizations";
 import { AuthApp } from "@/shared-libs/utilities/auth";
 import { FirestoreDB } from "@/shared-libs/utilities/firestore";
+import Toaster from "@/shared-uis/components/toaster/Toaster";
 import { router } from "expo-router";
 import { signInAnonymously } from "firebase/auth";
-import { addDoc, collection, doc, setDoc } from "firebase/firestore";
+import { addDoc, collection } from "firebase/firestore";
 
 const CreateNewOrganization = () => {
-  const handleSubmit = async () => {
+  const handleSubmit = async (data: OrganizationForm) => {
     let authUser = await signInAnonymously(AuthApp)
     const colRef = collection(FirestoreDB, "organizations")
     let orgData: IOrganizations = {
-      name: "",
+      name: data.name,
       createdAt: Date.now(),
-      createdBy: authUser.user.uid
+      createdBy: authUser.user.uid,
+      description: data.description,
+      industry: data.industry,
+      website: data.website,
+      image: data.image,
     }
     let orgDoc = await addDoc(colRef, orgData)
+
+    if (!orgDoc.id) {
+      Toaster.error("Organization creation failed");
+    } else {
+      Toaster.success("Organization created successfully");
+      router.push("/(main)/organization-profile");
+    }
 
     // let memberColRef = collection(FirestoreDB, "organizations", orgDoc.id, "members")
     // let memberData: IMembers = {
@@ -30,19 +41,17 @@ const CreateNewOrganization = () => {
     // let memberDoc = await addDoc(memberColRef, memberData)
     // memberDoc.id //auto-generated
 
-    let memberColRef = collection(FirestoreDB, "organizations", orgDoc.id, "members")
-    let memberDocRef = doc(memberColRef, authUser.user.uid)
-    let memberData: IMembers = {
-      userId: authUser.user.uid,
-      organizationId: orgDoc.id,
-      permissions: {
-        admin: true
-      }
-    }
-    await setDoc(memberDocRef, memberData)
+    // let memberColRef = collection(FirestoreDB, "organizations", orgDoc.id, "members")
+    // let memberDocRef = doc(memberColRef, authUser.user.uid)
+    // let memberData: IMembers = {
+    //   userId: authUser.user.uid,
+    //   organizationId: orgDoc.id,
+    //   permissions: {
+    //     admin: true
+    //   }
+    // }
+    // await setDoc(memberDocRef, memberData)
     // parent id -> authUser.user.uid
-
-    router.push("/(main)/organization-profile");
   };
 
   return (
