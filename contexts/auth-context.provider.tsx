@@ -1,15 +1,17 @@
 import { useStorageState } from '@/hooks';
-import { useContext, createContext, type PropsWithChildren } from 'react';
+import { AuthApp } from '@/shared-libs/utilities/auth';
+import { signInWithEmailAndPassword } from "firebase/auth";
+import { createContext, useContext, type PropsWithChildren } from 'react';
 
 interface AuthContextProps {
-  signIn: () => void;
+  signIn: (email?: string, password?: string) => void;
   signOut: () => void;
   session?: string | null;
   isLoading: boolean;
 }
 
 const AuthContext = createContext<AuthContextProps>({
-  signIn: () => null,
+  signIn: (email?: string, password?: string) => null,
   signOut: () => null,
   session: null,
   isLoading: false,
@@ -22,8 +24,9 @@ export const AuthContextProvider: React.FC<PropsWithChildren> = ({
 }) => {
   const [[isLoading, session], setSession] = useStorageState('session');
 
-  const signIn = () => {
-    setSession('xxx');
+  const signIn = async (email?: string, password?: string) => {
+    await signInWithEmailAndPassword(AuthApp, "" + email, "" + password)
+    // setSession('xxx');
   }
 
   const signOut = () => {
