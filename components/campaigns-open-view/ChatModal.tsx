@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import ChatWindow from './ChatWindow';
 import { IConversationUnit } from '@/types/CampaignsBoard';
-import { Modal } from 'react-native-paper';
+import { Modal, Portal } from 'react-native-paper';
 import { View } from 'react-native';
 import Colors from '@/constants/Colors';
 
@@ -29,27 +29,29 @@ const ChatModal: React.FC<IProps> = (props: IProps) => {
   }
 
   return (
-    <Modal
-      visible={isOpen}
-      onDismiss={handleCloseModal}
-      style={{
-        justifyContent: 'center',
-        alignItems: 'center',
-        zIndex: 10000,
-      }}
-      contentContainerStyle={{
-        marginTop: 24,
-      }}
-    >
-      <View
+    <Portal>
+      <Modal
+        visible={isOpen}
+        onDismiss={handleCloseModal}
         style={{
           justifyContent: 'center',
           alignItems: 'center',
+          zIndex: 10000,
+        }}
+        contentContainerStyle={{
+          marginTop: 24,
         }}
       >
-        <ChatWindow handleCloseModal={handleCloseModal} {...props} />
-      </View>
-    </Modal>
+        <View
+          style={{
+            justifyContent: 'center',
+            alignItems: 'center',
+          }}
+        >
+          <ChatWindow handleCloseModal={handleCloseModal} {...props} />
+        </View>
+      </Modal>
+    </Portal>
   );
 };
 
