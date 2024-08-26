@@ -59,7 +59,6 @@ export const AuthContextProvider: React.FC<PropsWithChildren> = ({
       router.replace("/(main)/(campaigns)/campaigns");
     } catch (error: any) {
       let errorMessage = "An unknown error occurred. Please try again.";
-      console.log("HUEHUE", error.code);
       switch (error.code) {
         case "auth/invalid-email":
           errorMessage = "The email address is not valid.";
