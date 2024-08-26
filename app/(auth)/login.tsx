@@ -5,13 +5,12 @@ import { styles } from "@/styles/Login.styles";
 import { useRouter } from "expo-router";
 
 interface LoginData {
-  email: string;
+  emailOrUsername: string;
   password: string;
 }
 
 const Login = () => {
   const { signIn } = useAuthContext();
-  const router = useRouter();
 
   return (
     <LoginUI
@@ -22,10 +21,7 @@ const Login = () => {
         throw new Error("Function not implemented.");
       }}
       handleSubmit={(data: LoginData) => {
-        signIn();
-        console.log("Signin data:", data);
-        Toaster.success("Signed In Successfully!");
-        router.replace("/(main)/(campaigns)/campaigns");
+        signIn(data.emailOrUsername, data.password);
       }}
     />
   );
