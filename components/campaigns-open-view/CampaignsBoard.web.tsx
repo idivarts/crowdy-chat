@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 import { ConversationService } from '@/services';
 import { UpdateConversationSubject } from '@/subjects/conversation.update.subject';
-import ConversationCard from './ConversationCard.web';
+import ConversationCard from './ConversationCard';
 import { CAMPAIGNS_BOARD_COLUMNS } from '@/constants/CampaignsBoard';
 import { CampaignsBoardColumn, IConversationUnit } from '@/types/CampaignsBoard';
 import Colors from '@/constants/Colors';
