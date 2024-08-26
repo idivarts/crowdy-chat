@@ -19,7 +19,7 @@ const ConversationCard: React.FC<IProps> = (props) => {
       <View
         style={{
           backgroundColor: Colors.regular.white,
-          borderColor: `${props.task.status > 0 ? '#11ca27' : '#e2e4e6'}`,
+          borderColor: props.task.status > 0 ? '#11ca27' : '#e2e4e6',
           borderRadius: 10,
           borderWidth: 1,
           flexDirection: 'row',
@@ -68,7 +68,13 @@ const ConversationCard: React.FC<IProps> = (props) => {
               {props.task.page?.name}
             </Text>
           </View>
-          <hr />
+          <View
+            style={{
+              borderBottomColor: Colors.regular.aliceBlue,
+              borderBottomWidth: 1,
+              marginVertical: 8,
+            }}
+          />
           <View>
             <Text>{"Bot Message Count: " + props.task.botMessageCount}</Text>
             {props.task.lastBotMessageTime > 0 && (
