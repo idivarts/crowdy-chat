@@ -24,16 +24,17 @@ import {
   useState,
 } from "react";
 import { useFirebaseStorageContext } from "./firebase-storage-context.provider";
+import { Organization } from "@/types/Organization";
 
 interface OrganizationContextProps {
   createOrganization: (data: OrganizationForm) => Promise<void>;
-  currentOrganization: IOrganizations | undefined;
+  currentOrganization: Organization | undefined;
   getOrganizations: () => Promise<void>;
   isOrganizationsLoading: boolean;
-  organizations: IOrganizations[];
-  setCurrentOrganization: React.Dispatch<React.SetStateAction<IOrganizations | undefined>>;
-  setOrganizations: React.Dispatch<React.SetStateAction<IOrganizations[]>>;
-  updateOrganization: (orgId: string, updatedData: Partial<IOrganizations>) => Promise<void>;
+  organizations: Organization[];
+  setCurrentOrganization: React.Dispatch<React.SetStateAction<Organization | undefined>>;
+  setOrganizations: React.Dispatch<React.SetStateAction<Organization[]>>;
+  updateOrganization: (orgId: string, updatedData: Partial<Organization>) => Promise<void>;
 }
 
 const OrganizationContext = createContext<OrganizationContextProps>(null!);
@@ -43,8 +44,8 @@ export const useOrganizationContext = () => useContext(OrganizationContext);
 export const OrganizationContextProvider: React.FC<PropsWithChildren> = ({
   children,
 }) => {
-  const [currentOrganization, setCurrentOrganization] = useState<IOrganizations>();
-  const [organizations, setOrganizations] = useState<IOrganizations[]>([]);
+  const [currentOrganization, setCurrentOrganization] = useState<Organization>();
+  const [organizations, setOrganizations] = useState<Organization[]>([]);
   const [isOrganizationsLoading, setIsOrganizationsLoading] = useState<boolean>(true);
 
   const {
@@ -114,7 +115,7 @@ export const OrganizationContextProvider: React.FC<PropsWithChildren> = ({
       const data = orgsSnapshot.docs.map((doc) => ({
         id: doc.id,
         ...doc.data(),
-      }) as IOrganizations);
+      }) as Organization);
 
       setCurrentOrganization(data[0]);
       setOrganizations(data);
