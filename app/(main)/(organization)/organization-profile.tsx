@@ -28,7 +28,11 @@ const OrganizationProfile: React.FC = () => {
   };
 
   const handleSave = async () => {
-    await updateOrganization(organization?.id!, {
+    if (!organization) {
+      return;
+    }
+
+    await updateOrganization(organization.id, {
       name,
       image,
       description,
