@@ -50,6 +50,7 @@ const CreateOrganizationForm: React.FC<CreateOrganizationFormProps> = ({
   const handleSubmit = () => {
     if (!organizationFormData.name) {
       Toaster.error('Name is required');
+      return;
     }
     onSubmit(organizationFormData);
   };

@@ -17,7 +17,6 @@ const Header: React.FC = () => {
 
   return (
     <ProfilePopupContextProvider>
-
       <HeaderContainer>
         <HeaderSection gap={lg ? 20 : 10}>
           <Logo />

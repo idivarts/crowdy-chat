@@ -80,8 +80,7 @@ export const OrganizationContextProvider: React.FC<PropsWithChildren> = ({
       }
     }
 
-    await addDoc(memberColRef, memberData);
-
+    // Keep member ID same as user ID
     let memberDocRef = doc(memberColRef, authUser.user.uid)
     await setDoc(memberDocRef, memberData)
 

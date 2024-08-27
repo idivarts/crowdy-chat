@@ -7,7 +7,7 @@ import { Portal } from "react-native-paper";
 import { useBreakPoints } from "@/hooks";
 import { useOrganizationContext } from "@/contexts/organization-context.provider";
 
-interface OrganizationSwitcherProps { }
+type OrganizationSwitcherProps = {};
 
 const OrganizationSwitcher: React.FC<OrganizationSwitcherProps> = () => {
   const [isOrganizationModalVisible, setOrganizationModalVisible] =
