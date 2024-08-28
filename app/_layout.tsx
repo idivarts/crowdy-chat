@@ -19,7 +19,7 @@ import {
 import { PaperProvider } from "react-native-paper";
 import { AuthScreens, MainScreens, PublicScreens } from "@/layouts/screens";
 import CustomPaperTheme from "@/constants/Theme";
-import { OrganizationContextProvider } from "@/contexts/organization-context.provider";
+import { OrganizationContextProvider, useOrganizationContext } from "@/contexts/organization-context.provider";
 import { FirebaseStorageContextProvider } from "@/contexts/firebase-storage-context.provider";
 
 export {
@@ -80,6 +80,7 @@ const RootLayout = () => {
 const RootLayoutStack = () => {
   const colorScheme = useColorScheme();
   const { session } = useAuthContext();
+  const { getOrganizations } = useOrganizationContext();
 
   // const router = useRouter();
   // const pathname = usePathname();
@@ -93,6 +94,12 @@ const RootLayoutStack = () => {
   //       router.replace('/(main)/compaigns');
   //   }
   // }, [router, session]);
+
+  useEffect(() => {
+    if (session) {
+      getOrganizations();
+    }
+  }, [session]);
 
   return (
     <ThemeProvider value={colorScheme === "dark" ? DarkTheme : ExpoDefaultTheme}>

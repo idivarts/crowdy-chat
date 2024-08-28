@@ -33,12 +33,12 @@ const AuthContext = createContext<AuthContextProps>({
 });
 
 export const useAuthContext = () => useContext(AuthContext);
-const router = useRouter();
 
 export const AuthContextProvider: React.FC<PropsWithChildren> = ({
   children,
 }) => {
-  const [[isLoading, session], setSession] = useStorageState("session");
+  const [[isLoading, session], setSession] = useStorageState("");
+  const router = useRouter();
 
   const signIn = async (email: string, password: string) => {
     try {

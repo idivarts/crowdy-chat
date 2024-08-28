@@ -1,6 +1,5 @@
 import { DefaultTheme as PaperDefaultTheme } from "react-native-paper";
 import Colors from "./Colors";
-console.log(PaperDefaultTheme);
 
 const CustomPaperTheme = {
   ...PaperDefaultTheme,
