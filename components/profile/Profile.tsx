@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { Pressable } from "react-native";
 import { useRouter } from "expo-router";
-
 import Toaster from "@/shared-uis/components/toaster/Toaster";
 import { useAuthContext } from "@/contexts";
 import { useProfilePopupContext } from "@/contexts/profile-popup-context.provider";
@@ -41,11 +40,7 @@ const Profile = () => {
             setProfilePopupVisible(true);
           }}
         />
-        <MenuItem
-          key="delete"
-          title="Logout"
-          onPress={handleSignout}
-        />
+        <MenuItem key="delete" title="Logout" onPress={handleSignout} />
       </>
     </Menu>
   );

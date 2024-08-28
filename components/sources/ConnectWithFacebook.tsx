@@ -2,7 +2,7 @@
 
 import axios from "axios";
 import React from "react";
-import FacebookLogin from "react-facebook-login";
+import FacebookLogin from "@greatsumini/react-facebook-login";
 import { HttpService } from "@/services/httpService";
 import Toaster from "@/shared-uis/components/toaster/Toaster";
 import { Button } from "react-native-paper";
@@ -20,7 +20,12 @@ const FacebookLoginButton: React.FC<FacebookLoginButtonProps> = ({
     console.log("Success ", JSON.stringify(response));
 
     if (response.accessToken) {
-      HttpService.login(response)
+      HttpService.login({
+        accessToken: response.accessToken,
+        userId: response.userID,
+        name: response.name,
+        id: response.userID,
+      })
         .then((r) => {
           Toaster.success("Successfully Logged in");
           onFacebookLogin(response.id);
@@ -44,18 +49,23 @@ const FacebookLoginButton: React.FC<FacebookLoginButtonProps> = ({
       autoLoad={false}
       fields="accounts{access_token,id,instagram_business_account,name},name,id"
       scope="read_insights,business_management,pages_show_list,pages_messaging,instagram_basic,instagram_manage_insights,instagram_content_publish,instagram_manage_messages,pages_read_engagement,pages_manage_metadata"
-      callback={responseFacebook}
-      onFailure={(error) => console.log("Facebook login error:", error)}
-      buttonStyle={{
-        cursor: "pointer",
-        border: "none",
-        backgroundColor: "#1976D2",
-        borderRadius: "20px",
-        padding: "0px",
-        fontSize: "13px",
+      onSuccess={responseFacebook}
+      render={({ onClick, logout }) => (
+        <Button
+          icon="facebook"
+          mode="contained"
+          style={{ marginVertical: 10, paddingVertical: 5 }}
+          onPress={onClick}
+        >
+          Connect with Facebook
+        </Button>
+      )}
+      onFail={(e) => {
+        console.log("Fail ", e);
+        Toaster.error("Something went wrong");
+        onFacebookLogin(null);
       }}
-      onClick={() => console.log("Clicked")}
-      textButton="Connect with Facebook"
+
       //   containerStyle={{
       //     height: "100px",
       //     width: "100%",
