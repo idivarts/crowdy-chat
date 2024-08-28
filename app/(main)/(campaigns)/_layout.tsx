@@ -1,5 +1,5 @@
 import { DrawerToggle } from "@/components/ui";
-import { useAuthContext } from "@/contexts";
+import { useAuthContext, useOrganizationContext } from "@/contexts";
 import { useBreakPoints } from "@/hooks";
 import { Stack, useRouter } from "expo-router";
 import { useEffect } from "react";
@@ -10,12 +10,25 @@ const CampaignsLayout = () => {
   const { lg } = useBreakPoints();
 
   const { isLoading, session } = useAuthContext();
+  const { organizations } = useOrganizationContext();
+
   const router = useRouter();
+
   useEffect(() => {
     if (!isLoading && !session) {
       router.replace("/(auth)/login");
     }
   }, [isLoading, session]);
+
+  useEffect(() => {
+    if (organizations.length === 0) {
+      router.replace("/(organization)/create-new-organization");
+    }
+  }, [organizations]);
+
+  if (isLoading || organizations.length === 0) {
+    return null;
+  }
 
   return (
     <Stack
