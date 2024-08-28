@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 
 import { OpenConfirmationModal } from '@/subjects/modal.subject';
 import { UpdateConversationSubject } from '@/subjects/conversation.update.subject';
-import ImageComponent from './ImageComponent.web';
+import ImageComponent from './ImageComponent';
 import { ActivityIndicator, IconButton, Switch, TextInput, Tooltip } from 'react-native-paper';
 import { IConversationByIdResponse } from '@/services/conversation.service';
 import { IConversationUnit } from '@/types/CampaignsBoard';
