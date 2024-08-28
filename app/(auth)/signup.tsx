@@ -10,8 +10,7 @@ interface SignupData {
 }
 
 const Signup = () => {
-  const { signIn } = useAuthContext();
-  const router = useRouter();
+  const { signUp } = useAuthContext();
 
   return (
     <SignupUI
@@ -22,10 +21,7 @@ const Signup = () => {
         throw new Error("Function not implemented.");
       }}
       handleSubmit={(data: SignupData) => {
-        signIn();
-        console.log("Signup data:", data);
-        Toaster.success("Signed Up Successfully!");
-        router.replace("/(main)/(campaigns)/campaigns");
+        signUp(data.email, data.password);
       }}
     />
   );

@@ -1,15 +1,14 @@
 import Colors from "@/constants/Colors";
 import { PageActionsService } from "@/services";
 import { PageUnit } from "@/types/PageActions";
-import { router } from "expo-router";
+import { router, useLocalSearchParams } from "expo-router";
 import { useEffect, useState } from "react";
 import { Text, View } from "react-native";
 import { Pressable } from "react-native";
 import { Icon, Menu } from "react-native-paper";
-import { useParams } from "react-router-dom";
 
 const CampaignsOpenViewFilter = () => {
-  const { pageId } = useParams<any>()
+  const { pageId } = useLocalSearchParams<any>()
   const [value, setValue] = useState(pageId ? pageId : "all")
   const [pages, setPages] = useState<PageUnit[]>([])
   const [menuVisible, setMenuVisible] = useState(false);
@@ -29,9 +28,9 @@ const CampaignsOpenViewFilter = () => {
 
   const onChangePage = (v: string) => {
     if (v == "all") {
-      router.push("/campaigns-open-view")
+      router.push("/campaign-detailed-view")
     } else {
-      router.push(`/campaigns-open-view/${v}`)
+      router.push(`/campaign-detailed-view/${v}`)
     }
     setMenuVisible(false);
   }

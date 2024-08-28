@@ -101,17 +101,10 @@ const Sources = () => {
         >
           <View style={styles.modalContent}>
             <Text style={styles.modalTitle}>Connect to a Source</Text>
-            <View style={styles.faceBookView}>
-              <IconButton
-                icon="facebook"
-                onPress={handleConnectSource}
-                iconColor="#FFF"
-              />
-              <FacebookLoginButton
-                onFacebookLogin={(userId) => getPages(userId ? userId : "TEMP")}
-                isConnected={false}
-              />
-            </View>
+            <FacebookLoginButton
+              onFacebookLogin={(userId) => getPages(userId ? userId : "TEMP")}
+              isConnected={false}
+            />
             <Button
               icon="instagram"
               mode="contained"
