@@ -1,10 +1,9 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Appbar } from "react-native-paper";
 import { router } from "expo-router";
 
 import AppLayout from "@/layouts/app-layout";
 import { View } from "@/components/Themed";
-import { campaigns as initialCampaigns } from "@/constants/Campaigns";
 import styles from "@/styles/campaigns/CampaignsList.styles";
 import { DrawerToggle } from "@/components/ui";
 import { useBreakPoints } from "@/hooks";
@@ -12,23 +11,38 @@ import CampaignsEmptyState from "@/components/campaigns/CampaignsEmptyState";
 import CampaignsFilledState from "@/components/campaigns/CampaignsFilledState";
 // import TextInput from "@/components/ui/text-input/TextInput";
 import { TextInput } from "react-native-paper";
+import { useCampaignContext } from "@/contexts/campaign-context.provider";
+import { Campaign } from "@/types/campaign";
 
 const Campaigns = () => {
   const [searchQuery, setSearchQuery] = useState("");
-  const [filteredCampaigns, setFilteredCampaigns] = useState(initialCampaigns);
+  const [filteredCampaigns, setFilteredCampaigns] = useState<Campaign[]>([]);
   const { lg } = useBreakPoints();
+
+  const {
+    campaigns,
+    getCampaigns,
+  } = useCampaignContext();
 
   const handleSearch = (query: string) => {
     setSearchQuery(query);
     if (query === "") {
-      setFilteredCampaigns(initialCampaigns);
+      setFilteredCampaigns(campaigns);
     } else {
-      const filtered = initialCampaigns.filter((campaign) =>
+      const filtered = campaigns.filter((campaign) =>
         campaign.name.toLowerCase().includes(query.toLowerCase())
       );
       setFilteredCampaigns(filtered);
     }
   };
+
+  useEffect(() => {
+    getCampaigns();
+  }, []);
+
+  if (!campaigns) {
+    return null;
+  }
 
   return (
     <AppLayout>

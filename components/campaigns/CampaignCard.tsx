@@ -41,9 +41,9 @@ const CampaignCard = ({ item }: CampaignCardProps) => {
           <View style={styles.cardHeaderText}>
             <Text style={styles.campaignName}>{item.name}</Text>
             <View style={styles.chatAssistantIdContainer}>
-              <Text style={styles.chatAssistantId}>{item.chatAssistantId}</Text>
+              <Text style={styles.chatAssistantId}>{item.assistantId}</Text>
               <TouchableOpacity
-                onPress={() => copyToClipboard(item.chatAssistantId)}
+                onPress={() => copyToClipboard(item.assistantId || '')}
                 style={styles.copyIdIcon}
               >
                 <Ionicons name="copy-outline" size={16} color="black" />
