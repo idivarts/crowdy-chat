@@ -5,6 +5,7 @@ import { Stack, useRouter } from "expo-router";
 import { useEffect } from "react";
 import { View } from "@/components/Themed";
 import GoBackButton from "@/components/ui/go-back-button";
+import { ActivityIndicator } from "react-native";
 
 const CampaignsLayout = () => {
   const { lg } = useBreakPoints();
@@ -20,14 +21,17 @@ const CampaignsLayout = () => {
     }
   }, [isLoading, session]);
 
-  useEffect(() => {
-    if (organizations.length === 0) {
-      router.replace("/(organization)/create-new-organization");
-    }
-  }, [organizations]);
-
   if (isLoading || organizations.length === 0) {
-    return null;
+    return (
+      <View
+        style={{
+          flex: 1,
+          justifyContent: "center",
+        }}
+      >
+        <ActivityIndicator />
+      </View>
+    )
   }
 
   return (

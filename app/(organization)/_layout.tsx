@@ -1,10 +1,12 @@
 import { View } from "@/components/Themed";
-import { useAuthContext } from "@/contexts";
+import GoBackButton from "@/components/ui/go-back-button";
+import { useAuthContext, useOrganizationContext } from "@/contexts";
 import { Stack, useRouter } from "expo-router";
 import { useEffect } from "react";
 
 const OrganizationLayout = () => {
   const { isLoading, session } = useAuthContext()
+  const { organizations } = useOrganizationContext()
   const router = useRouter()
   useEffect(() => {
     if (!isLoading && !session) {
@@ -28,9 +30,10 @@ const OrganizationLayout = () => {
           <Stack.Screen
             name="create-new-organization"
             options={{
+              headerLeft: () => organizations.length === 0 ? null : <GoBackButton />,
               headerShown: true,
-              title: "Create New Organization",
               headerTitleAlign: "center",
+              title: "Create New Organization",
             }}
           />
         </Stack>

@@ -21,6 +21,7 @@ import {
   createContext,
   type PropsWithChildren,
   useState,
+  useEffect,
 } from "react";
 import { useFirebaseStorageContext } from "./firebase-storage-context.provider";
 import { Organization } from "@/types/Organization";
@@ -29,7 +30,7 @@ import { useAuthContext } from "./auth-context.provider";
 interface OrganizationContextProps {
   createOrganization: (data: OrganizationForm) => Promise<void>;
   currentOrganization: Organization | undefined;
-  getOrganizations: () => Promise<void>;
+  getOrganizations: () => Promise<Organization[] | undefined>;
   isOrganizationsLoading: boolean;
   organizations: Organization[];
   setCurrentOrganization: React.Dispatch<React.SetStateAction<Organization | undefined>>;
@@ -55,6 +56,22 @@ export const OrganizationContextProvider: React.FC<PropsWithChildren> = ({
   const {
     session,
   } = useAuthContext();
+
+  const fetchOrganization = async () => {
+    const result = await getOrganizations();
+
+    if (!result) {
+      router.push("/(organization)/create-new-organization");
+    } else {
+      router.push("/(main)/(campaigns)/campaigns");
+    }
+  };
+
+  useEffect(() => {
+    if (session) {
+      fetchOrganization();
+    }
+  }, [session]);
 
   const createOrganization = async (data: OrganizationForm) => {
     if (!session) {
@@ -93,12 +110,13 @@ export const OrganizationContextProvider: React.FC<PropsWithChildren> = ({
     if (!orgDoc.id) {
       Toaster.error("Organization creation failed");
     } else {
+      await getOrganizations();
       Toaster.success("Organization created successfully");
       router.push("/(main)/organization-profile");
     }
   };
 
-  const getOrganizations = async () => {
+  const getOrganizations = async (): Promise<Organization[] | undefined> => {
     setIsOrganizationsLoading(true);
     try {
       const membersColGroupRef = collectionGroup(FirestoreDB, "members");
@@ -107,8 +125,7 @@ export const OrganizationContextProvider: React.FC<PropsWithChildren> = ({
 
       // If no organizations found, redirect to create new organization page
       if (orgsSnapshot.empty) {
-        router.push("/(organization)/create-new-organization");
-        return;
+        return undefined;
       }
 
       const orgDataPromises = orgsSnapshot.docs.map(async (docSnapshot) => {
@@ -132,12 +149,12 @@ export const OrganizationContextProvider: React.FC<PropsWithChildren> = ({
 
       if (data.length === 0) {
         Toaster.error("No organizations found");
-        router.push("/(organization)/create-new-organization");
-        return;
+        return undefined;
       }
 
       setCurrentOrganization(data[0] as Organization);
       setOrganizations(data as Organization[]);
+      return data;
     } catch (error) {
       console.error("Error getting organizations: ", error);
       Toaster.error("Failed to get organizations");
@@ -146,11 +163,17 @@ export const OrganizationContextProvider: React.FC<PropsWithChildren> = ({
     }
   };
 
-  const updateOrganization = async (orgId: string, updatedData: Partial<IOrganizations>) => {
+  const updateOrganization = async (orgId: string, data: Partial<OrganizationForm>) => {
+
+    if (data.image) {
+      data.image = await uploadImage(data.image, `organizations/${session}/${data.name}`);
+    }
+
     const orgDocRef = doc(FirestoreDB, "organizations", orgId);
 
     try {
-      await updateDoc(orgDocRef, updatedData);
+      await updateDoc(orgDocRef, data);
+      getOrganizations();
       Toaster.success("Organization updated successfully");
       router.push("/(main)/organization-profile");
     } catch (error) {
