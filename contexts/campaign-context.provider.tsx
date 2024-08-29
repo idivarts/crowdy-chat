@@ -1,7 +1,7 @@
 import { initialCampaigns } from "@/constants/Campaigns";
 import { FirestoreDB } from "@/shared-libs/utilities/firestore";
 import { Campaign } from "@/types/campaign";
-import { collection, getDocs, query, where } from "firebase/firestore";
+import { collection, getDocs, } from "firebase/firestore";
 import {
   useContext,
   createContext,
@@ -35,14 +35,15 @@ export const CampaignContextProvider: React.FC<PropsWithChildren> = ({
   }
 
   useEffect(() => {
-    fetchCampaigns();
+    if (currentOrganization) {
+      fetchCampaigns();
+    }
   }, [currentOrganization]);
 
   const getCampaigns = async () => {
     // Fetch data from Firebase
-    const campaignsRef = collection(FirestoreDB, "campaigns");
-    const campaignsQuery = query(campaignsRef, where("organizationId", "==", currentOrganization?.id));
-    const campaignsSnapshot = await getDocs(campaignsQuery);
+    const campaignsRef = collection(FirestoreDB, `/organizations/${currentOrganization?.id}/campaigns`);
+    const campaignsSnapshot = await getDocs(campaignsRef);
 
     const campaignsData = campaignsSnapshot.docs.map((doc) => {
       return {
