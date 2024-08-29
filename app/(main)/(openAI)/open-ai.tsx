@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { View } from "react-native";
 import {
   Text,
@@ -22,6 +22,11 @@ const OpenAIComponent = () => {
     updateOrganization,
   } = useOrganizationContext();
 
+  useEffect(() => {
+    setApiKey(currentOrganization?.openAIKey || "");
+    setDisplayKey(currentOrganization?.openAIKey?.replace(/./g, "*") || "");
+  }, [currentOrganization]);
+
   const handleSave = () => {
     if (!apiKey) {
       Toaster.error("Please enter an API key");
@@ -36,7 +41,6 @@ const OpenAIComponent = () => {
     updateOrganization(
       currentOrganization.id,
       {
-        ...currentOrganization,
         openAIKey: apiKey,
       });
     setIsEditing(false);
