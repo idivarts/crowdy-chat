@@ -167,7 +167,6 @@ const MembersModal: React.FC<MembersModalProps> = ({
                     },
                   });
                 } else {
-                  console.log("From Modal", newMember);
                   handleAddUser(newMember);
                   setNewMember({
                     username: "",
