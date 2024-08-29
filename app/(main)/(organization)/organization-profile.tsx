@@ -98,8 +98,9 @@ const OrganizationProfile: React.FC = () => {
             <View style={styles.imagePickerContainer}>
               <ImagePicker
                 editable={isEditable}
-                initialImage={organization?.image || image}
+                image={image}
                 onUploadImage={onUploadImage}
+                setImage={setImage}
               />
             </View>
 
