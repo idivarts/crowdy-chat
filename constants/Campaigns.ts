@@ -7,7 +7,7 @@ export const initialCampaigns = [
     totalConversions: 50,
     totalLeads: 100,
     totalPages: 3,
-    organizationId: "ORG-001",
+    organizationId: "hgpoFwJgYnWDQK3SOCf0",
     objective: "Objective 1",
     createdBy: "User 1",
     createdAt: 1628620800,
@@ -29,7 +29,7 @@ export const initialCampaigns = [
     },
     leadStages: [
       {
-        organizationId: "ORG-001",
+        organizationId: "hgpoFwJgYnWDQK3SOCf0",
         campaignId: "1",
         name: "Lead Stage 1",
         purpose: "Purpose 1",
@@ -43,7 +43,7 @@ export const initialCampaigns = [
         leadConversion: true,
         collectibles: [
           {
-            organizationId: "ORG-001",
+            organizationId: "hgpoFwJgYnWDQK3SOCf0",
             campaignId: "1",
             leadStageId: "1",
             name: "Collectible 1",
@@ -54,7 +54,7 @@ export const initialCampaigns = [
     ],
     conversations: [
       {
-        organizationId: "ORG-001",
+        organizationId: "hgpoFwJgYnWDQK3SOCf0",
         campaignId: "1",
         sourceId: "Source 1",
         threadId: "Thread 1",
@@ -81,7 +81,7 @@ export const initialCampaigns = [
     totalConversions: 80,
     totalLeads: 200,
     totalPages: 5,
-    organizationId: "ORG-002",
+    organizationId: "ruKWk7vTT92Hb00B3xNI",
     objective: "Objective 2",
     createdBy: "User 2",
     createdAt: 1628620800,
@@ -103,7 +103,7 @@ export const initialCampaigns = [
     },
     leadStages: [
       {
-        organizationId: "ORG-002",
+        organizationId: "ruKWk7vTT92Hb00B3xNI",
         campaignId: "2",
         name: "Lead Stage 2",
         purpose: "Purpose 2",
@@ -117,7 +117,7 @@ export const initialCampaigns = [
         leadConversion: true,
         collectibles: [
           {
-            organizationId: "ORG-002",
+            organizationId: "ruKWk7vTT92Hb00B3xNI",
             campaignId: "2",
             leadStageId: "2",
             name: "Collectible 2",
@@ -128,7 +128,7 @@ export const initialCampaigns = [
     ],
     conversations: [
       {
-        organizationId: "ORG-002",
+        organizationId: "ruKWk7vTT92Hb00B3xNI",
         campaignId: "2",
         sourceId: "Source 2",
         threadId: "Thread 2",

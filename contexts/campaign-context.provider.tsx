@@ -1,4 +1,3 @@
-import { initialCampaigns } from "@/constants/Campaigns";
 import { FirestoreDB } from "@/shared-libs/utilities/firestore";
 import { Campaign } from "@/types/campaign";
 import { collection, getDocs, } from "firebase/firestore";
@@ -7,9 +6,9 @@ import {
   createContext,
   type PropsWithChildren,
   useState,
-  useEffect,
 } from "react";
 import { useOrganizationContext } from "./organization-context.provider";
+import { initialCampaigns } from "@/constants/Campaigns";
 
 interface CampaignContextProps {
   campaigns: Campaign[];
@@ -23,36 +22,28 @@ export const useCampaignContext = () => useContext(CampaignContext);
 export const CampaignContextProvider: React.FC<PropsWithChildren> = ({
   children,
 }) => {
-  console.log(initialCampaigns);
   const [campaigns, setCampaigns] = useState<Campaign[]>([]);
-
   const {
     currentOrganization,
   } = useOrganizationContext();
 
-  const fetchCampaigns = async () => {
-    await getCampaigns();
-  }
-
-  useEffect(() => {
-    if (currentOrganization) {
-      fetchCampaigns();
-    }
-  }, [currentOrganization]);
-
   const getCampaigns = async () => {
-    // Fetch data from Firebase
-    const campaignsRef = collection(FirestoreDB, `/organizations/${currentOrganization?.id}/campaigns`);
-    const campaignsSnapshot = await getDocs(campaignsRef);
+    // const campaignsRef = collection(FirestoreDB, `/organizations/${currentOrganization?.id}/campaigns`);
+    // const campaignsSnapshot = await getDocs(campaignsRef);
 
-    const campaignsData = campaignsSnapshot.docs.map((doc) => {
-      return {
-        id: doc.id,
-        ...doc.data(),
-      } as Campaign;
-    });
+    // const campaignsData = campaignsSnapshot.docs.map((doc) => {
+    //   return {
+    //     id: doc.id,
+    //     ...doc.data(),
+    //   } as Campaign;
+    // });
 
-    setCampaigns(campaignsData);
+    // Remove after campaign creation is implemented
+    const campaignsData = initialCampaigns.filter((campaign) => campaign.organizationId === currentOrganization?.id);
+    if (campaignsData.length > 0) {
+      // @ts-ignore
+      setCampaigns(campaignsData);
+    }
 
     return campaignsData;
   }
