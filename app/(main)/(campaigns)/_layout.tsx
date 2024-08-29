@@ -1,21 +1,38 @@
 import { DrawerToggle } from "@/components/ui";
-import { useAuthContext } from "@/contexts";
+import { useAuthContext, useOrganizationContext } from "@/contexts";
 import { useBreakPoints } from "@/hooks";
 import { Stack, useRouter } from "expo-router";
 import { useEffect } from "react";
 import { View } from "@/components/Themed";
 import GoBackButton from "@/components/ui/go-back-button";
+import { ActivityIndicator } from "react-native";
 
 const CampaignsLayout = () => {
   const { lg } = useBreakPoints();
 
   const { isLoading, session } = useAuthContext();
+  const { organizations } = useOrganizationContext();
+
   const router = useRouter();
+
   useEffect(() => {
     if (!isLoading && !session) {
       router.replace("/(auth)/login");
     }
   }, [isLoading, session]);
+
+  if (isLoading || organizations.length === 0) {
+    return (
+      <View
+        style={{
+          flex: 1,
+          justifyContent: "center",
+        }}
+      >
+        <ActivityIndicator />
+      </View>
+    )
+  }
 
   return (
     <Stack

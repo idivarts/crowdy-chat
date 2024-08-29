@@ -3,17 +3,17 @@ import { Text, View } from "react-native";
 import { Button, Portal, Modal, Icon, IconButton } from "react-native-paper";
 
 export interface IConfirmationModalProps {
-  visible: boolean;
+  visible?: boolean;
   message: string;
   handleSubmit: () => void;
-  handleCancel: () => void;
+  handleCancel?: () => void;
 }
 
 const ConfirmationModal: React.FC<IConfirmationModalProps> = (props) => {
   return (
     <Portal>
       <Modal
-        visible={props.visible}
+        visible={props.visible || false}
         onDismiss={props.handleCancel}
         style={{ justifyContent: "center", alignItems: "center" }}
       >

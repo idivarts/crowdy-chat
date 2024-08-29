@@ -68,7 +68,7 @@ const OrganizationProfile: React.FC = () => {
             alignItems: 'center',
           }}
         >
-          <ActivityIndicator size="large" />
+          <ActivityIndicator />
         </View>
       </AppLayout>
     )
@@ -98,8 +98,9 @@ const OrganizationProfile: React.FC = () => {
             <View style={styles.imagePickerContainer}>
               <ImagePicker
                 editable={isEditable}
-                initialImage={image}
+                image={image}
                 onUploadImage={onUploadImage}
+                setImage={setImage}
               />
             </View>
 

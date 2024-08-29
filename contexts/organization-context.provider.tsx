@@ -1,16 +1,15 @@
 import { OrganizationForm } from "@/components/organization/CreateOrganizationForm";
 import { IMembers } from "@/shared-libs/firestore/crowdy-chat/models/members";
 import { IOrganizations } from "@/shared-libs/firestore/crowdy-chat/models/organizations";
-import { AuthApp } from "@/shared-libs/utilities/auth";
 import { FirestoreDB } from "@/shared-libs/utilities/firestore";
 import Toaster from "@/shared-uis/components/toaster/Toaster";
-import { router } from "expo-router";
-import { signInAnonymously } from "firebase/auth";
+import { useRouter } from "expo-router";
 import {
   addDoc,
   collection,
   collectionGroup,
   doc,
+  getDoc,
   getDocs,
   query,
   setDoc,
@@ -22,14 +21,16 @@ import {
   createContext,
   type PropsWithChildren,
   useState,
+  useEffect,
 } from "react";
 import { useFirebaseStorageContext } from "./firebase-storage-context.provider";
 import { Organization } from "@/types/Organization";
+import { useAuthContext } from "./auth-context.provider";
 
 interface OrganizationContextProps {
   createOrganization: (data: OrganizationForm) => Promise<void>;
   currentOrganization: Organization | undefined;
-  getOrganizations: () => Promise<void>;
+  getOrganizations: () => Promise<Organization[] | undefined>;
   isOrganizationsLoading: boolean;
   organizations: Organization[];
   setCurrentOrganization: React.Dispatch<React.SetStateAction<Organization | undefined>>;
@@ -48,15 +49,36 @@ export const OrganizationContextProvider: React.FC<PropsWithChildren> = ({
   const [organizations, setOrganizations] = useState<Organization[]>([]);
   const [isOrganizationsLoading, setIsOrganizationsLoading] = useState<boolean>(true);
 
+  const router = useRouter();
   const {
     uploadImage,
   } = useFirebaseStorageContext();
+  const {
+    session,
+  } = useAuthContext();
+
+  const fetchOrganization = async () => {
+    const result = await getOrganizations();
+
+    if (!result) {
+      router.push("/(organization)/create-new-organization");
+    } else {
+      router.push("/(main)/(campaigns)/campaigns");
+    }
+  };
+
+  useEffect(() => {
+    if (session) {
+      fetchOrganization();
+    }
+  }, [session]);
 
   const createOrganization = async (data: OrganizationForm) => {
-    let authUser = await signInAnonymously(AuthApp); // TODO: Remove after implementing proper auth
-
+    if (!session) {
+      return;
+    }
     if (data.image) {
-      data.image = await uploadImage(data.image, `organizations/${authUser.user.uid}/${data.name}`);
+      data.image = await uploadImage(data.image, `organizations/${session}/${data.name}`);
     }
 
     const colRef = collection(FirestoreDB, "organizations");
@@ -64,7 +86,7 @@ export const OrganizationContextProvider: React.FC<PropsWithChildren> = ({
     let orgData: IOrganizations = {
       name: data.name,
       createdAt: Date.now(),
-      createdBy: authUser.user.uid,
+      createdBy: session,
       description: data.description,
       industry: data.industry,
       website: data.website,
@@ -74,7 +96,7 @@ export const OrganizationContextProvider: React.FC<PropsWithChildren> = ({
 
     let memberColRef = collection(FirestoreDB, "organizations", orgDoc.id, "members");
     let memberData: IMembers = {
-      userId: authUser.user.uid,
+      userId: session,
       organizationId: orgDoc.id,
       permissions: {
         admin: true
@@ -82,43 +104,57 @@ export const OrganizationContextProvider: React.FC<PropsWithChildren> = ({
     }
 
     // Keep member ID same as user ID
-    let memberDocRef = doc(memberColRef, authUser.user.uid)
+    let memberDocRef = doc(memberColRef, session)
     await setDoc(memberDocRef, memberData)
 
     if (!orgDoc.id) {
       Toaster.error("Organization creation failed");
     } else {
+      await getOrganizations();
       Toaster.success("Organization created successfully");
       router.push("/(main)/organization-profile");
     }
   };
 
-  const getOrganizations = async () => {
+  const getOrganizations = async (): Promise<Organization[] | undefined> => {
     setIsOrganizationsLoading(true);
     try {
-      const userCredential = await signInAnonymously(AuthApp); // TODO: Remove after implementing proper auth
-
-      // TODO: Remove
-      // const organizationsRef = collection(FirestoreDB, "organizations");
-      // const orgsSnapshot = await getDocs(organizationsRef);
-
       const membersColGroupRef = collectionGroup(FirestoreDB, "members");
-      const orgsQuery = query(membersColGroupRef, where("userId", "==", userCredential.user.uid));
+      const orgsQuery = query(membersColGroupRef, where("userId", "==", session));
       const orgsSnapshot = await getDocs(orgsQuery);
 
       // If no organizations found, redirect to create new organization page
       if (orgsSnapshot.empty) {
-        router.push("/(organization)/create-new-organization");
-        return;
+        return undefined;
       }
 
-      const data = orgsSnapshot.docs.map((doc) => ({
-        id: doc.id,
-        ...doc.data(),
-      }) as Organization);
+      const orgDataPromises = orgsSnapshot.docs.map(async (docSnapshot) => {
+        const { organizationId } = docSnapshot.data();
+        const orgRef = doc(FirestoreDB, "organizations", organizationId);
+        const orgDoc = await getDoc(orgRef);
 
-      setCurrentOrganization(data[0]);
-      setOrganizations(data);
+        if (orgDoc.exists()) {
+          return {
+            id: orgDoc.id,
+            ...orgDoc.data(),
+          } as Organization;
+        } else {
+          return null;
+        }
+      });
+
+      const orgDataArray = await Promise.all(orgDataPromises);
+
+      const data = orgDataArray.filter((orgData) => orgData !== null);
+
+      if (data.length === 0) {
+        Toaster.error("No organizations found");
+        return undefined;
+      }
+
+      setCurrentOrganization(data[0] as Organization);
+      setOrganizations(data as Organization[]);
+      return data as Organization[];
     } catch (error) {
       console.error("Error getting organizations: ", error);
       Toaster.error("Failed to get organizations");
@@ -127,11 +163,17 @@ export const OrganizationContextProvider: React.FC<PropsWithChildren> = ({
     }
   };
 
-  const updateOrganization = async (orgId: string, updatedData: Partial<IOrganizations>) => {
+  const updateOrganization = async (orgId: string, data: Partial<OrganizationForm>) => {
+
+    if (data.image) {
+      data.image = await uploadImage(data.image, `organizations/${session}/${data.name}`);
+    }
+
     const orgDocRef = doc(FirestoreDB, "organizations", orgId);
 
     try {
-      await updateDoc(orgDocRef, updatedData);
+      await updateDoc(orgDocRef, data);
+      getOrganizations();
       Toaster.success("Organization updated successfully");
       router.push("/(main)/organization-profile");
     } catch (error) {

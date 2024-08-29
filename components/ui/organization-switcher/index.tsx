@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { Pressable } from "react-native";
 import OrganizationSwitcherModal from "./OrganizationSwitcherModal";
 import { Text } from "@/components/Themed";
@@ -15,15 +15,10 @@ const OrganizationSwitcher: React.FC<OrganizationSwitcherProps> = () => {
   const { lg } = useBreakPoints();
   const {
     currentOrganization,
-    getOrganizations,
     isOrganizationsLoading,
     organizations,
     setCurrentOrganization,
   } = useOrganizationContext();
-
-  useEffect(() => {
-    getOrganizations();
-  }, []);
 
   const handleSwitchOrganization = (id: string) => {
     const currentOrg = organizations.find((org) => org.id === id);
@@ -34,12 +29,12 @@ const OrganizationSwitcher: React.FC<OrganizationSwitcherProps> = () => {
     setOrganizationModalVisible(false);
   };
 
-  if (!currentOrganization) {
+  if (isOrganizationsLoading) {
     return null;
   }
 
-  if (isOrganizationsLoading) {
-    return <Text>Loading...</Text>;
+  if (!currentOrganization) {
+    return null;
   }
 
   return (
