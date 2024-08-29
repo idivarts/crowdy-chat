@@ -57,7 +57,6 @@ const MembersModal: React.FC<MembersModalProps> = ({
         },
       });
       setUserId(member[editingIndex].userId);
-      console.log("From Modal", member[editingIndex]);
     }
   }, [editingIndex]);
 

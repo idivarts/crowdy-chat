@@ -85,11 +85,10 @@ const CreateCampaign = () => {
 
   const handleNext = async () => {
     try {
-      console.log("currentOrganization", currentOrganization);
       if (!user) {
         return Toaster.error("User not found. Please login again.");
       }
-      if (!currentOrganization?.id || currentOrganization?.id === undefined) {
+      if (!currentOrganization?.id) {
         return Toaster.error("Organization not found. Please try again.");
       }
       let validation;
@@ -116,8 +115,6 @@ const CreateCampaign = () => {
       }
 
       if (currentStep >= 3) {
-        console.log("stages", stages);
-        console.log("currentOrganization", currentOrganization);
         // Campaign creation logic
         const campaignColRef = collection(
           FirestoreDB,
@@ -148,8 +145,6 @@ const CreateCampaign = () => {
           updatedAt: Date.now(),
           status: 2,
         };
-
-        console.log("campaignData", campaignData);
 
         const campaignDocRef = await addDoc(campaignColRef, campaignData);
 
@@ -205,7 +200,6 @@ const CreateCampaign = () => {
           );
 
           return collectibles.map((collectible) => {
-            console.log("collectible", collectible);
             addDoc(collectiblesColRef, collectible);
           });
         });
@@ -333,7 +327,6 @@ const CreateCampaign = () => {
         <Button
           title={currentStep < 3 ? "Next" : "Submit"}
           onPress={() => {
-            console.log("currentStep", currentStep);
             handleNext();
           }}
         />

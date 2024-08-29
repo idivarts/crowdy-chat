@@ -188,14 +188,12 @@ export const AuthContextProvider: React.FC<PropsWithChildren> = ({
   const fetchUser = async () => {
     try {
       const user = AuthApp.currentUser;
-      console.log("User: ", user);
       if (user) {
         const colRef = collection(FirestoreDB, "users");
         const query = where("email", "==", user.email);
         const userSnapshot = await getDoc(doc(colRef, user.uid));
         const userData = userSnapshot.data() as IUser;
         setUser(userData);
-        console.log("User fetched: ", userData);
       }
     } catch (error) {
       console.error("Error fetching user: ", error);

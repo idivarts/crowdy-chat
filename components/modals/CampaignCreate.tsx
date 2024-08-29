@@ -156,8 +156,6 @@ const CreateCampaign = () => {
           leadStages: undefined,
         };
 
-        console.log("campaignData", campaignData);
-
         const campaignDocRef = await addDoc(campaignColRef, campaignData);
 
         const leadStages = stages.map((stage) => ({
@@ -343,7 +341,6 @@ const CreateCampaign = () => {
                   <Button
                     title={currentStep < 3 ? "Next" : "Submit"}
                     onPress={() => {
-                      console.log("currentStep", currentStep);
                       handleNext();
                     }}
                   />

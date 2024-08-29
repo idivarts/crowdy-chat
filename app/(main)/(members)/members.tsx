@@ -90,7 +90,6 @@ const MemberPage: React.FC = () => {
   const fetchMembers = async () => {
     try {
       let authUser = AuthApp.currentUser;
-      console.log("Manan", authUser);
 
       // Correctly reference the collection
       let memberColRef = collection(
@@ -121,8 +120,6 @@ const MemberPage: React.FC = () => {
           };
         })
       );
-
-      console.log(memberData);
 
       setMembers(memberData);
     } catch (e) {
@@ -206,7 +203,6 @@ const MemberPage: React.FC = () => {
     };
     email: string;
   }) => {
-    console.log("New Member", newMember);
     const result = MemberSchema.safeParse(newMember);
     if (!currentOrganization) {
       Toaster.error("No organization selected");
@@ -296,7 +292,6 @@ const MemberPage: React.FC = () => {
       handleModalClose();
     } else {
       const error = result.error as ZodError;
-      console.log("HUEHEU");
       Toaster.error(error.errors[0].message);
     }
   };
@@ -327,8 +322,6 @@ const MemberPage: React.FC = () => {
       );
 
       const memberDocRef = doc(memberColRef, members[index].userId);
-
-      console.log("Member Doc Ref", memberDocRef);
 
       await deleteDoc(memberDocRef).then(() => {
         Toaster.success("Member deleted successfully");
@@ -404,8 +397,6 @@ const MemberPage: React.FC = () => {
       member.name?.toLowerCase().includes(searchTerm.toLowerCase()) || false
     );
   });
-
-  console.log("Members", filteredMembers);
 
   useEffect(() => {
     fetchMembers();

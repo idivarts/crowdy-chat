@@ -11,7 +11,6 @@ const DrawerLayout = () => {
   const { fetchUser } = useAuthContext();
 
   useEffect(() => {
-    console.log("fetching user");
     fetchUser();
   }, []);
 
