@@ -7,8 +7,13 @@ import {
   signOut as signOutAuth,
   sendPasswordResetEmail,
 } from "firebase/auth";
-import { createContext, useContext, type PropsWithChildren } from "react";
-import { setDoc, collection, doc, getDocs, where } from "firebase/firestore";
+import {
+  createContext,
+  useContext,
+  useState,
+  type PropsWithChildren,
+} from "react";
+import { setDoc, collection, doc, getDoc, where } from "firebase/firestore";
 import { FirestoreDB } from "@/shared-libs/utilities/firestore";
 import { IUser } from "@/shared-libs/firestore/crowdy-chat/models/users";
 import Toaster from "@/shared-uis/components/toaster/Toaster";
@@ -19,8 +24,10 @@ interface AuthContextProps {
   signOut: () => void;
   signUp: (email: string, password: string) => void;
   forgotPassword: (email: string) => void;
+  fetchUser: () => void;
   session?: string | null;
   isLoading: boolean;
+  user?: IUser | null;
 }
 
 const AuthContext = createContext<AuthContextProps>({
@@ -28,8 +35,10 @@ const AuthContext = createContext<AuthContextProps>({
   signOut: () => null,
   signUp: (email: string, password: string) => null,
   forgotPassword: (email: string) => null,
+  fetchUser: () => null,
   session: null,
   isLoading: false,
+  user: null,
 });
 
 export const useAuthContext = () => useContext(AuthContext);
@@ -39,6 +48,7 @@ export const AuthContextProvider: React.FC<PropsWithChildren> = ({
 }) => {
   const [[isLoading, session], setSession] = useStorageState("");
   const router = useRouter();
+  const [user, setUser] = useState<IUser | null>(null);
 
   const signIn = async (email: string, password: string) => {
     try {
@@ -175,6 +185,24 @@ export const AuthContextProvider: React.FC<PropsWithChildren> = ({
     }
   };
 
+  const fetchUser = async () => {
+    try {
+      const user = AuthApp.currentUser;
+      console.log("User: ", user);
+      if (user) {
+        const colRef = collection(FirestoreDB, "users");
+        const query = where("email", "==", user.email);
+        const userSnapshot = await getDoc(doc(colRef, user.uid));
+        const userData = userSnapshot.data() as IUser;
+        setUser(userData);
+        console.log("User fetched: ", userData);
+      }
+    } catch (error) {
+      console.error("Error fetching user: ", error);
+      Toaster.error("Failed to fetch user");
+    }
+  };
+
   return (
     <AuthContext.Provider
       value={{
@@ -182,8 +210,10 @@ export const AuthContextProvider: React.FC<PropsWithChildren> = ({
         signUp,
         signOut,
         forgotPassword,
+        fetchUser,
         session,
         isLoading,
+        user,
       }}
     >
       {children}

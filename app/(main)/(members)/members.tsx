@@ -1,10 +1,8 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Appbar,
-  Button,
   TextInput,
   DataTable,
-  Modal,
   Portal,
   Provider,
   Chip,
@@ -20,10 +18,31 @@ import DropdownButton from "@/shared-uis/components/dropdown/DropdownButton";
 import { MaterialIcons } from "@expo/vector-icons";
 import { z, ZodError } from "zod";
 import { styles } from "@/styles/Members";
+import { useOrganizationContext } from "@/contexts/organization-context.provider";
 import { MemberSchema } from "@/components/schemas/MemberPageSchema";
 import Toaster from "@/shared-uis/components/toaster/Toaster";
 import { DrawerToggle } from "@/components/ui";
+import {
+  collection,
+  doc,
+  query,
+  where,
+  getDocs,
+  deleteDoc,
+  updateDoc,
+  setDoc,
+  getDoc,
+} from "firebase/firestore";
 import { useBreakPoints } from "@/hooks";
+import { FirestoreDB } from "@/shared-libs/utilities/firestore";
+import { IMembers } from "@/shared-libs/firestore/crowdy-chat/models/members";
+import { AuthApp } from "@/shared-libs/utilities/auth";
+import { IUser } from "@/shared-libs/firestore/crowdy-chat/models/users";
+import {
+  sendEmailVerification,
+  createUserWithEmailAndPassword,
+} from "firebase/auth";
+import MembersModal from "@/components/modals/Members/MembersModal";
 
 const customTheme = {
   ...DefaultTheme,
@@ -37,23 +56,80 @@ const customTheme = {
   },
 };
 
-type Member = z.infer<typeof MemberSchema>;
+interface MemberDetails {
+  username: string;
+  userId?: string;
+  organizationId?: string;
+  name: string;
+  password: string;
+  permissions: {
+    read: boolean;
+    write: boolean;
+    admin: boolean;
+  };
+  email: string;
+}
 
 const MemberPage: React.FC = () => {
-  const [members, setMembers] = useState<Member[]>([]);
+  const [members, setMembers] = useState<MemberDetails[]>([]);
   const [searchTerm, setSearchTerm] = useState<string>("");
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+  const { currentOrganization } = useOrganizationContext();
   const { lg } = useBreakPoints();
-  const [newMember, setNewMember] = useState<Member>({
-    username: "",
-    name: "",
-    password: "",
-    permissions: ["Read"],
-  });
   const [editingIndex, setEditingIndex] = useState<number | null>(null);
-  const [errors, setErrors] = useState<{ [key in keyof Member]?: string }>({});
 
-  const permissionsOptions = ["Read", "Write", "Execute"]; // Example permissions
+  if (
+    !currentOrganization ||
+    !currentOrganization.id ||
+    currentOrganization === undefined
+  ) {
+    Toaster.error("No organization selected");
+    // return router.replace("/organizations");
+  }
+
+  const fetchMembers = async () => {
+    try {
+      let authUser = AuthApp.currentUser;
+      console.log("Manan", authUser);
+
+      // Correctly reference the collection
+      let memberColRef = collection(
+        FirestoreDB,
+        "organizations",
+        // @ts-ignore
+        currentOrganization.id,
+        "members"
+      );
+
+      // Fetch all documents in the collection
+      const membersSnapshot = await getDocs(memberColRef);
+
+      const membersData = membersSnapshot.docs.map((doc) => doc.data());
+
+      const userColRef = collection(FirestoreDB, "users");
+
+      const memberData = await Promise.all(
+        membersData.map(async (member: any) => {
+          const userDocRef = doc(userColRef, member.userId);
+          const userDoc = await getDoc(userDocRef);
+          const userData = userDoc.data() as IUser;
+          return {
+            ...member,
+            name: userData.name,
+            email: userData.email,
+            userId: userDoc.id,
+          };
+        })
+      );
+
+      console.log(memberData);
+
+      setMembers(memberData);
+    } catch (e) {
+      Toaster.error("Failed to fetch members");
+      console.error(e);
+    }
+  };
 
   const handleSearchChange = (value: string) => {
     setSearchTerm(value);
@@ -63,52 +139,79 @@ const MemberPage: React.FC = () => {
     setIsModalOpen(true);
   };
 
-  const handleModalClose = () => {
-    setIsModalOpen(false);
-    setNewMember({
-      username: "",
-      name: "",
-      password: "",
-      permissions: ["Read"],
-    });
-    setEditingIndex(null);
-    setErrors({});
-  };
-
-  const handleInputChange = (name: keyof Member, value: string) => {
-    setNewMember((prevMember) => ({
-      ...prevMember,
-      [name]: value,
-    }));
-    setErrors((prevErrors) => ({
-      ...prevErrors,
-      [name]: undefined,
-    }));
-  };
-
-  const handlePermissionsChange = (permission: string) => {
-    setNewMember((prevMember) => {
-      let newPermissions;
-      if (prevMember.permissions.includes(permission)) {
-        newPermissions = prevMember.permissions.filter(
-          (perm) => perm !== permission
-        );
-        if (newPermissions.length === 0) {
-          newPermissions.push(permission);
-        }
-      } else {
-        newPermissions = [...prevMember.permissions, permission];
+  const updateMember = async (
+    member: IMembers,
+    index: number,
+    userId: string
+  ) => {
+    try {
+      if (!currentOrganization?.id) {
+        throw new Error("Organization not found.");
       }
 
-      return {
-        ...prevMember,
-        permissions: newPermissions as [string, ...string[]],
+      const memberColRef = collection(
+        FirestoreDB,
+        "organizations",
+        currentOrganization.id,
+        "members"
+      );
+
+      const memberDocRef = doc(memberColRef, userId);
+      const memberSnapshot = await getDoc(memberDocRef);
+
+      if (!memberSnapshot.exists()) {
+        Toaster.error("Member not found");
+        return;
+      }
+
+      const memberData = {
+        userId: userId,
+        organizationId: currentOrganization.id,
+        permissions: {
+          read: member.permissions.read,
+          write: member.permissions.write,
+          admin: member.permissions.admin,
+        },
+        username: member.username,
       };
-    });
+
+      await updateDoc(memberDocRef, memberData);
+
+      await fetchMembers();
+
+      setIsModalOpen(false);
+
+      setEditingIndex(null);
+
+      Toaster.success("Member updated successfully");
+    } catch (e) {
+      Toaster.error("Failed to update member");
+      console.error(e);
+    }
   };
 
-  const handleAddUser = () => {
+  const handleModalClose = () => {
+    setIsModalOpen(false);
+    setEditingIndex(null);
+  };
+
+  const handleAddUser = async (newMember: {
+    username: string;
+    name: string;
+    password: string;
+    permissions: {
+      read: boolean;
+      write: boolean;
+      admin: boolean;
+    };
+    email: string;
+  }) => {
+    console.log("New Member", newMember);
     const result = MemberSchema.safeParse(newMember);
+    if (!currentOrganization) {
+      Toaster.error("No organization selected");
+      return;
+    }
 
     if (result.success) {
       if (editingIndex !== null) {
@@ -117,35 +220,139 @@ const MemberPage: React.FC = () => {
         );
         setMembers(updatedMembers);
       } else {
+        try {
+          let memberColRef = collection(
+            FirestoreDB,
+            "organizations",
+            currentOrganization.id,
+            "members"
+          );
+
+          let userColRef = collection(FirestoreDB, "users");
+
+          const userQuery = query(
+            userColRef,
+            where("email", "==", newMember.email)
+          );
+          const userSnapshot = await getDocs(userQuery);
+
+          if (userSnapshot.empty) {
+            const user = await createUserWithEmailAndPassword(
+              AuthApp,
+              newMember.email,
+              newMember.password
+            );
+            await sendEmailVerification(user.user);
+            const userColRef = collection(FirestoreDB, "users");
+            const newUser: IUser = {
+              email: newMember.email,
+              name: newMember.name,
+              username: newMember.username,
+            };
+            const docUserRef = await setDoc(
+              doc(userColRef, user.user.uid),
+              newUser
+            );
+
+            let memberData: IMembers = {
+              userId: user.user.uid,
+              organizationId: currentOrganization?.id,
+              permissions: {
+                read: newMember.permissions.read,
+                write: newMember.permissions.write,
+                admin: newMember.permissions.admin,
+              },
+              username: newMember.username,
+            };
+
+            const docRef = await setDoc(
+              doc(memberColRef, user.user.uid),
+              memberData
+            );
+          }
+          const userDoc = userSnapshot.docs[0];
+          let memberData: IMembers = {
+            userId: userDoc.id,
+            organizationId: currentOrganization?.id,
+            permissions: {
+              read: newMember.permissions.read,
+              write: newMember.permissions.write,
+              admin: newMember.permissions.admin,
+            },
+            username: newMember.username,
+          };
+
+          const docRef = await setDoc(
+            doc(memberColRef, userDoc.id),
+            memberData
+          );
+        } catch (e) {
+          Toaster.error("Failed to add member");
+          console.error(e);
+        }
         setMembers([...members, newMember]);
       }
+      await fetchMembers();
       handleModalClose();
     } else {
       const error = result.error as ZodError;
-      const formattedErrors: { [key in keyof Member]?: string } = {};
-      error.errors.forEach((err) => {
-        if (err.path.length > 0) {
-          const key = err.path[0] as keyof Member;
-          formattedErrors[key] = err.message;
-        }
-      });
-      setErrors(formattedErrors);
+      console.log("HUEHEU");
       Toaster.error(error.errors[0].message);
     }
   };
 
   const handleEditMember = (index: number) => {
     setEditingIndex(index);
-    setNewMember(members[index]);
     setIsModalOpen(true);
   };
 
-  const handleDeleteMember = (index: number) => {
-    const updatedMembers = members.filter((_, i) => i !== index);
-    setMembers(updatedMembers);
+  const handleDeleteMember = async (index: number) => {
+    try {
+      const organizationColRef = collection(FirestoreDB, "organizations");
+      const organizationDocRef = doc(
+        organizationColRef,
+        currentOrganization?.id
+      );
+
+      if (!currentOrganization?.id) {
+        Toaster.error("Organization not found");
+        return;
+      }
+
+      const memberColRef = collection(
+        FirestoreDB,
+        "organizations",
+        currentOrganization?.id,
+        "members"
+      );
+
+      const memberDocRef = doc(memberColRef, members[index].userId);
+
+      console.log("Member Doc Ref", memberDocRef);
+
+      await deleteDoc(memberDocRef).then(() => {
+        Toaster.success("Member deleted successfully");
+      });
+
+      const updatedMembers = members.filter((_, i) => i !== index);
+      setMembers(updatedMembers);
+    } catch (e) {
+      console.log(e);
+    }
   };
 
-  const renderMember = (member: Member, index: number) => (
+  const renderMember = (
+    member: {
+      name: string;
+      username: string;
+      permissions: {
+        read: boolean;
+        write: boolean;
+        admin: boolean;
+      };
+    },
+    index: number
+  ) => (
     <DataTable.Row
       key={index}
       style={{
@@ -153,9 +360,15 @@ const MemberPage: React.FC = () => {
         zIndex: -10 - index,
       }}
     >
-      <DataTable.Cell>{member.name}</DataTable.Cell>
+      <DataTable.Cell>{member.name || "No Name"}</DataTable.Cell>
       <DataTable.Cell>{member.username}</DataTable.Cell>
-      <DataTable.Cell>{member.permissions.join(", ")}</DataTable.Cell>
+      <DataTable.Cell>
+        <View style={styles.chipContainer}>
+          {member.permissions.read && <Chip style={styles.chip}>Read</Chip>}
+          {member.permissions.write && <Chip style={styles.chip}>Write</Chip>}
+          {member.permissions.admin && <Chip style={styles.chip}>Admin</Chip>}
+        </View>
+      </DataTable.Cell>
       <DataTable.Cell style={styles.actionsCell}>
         <Dropdown>
           <DropdownTrigger>
@@ -185,9 +398,18 @@ const MemberPage: React.FC = () => {
     </DataTable.Row>
   );
 
-  const filteredMembers = members.filter((member) =>
-    member.name.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  const filteredMembers = members.filter((member) => {
+    if (!searchTerm) return true;
+    return (
+      member.name?.toLowerCase().includes(searchTerm.toLowerCase()) || false
+    );
+  });
+
+  console.log("Members", filteredMembers);
+
+  useEffect(() => {
+    fetchMembers();
+  }, []);
 
   return (
     <Provider theme={customTheme}>
@@ -226,66 +448,15 @@ const MemberPage: React.FC = () => {
           )}
         </DataTable>
       </ScrollView>
-
       <Portal>
-        <Modal
+        <MembersModal
           visible={isModalOpen}
-          onDismiss={handleModalClose}
-          style={{
-            justifyContent: "center",
-            alignItems: "center",
-          }}
-        >
-          <View style={styles.modalContent}>
-            <View style={styles.modalInputContainer}>
-              <TextInput
-                label="Username"
-                mode="outlined"
-                value={newMember.username}
-                onChangeText={(value) => handleInputChange("username", value)}
-                style={styles.input}
-                error={!!errors.username}
-              />
-              <TextInput
-                label="Name"
-                mode="outlined"
-                value={newMember.name}
-                onChangeText={(value) => handleInputChange("name", value)}
-                style={styles.input}
-                error={!!errors.name}
-              />
-              <TextInput
-                label="Password"
-                mode="outlined"
-                secureTextEntry
-                value={newMember.password}
-                onChangeText={(value) => handleInputChange("password", value)}
-                style={styles.input}
-                error={!!errors.password}
-              />
-
-              <View style={styles.chipContainer}>
-                {permissionsOptions.map((option) => (
-                  <Chip
-                    key={option}
-                    selected={newMember.permissions.includes(option)}
-                    onPress={() => handlePermissionsChange(option)}
-                    style={styles.chip}
-                  >
-                    {option}
-                  </Chip>
-                ))}
-              </View>
-              <Button
-                mode="contained"
-                onPress={handleAddUser}
-                style={styles.addButton}
-              >
-                {editingIndex !== null ? "Update User" : "Add User"}
-              </Button>
-            </View>
-          </View>
-        </Modal>
+          handleModalClose={handleModalClose}
+          handleAddUser={handleAddUser}
+          editingIndex={editingIndex}
+          updateMember={updateMember}
+          member={members}
+        />
       </Portal>
     </Provider>
   );

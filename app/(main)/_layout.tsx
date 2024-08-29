@@ -3,9 +3,17 @@ import SideBarMenu from "@/layouts/side-bar-menu";
 import { useBreakPoints } from "@/hooks";
 import Header from "@/layouts/header";
 import { View } from "@/components/Themed";
+import { useAuthContext } from "@/contexts";
+import { useEffect } from "react";
 
 const DrawerLayout = () => {
   const { lg } = useBreakPoints();
+  const { fetchUser } = useAuthContext();
+
+  useEffect(() => {
+    console.log("fetching user");
+    fetchUser();
+  }, []);
 
   return (
     <>
@@ -60,7 +68,7 @@ const DrawerLayout = () => {
             name="(organization)/organization-profile"
             options={{
               headerShown: true,
-              title: 'Organization Profile',
+              title: "Organization Profile",
             }}
           />
         </Drawer>
