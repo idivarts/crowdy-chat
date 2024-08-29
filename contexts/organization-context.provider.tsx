@@ -154,7 +154,7 @@ export const OrganizationContextProvider: React.FC<PropsWithChildren> = ({
 
       setCurrentOrganization(data[0] as Organization);
       setOrganizations(data as Organization[]);
-      return data;
+      return data as Organization[];
     } catch (error) {
       console.error("Error getting organizations: ", error);
       Toaster.error("Failed to get organizations");
