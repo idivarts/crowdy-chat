@@ -80,7 +80,6 @@ const RootLayout = () => {
 const RootLayoutStack = () => {
   const colorScheme = useColorScheme();
   const { session } = useAuthContext();
-  const { getOrganizations } = useOrganizationContext();
 
   // const router = useRouter();
   // const pathname = usePathname();
@@ -94,12 +93,6 @@ const RootLayoutStack = () => {
   //       router.replace('/(main)/compaigns');
   //   }
   // }, [router, session]);
-
-  useEffect(() => {
-    if (session) {
-      getOrganizations();
-    }
-  }, [session]);
 
   return (
     <ThemeProvider value={colorScheme === "dark" ? DarkTheme : ExpoDefaultTheme}>

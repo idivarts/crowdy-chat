@@ -25,26 +25,24 @@ const CreateOrganizationForm: React.FC<CreateOrganizationFormProps> = ({
   onSubmit,
 }) => {
   const { lg } = useBreakPoints();
+  const [image, setImage] = useState<string>('');
   const [organizationFormData, setOrganizationFormData] = useState<OrganizationForm>({
     name: '',
     description: '',
     industry: '',
     website: '',
-    image: '',
   });
 
   const handleChange = (key: keyof OrganizationForm, value: string) => {
     setOrganizationFormData({
       ...organizationFormData,
-      [key]: value
+      [key]: value,
+      image,
     });
   };
 
-  const onUploadImage = (image: string) => {
-    setOrganizationFormData({
-      ...organizationFormData,
-      image,
-    });
+  const onUploadImage = (imageUrl: string) => {
+    setImage(imageUrl);
   }
 
   const handleSubmit = () => {
@@ -84,8 +82,9 @@ const CreateOrganizationForm: React.FC<CreateOrganizationFormProps> = ({
           >
             <View style={styles.imagePickerContainer}>
               <ImagePicker
+                image={image}
                 onUploadImage={onUploadImage}
-                initialImage={organizationFormData.image}
+                setImage={setImage}
               />
             </View>
             <View style={styles.flex}>

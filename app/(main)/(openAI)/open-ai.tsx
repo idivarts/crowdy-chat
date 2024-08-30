@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { View, StyleSheet } from "react-native";
+import React, { useEffect, useState } from "react";
+import { View } from "react-native";
 import {
   Text,
   TextInput,
@@ -10,18 +10,39 @@ import {
 } from "react-native-paper";
 import Toaster from "@/shared-uis/components/toaster/Toaster";
 import { styles } from "@/styles/OpenAI.styles";
+import { useOrganizationContext } from "@/contexts";
 
 const OpenAIComponent = () => {
   const { colors } = useTheme();
   const [apiKey, setApiKey] = useState("");
   const [isEditing, setIsEditing] = useState(true);
   const [displayKey, setDisplayKey] = useState("");
+  const {
+    currentOrganization,
+    updateOrganization,
+  } = useOrganizationContext();
+
+  useEffect(() => {
+    setApiKey(currentOrganization?.openAIKey || "");
+    setDisplayKey(currentOrganization?.openAIKey?.replace(/./g, "*") || "");
+  }, [currentOrganization]);
 
   const handleSave = () => {
     if (!apiKey) {
       Toaster.error("Please enter an API key");
       return;
     }
+
+    if (!currentOrganization?.id) {
+      return;
+    }
+
+    // Update the organization's openAIKey field
+    updateOrganization(
+      currentOrganization.id,
+      {
+        openAIKey: apiKey,
+      });
     setIsEditing(false);
     setDisplayKey(apiKey.replace(/./g, "*"));
   };
