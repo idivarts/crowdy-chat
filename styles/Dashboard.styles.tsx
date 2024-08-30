@@ -87,6 +87,13 @@ export const CreateCampaignstyles = StyleSheet.create({
     resizeMode: "contain",
     padding: 0,
   },
+  collectibleContainer: {
+    flexDirection: "column",
+    gap: 8,
+    alignItems: "center",
+    display: "flex",
+    width: "100%",
+  },
   row: {
     flexDirection: "row",
     gap: 8,

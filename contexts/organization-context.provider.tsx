@@ -33,9 +33,14 @@ interface OrganizationContextProps {
   getOrganizations: () => Promise<Organization[] | undefined>;
   isOrganizationsLoading: boolean;
   organizations: Organization[];
-  setCurrentOrganization: React.Dispatch<React.SetStateAction<Organization | undefined>>;
+  setCurrentOrganization: React.Dispatch<
+    React.SetStateAction<Organization | undefined>
+  >;
   setOrganizations: React.Dispatch<React.SetStateAction<Organization[]>>;
-  updateOrganization: (orgId: string, updatedData: Partial<Organization>) => Promise<void>;
+  updateOrganization: (
+    orgId: string,
+    updatedData: Partial<Organization>
+  ) => Promise<void>;
 }
 
 const OrganizationContext = createContext<OrganizationContextProps>(null!);
@@ -45,17 +50,15 @@ export const useOrganizationContext = () => useContext(OrganizationContext);
 export const OrganizationContextProvider: React.FC<PropsWithChildren> = ({
   children,
 }) => {
-  const [currentOrganization, setCurrentOrganization] = useState<Organization>();
+  const [currentOrganization, setCurrentOrganization] =
+    useState<Organization>();
   const [organizations, setOrganizations] = useState<Organization[]>([]);
-  const [isOrganizationsLoading, setIsOrganizationsLoading] = useState<boolean>(true);
+  const [isOrganizationsLoading, setIsOrganizationsLoading] =
+    useState<boolean>(true);
 
   const router = useRouter();
-  const {
-    uploadImage,
-  } = useFirebaseStorageContext();
-  const {
-    session,
-  } = useAuthContext();
+  const { uploadImage } = useFirebaseStorageContext();
+  const { session } = useAuthContext();
 
   const fetchOrganization = async () => {
     const result = await getOrganizations();
@@ -78,7 +81,10 @@ export const OrganizationContextProvider: React.FC<PropsWithChildren> = ({
       return;
     }
     if (data.image) {
-      data.image = await uploadImage(data.image, `organizations/${session}/${data.name}`);
+      data.image = await uploadImage(
+        data.image,
+        `organizations/${session}/${data.name}`
+      );
     }
 
     const colRef = collection(FirestoreDB, "organizations");
@@ -94,18 +100,24 @@ export const OrganizationContextProvider: React.FC<PropsWithChildren> = ({
     };
     let orgDoc = await addDoc(colRef, orgData);
 
-    let memberColRef = collection(FirestoreDB, "organizations", orgDoc.id, "members");
+    let memberColRef = collection(
+      FirestoreDB,
+      "organizations",
+      orgDoc.id,
+      "members"
+    );
     let memberData: IMembers = {
       userId: session,
+      username: "",
       organizationId: orgDoc.id,
       permissions: {
-        admin: true
-      }
-    }
+        admin: true,
+      },
+    };
 
     // Keep member ID same as user ID
-    let memberDocRef = doc(memberColRef, session)
-    await setDoc(memberDocRef, memberData)
+    let memberDocRef = doc(memberColRef, session);
+    await setDoc(memberDocRef, memberData);
 
     if (!orgDoc.id) {
       Toaster.error("Organization creation failed");
@@ -120,7 +132,10 @@ export const OrganizationContextProvider: React.FC<PropsWithChildren> = ({
     setIsOrganizationsLoading(true);
     try {
       const membersColGroupRef = collectionGroup(FirestoreDB, "members");
-      const orgsQuery = query(membersColGroupRef, where("userId", "==", session));
+      const orgsQuery = query(
+        membersColGroupRef,
+        where("userId", "==", session)
+      );
       const orgsSnapshot = await getDocs(orgsQuery);
 
       // If no organizations found, redirect to create new organization page
@@ -163,6 +178,7 @@ export const OrganizationContextProvider: React.FC<PropsWithChildren> = ({
     }
   };
 
+
   const updateOrganization = async (orgId: string, data: Partial<OrganizationForm>) => {
 
     if (data.image) {
@@ -180,7 +196,7 @@ export const OrganizationContextProvider: React.FC<PropsWithChildren> = ({
       console.error("Error updating organization: ", error);
       Toaster.error("Organization update failed");
     }
-  }
+  };
 
   return (
     <OrganizationContext.Provider

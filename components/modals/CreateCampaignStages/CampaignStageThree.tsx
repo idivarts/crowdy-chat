@@ -4,13 +4,28 @@ import { Text, TextInput } from "react-native-paper";
 import Checkbox from "expo-checkbox";
 import { CreateCampaignstyles as styles } from "@/styles/Dashboard.styles";
 
+type Collectible = {
+  name: string;
+  type: string;
+  description: string;
+  mandatory: boolean;
+};
+
+type Reminder = {
+  state: boolean;
+  reminderCount: string;
+  reminderExamples: string;
+};
+
 type Stage = {
   name: string;
   purpose: string;
-  collectibles: string[];
+  collectibles: Collectible[];
   reminderTiming: string;
   stopConversation: boolean;
   leadConversion: boolean;
+  reminders: Reminder;
+  exampleConversations: string;
 };
 
 export const CampaignStepThree = (
@@ -35,13 +50,7 @@ export const CampaignStepThree = (
           alignItems: "center",
         }}
       >
-        <Text
-          style={{
-            color: "#1b1b1b",
-          }}
-        >
-          Stages
-        </Text>
+        <Text style={{ color: "#1b1b1b" }}>Stages</Text>
         <Button
           title="Add Stage"
           onPress={() => {
@@ -93,35 +102,78 @@ export const CampaignStepThree = (
             onChangeText={(text) => handleStageChange(index, "purpose", text)}
           />
 
+          <Text>Example Conversations</Text>
+          <TextInput
+            style={styles.input3}
+            value={stage.exampleConversations}
+            onChangeText={(text) =>
+              handleStageChange(index, "exampleConversations", text)
+            }
+          />
+
           <Text>Collectibles</Text>
           {stage.collectibles.map((collectible, i) => (
-            <View key={i} style={styles.rowStage3}>
+            <View key={i} style={styles.collectibleContainer}>
               <TextInput
-                style={styles.textAreaStage3}
-                value={collectible}
+                style={styles.input3}
+                placeholder="Name"
+                value={collectible.name}
                 onChangeText={(text) => {
                   const updatedCollectibles = [...stage.collectibles];
-                  updatedCollectibles[i] = text;
+                  updatedCollectibles[i].name = text;
                   handleStageChange(index, "collectibles", updatedCollectibles);
                 }}
               />
-              <TouchableOpacity
-                onPress={() => {
-                  const updatedCollectibles = stage.collectibles.filter(
-                    (_, j) => j !== i
-                  );
+              <TextInput
+                style={styles.input3}
+                placeholder="Type"
+                value={collectible.type}
+                onChangeText={(text) => {
+                  const updatedCollectibles = [...stage.collectibles];
+                  updatedCollectibles[i].type = text;
                   handleStageChange(index, "collectibles", updatedCollectibles);
                 }}
-                style={styles.removeCollectible}
-              >
-                <Text
-                  style={{
-                    color: "#fff",
+              />
+              <TextInput
+                style={styles.input3}
+                placeholder="Description"
+                value={collectible.description}
+                onChangeText={(text) => {
+                  const updatedCollectibles = [...stage.collectibles];
+                  updatedCollectibles[i].description = text;
+                  handleStageChange(index, "collectibles", updatedCollectibles);
+                }}
+              />
+              <View style={styles.row}>
+                <Checkbox
+                  value={collectible.mandatory}
+                  onValueChange={(value) => {
+                    const updatedCollectibles = [...stage.collectibles];
+                    updatedCollectibles[i].mandatory = value;
+                    handleStageChange(
+                      index,
+                      "collectibles",
+                      updatedCollectibles
+                    );
                   }}
+                />
+                <Text>Mandatory</Text>
+                <TouchableOpacity
+                  onPress={() => {
+                    const updatedCollectibles = stage.collectibles.filter(
+                      (_, j) => j !== i
+                    );
+                    handleStageChange(
+                      index,
+                      "collectibles",
+                      updatedCollectibles
+                    );
+                  }}
+                  style={styles.removeCollectible}
                 >
-                  Remove
-                </Text>
-              </TouchableOpacity>
+                  <Text style={{ color: "#fff" }}>Remove</Text>
+                </TouchableOpacity>
+              </View>
             </View>
           ))}
           <Button
@@ -129,20 +181,78 @@ export const CampaignStepThree = (
             onPress={() =>
               handleStageChange(index, "collectibles", [
                 ...stage.collectibles,
-                "",
+                { name: "", type: "", description: "", mandatory: false },
               ])
             }
           />
 
-          <Text>Reminder Timing</Text>
-          <TextInput
-            style={styles.input3}
-            keyboardType="numeric"
-            value={stage.reminderTiming}
-            onChangeText={(text) =>
-              handleStageChange(index, "reminderTiming", text)
-            }
-          />
+          <Text>Reminders</Text>
+          <View
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              gap: 8,
+              width: "100%",
+            }}
+          >
+            <View
+              style={[
+                styles.row,
+                {
+                  marginBottom: 8,
+                },
+              ]}
+            >
+              <Checkbox
+                value={stage.reminders.state}
+                onValueChange={(value) =>
+                  handleStageChange(index, "reminders", {
+                    ...stage.reminders,
+                    state: value,
+                  })
+                }
+              />
+              <Text>Enable Reminders</Text>
+            </View>
+            {stage.reminders.state && (
+              <>
+                <Text>Reminder Timing</Text>
+                <TextInput
+                  style={styles.input3}
+                  keyboardType="numeric"
+                  value={stage.reminderTiming}
+                  onChangeText={(text) =>
+                    handleStageChange(index, "reminderTiming", text)
+                  }
+                />
+                <Text>Reminder Count</Text>
+                <TextInput
+                  style={styles.input3}
+                  keyboardType="numeric"
+                  placeholder="Reminder Count"
+                  value={stage.reminders.reminderCount}
+                  onChangeText={(text) => {
+                    const numericValue = text.replace(/[^0-9]/g, "");
+                    handleStageChange(index, "reminders", {
+                      ...stage.reminders,
+                      reminderCount: numericValue,
+                    });
+                  }}
+                />
+                <TextInput
+                  style={styles.input3}
+                  placeholder="Reminder Examples"
+                  value={stage.reminders.reminderExamples}
+                  onChangeText={(text) =>
+                    handleStageChange(index, "reminders", {
+                      ...stage.reminders,
+                      reminderExamples: text,
+                    })
+                  }
+                />
+              </>
+            )}
+          </View>
           <View style={styles.row}>
             <Checkbox
               value={stage.stopConversation}
@@ -152,6 +262,7 @@ export const CampaignStepThree = (
             />
             <Text>Stop Conversation After This Stage</Text>
           </View>
+
           <View style={styles.row}>
             <Checkbox
               value={stage.leadConversion}

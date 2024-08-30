@@ -23,8 +23,21 @@ export const stepTwoSchema = z.object({
 const stageSchema = z.object({
   name: z.string().nonempty("Stage Name is required."),
   purpose: z.string().nonempty("Purpose of the Stage is required."),
-  collectibles: z.array(z.string()),
-  reminderTiming: z.string().regex(/^\d+$/, "Reminder Timing must be numeric."),
+  collectibles: z.array(
+    z.object({
+      name: z.string().nonempty("Collectible Name is required."),
+      type: z.string().nonempty("Collectible Type is required."),
+      description: z.string().nonempty("Collectible Description is required."),
+      mandatory: z.boolean(),
+    })
+  ),
+  reminders: z.object({
+    state: z.boolean(),
+    reminderCount: z.string(),
+    reminderExamples: z.string(),
+  }),
+  exampleConversations: z.string(),
+  reminderTiming: z.string(),
   stopConversation: z.boolean(),
   leadConversion: z.boolean(),
 });

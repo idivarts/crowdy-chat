@@ -1,15 +1,5 @@
 import React, { useState } from "react";
-import {
-  View,
-  Text,
-  TextInput,
-  Button,
-  ScrollView,
-  StyleSheet,
-  TouchableOpacity,
-  Modal,
-} from "react-native";
-import Checkbox from "expo-checkbox";
+import { View, Button, ScrollView } from "react-native";
 import { CreateCampaignstyles as styles } from "@/styles/Dashboard.styles";
 import {
   stepOneSchema,
@@ -17,21 +7,16 @@ import {
   stepThreeSchema,
 } from "@/components/schemas/CampaignCreateSchema";
 import { CampaignStepOne } from "@/components/modals/CreateCampaignStages/CampaignStageOne";
+import { FirestoreDB } from "@/shared-libs/utilities/firestore";
+import { collection, addDoc } from "firebase/firestore";
+import { ICampaigns } from "@/shared-libs/firestore/crowdy-chat/models/campaigns";
 import { CampaignStepTwo } from "@/components/modals/CreateCampaignStages/CampaignStageTwo";
 import { CampaignStepThree } from "@/components/modals/CreateCampaignStages/CampaignStageThree";
 import Toaster from "@/shared-uis/components/toaster/Toaster";
-import { Icon, Portal } from "react-native-paper";
-import { Ionicons } from "@expo/vector-icons";
 import { useNavigation } from "expo-router";
-
-type Stage = {
-  name: string;
-  purpose: string;
-  collectibles: string[];
-  reminderTiming: string;
-  stopConversation: boolean;
-  leadConversion: boolean;
-};
+import { AuthApp } from "@/shared-libs/utilities/auth";
+import { useOrganizationContext } from "@/contexts";
+import { Stage } from "@/components/campaigns/LeadStageTypes";
 
 const CreateCampaign = () => {
   const navigation = useNavigation();
@@ -44,16 +29,21 @@ const CreateCampaign = () => {
   const [campaignPurpose, setCampaignPurpose] = useState("");
   const [actorDefinition, setActorDefinition] = useState("");
   const [dialogues, setDialogues] = useState("");
+  const { currentOrganization } = useOrganizationContext();
   const [stages, setStages] = useState<Stage[]>([
     {
+      collectibles: [],
+      exampleConversations: "",
+      leadConversion: false,
       name: "",
       purpose: "",
-      collectibles: [],
       reminderTiming: "",
+      reminders: { reminderCount: "0", reminderExamples: "", state: false },
       stopConversation: false,
-      leadConversion: false,
     },
   ]);
+
+  const user = AuthApp.currentUser;
 
   const [modalVisible, setModalVisible] = useState(false);
 
@@ -61,12 +51,14 @@ const CreateCampaign = () => {
     setStages([
       ...stages,
       {
+        collectibles: [],
+        exampleConversations: "",
+        leadConversion: false,
         name: "",
         purpose: "",
-        collectibles: [],
         reminderTiming: "",
+        reminders: { reminderCount: "0", reminderExamples: "", state: false },
         stopConversation: false,
-        leadConversion: false,
       },
     ]);
   };
@@ -91,64 +83,166 @@ const CreateCampaign = () => {
     setStages(updatedStages);
   };
 
-  const handleNext = () => {
-    let validation;
-    if (currentStep === 1) {
-      validation = stepOneSchema.safeParse({
-        campaignName,
-        campaignObjective,
-        replySpeed,
-        reminderTiming,
-      });
-    } else if (currentStep === 2) {
-      validation = stepTwoSchema.safeParse({
-        prescript,
-        campaignPurpose,
-        actorDefinition,
-        dialogues,
-      });
-    } else if (currentStep >= 3) {
-      validation = stepThreeSchema.safeParse({ stages });
-    }
+  const handleNext = async () => {
+    try {
+      if (!user) {
+        return Toaster.error("User not found. Please login again.");
+      }
+      if (!currentOrganization?.id) {
+        return Toaster.error("Organization not found. Please try again.");
+      }
+      let validation;
+      if (currentStep === 1) {
+        validation = stepOneSchema.safeParse({
+          campaignName,
+          campaignObjective,
+          replySpeed,
+          reminderTiming,
+        });
+      } else if (currentStep === 2) {
+        validation = stepTwoSchema.safeParse({
+          prescript,
+          campaignPurpose,
+          actorDefinition,
+          dialogues,
+        });
+      } else if (currentStep >= 3) {
+        validation = stepThreeSchema.safeParse({ stages });
+      }
 
-    if (validation?.success) {
+      if (!validation?.success) {
+        return Toaster.error(validation?.error.issues[0].message);
+      }
+
       if (currentStep >= 3) {
-        // toast.success("Campaign Created Successfully");
-        Toaster.success("Campaign Created Successfully");
-        setCampaignName("");
-        setCampaignObjective("");
-        setReplySpeed({ min: "", max: "" });
-        setReminderTiming({ min: "", max: "" });
-        setPrescript("");
-        setCampaignPurpose("");
-        setActorDefinition("");
-        setDialogues("");
-        setStages([
-          {
-            name: "",
-            purpose: "",
-            collectibles: [],
-            reminderTiming: "",
-            stopConversation: false,
-            leadConversion: false,
+        // Campaign creation logic
+        const campaignColRef = collection(
+          FirestoreDB,
+          "organizations",
+          currentOrganization.id,
+          "campaigns"
+        );
+        const campaignData: ICampaigns = {
+          chatgpt: {
+            prescript,
+            actor: actorDefinition,
+            examples: dialogues,
+            purpose: campaignPurpose,
           },
-        ]);
-        setCurrentStep(1);
-        setModalVisible(false);
+          name: campaignName,
+          objective: campaignObjective,
+          replySpeed: {
+            min: Number(replySpeed.min),
+            max: Number(replySpeed.max),
+          },
+          reminderTiming: {
+            min: Number(reminderTiming.min),
+            max: Number(reminderTiming.max),
+          },
+          organizationId: currentOrganization.id,
+          createdBy: user?.uid,
+          createdAt: Date.now(),
+          updatedAt: Date.now(),
+          status: 2,
+        };
+
+        const campaignDocRef = await addDoc(campaignColRef, campaignData);
+
+        const leadStages = stages.map((stage) => ({
+          organizationId: currentOrganization.id,
+          campaignId: campaignDocRef.id,
+          name: stage.name,
+          purpose: stage.purpose,
+          reminders: {
+            state: stage.reminders.state,
+            reminderCount: Number(stage.reminders.reminderCount),
+            reminderExamples: stage.reminders.reminderExamples,
+          },
+          exampleConversations: stage.exampleConversations,
+          stopConversation: stage.stopConversation,
+          leadConversion: stage.leadConversion,
+        }));
+
+        const leadStagesColRef = collection(
+          FirestoreDB,
+          "organizations",
+          currentOrganization.id,
+          "campaigns",
+          campaignDocRef.id,
+          "leadStages"
+        );
+        const leadStageDocs = await Promise.all(
+          leadStages.map((stage) => addDoc(leadStagesColRef, stage))
+        );
+
+        const collectibleStage = leadStageDocs.map((leadStage, index) => {
+          const collectiblesColRef = collection(
+            FirestoreDB,
+            "organizations",
+            currentOrganization.id,
+            "campaigns",
+            campaignDocRef.id,
+            "leadStages",
+            leadStage.id,
+            "collectibles"
+          );
+
+          const collectibles = stages[index].collectibles.map(
+            (collectible) => ({
+              organizationId: currentOrganization.id,
+              campaignId: campaignDocRef.id,
+              leadStageId: leadStage.id,
+              name: collectible.name,
+              type: collectible.type,
+              description: collectible.description,
+              mandatory: collectible.mandatory,
+            })
+          );
+
+          return collectibles.map((collectible) => {
+            addDoc(collectiblesColRef, collectible);
+          });
+        });
+
+        Toaster.success("Campaign Created Successfully");
+        resetForm();
       } else {
         setCurrentStep(currentStep + 1);
         if (currentStep === 2) {
           setCurrentStep(3.1);
         }
-        if (currentStep > 3) {
-          setModalVisible(false);
-        }
       }
-    } else {
-      // validation?.error.issues.forEach((issue) => (issue.message));
-      // toast.error(validation?.error.issues[0].message);
-      Toaster.error(validation?.error.issues[0].message);
+    } catch (error) {
+      Toaster.error(
+        "An error occurred while creating the campaign. Please try again."
+      );
+      console.error("Error creating campaign", error);
     }
+  };
+
+  const resetForm = () => {
+    setCampaignName("");
+    setCampaignObjective("");
+    setReplySpeed({ min: "", max: "" });
+    setReminderTiming({ min: "", max: "" });
+    setPrescript("");
+    setCampaignPurpose("");
+    setActorDefinition("");
+    setDialogues("");
+    setStages([
+      {
+        collectibles: [],
+        exampleConversations: "",
+        leadConversion: false,
+        name: "",
+        purpose: "",
+        reminderTiming: "",
+        reminders: { reminderCount: "0", reminderExamples: "", state: false },
+        stopConversation: false,
+      },
+    ]);
+    setCurrentStep(1);
+    setModalVisible(false);
   };
 
   const renderStepContent = () => {
@@ -233,7 +327,6 @@ const CreateCampaign = () => {
         <Button
           title={currentStep < 3 ? "Next" : "Submit"}
           onPress={() => {
-            console.log("currentStep", currentStep);
             handleNext();
           }}
         />

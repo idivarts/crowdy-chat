@@ -28,6 +28,7 @@ import {
   getDownloadURL,
 } from "firebase/storage";
 import Toast from "react-native-toast-message";
+import { useAuthContext } from "@/contexts";
 
 interface ProfilePopupProps {
   isVisible: boolean;
@@ -35,34 +36,16 @@ interface ProfilePopupProps {
 }
 
 const ProfilePopup: React.FC<ProfilePopupProps> = ({ isVisible, onClose }) => {
+  const { user } = useAuthContext();
   const auth = AuthApp;
-
-  const [profileName, setProfileName] = useState("");
+  const [profileName, setProfileName] = useState(user?.name || "");
   const [oldPassword, setOldPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [confirmNewPassword, setConfirmNewPassword] = useState("");
   const [profileImage, setProfileImage] = useState(
-    "https://pinnacle.works/wp-content/uploads/2022/06/dummy-image.jpg"
+    user?.image ||
+      "https://pinnacle.works/wp-content/uploads/2022/06/dummy-image.jpg"
   );
-
-  const fetchUserProfile = async () => {
-    const user = auth.currentUser;
-    if (!user || !user.uid) return;
-
-    const userDocRef = doc(FirestoreDB, "users", user.uid);
-    const userDoc = await getDoc(userDocRef);
-
-    if (userDoc.exists()) {
-      const userData = userDoc.data() as IUser;
-      if (!userData) return;
-      setProfileName(userData.name || "");
-      setProfileImage(userData.image || profileImage);
-    }
-  };
-
-  useEffect(() => {
-    fetchUserProfile();
-  }, []);
 
   const validatePasswords = (): boolean => {
     if (newPassword !== confirmNewPassword) {
