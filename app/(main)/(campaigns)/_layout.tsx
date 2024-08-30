@@ -5,6 +5,7 @@ import { Stack, useRouter } from "expo-router";
 import { useEffect } from "react";
 import { View } from "@/components/Themed";
 import GoBackButton from "@/components/ui/go-back-button";
+import { CampaignContextProvider } from "@/contexts/campaign-context.provider";
 import { ActivityIndicator } from "react-native";
 
 const CampaignsLayout = () => {
@@ -35,35 +36,37 @@ const CampaignsLayout = () => {
   }
 
   return (
-    <Stack
-      screenOptions={{
-        animation: "ios",
-        headerShown: true,
-        headerTitleAlign: "center",
-      }}
-    >
-      <Stack.Screen
-        name="campaigns"
-        options={{
-          headerLeft: () => (lg ? null : <DrawerToggle />),
-          title: "Campaigns",
-          headerShown: false,
-        }}
-      />
-      <Stack.Screen
-        name="campaigns/create"
-        options={{
-          headerLeft: () => (
-            <View style={{ flexDirection: "row", alignItems: "center" }}>
-              <GoBackButton />
-              {!lg && <DrawerToggle />}
-            </View>
-          ),
-          title: "Create Campaign",
+    <CampaignContextProvider>
+      <Stack
+        screenOptions={{
+          animation: "ios",
           headerShown: true,
+          headerTitleAlign: "center",
         }}
-      />
-    </Stack>
+      >
+        <Stack.Screen
+          name="campaigns"
+          options={{
+            headerLeft: () => (lg ? null : <DrawerToggle />),
+            title: "Campaigns",
+            headerShown: false,
+          }}
+        />
+        <Stack.Screen
+          name="campaigns/create"
+          options={{
+            headerLeft: () => (
+              <View style={{ flexDirection: "row", alignItems: "center" }}>
+                <GoBackButton />
+                {!lg && <DrawerToggle />}
+              </View>
+            ),
+            title: "Create Campaign",
+            headerShown: true,
+          }}
+        />
+      </Stack>
+    </CampaignContextProvider>
   );
 };
 
