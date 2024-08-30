@@ -19,6 +19,8 @@ import {
 import { PaperProvider } from "react-native-paper";
 import { AuthScreens, MainScreens, PublicScreens } from "@/layouts/screens";
 import CustomPaperTheme from "@/constants/Theme";
+import { OrganizationContextProvider, useOrganizationContext } from "@/contexts/organization-context.provider";
+import { FirebaseStorageContextProvider } from "@/contexts/firebase-storage-context.provider";
 
 export {
   // Catch any errors thrown by the Layout component.
@@ -64,9 +66,13 @@ const RootLayout = () => {
 
   return (
     <AuthContextProvider>
-      <PaperProvider theme={CustomPaperTheme}>
-        <RootLayoutStack />
-      </PaperProvider>
+      <FirebaseStorageContextProvider>
+        <OrganizationContextProvider>
+          <PaperProvider theme={CustomPaperTheme}>
+            <RootLayoutStack />
+          </PaperProvider>
+        </OrganizationContextProvider>
+      </FirebaseStorageContextProvider>
     </AuthContextProvider>
   );
 };

@@ -1,12 +1,14 @@
 
-import CreateOrganizationForm from "@/components/organization/CreateOrganizationForm";
-import { router } from "expo-router";
+import CreateOrganizationForm, { OrganizationForm } from "@/components/organization/CreateOrganizationForm";
+import { useOrganizationContext } from "@/contexts";
 
 const CreateNewOrganization = () => {
-  const handleSubmit = () => {
-    // Validate form fields
-    // Handle form submission
-    router.push("/(main)/organization-profile");
+  const {
+    createOrganization,
+  } = useOrganizationContext();
+
+  const handleSubmit = async (data: OrganizationForm) => {
+    await createOrganization(data);
   };
 
   return (

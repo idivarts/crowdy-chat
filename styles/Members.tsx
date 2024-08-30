@@ -35,7 +35,7 @@ export const styles = StyleSheet.create({
   chipContainer: {
     flexDirection: "row",
     flexWrap: "wrap",
-    marginBottom: 10,
+    marginVertical: 10,
   },
   chip: {
     margin: 4,

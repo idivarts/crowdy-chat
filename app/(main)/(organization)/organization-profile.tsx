@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, ScrollView } from 'react-native';
 
 import ImagePicker from '@/shared-uis/components/image-picker/ImagePicker';
@@ -7,29 +7,38 @@ import useBreakpoints from '@/hooks/use-breakpoints';
 import AppLayout from '@/layouts/app-layout';
 import styles from '@/styles/organization/OrganizationProfile.styles';
 import Button from '@/components/ui/button/Button';
+import { useOrganizationContext } from '@/contexts';
+import { ActivityIndicator } from 'react-native-paper';
 
 const OrganizationProfile: React.FC = () => {
-  const organization = {
-    name: 'Organization Name',
-    image: 'https://via.placeholder.com/150',
-    description: 'Description',
-    industry: 'Industry',
-    website: 'https://example.com',
-  };
-
   const [isEditable, setIsEditable] = useState(false);
-  const [name, setName] = useState(organization.name);
-  const [image, setImage] = useState(organization.image);
-  const [description, setDescription] = useState(organization.description);
-  const [industry, setIndustry] = useState(organization.industry);
-  const [website, setWebsite] = useState(organization.website);
+  const {
+    currentOrganization: organization,
+    updateOrganization,
+  } = useOrganizationContext();
+  const [name, setName] = useState('');
+  const [image, setImage] = useState('');
+  const [description, setDescription] = useState('');
+  const [industry, setIndustry] = useState('');
+  const [website, setWebsite] = useState('');
   const { lg } = useBreakpoints();
 
   const handleEdit = () => {
     setIsEditable(true);
   };
 
-  const handleSave = () => {
+  const handleSave = async () => {
+    if (!organization) {
+      return;
+    }
+
+    await updateOrganization(organization.id, {
+      name,
+      image,
+      description,
+      industry,
+      website,
+    });
     setIsEditable(false);
   };
 
@@ -40,6 +49,30 @@ const OrganizationProfile: React.FC = () => {
   const handleCancel = () => {
     setIsEditable(false);
   };
+
+  useEffect(() => {
+    setName(organization?.name || '');
+    setImage(organization?.image || '');
+    setDescription(organization?.description || '');
+    setIndustry(organization?.industry || '');
+    setWebsite(organization?.website || '');
+  }, [organization]);
+
+  if (!organization) {
+    return (
+      <AppLayout>
+        <View
+          style={{
+            flex: 1,
+            justifyContent: 'center',
+            alignItems: 'center',
+          }}
+        >
+          <ActivityIndicator />
+        </View>
+      </AppLayout>
+    )
+  }
 
   return (
     <AppLayout>
@@ -65,8 +98,9 @@ const OrganizationProfile: React.FC = () => {
             <View style={styles.imagePickerContainer}>
               <ImagePicker
                 editable={isEditable}
-                initialImage={image}
+                image={image}
                 onUploadImage={onUploadImage}
+                setImage={setImage}
               />
             </View>
 
