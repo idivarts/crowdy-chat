@@ -8,7 +8,6 @@ import {
   useState,
 } from "react";
 import { useOrganizationContext } from "./organization-context.provider";
-import { initialCampaigns } from "@/constants/Campaigns";
 
 interface CampaignContextProps {
   campaigns: Campaign[];
@@ -28,18 +27,22 @@ export const CampaignContextProvider: React.FC<PropsWithChildren> = ({
   } = useOrganizationContext();
 
   const getCampaigns = async () => {
-    // const campaignsRef = collection(FirestoreDB, `/organizations/${currentOrganization?.id}/campaigns`);
-    // const campaignsSnapshot = await getDocs(campaignsRef);
+    const campaignsRef = collection(FirestoreDB, `/organizations/${currentOrganization?.id}/campaigns`);
+    const campaignsSnapshot = await getDocs(campaignsRef);
 
-    // const campaignsData = campaignsSnapshot.docs.map((doc) => {
-    //   return {
-    //     id: doc.id,
-    //     ...doc.data(),
-    //   } as Campaign;
-    // });
+    const campaignsData = campaignsSnapshot.docs.map((doc) => {
+      return {
+        id: doc.id,
+        ...doc.data(),
+        // Replace with correct implementation
+        image: 'https://via.placeholder.com/150',
+        totalConversions: 100,
+        totalLeads: 10,
+        totalPages: 3,
 
-    // Remove after campaign creation is implemented
-    const campaignsData = initialCampaigns.filter((campaign) => campaign.organizationId === currentOrganization?.id);
+      } as Campaign;
+    });
+
     if (campaignsData.length > 0) {
       // @ts-ignore
       setCampaigns(campaignsData);
