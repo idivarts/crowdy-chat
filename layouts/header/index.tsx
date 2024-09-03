@@ -3,7 +3,7 @@ import { Button } from "react-native";
 import { Logo } from "@/components/ui";
 import HeaderSection from "./HeaderSection";
 import HeaderContainer from "./HeaderContainer";
-import { useAuthContext } from "@/contexts";
+import { useAuthContext, useOrganizationContext } from "@/contexts";
 import Profile from "@/components/profile/Profile";
 import { useRouter } from "expo-router";
 import OrganizationSwitcher from "@/components/ui/organization-switcher";
@@ -12,6 +12,7 @@ import { ProfilePopupContextProvider } from "@/contexts/profile-popup-context.pr
 
 const Header: React.FC = () => {
   const { session } = useAuthContext();
+  const { currentOrganization } = useOrganizationContext();
   const router = useRouter();
   const { lg } = useBreakpoints();
 
@@ -19,7 +20,7 @@ const Header: React.FC = () => {
     <ProfilePopupContextProvider>
       <HeaderContainer>
         <HeaderSection gap={lg ? 20 : 10}>
-          <Logo />
+          <Logo imageSrc={currentOrganization?.image} />
           {
             session && (
               <OrganizationSwitcher />
