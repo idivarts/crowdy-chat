@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Appbar } from "react-native-paper";
+import { ActivityIndicator, Appbar } from "react-native-paper";
 import { router } from "expo-router";
 
 import AppLayout from "@/layouts/app-layout";
@@ -13,6 +13,7 @@ import CampaignsFilledState from "@/components/campaigns/CampaignsFilledState";
 import { TextInput } from "react-native-paper";
 import { useCampaignContext } from "@/contexts/campaign-context.provider";
 import { Campaign } from "@/types/campaign";
+import { useOrganizationContext } from "@/contexts";
 
 const Campaigns = () => {
   const [searchQuery, setSearchQuery] = useState("");
@@ -22,6 +23,9 @@ const Campaigns = () => {
   const {
     campaigns,
   } = useCampaignContext();
+  const {
+    currentOrganization,
+  } = useOrganizationContext();
 
   const handleSearch = (query: string) => {
     setSearchQuery(query);
@@ -38,6 +42,19 @@ const Campaigns = () => {
   useEffect(() => {
     setFilteredCampaigns(campaigns);
   }, [campaigns]);
+
+  if (!currentOrganization) {
+    return (
+      <View
+        style={{
+          flex: 1,
+          justifyContent: "center",
+        }}
+      >
+        <ActivityIndicator />
+      </View>
+    );
+  }
 
   if (!campaigns) {
     return null;

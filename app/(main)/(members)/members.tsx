@@ -8,6 +8,7 @@ import {
   Chip,
   DefaultTheme,
   Text,
+  ActivityIndicator,
 } from "react-native-paper";
 import { View, ScrollView } from "react-native";
 import Dropdown from "@/shared-uis/components/dropdown/Dropdown";
@@ -77,15 +78,6 @@ const MemberPage: React.FC = () => {
   const { currentOrganization } = useOrganizationContext();
   const { lg } = useBreakPoints();
   const [editingIndex, setEditingIndex] = useState<number | null>(null);
-
-  if (
-    !currentOrganization ||
-    !currentOrganization.id ||
-    currentOrganization === undefined
-  ) {
-    Toaster.error("No organization selected");
-    // return router.replace("/organizations");
-  }
 
   const fetchMembers = async () => {
     try {
@@ -205,8 +197,7 @@ const MemberPage: React.FC = () => {
   }) => {
     const result = MemberSchema.safeParse(newMember);
     if (!currentOrganization) {
-      Toaster.error("No organization selected");
-      return;
+      throw new Error("Organization not found");
     }
 
     if (result.success) {
@@ -399,8 +390,24 @@ const MemberPage: React.FC = () => {
   });
 
   useEffect(() => {
-    fetchMembers();
-  }, []);
+    if (currentOrganization) {
+      fetchMembers();
+    }
+  }, [currentOrganization]);
+
+  if (!currentOrganization) {
+    return (
+      <View
+        style={{
+          flex: 1,
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+      >
+        <ActivityIndicator />
+      </View>
+    );
+  }
 
   return (
     <Provider theme={customTheme}>
