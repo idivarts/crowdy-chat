@@ -32,14 +32,15 @@ const OrganizationProfile: React.FC = () => {
       return;
     }
 
-    await updateOrganization(organization.id, {
+    updateOrganization(organization.id, {
       name,
       image,
       description,
       industry,
       website,
+    }).then(() => {
+      setIsEditable(false);
     });
-    setIsEditable(false);
   };
 
   const onUploadImage = (image: string) => {

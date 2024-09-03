@@ -122,9 +122,29 @@ export const OrganizationContextProvider: React.FC<PropsWithChildren> = ({
     if (!orgDoc.id) {
       Toaster.error("Organization creation failed");
     } else {
+      const createdOrg = await getOrganizationById(orgDoc.id);
+      if (createdOrg) {
+        setCurrentOrganization(createdOrg);
+      }
       await getOrganizations();
       Toaster.success("Organization created successfully");
       router.push("/(main)/organization-profile");
+    }
+  };
+
+  const getOrganizationById = async (
+    organizationId: string
+  ): Promise<Organization | null> => {
+    const orgRef = doc(FirestoreDB, "organizations", organizationId);
+    const orgDoc = await getDoc(orgRef);
+
+    if (orgDoc.exists()) {
+      return {
+        id: orgDoc.id,
+        ...orgDoc.data(),
+      } as Organization;
+    } else {
+      return null;
     }
   };
 
@@ -167,7 +187,11 @@ export const OrganizationContextProvider: React.FC<PropsWithChildren> = ({
         return undefined;
       }
 
-      setCurrentOrganization(data[0] as Organization);
+      if (currentOrganization) {
+        setCurrentOrganization(data.find((org) => org?.id === currentOrganization?.id) || currentOrganization);
+      } else {
+        setCurrentOrganization(data[0] as Organization);
+      }
       setOrganizations(data as Organization[]);
       return data as Organization[];
     } catch (error) {
@@ -191,7 +215,6 @@ export const OrganizationContextProvider: React.FC<PropsWithChildren> = ({
       await updateDoc(orgDocRef, data);
       getOrganizations();
       Toaster.success("Organization updated successfully");
-      router.push("/(main)/organization-profile");
     } catch (error) {
       console.error("Error updating organization: ", error);
       Toaster.error("Organization update failed");

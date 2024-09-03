@@ -53,7 +53,7 @@ const OrganizationSwitcher: React.FC<OrganizationSwitcherProps> = () => {
             fontWeight: "600",
           }}
         >
-          {currentOrganization.name} - Users
+          {currentOrganization.name}
         </Text>
         {isOrganizationModalVisible ? (
           <Ionicons

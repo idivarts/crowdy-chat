@@ -13,7 +13,6 @@ import CampaignsFilledState from "@/components/campaigns/CampaignsFilledState";
 import { TextInput } from "react-native-paper";
 import { useCampaignContext } from "@/contexts/campaign-context.provider";
 import { Campaign } from "@/types/campaign";
-import { useOrganizationContext } from "@/contexts";
 
 const Campaigns = () => {
   const [searchQuery, setSearchQuery] = useState("");
@@ -22,15 +21,7 @@ const Campaigns = () => {
 
   const {
     campaigns,
-    getCampaigns,
   } = useCampaignContext();
-  const {
-    currentOrganization,
-  } = useOrganizationContext();
-
-  const fetchCampaigns = async () => {
-    getCampaigns();
-  }
 
   const handleSearch = (query: string) => {
     setSearchQuery(query);
@@ -49,12 +40,6 @@ const Campaigns = () => {
       setFilteredCampaigns(campaigns);
     }
   }, [campaigns]);
-
-  useEffect(() => {
-    if (currentOrganization) {
-      fetchCampaigns();
-    }
-  }, [currentOrganization]);
 
   if (!campaigns) {
     return null;

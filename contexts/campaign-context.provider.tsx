@@ -6,6 +6,7 @@ import {
   createContext,
   type PropsWithChildren,
   useState,
+  useEffect,
 } from "react";
 import { useOrganizationContext } from "./organization-context.provider";
 
@@ -25,6 +26,12 @@ export const CampaignContextProvider: React.FC<PropsWithChildren> = ({
   const {
     currentOrganization,
   } = useOrganizationContext();
+
+  useEffect(() => {
+    if (currentOrganization) {
+      getCampaigns();
+    }
+  }, [currentOrganization]);
 
   const getCampaigns = async () => {
     const campaignsRef = collection(FirestoreDB, `/organizations/${currentOrganization?.id}/campaigns`);
