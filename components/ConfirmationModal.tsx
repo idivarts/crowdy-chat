@@ -3,6 +3,7 @@ import { Text, View } from "react-native";
 import { Button, Portal, Modal, Icon, IconButton } from "react-native-paper";
 
 export interface IConfirmationModalProps {
+  actionButtonLabel?: string;
   visible?: boolean;
   message: string;
   handleSubmit: () => void;
@@ -52,7 +53,7 @@ const ConfirmationModal: React.FC<IConfirmationModalProps> = (props) => {
               style={{ marginBottom: 15 }}
               onPress={props.handleSubmit}
             >
-              Proceed
+              {props.actionButtonLabel || "Proceed"}
             </Button>
             <Button mode="outlined" onPress={props.handleCancel}>
               Cancel

@@ -46,7 +46,7 @@ export const useAuthContext = () => useContext(AuthContext);
 export const AuthContextProvider: React.FC<PropsWithChildren> = ({
   children,
 }) => {
-  const [[isLoading, session], setSession] = useStorageState("");
+  const [[isLoading, session], setSession] = useStorageState("session-id");
   const router = useRouter();
   const [user, setUser] = useState<IUser | null>(null);
 

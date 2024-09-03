@@ -36,9 +36,7 @@ const Campaigns = () => {
   };
 
   useEffect(() => {
-    if (campaigns) {
-      setFilteredCampaigns(campaigns);
-    }
+    setFilteredCampaigns(campaigns);
   }, [campaigns]);
 
   if (!campaigns) {
