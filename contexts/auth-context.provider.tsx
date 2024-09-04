@@ -10,6 +10,7 @@ import {
 import {
   createContext,
   useContext,
+  useEffect,
   useState,
   type PropsWithChildren,
 } from "react";
@@ -200,6 +201,10 @@ export const AuthContextProvider: React.FC<PropsWithChildren> = ({
       Toaster.error("Failed to fetch user");
     }
   };
+
+  useEffect(() => {
+    if (session) fetchUser();
+  }, [session]);
 
   return (
     <AuthContext.Provider

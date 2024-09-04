@@ -8,12 +8,6 @@ import { useEffect } from "react";
 
 const DrawerLayout = () => {
   const { lg } = useBreakPoints();
-  const { fetchUser } = useAuthContext();
-
-  useEffect(() => {
-    fetchUser();
-  }, []);
-
   return (
     <>
       <Header />

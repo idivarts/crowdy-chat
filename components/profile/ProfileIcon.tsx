@@ -8,6 +8,7 @@ import { doc, getDoc } from "firebase/firestore";
 import { FirestoreDB } from "@/shared-libs/utilities/firestore";
 import { AuthApp } from "@/shared-libs/utilities/auth";
 import { IUser } from "@/shared-libs/firestore/crowdy-chat/models/users";
+import { useAuthContext } from "@/contexts";
 
 interface ProfileIconProps {
   iconColor?: string;
@@ -27,6 +28,9 @@ const ProfileIcon: React.FC<ProfileIconProps> = ({
   );
   const [loading, setLoading] = useState(true);
   const [user, setUser] = useState(AuthApp.currentUser);
+  // useas different name
+  // const {user} = useAuthContext();
+  const { user: AuthUser, fetchUser } = useAuthContext();
 
   useEffect(() => {
     const unsubscribe = AuthApp.onAuthStateChanged((user) => {
@@ -38,19 +42,9 @@ const ProfileIcon: React.FC<ProfileIconProps> = ({
 
   useEffect(() => {
     const fetchUserProfile = async () => {
-      if (!user || !user.uid) {
-        setLoading(false);
-        return;
-      }
-
       try {
-        const userDocRef = doc(FirestoreDB, "users", user.uid);
-        const userDoc = await getDoc(userDocRef);
-
-        if (userDoc.exists()) {
-          const userData = userDoc.data() as IUser;
-          setProfileImage(userData.image);
-        }
+        fetchUser();
+        setProfileImage(AuthUser?.image);
       } catch (error) {
         console.error("Error getting document:", error);
       } finally {
@@ -62,6 +56,13 @@ const ProfileIcon: React.FC<ProfileIconProps> = ({
       fetchUserProfile();
     }
   }, [user]);
+
+  useEffect(() => {
+    // Update the profile image whenever AuthUser changes
+    if (AuthUser?.image) {
+      setProfileImage(AuthUser.image);
+    }
+  }, [AuthUser?.image]);
 
   if (loading) {
     return (
