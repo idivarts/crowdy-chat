@@ -36,7 +36,7 @@ interface ProfilePopupProps {
 }
 
 const ProfilePopup: React.FC<ProfilePopupProps> = ({ isVisible, onClose }) => {
-  const { user } = useAuthContext();
+  const { user, fetchUser } = useAuthContext();
   const auth = AuthApp;
   const [profileName, setProfileName] = useState(user?.name || "");
   const [oldPassword, setOldPassword] = useState("");
@@ -100,6 +100,7 @@ const ProfilePopup: React.FC<ProfilePopupProps> = ({ isVisible, onClose }) => {
 
           const downloadURL = await getDownloadURL(storageRef);
           updates.image = downloadURL;
+          fetchUser();
         }
 
         if (Object.keys(updates).length > 0) {
