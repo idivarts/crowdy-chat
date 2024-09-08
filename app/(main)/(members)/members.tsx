@@ -8,6 +8,7 @@ import {
   Chip,
   DefaultTheme,
   Text,
+  ActivityIndicator,
 } from "react-native-paper";
 import { View, ScrollView } from "react-native";
 import Dropdown from "@/shared-uis/components/dropdown/Dropdown";
@@ -77,15 +78,6 @@ const MemberPage: React.FC = () => {
   const { currentOrganization } = useOrganizationContext();
   const { lg } = useBreakPoints();
   const [editingIndex, setEditingIndex] = useState<number | null>(null);
-
-  if (
-    !currentOrganization ||
-    !currentOrganization.id ||
-    currentOrganization === undefined
-  ) {
-    Toaster.error("No organization selected");
-    // return router.replace("/organizations");
-  }
 
   const fetchMembers = async () => {
     try {
@@ -205,8 +197,7 @@ const MemberPage: React.FC = () => {
   }) => {
     const result = MemberSchema.safeParse(newMember);
     if (!currentOrganization) {
-      Toaster.error("No organization selected");
-      return;
+      throw new Error("Organization not found");
     }
 
     if (result.success) {
@@ -338,6 +329,7 @@ const MemberPage: React.FC = () => {
     member: {
       name: string;
       username: string;
+      email: string;
       permissions: {
         read: boolean;
         write: boolean;
@@ -345,51 +337,56 @@ const MemberPage: React.FC = () => {
       };
     },
     index: number
-  ) => (
-    <DataTable.Row
-      key={index}
-      style={{
-        backgroundColor: index % 2 === 0 ? "#f5f5f5" : "white",
-        zIndex: -10 - index,
-      }}
-    >
-      <DataTable.Cell>{member.name || "No Name"}</DataTable.Cell>
-      <DataTable.Cell>{member.username}</DataTable.Cell>
-      <DataTable.Cell>
-        <View style={styles.chipContainer}>
-          {member.permissions.read && <Chip style={styles.chip}>Read</Chip>}
-          {member.permissions.write && <Chip style={styles.chip}>Write</Chip>}
-          {member.permissions.admin && <Chip style={styles.chip}>Admin</Chip>}
-        </View>
-      </DataTable.Cell>
-      <DataTable.Cell style={styles.actionsCell}>
-        <Dropdown>
-          <DropdownTrigger>
-            <MaterialIcons name="more-vert" size={24} color="black" />
-          </DropdownTrigger>
-          <DropdownOptions
-            position={{
-              top: "100%",
-              right: 0,
-            }}
-          >
-            <DropdownOption>
-              <DropdownButton
-                onPress={() => handleEditMember(index)}
-                title="Edit"
-              />
-            </DropdownOption>
-            <DropdownOption>
-              <DropdownButton
-                onPress={() => handleDeleteMember(index)}
-                title="Delete"
-              />
-            </DropdownOption>
-          </DropdownOptions>
-        </Dropdown>
-      </DataTable.Cell>
-    </DataTable.Row>
-  );
+  ) => {
+    const authUser = AuthApp.currentUser;
+    return (
+      <DataTable.Row
+        key={index}
+        style={{
+          backgroundColor: index % 2 === 0 ? "#f5f5f5" : "white",
+          zIndex: -10 - index,
+        }}
+      >
+        <DataTable.Cell>{member.name || "No Name"}</DataTable.Cell>
+        <DataTable.Cell>{member.username || member.email}</DataTable.Cell>
+        <DataTable.Cell>
+          <View style={styles.chipContainer}>
+            {member.permissions.read && <Chip style={styles.chip}>Read</Chip>}
+            {member.permissions.write && <Chip style={styles.chip}>Write</Chip>}
+            {member.permissions.admin && <Chip style={styles.chip}>Admin</Chip>}
+          </View>
+        </DataTable.Cell>
+        <DataTable.Cell style={styles.actionsCell}>
+          <Dropdown>
+            <DropdownTrigger>
+              <MaterialIcons name="more-vert" size={24} color="black" />
+            </DropdownTrigger>
+            <DropdownOptions
+              position={{
+                top: "100%",
+                right: 0,
+              }}
+            >
+              <DropdownOption>
+                <DropdownButton
+                  onPress={() => handleEditMember(index)}
+                  title="Edit"
+                />
+              </DropdownOption>
+              <DropdownOption>
+                {authUser?.email !== member.email && (
+                  <DropdownButton
+                    onPress={() => handleDeleteMember(index)}
+                    title="Delete"
+                  />
+                )}
+              </DropdownOption>
+            </DropdownOptions>
+          </Dropdown>
+        </DataTable.Cell>
+      </DataTable.Row>
+    );
+  };
 
   const filteredMembers = members.filter((member) => {
     if (!searchTerm) return true;
@@ -399,8 +396,24 @@ const MemberPage: React.FC = () => {
   });
 
   useEffect(() => {
-    fetchMembers();
-  }, []);
+    if (currentOrganization) {
+      fetchMembers();
+    }
+  }, [currentOrganization]);
+
+  if (!currentOrganization) {
+    return (
+      <View
+        style={{
+          flex: 1,
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+      >
+        <ActivityIndicator />
+      </View>
+    );
+  }
 
   return (
     <Provider theme={customTheme}>

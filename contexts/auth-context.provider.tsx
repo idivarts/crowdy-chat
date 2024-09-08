@@ -10,6 +10,7 @@ import {
 import {
   createContext,
   useContext,
+  useEffect,
   useState,
   type PropsWithChildren,
 } from "react";
@@ -46,7 +47,7 @@ export const useAuthContext = () => useContext(AuthContext);
 export const AuthContextProvider: React.FC<PropsWithChildren> = ({
   children,
 }) => {
-  const [[isLoading, session], setSession] = useStorageState("");
+  const [[isLoading, session], setSession] = useStorageState("session-id");
   const router = useRouter();
   const [user, setUser] = useState<IUser | null>(null);
 
@@ -200,6 +201,10 @@ export const AuthContextProvider: React.FC<PropsWithChildren> = ({
       Toaster.error("Failed to fetch user");
     }
   };
+
+  useEffect(() => {
+    if (session) fetchUser();
+  }, [session]);
 
   return (
     <AuthContext.Provider

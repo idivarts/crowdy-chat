@@ -43,9 +43,6 @@ const Sources = () => {
     }
   };
 
-  console.log("MyPages", myPages);
-  console.log("OtherPages", otherPages);
-
   useEffect(() => {
     getPages("TEMP");
   }, []);

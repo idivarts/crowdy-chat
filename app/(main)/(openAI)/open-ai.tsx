@@ -15,7 +15,7 @@ import { useOrganizationContext } from "@/contexts";
 const OpenAIComponent = () => {
   const { colors } = useTheme();
   const [apiKey, setApiKey] = useState("");
-  const [isEditing, setIsEditing] = useState(true);
+  const [isEditing, setIsEditing] = useState(false);
   const [displayKey, setDisplayKey] = useState("");
   const {
     currentOrganization,
@@ -42,9 +42,10 @@ const OpenAIComponent = () => {
       currentOrganization.id,
       {
         openAIKey: apiKey,
+      }).then(() => {
+        setIsEditing(false);
+        setDisplayKey(apiKey.replace(/./g, "*"));
       });
-    setIsEditing(false);
-    setDisplayKey(apiKey.replace(/./g, "*"));
   };
 
   const handleEdit = () => {

@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Appbar } from "react-native-paper";
+import { ActivityIndicator, Appbar } from "react-native-paper";
 import { router } from "expo-router";
 
 import AppLayout from "@/layouts/app-layout";
@@ -22,15 +22,10 @@ const Campaigns = () => {
 
   const {
     campaigns,
-    getCampaigns,
   } = useCampaignContext();
   const {
     currentOrganization,
   } = useOrganizationContext();
-
-  const fetchCampaigns = async () => {
-    getCampaigns();
-  }
 
   const handleSearch = (query: string) => {
     setSearchQuery(query);
@@ -45,16 +40,21 @@ const Campaigns = () => {
   };
 
   useEffect(() => {
-    if (campaigns) {
-      setFilteredCampaigns(campaigns);
-    }
+    setFilteredCampaigns(campaigns);
   }, [campaigns]);
 
-  useEffect(() => {
-    if (currentOrganization) {
-      fetchCampaigns();
-    }
-  }, [currentOrganization]);
+  if (!currentOrganization) {
+    return (
+      <View
+        style={{
+          flex: 1,
+          justifyContent: "center",
+        }}
+      >
+        <ActivityIndicator />
+      </View>
+    );
+  }
 
   if (!campaigns) {
     return null;

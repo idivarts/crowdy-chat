@@ -1,20 +1,22 @@
-import { View } from "@/components/Themed";
 import { useBreakPoints } from "@/hooks";
-import { Image } from "react-native";
+import { Avatar } from "react-native-paper";
 
-export const Logo = () => {
+interface LogoProps {
+  imageSrc?: string;
+}
+
+export const Logo: React.FC<LogoProps> = ({
+  imageSrc,
+}) => {
   const { lg } = useBreakPoints();
 
   return (
-    <View>
-      <Image
-        source={require('@/assets/images/logo.png')}
-        style={{
-          height: lg ? 40 : 28,
-          width: lg ? 40 : 28
-        }}
-      />
-    </View>
+    <Avatar.Image
+      source={{
+        uri: imageSrc ?? 'https://via.placeholder.com/150'
+      }}
+      size={lg ? 40 : 28}
+    />
   );
 }
 

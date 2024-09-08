@@ -14,10 +14,10 @@ const OrganizationSwitcher: React.FC<OrganizationSwitcherProps> = () => {
     useState(false);
   const { lg } = useBreakPoints();
   const {
+    changeOrganization,
     currentOrganization,
     isOrganizationsLoading,
     organizations,
-    setCurrentOrganization,
   } = useOrganizationContext();
 
   const handleSwitchOrganization = (id: string) => {
@@ -25,7 +25,7 @@ const OrganizationSwitcher: React.FC<OrganizationSwitcherProps> = () => {
     if (!currentOrg) {
       return;
     }
-    setCurrentOrganization(currentOrg);
+    changeOrganization(currentOrg);
     setOrganizationModalVisible(false);
   };
 
@@ -53,7 +53,7 @@ const OrganizationSwitcher: React.FC<OrganizationSwitcherProps> = () => {
             fontWeight: "600",
           }}
         >
-          {currentOrganization.name} - Users
+          {currentOrganization.name}
         </Text>
         {isOrganizationModalVisible ? (
           <Ionicons
