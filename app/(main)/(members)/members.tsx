@@ -169,7 +169,6 @@ const MemberPage: React.FC = () => {
           write: member.permissions.write,
           admin: member.permissions.admin,
         },
-        username: member.username,
       };
 
       await updateDoc(memberDocRef, memberData);
@@ -258,7 +257,6 @@ const MemberPage: React.FC = () => {
                 write: newMember.permissions.write,
                 admin: newMember.permissions.admin,
               },
-              username: newMember.username,
             };
 
             const docRef = await setDoc(
@@ -275,7 +273,6 @@ const MemberPage: React.FC = () => {
               write: newMember.permissions.write,
               admin: newMember.permissions.admin,
             },
-            username: newMember.username,
           };
 
           const docRef = await setDoc(
@@ -357,7 +354,7 @@ const MemberPage: React.FC = () => {
         }}
       >
         <DataTable.Cell>{member.name || "No Name"}</DataTable.Cell>
-        <DataTable.Cell>{member.username || member.email}</DataTable.Cell>
+        <DataTable.Cell>{member.email}</DataTable.Cell>
         <DataTable.Cell>
           <View style={styles.chipContainer}>
             {member.permissions.read && <Chip style={styles.chip}>Read</Chip>}

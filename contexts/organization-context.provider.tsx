@@ -108,7 +108,6 @@ export const OrganizationContextProvider: React.FC<PropsWithChildren> = ({
     );
     let memberData: IMembers = {
       userId: session,
-      username: "",
       organizationId: orgDoc.id,
       permissions: {
         admin: true,
@@ -178,11 +177,15 @@ export const OrganizationContextProvider: React.FC<PropsWithChildren> = ({
     }
   };
 
-
-  const updateOrganization = async (orgId: string, data: Partial<OrganizationForm>) => {
-
+  const updateOrganization = async (
+    orgId: string,
+    data: Partial<OrganizationForm>
+  ) => {
     if (data.image) {
-      data.image = await uploadImage(data.image, `organizations/${session}/${data.name}`);
+      data.image = await uploadImage(
+        data.image,
+        `organizations/${session}/${data.name}`
+      );
     }
 
     const orgDocRef = doc(FirestoreDB, "organizations", orgId);
