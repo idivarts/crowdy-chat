@@ -263,22 +263,26 @@ const MemberPage: React.FC = () => {
               doc(memberColRef, user.user.uid),
               memberData
             );
-          }
-          const userDoc = userSnapshot.docs[0];
-          let memberData: IMembers = {
-            userId: userDoc.id,
-            organizationId: currentOrganization?.id,
-            permissions: {
-              read: newMember.permissions.read,
-              write: newMember.permissions.write,
-              admin: newMember.permissions.admin,
-            },
-          };
 
-          const docRef = await setDoc(
-            doc(memberColRef, userDoc.id),
-            memberData
-          );
+            Toaster.success("Member added successfully");
+            return;
+          } else {
+            const userDoc = userSnapshot.docs[0];
+            let memberData: IMembers = {
+              userId: userDoc.id,
+              organizationId: currentOrganization?.id,
+              permissions: {
+                read: newMember.permissions.read,
+                write: newMember.permissions.write,
+                admin: newMember.permissions.admin,
+              },
+            };
+
+            const docRef = await setDoc(
+              doc(memberColRef, userDoc.id),
+              memberData
+            );
+          }
         } catch (e) {
           Toaster.error("Failed to add member");
           console.error(e);
