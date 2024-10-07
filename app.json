@@ -13,13 +13,15 @@
       "backgroundColor": "#ffffff"
     },
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "chat.crowdy.app"
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "chat.crowdy.app"
     },
     "web": {
       "bundler": "metro",
@@ -31,6 +33,12 @@
     ],
     "experiments": {
       "typedRoutes": true
-    }
+    },
+    "extra": {
+      "eas": {
+        "projectId": "ca8fa648-c3d0-4121-ba12-a68ee30bebac"
+      }
+    },
+    "owner": "idiv"
   }
 }
