@@ -21,6 +21,8 @@ import { DrawerToggle } from "@/components/ui";
 import { useBreakPoints } from "@/hooks";
 import styles from "@/styles/leads/LeadsTable.styles";
 import Button from "@/components/ui/button/Button";
+import CheckboxItem from "react-native-paper/lib/typescript/components/Checkbox/CheckboxItem";
+import ExpoCheckbox from "expo-checkbox/build/ExpoCheckbox";
 
 const Leads = () => {
   const [isCreateLeadVisible, setCreateLeadVisible] = useState(false);
@@ -144,13 +146,19 @@ const Leads = () => {
                   style={styles.checkboxContainer}
                   textStyle={styles.checkboxText}
                 >
-                  <Checkbox
+                  {/* <Checkbox
                     status={
                       selectedLeads?.length === leads?.length
                         ? "checked"
                         : "unchecked"
                     }
                     onPress={() => {
+                      handleSelectAll();
+                    }}
+                  /> */}
+                  <ExpoCheckbox
+                    value={selectedLeads?.length === leads?.length}
+                    onValueChange={() => {
                       handleSelectAll();
                     }}
                   />
@@ -184,13 +192,19 @@ const Leads = () => {
                     style={styles.checkboxContainer}
                     textStyle={styles.checkboxText}
                   >
-                    <Checkbox
+                    {/* <Checkbox
                       status={
                         selectedLeads?.includes(lead.id)
                           ? "checked"
                           : "unchecked"
                       }
                       onPress={() => {
+                        handleSelectLead(lead.id);
+                      }}
+                    /> */}
+                    <ExpoCheckbox
+                      value={selectedLeads?.includes(lead.id)}
+                      onValueChange={() => {
                         handleSelectLead(lead.id);
                       }}
                     />
