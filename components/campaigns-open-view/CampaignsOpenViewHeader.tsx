@@ -1,10 +1,10 @@
-import { TabView } from './CampaignOpenView';
+import { TabView } from "./CampaignOpenView";
 import React from "react";
 import { View } from "react-native";
 import { Appbar, Button, TextInput } from "react-native-paper";
 import GoBackButton from "../ui/go-back-button";
 import styles from "@/styles/campaigns/CampaignsOpenViewHeader.styles";
-import CampaignsOpenViewFilter from './CampaignsOpenViewFilter';
+import CampaignsOpenViewFilter from "./CampaignsOpenViewFilter";
 
 interface CampaignsOpenViewHeaderProps {
   tabView: TabView;
@@ -16,7 +16,7 @@ const CampaignsOpenViewHeader: React.FC<CampaignsOpenViewHeaderProps> = ({
   setTabView,
 }) => {
   return (
-    <Appbar.Header>
+    <Appbar.Header statusBarHeight={0}>
       <GoBackButton />
       <View style={styles.container}>
         <View style={styles.tabButtonsContainer}>

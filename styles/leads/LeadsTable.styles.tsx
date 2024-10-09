@@ -4,15 +4,12 @@ import { StyleSheet } from "react-native";
 
 const styles = StyleSheet.create({
   headerContainer: {
-    padding: 10,
     backgroundColor: Colors.regular.aliceBlue,
+    alignItems: "center",
   },
   headerTitleContainer: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    maxHeight: 36,
-    paddingVertical: 0,
+    justifyContent: "center",
   },
   headerTitle: {
     fontWeight: 500,
@@ -20,21 +17,12 @@ const styles = StyleSheet.create({
     color: CustomPaperTheme.colors.primary,
   },
   checkboxContainer: {
-    maxWidth: 36,
-    maxHeight: 36,
-    justifyContent: 'center',
-    paddingVertical: 0,
+    justifyContent: "center",
   },
-  checkboxText: {
-    minWidth: 36,
-    minHeight: 36,
-  },
+  checkboxText: {},
   actionContainer: {
-    minWidth: 90,
-    maxWidth: 90,
-    maxHeight: 36,
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
   },
   actionText: {
     fontWeight: 500,
@@ -43,11 +31,12 @@ const styles = StyleSheet.create({
   },
   rowContainer: {
     padding: 10,
+    minHeight: 55,
   },
   rowTextContainer: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
     maxHeight: 36,
     paddingVertical: 0,
   },
