@@ -37,7 +37,7 @@ export const styles = StyleSheet.create({
   },
   cell: {
     paddingHorizontal: 16,
-    minWidth: 120,
+    width: 120,
     borderWidth: 0.1,
     borderColor: "#e0e0e0",
   },

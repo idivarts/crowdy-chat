@@ -69,7 +69,7 @@ const Sources = () => {
 
   return (
     <View style={styles.container}>
-      <Appbar.Header>
+      <Appbar.Header statusBarHeight={0}>
         {!lg && <DrawerToggle />}
         <Appbar.Content title="Sources" />
         <Appbar.Action icon="plus" onPress={handleAddSource} />
@@ -81,6 +81,7 @@ const Sources = () => {
         <View
           style={{
             alignItems: "center",
+            width: "100%",
           }}
         >
           {loading && <ActivityIndicator animating={true} color="#000" />}

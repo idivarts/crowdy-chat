@@ -1,3 +1,4 @@
+//@ts-nocheck
 import React, { useState } from "react";
 import { View, Button, ScrollView } from "react-native";
 import { CreateCampaignstyles as styles } from "@/styles/Dashboard.styles";

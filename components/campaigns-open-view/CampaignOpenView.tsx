@@ -17,28 +17,26 @@ export enum TabView {
 }
 
 const CampaignsOpenView: React.FC = () => {
-  const [tabView, setTabView] = useState<TabView>(TabView.CAMPAIGNS_BOARD_VIEW);
+  // const [tabView, setTabView] = useState<TabView>(TabView.CAMPAIGNS_BOARD_VIEW);
+  const [tabView, setTabView] = useState<TabView>(
+    Platform.OS === "web"
+      ? TabView.CAMPAIGNS_BOARD_VIEW
+      : TabView.CAMPAIGNS_LIST_VIEW
+  );
 
   const isWeb = Platform.OS === "web";
   const { pageId } = useLocalSearchParams();
-  const PID: any = pageId
+  const PID: any = pageId;
 
   return (
     <AppLayout>
       <Header />
-      <CampaignsOpenViewHeader
-        tabView={tabView}
-        setTabView={setTabView}
-      />
-      {
-        tabView === TabView.CAMPAIGNS_BOARD_VIEW && (
-          isWeb ? <CampaignsBoardWeb /> : <CampaignsBoard />
-        )
-      }
-      {
-        tabView === TabView.CAMPAIGNS_LIST_VIEW &&
+      <CampaignsOpenViewHeader tabView={tabView} setTabView={setTabView} />
+      {tabView === TabView.CAMPAIGNS_BOARD_VIEW &&
+        (isWeb ? <CampaignsBoardWeb /> : <CampaignsBoard />)}
+      {tabView === TabView.CAMPAIGNS_LIST_VIEW && (
         <CampaignListView pageId={PID} />
-      }
+      )}
     </AppLayout>
   );
 };

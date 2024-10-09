@@ -75,7 +75,7 @@ const CampaignListView = (props: { pageId: string | null }) => {
       .then((res) => {
         setAllConversation(res);
       })
-      .catch((e) => { });
+      .catch((e) => {});
   };
 
   const PhaseMap = {

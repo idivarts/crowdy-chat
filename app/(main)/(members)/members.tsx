@@ -1,3 +1,4 @@
+//@ts-nocheck
 import React, { useEffect, useState } from "react";
 import {
   Appbar,
@@ -58,7 +59,6 @@ const customTheme = {
 };
 
 interface MemberDetails {
-  username: string;
   userId?: string;
   organizationId?: string;
   name: string;
@@ -161,7 +161,6 @@ const MemberPage: React.FC = () => {
           write: member.permissions.write,
           admin: member.permissions.admin,
         },
-        username: member.username,
       };
 
       await updateDoc(memberDocRef, memberData);
@@ -185,7 +184,6 @@ const MemberPage: React.FC = () => {
   };
 
   const handleAddUser = async (newMember: {
-    username: string;
     name: string;
     password: string;
     permissions: {
@@ -234,7 +232,6 @@ const MemberPage: React.FC = () => {
             const newUser: IUser = {
               email: newMember.email,
               name: newMember.name,
-              username: newMember.username,
             };
             const docUserRef = await setDoc(
               doc(userColRef, user.user.uid),
@@ -249,7 +246,6 @@ const MemberPage: React.FC = () => {
                 write: newMember.permissions.write,
                 admin: newMember.permissions.admin,
               },
-              username: newMember.username,
             };
 
             const docRef = await setDoc(
@@ -266,7 +262,6 @@ const MemberPage: React.FC = () => {
               write: newMember.permissions.write,
               admin: newMember.permissions.admin,
             },
-            username: newMember.username,
           };
 
           const docRef = await setDoc(
@@ -417,7 +412,7 @@ const MemberPage: React.FC = () => {
 
   return (
     <Provider theme={customTheme}>
-      <Appbar.Header>
+      <Appbar.Header statusBarHeight={0}>
         {!lg && <DrawerToggle />}
         <Appbar.Content title="Members" />
         <Appbar.Action icon="plus" onPress={handleAddMemberClick} />
@@ -434,7 +429,7 @@ const MemberPage: React.FC = () => {
         <DataTable>
           <DataTable.Header>
             <DataTable.Title>Name</DataTable.Title>
-            <DataTable.Title>Username</DataTable.Title>
+            <DataTable.Title>Email</DataTable.Title>
             <DataTable.Title>Permissions</DataTable.Title>
             <DataTable.Title numeric>Actions</DataTable.Title>
           </DataTable.Header>

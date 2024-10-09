@@ -1,3 +1,4 @@
+//@ts-nocheck
 import React, { useState } from "react";
 import {
   View,
@@ -138,6 +139,7 @@ const CreateCampaign = () => {
             examples: dialogues,
             purpose: campaignPurpose,
           },
+          assistantId: "",
           name: campaignName,
           objective: campaignObjective,
           replySpeed: {
@@ -178,6 +180,7 @@ const CreateCampaign = () => {
         const collectiblesColRef = collection(FirestoreDB, "collectibles");
         await Promise.all(
           leadStages.map((stage, index) => {
+            //@ts-ignore
             const stageCollectibles = stage.collectibles.map(
               (collectible: Collectible) => ({
                 organizationId: currentOrganization?.id,

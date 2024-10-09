@@ -10,7 +10,7 @@ const CustomHeader = ({ ...props }) => {
   const { lg } = useBreakPoints();
 
   return (
-    <Appbar.Header>
+    <Appbar.Header statusBarHeight={0}>
       {!lg && <DrawerToggle />}
       <Appbar.Content title={props.title} />
     </Appbar.Header>

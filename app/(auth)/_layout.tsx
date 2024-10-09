@@ -1,5 +1,6 @@
 import { View } from "@/components/Themed";
 import { useAuthContext } from "@/contexts";
+import AppLayout from "@/layouts/app-layout";
 import Header from "@/layouts/header";
 import { Stack, useRouter } from "expo-router";
 import { useEffect } from "react";
@@ -14,7 +15,7 @@ const AuthLayout = () => {
   }, [isLoading, session]);
 
   return (
-    <>
+    <AppLayout>
       <Header />
       <View
         style={{
@@ -47,7 +48,7 @@ const AuthLayout = () => {
           />
         </Stack>
       </View>
-    </>
+    </AppLayout>
   );
 };
 
