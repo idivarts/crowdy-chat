@@ -25,13 +25,14 @@ const CreateOrganizationForm: React.FC<CreateOrganizationFormProps> = ({
   onSubmit,
 }) => {
   const { lg } = useBreakPoints();
-  const [image, setImage] = useState<string>('');
-  const [organizationFormData, setOrganizationFormData] = useState<OrganizationForm>({
-    name: '',
-    description: '',
-    industry: '',
-    website: '',
-  });
+  const [image, setImage] = useState<string>("");
+  const [organizationFormData, setOrganizationFormData] =
+    useState<OrganizationForm>({
+      name: "",
+      description: "",
+      industry: "",
+      website: "",
+    });
 
   const handleChange = (key: keyof OrganizationForm, value: string) => {
     setOrganizationFormData({
@@ -43,11 +44,11 @@ const CreateOrganizationForm: React.FC<CreateOrganizationFormProps> = ({
 
   const onUploadImage = (imageUrl: string) => {
     setImage(imageUrl);
-  }
+  };
 
   const handleSubmit = () => {
     if (!organizationFormData.name) {
-      Toaster.error('Name is required');
+      Toaster.error("Name is required");
       return;
     }
     onSubmit(organizationFormData);
@@ -60,23 +61,23 @@ const CreateOrganizationForm: React.FC<CreateOrganizationFormProps> = ({
           styles.scrollViewContent,
           {
             paddingTop: lg ? 40 : 0,
-          }
+          },
         ]}
       >
         <View
           style={[
             styles.container,
             {
-              maxWidth: lg ? 1000 : '100%',
-            }
+              maxWidth: lg ? 1000 : "100%",
+            },
           ]}
         >
           <View
             style={[
               styles.row,
               {
-                flexDirection: lg ? 'row' : 'column',
-                alignItems: lg ? 'center' : 'stretch',
+                flexDirection: lg ? "row" : "column",
+                alignItems: lg ? "center" : "stretch",
               },
             ]}
           >
@@ -87,14 +88,12 @@ const CreateOrganizationForm: React.FC<CreateOrganizationFormProps> = ({
                 setImage={setImage}
               />
             </View>
-            <View style={styles.flex}>
-              <InputField
-                label="Name"
-                placeholder="Enter organization name"
-                value={organizationFormData.name}
-                onChangeText={(value) => handleChange('name', value)}
-              />
-            </View>
+            <InputField
+              label="Name"
+              placeholder="Enter organization name"
+              value={organizationFormData.name}
+              onChangeText={(value) => handleChange("name", value)}
+            />
           </View>
 
           <InputField
@@ -103,27 +102,24 @@ const CreateOrganizationForm: React.FC<CreateOrganizationFormProps> = ({
             multiline
             numberOfLines={4}
             value={organizationFormData.description}
-            onChangeText={(value) => handleChange('description', value)}
+            onChangeText={(value) => handleChange("description", value)}
           />
 
           <InputField
             label="Industry"
             placeholder="Enter industry"
             value={organizationFormData.industry}
-            onChangeText={(value) => handleChange('industry', value)}
+            onChangeText={(value) => handleChange("industry", value)}
           />
 
           <InputField
             label="Website"
             placeholder="Enter website URL"
             value={organizationFormData.website}
-            onChangeText={(value) => handleChange('website', value)}
+            onChangeText={(value) => handleChange("website", value)}
           />
 
-          <Button
-            mode="contained"
-            onPress={handleSubmit}
-          >
+          <Button mode="contained" onPress={handleSubmit}>
             Submit
           </Button>
         </View>

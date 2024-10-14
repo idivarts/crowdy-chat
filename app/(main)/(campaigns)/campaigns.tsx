@@ -14,18 +14,15 @@ import { TextInput } from "react-native-paper";
 import { useCampaignContext } from "@/contexts/campaign-context.provider";
 import { Campaign } from "@/types/campaign";
 import { useOrganizationContext } from "@/contexts";
+import { FlatList, Platform } from "react-native";
 
 const Campaigns = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [filteredCampaigns, setFilteredCampaigns] = useState<Campaign[]>([]);
   const { lg } = useBreakPoints();
 
-  const {
-    campaigns,
-  } = useCampaignContext();
-  const {
-    currentOrganization,
-  } = useOrganizationContext();
+  const { campaigns } = useCampaignContext();
+  const { currentOrganization } = useOrganizationContext();
 
   const handleSearch = (query: string) => {
     setSearchQuery(query);
@@ -62,10 +59,13 @@ const Campaigns = () => {
 
   return (
     <AppLayout>
-      <Appbar.Header>
+      <Appbar.Header statusBarHeight={0}>
         {!lg && <DrawerToggle />}
         <Appbar.Content title="Campaigns" />
-        <Appbar.Action icon="plus" onPress={() => router.push("/campaigns/create")} />
+        <Appbar.Action
+          icon="plus"
+          onPress={() => router.push("/campaigns/create")}
+        />
       </Appbar.Header>
       <View style={styles.container}>
         <TextInput
@@ -74,11 +74,31 @@ const Campaigns = () => {
           onChangeText={handleSearch}
           value={searchQuery}
         />
-        <View style={styles.campaignsSection}>
-          {filteredCampaigns.length > 0
-            ? <CampaignsFilledState campaigns={filteredCampaigns} />
-            : <CampaignsEmptyState />}
-        </View>
+        {Platform.OS === "web" && (
+          <View style={styles.campaignsSection}>
+            {filteredCampaigns.length > 0 ? (
+              <CampaignsFilledState campaigns={filteredCampaigns} />
+            ) : (
+              <CampaignsEmptyState />
+            )}
+          </View>
+        )}
+        {Platform.OS !== "web" && (
+          <View style={styles.campaignsSection}>
+            {filteredCampaigns.length > 0 ? (
+              // ? <CampaignsFilledState campaigns={filteredCampaigns} />
+              <FlatList
+                data={filteredCampaigns}
+                renderItem={({ item }) => (
+                  <CampaignsFilledState campaigns={filteredCampaigns} />
+                )}
+                keyExtractor={(item) => item.id}
+              />
+            ) : (
+              <CampaignsEmptyState />
+            )}
+          </View>
+        )}
       </View>
     </AppLayout>
   );
