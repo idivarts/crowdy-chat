@@ -5,11 +5,12 @@ import Header from "@/layouts/header";
 import { View } from "@/components/Themed";
 import { useAuthContext } from "@/contexts";
 import { useEffect } from "react";
+import AppLayout from "@/layouts/app-layout";
 
 const DrawerLayout = () => {
   const { lg } = useBreakPoints();
   return (
-    <>
+    <AppLayout>
       <Header />
       <View
         style={{
@@ -66,7 +67,7 @@ const DrawerLayout = () => {
           />
         </Drawer>
       </View>
-    </>
+    </AppLayout>
   );
 };
 

@@ -93,7 +93,8 @@ export const updateCampaign = async (
         (s) => s.name === stage.name
       );
 
-      let leadStageDocRef;
+
+      let leadStageDocRef: any;
       if (existingStage) {
         // Update existing stage
         leadStageDocRef = doc(leadStagesColRef, existingStage.id);

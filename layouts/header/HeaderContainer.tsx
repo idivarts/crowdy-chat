@@ -5,7 +5,7 @@ import { PropsWithChildren } from "react";
 
 interface HeaderContainerProps extends PropsWithChildren {
   gap?: number;
-};
+}
 
 const HeaderContainer: React.FC<HeaderContainerProps> = ({
   children,

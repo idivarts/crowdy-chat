@@ -11,6 +11,9 @@ import { useRouter } from "expo-router";
 import MenuItem from "../ui/menu/MenuItem";
 import Menu from "../ui/menu/Menu";
 import { useState } from "react";
+import ConfirmationModal from "../ConfirmationModal";
+import { useCampaignContext } from "@/contexts/campaign-context.provider";
+import { Portal } from "react-native-paper";
 
 interface CampaignCardProps {
   item: Campaign;
@@ -20,6 +23,11 @@ const CampaignCard = ({ item }: CampaignCardProps) => {
   const { xl } = useBreakPoints();
   const router = useRouter();
   const [menuVisible, setMenuVisible] = useState(false);
+  const [confirmationModalVisible, setConfirmationModalVisible] = useState(false);
+
+  const {
+    deleteCampaign,
+  } = useCampaignContext();
 
   const copyToClipboard = (textToCopy: string) => {
     Clipboard.setStringAsync(textToCopy);
@@ -69,7 +77,10 @@ const CampaignCard = ({ item }: CampaignCardProps) => {
               />
               <MenuItem
                 key="delete"
-                onPress={() => { console.log('Delete') }}
+                onPress={() => {
+                  setMenuVisible(false);
+                  setConfirmationModalVisible(true);
+                }}
                 title="Delete"
               />
             </>
@@ -100,6 +111,20 @@ const CampaignCard = ({ item }: CampaignCardProps) => {
           Open Campaign Board
         </Button>
       </View>
+      <Portal>
+        <ConfirmationModal
+          actionButtonLabel="Delete"
+          visible={confirmationModalVisible}
+          message="Are you sure you want to delete this campaign?"
+          handleSubmit={() => {
+            deleteCampaign(item.id);
+            setConfirmationModalVisible(false);
+          }}
+          handleCancel={() => {
+            setConfirmationModalVisible(false);
+          }}
+        />
+      </Portal>
     </View>
   );
 };

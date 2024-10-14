@@ -26,17 +26,17 @@ import {
 import { useFirebaseStorageContext } from "./firebase-storage-context.provider";
 import { Organization } from "@/types/Organization";
 import { useAuthContext } from "./auth-context.provider";
+import { useStorageState } from "@/hooks";
 
 interface OrganizationContextProps {
+  changeOrganization: (org: Organization) => Promise<void>;
   createOrganization: (data: OrganizationForm) => Promise<void>;
   currentOrganization: Organization | undefined;
   getOrganizations: () => Promise<Organization[] | undefined>;
   isOrganizationsLoading: boolean;
   organizations: Organization[];
-  setCurrentOrganization: React.Dispatch<
-    React.SetStateAction<Organization | undefined>
-  >;
   setOrganizations: React.Dispatch<React.SetStateAction<Organization[]>>;
+  setOrgId: (value: string | null) => void;
   updateOrganization: (
     orgId: string,
     updatedData: Partial<Organization>
@@ -50,6 +50,7 @@ export const useOrganizationContext = () => useContext(OrganizationContext);
 export const OrganizationContextProvider: React.FC<PropsWithChildren> = ({
   children,
 }) => {
+  const [[, orgId], setOrgId] = useStorageState("current-org-id");
   const [currentOrganization, setCurrentOrganization] =
     useState<Organization>();
   const [organizations, setOrganizations] = useState<Organization[]>([]);
@@ -69,6 +70,11 @@ export const OrganizationContextProvider: React.FC<PropsWithChildren> = ({
       router.push("/(main)/(campaigns)/campaigns");
     }
   };
+
+  const changeOrganization = async (org: Organization) => {
+    setCurrentOrganization(org);
+    setOrgId(org.id);
+  }
 
   useEffect(() => {
     if (session) {
@@ -121,9 +127,29 @@ export const OrganizationContextProvider: React.FC<PropsWithChildren> = ({
     if (!orgDoc.id) {
       Toaster.error("Organization creation failed");
     } else {
-      await getOrganizations();
+      const createdOrg = await getOrganizationById(orgDoc.id);
+      if (createdOrg) {
+        await getOrganizations();
+        changeOrganization(createdOrg);
+      }
       Toaster.success("Organization created successfully");
       router.push("/(main)/organization-profile");
+    }
+  };
+
+  const getOrganizationById = async (
+    organizationId: string
+  ): Promise<Organization | null> => {
+    const orgRef = doc(FirestoreDB, "organizations", organizationId);
+    const orgDoc = await getDoc(orgRef);
+
+    if (orgDoc.exists()) {
+      return {
+        id: orgDoc.id,
+        ...orgDoc.data(),
+      } as Organization;
+    } else {
+      return null;
     }
   };
 
@@ -166,7 +192,14 @@ export const OrganizationContextProvider: React.FC<PropsWithChildren> = ({
         return undefined;
       }
 
-      setCurrentOrganization(data[0] as Organization);
+      if (orgId) { // If orgId is present in storage, set the current organization to that
+        setCurrentOrganization(data.find((org) => org?.id === orgId) || data[0] as Organization);
+      } else if (currentOrganization) { // If current organization is set, update it with the latest data
+        setCurrentOrganization(data.find((org) => org?.id === currentOrganization?.id) || currentOrganization);
+      } else { // By default, set the first organization as current organization
+        changeOrganization(data[0] as Organization);
+      }
+
       setOrganizations(data as Organization[]);
       return data as Organization[];
     } catch (error) {
@@ -194,7 +227,6 @@ export const OrganizationContextProvider: React.FC<PropsWithChildren> = ({
       await updateDoc(orgDocRef, data);
       getOrganizations();
       Toaster.success("Organization updated successfully");
-      router.push("/(main)/organization-profile");
     } catch (error) {
       console.error("Error updating organization: ", error);
       Toaster.error("Organization update failed");
@@ -204,13 +236,14 @@ export const OrganizationContextProvider: React.FC<PropsWithChildren> = ({
   return (
     <OrganizationContext.Provider
       value={{
+        changeOrganization,
         createOrganization,
         currentOrganization,
         getOrganizations,
         isOrganizationsLoading,
         organizations,
-        setCurrentOrganization,
         setOrganizations,
+        setOrgId,
         updateOrganization,
       }}
     >

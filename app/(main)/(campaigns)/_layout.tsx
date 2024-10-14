@@ -1,19 +1,16 @@
 import { DrawerToggle } from "@/components/ui";
-import { useAuthContext, useOrganizationContext } from "@/contexts";
+import { useAuthContext } from "@/contexts";
 import { useBreakPoints } from "@/hooks";
 import { Stack, useRouter } from "expo-router";
 import { useEffect } from "react";
 import { View } from "@/components/Themed";
 import GoBackButton from "@/components/ui/go-back-button";
 import { CampaignContextProvider } from "@/contexts/campaign-context.provider";
-import { ActivityIndicator } from "react-native";
 
 const CampaignsLayout = () => {
   const { lg } = useBreakPoints();
 
   const { isLoading, session } = useAuthContext();
-  const { organizations } = useOrganizationContext();
-
   const router = useRouter();
 
   useEffect(() => {
@@ -34,6 +31,7 @@ const CampaignsLayout = () => {
       </View>
     );
   }
+
 
   return (
     <CampaignContextProvider>

@@ -8,6 +8,7 @@ import {
   Chip,
   DefaultTheme,
   Text,
+  ActivityIndicator,
 } from "react-native-paper";
 import { View, ScrollView } from "react-native";
 import Dropdown from "@/shared-uis/components/dropdown/Dropdown";
@@ -57,7 +58,6 @@ const customTheme = {
 };
 
 interface MemberDetails {
-  username: string;
   userId?: string;
   organizationId?: string;
   name: string;
@@ -77,15 +77,6 @@ const MemberPage: React.FC = () => {
   const { currentOrganization } = useOrganizationContext();
   const { lg } = useBreakPoints();
   const [editingIndex, setEditingIndex] = useState<number | null>(null);
-
-  if (
-    !currentOrganization ||
-    !currentOrganization.id ||
-    currentOrganization === undefined
-  ) {
-    Toaster.error("No organization selected");
-    // return router.replace("/organizations");
-  }
 
   const fetchMembers = async () => {
     try {
@@ -192,7 +183,6 @@ const MemberPage: React.FC = () => {
   };
 
   const handleAddUser = async (newMember: {
-    username: string;
     name: string;
     password: string;
     permissions: {
@@ -204,8 +194,7 @@ const MemberPage: React.FC = () => {
   }) => {
     const result = MemberSchema.safeParse(newMember);
     if (!currentOrganization) {
-      Toaster.error("No organization selected");
-      return;
+      throw new Error("Organization not found");
     }
 
     if (result.success) {
@@ -242,7 +231,6 @@ const MemberPage: React.FC = () => {
             const newUser: IUser = {
               email: newMember.email,
               name: newMember.name,
-              username: newMember.username,
             };
             const docUserRef = await setDoc(
               doc(userColRef, user.user.uid),
@@ -406,12 +394,28 @@ const MemberPage: React.FC = () => {
   });
 
   useEffect(() => {
-    fetchMembers();
-  }, []);
+    if (currentOrganization) {
+      fetchMembers();
+    }
+  }, [currentOrganization]);
+
+  if (!currentOrganization) {
+    return (
+      <View
+        style={{
+          flex: 1,
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+      >
+        <ActivityIndicator />
+      </View>
+    );
+  }
 
   return (
     <Provider theme={customTheme}>
-      <Appbar.Header>
+      <Appbar.Header statusBarHeight={0}>
         {!lg && <DrawerToggle />}
         <Appbar.Content title="Members" />
         <Appbar.Action icon="plus" onPress={handleAddMemberClick} />
@@ -428,7 +432,7 @@ const MemberPage: React.FC = () => {
         <DataTable>
           <DataTable.Header>
             <DataTable.Title>Name</DataTable.Title>
-            <DataTable.Title>Username</DataTable.Title>
+            <DataTable.Title>Email</DataTable.Title>
             <DataTable.Title>Permissions</DataTable.Title>
             <DataTable.Title numeric>Actions</DataTable.Title>
           </DataTable.Header>
