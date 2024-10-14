@@ -1,4 +1,3 @@
-//@ts-nocheck
 import { doc, updateDoc } from "@firebase/firestore";
 import { FirestoreDB } from "@/shared-libs/utilities/firestore";
 import { collection, getDocs, deleteDoc, addDoc } from "firebase/firestore";
@@ -10,6 +9,7 @@ import {
   ICollectible,
   IEditLeadStage,
 } from "@/interfaces/EditCampaignInterfaces";
+import { ILeadStage } from "@/shared-libs/firestore/crowdy-chat/models/campaigns";
 
 export const updateCampaign = async (
   campaignData: IEditCampaign,
@@ -92,6 +92,7 @@ export const updateCampaign = async (
       const existingStage = existingLeadStages.find(
         (s) => s.name === stage.name
       );
+
 
       let leadStageDocRef: any;
       if (existingStage) {

@@ -19,6 +19,20 @@ const CampaignsLayout = () => {
     }
   }, [isLoading, session]);
 
+  if (isLoading || organizations.length === 0) {
+    return (
+      <View
+        style={{
+          flex: 1,
+          justifyContent: "center",
+        }}
+      >
+        <ActivityIndicator />
+      </View>
+    );
+  }
+
+
   return (
     <CampaignContextProvider>
       <Stack
@@ -38,6 +52,19 @@ const CampaignsLayout = () => {
         />
         <Stack.Screen
           name="campaigns/create"
+          options={{
+            headerLeft: () => (
+              <View style={{ flexDirection: "row", alignItems: "center" }}>
+                <GoBackButton />
+                {!lg && <DrawerToggle />}
+              </View>
+            ),
+            title: "Create Campaign",
+            headerShown: true,
+          }}
+        />
+        <Stack.Screen
+          name="campaigns/edit/[pageID]"
           options={{
             headerLeft: () => (
               <View style={{ flexDirection: "row", alignItems: "center" }}>

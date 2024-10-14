@@ -1,4 +1,3 @@
-//@ts-nocheck
 import React, { useEffect, useState } from "react";
 import {
   Appbar,
@@ -252,22 +251,26 @@ const MemberPage: React.FC = () => {
               doc(memberColRef, user.user.uid),
               memberData
             );
-          }
-          const userDoc = userSnapshot.docs[0];
-          let memberData: IMembers = {
-            userId: userDoc.id,
-            organizationId: currentOrganization?.id,
-            permissions: {
-              read: newMember.permissions.read,
-              write: newMember.permissions.write,
-              admin: newMember.permissions.admin,
-            },
-          };
 
-          const docRef = await setDoc(
-            doc(memberColRef, userDoc.id),
-            memberData
-          );
+            Toaster.success("Member added successfully");
+            return;
+          } else {
+            const userDoc = userSnapshot.docs[0];
+            let memberData: IMembers = {
+              userId: userDoc.id,
+              organizationId: currentOrganization?.id,
+              permissions: {
+                read: newMember.permissions.read,
+                write: newMember.permissions.write,
+                admin: newMember.permissions.admin,
+              },
+            };
+
+            const docRef = await setDoc(
+              doc(memberColRef, userDoc.id),
+              memberData
+            );
+          }
         } catch (e) {
           Toaster.error("Failed to add member");
           console.error(e);
@@ -343,7 +346,7 @@ const MemberPage: React.FC = () => {
         }}
       >
         <DataTable.Cell>{member.name || "No Name"}</DataTable.Cell>
-        <DataTable.Cell>{member.username || member.email}</DataTable.Cell>
+        <DataTable.Cell>{member.email}</DataTable.Cell>
         <DataTable.Cell>
           <View style={styles.chipContainer}>
             {member.permissions.read && <Chip style={styles.chip}>Read</Chip>}
