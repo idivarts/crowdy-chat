@@ -19,6 +19,7 @@ import MessageItem from './MessageItem';
 import InformationPanel from './InformationPanel';
 import { useBreakPoints } from '@/hooks';
 import Colors from '@/constants/Colors';
+import { useTheme } from '@react-navigation/native';
 
 interface IProps {
   handleCloseModal: () => void
@@ -27,6 +28,7 @@ interface IProps {
 }
 
 const ChatWindow: React.FC<IProps> = (props) => {
+  const theme = useTheme();
   const [showInfo, setShowInfo] = useState(false)
   const [loading, setLoading] = useState(true)
   const [after, setAfter] = useState<string | undefined>(undefined)
@@ -170,7 +172,7 @@ const ChatWindow: React.FC<IProps> = (props) => {
       style={{
         flex: 1,
         width: lg ? 900 : ((sm || md) ? 540 : 320),
-        backgroundColor: Colors.regular.white,
+        backgroundColor: Colors(theme).white,
         padding: 20,
         borderRadius: 5,
       }}

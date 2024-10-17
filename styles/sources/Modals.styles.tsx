@@ -1,6 +1,7 @@
+import { Theme } from "@react-navigation/native";
 import { StyleSheet } from "react-native";
 
-export const AssistantModalstyles = StyleSheet.create({
+export const AssistantModalstylesFn = (theme: Theme) => StyleSheet.create({
   modalContent: {
     borderRadius: 10,
     justifyContent: "center",

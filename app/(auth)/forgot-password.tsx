@@ -1,6 +1,7 @@
 import ForgotPasswordUI from "@/shared-uis/components/AuthenticationUI/ForgotPasswordUI";
-import { styles } from "@/styles/ForgotPassword.styles";
+import { stylesFn } from "@/styles/ForgotPassword.styles";
 import { useAuthContext } from "@/contexts";
+import { useTheme } from "@react-navigation/native";
 
 interface ForgotPasswordData {
   email: string;
@@ -8,6 +9,8 @@ interface ForgotPasswordData {
 
 const ForgotPassword = () => {
   const { forgotPassword } = useAuthContext();
+  const theme = useTheme();
+  const styles = stylesFn(theme);
 
   return (
     <ForgotPasswordUI

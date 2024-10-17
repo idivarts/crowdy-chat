@@ -1,5 +1,6 @@
 import { View } from "@/components/Themed";
-import styles from "@/styles/header/Header.styles";
+import stylesFn from "@/styles/header/Header.styles";
+import { useTheme } from "@react-navigation/native";
 import { PropsWithChildren } from "react";
 
 interface HeaderSectionProps extends PropsWithChildren {
@@ -10,6 +11,9 @@ const HeaderSection: React.FC<HeaderSectionProps> = ({
   children,
   gap = 10,
 }) => {
+  const theme = useTheme();
+  const styles = stylesFn(theme);
+
   return (
     <View
       style={[

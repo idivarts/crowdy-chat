@@ -11,7 +11,6 @@ import {
   Modal,
 } from "react-native";
 import Checkbox from "expo-checkbox";
-import { CreateCampaignstyles as styles } from "@/styles/Dashboard.styles";
 import {
   stepOneSchema,
   stepTwoSchema,
@@ -29,8 +28,11 @@ import { ICampaigns } from "@/shared-libs/firestore/crowdy-chat/models/campaigns
 import { ILeads } from "@/shared-libs/firestore/crowdy-chat/models/leads";
 import { useOrganizationContext } from "@/contexts";
 import { Stage, Collectible, Reminder } from "../campaigns/LeadStageTypes";
+import { CreateCampaignstylesFn } from "@/styles/Dashboard.styles";
 
 const CreateCampaign = () => {
+  const theme = useTheme();
+  const styles = CreateCampaignstylesFn(theme);
   const [currentStep, setCurrentStep] = useState(1);
   const [campaignName, setCampaignName] = useState("");
   const [campaignObjective, setCampaignObjective] = useState("");

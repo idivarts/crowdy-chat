@@ -3,10 +3,12 @@ import { Platform, ScrollView, View } from "react-native";
 import { DataTable, Text, Menu, Button, IconButton } from "react-native-paper";
 import TimeAgo from "timeago-react";
 import { Ionicons } from "@expo/vector-icons";
-import { styles } from "@/styles/campaigns/campaign-open-view/ListView.styles";
+import { stylesFn } from "@/styles/campaigns/campaign-open-view/ListView.styles";
 import { IConversationUnit } from "@/types/CampaignsBoard";
 import Colors from "@/constants/Colors";
 import { formatDistanceToNow } from "date-fns";
+import { useTheme } from "@react-navigation/native";
+
 type ChatBoard = {
   id: number;
   title: string;
@@ -23,6 +25,8 @@ const RenderTable = ({
   columns: ChatBoard;
   handlePhaseChange: (id: string, phase: number) => void;
 }) => {
+  const theme = useTheme();
+  const styles = stylesFn(theme);
   const [visibleMenu, setVisibleMenu] = useState<string | null>(null);
   const [sortColumn, setSortColumn] = useState<string | null>(null);
   const [sortOrder, setSortOrder] = useState<"asc" | "desc" | null>(null);
@@ -51,7 +55,7 @@ const RenderTable = ({
           <Ionicons
             name={sortOrder === "asc" ? "caret-up" : "caret-down"}
             size={16}
-            color={Colors.regular.primary}
+            color={Colors(theme).primary}
             style={styles.sortIcon}
           />
         )}
@@ -152,7 +156,7 @@ const RenderTable = ({
                       icon="comment-plus"
                       iconColor="#e1e1e1"
                       size={20}
-                      onPress={() => {}}
+                      onPress={() => { }}
                     />
                   </View>
                 </DataTable.Cell>
@@ -216,7 +220,7 @@ const RenderTable = ({
                     justifyContent: "center",
                   }}
                 >
-                  <IconButton icon="plus" onPress={() => {}} />
+                  <IconButton icon="plus" onPress={() => { }} />
                   <Text>Add New</Text>
                 </View>
               </DataTable.Cell>
@@ -264,7 +268,7 @@ const RenderTable = ({
                       icon="comment-plus"
                       iconColor="#e1e1e1"
                       size={20}
-                      onPress={() => {}}
+                      onPress={() => { }}
                     />
                   </View>
                 </DataTable.Cell>
@@ -328,7 +332,7 @@ const RenderTable = ({
                     justifyContent: "center",
                   }}
                 >
-                  <IconButton icon="plus" onPress={() => {}} />
+                  <IconButton icon="plus" onPress={() => { }} />
                   <Text>Add New</Text>
                 </View>
               </DataTable.Cell>

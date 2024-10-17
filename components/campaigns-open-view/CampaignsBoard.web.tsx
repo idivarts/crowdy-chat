@@ -11,8 +11,10 @@ import { IconButton } from 'react-native-paper';
 import ChatModal from './ChatModal';
 import { ActivityIndicator, View } from 'react-native';
 import { useLocalSearchParams } from 'expo-router';
+import { useTheme } from '@react-navigation/native';
 
 const CampaignsBoardWeb: React.FC = () => {
+  const theme = useTheme();
   const [allConversation, setAllConversation] = useState<IConversationUnit[]>([]);
   const [currentConversation, setCurrentConversation] = useState<IConversationUnit | undefined>(undefined);
   const [columns, setColumns] = useState<CampaignsBoardColumn>([]);
@@ -128,7 +130,7 @@ const CampaignsBoardWeb: React.FC = () => {
             display: 'flex',
             overflowX: 'auto',
             padding: '20px',
-            backgroundColor: Colors.regular.primary,
+            backgroundColor: Colors(theme).primary,
             height: '100vh',
           }}
         >
@@ -137,7 +139,7 @@ const CampaignsBoardWeb: React.FC = () => {
               {(provided) => (
                 <div
                   style={{
-                    backgroundColor: Colors.regular.aliceBlue,
+                    backgroundColor: Colors(theme).aliceBlue,
                     borderRadius: '3px',
                     width: '272px',
                     padding: '8px',

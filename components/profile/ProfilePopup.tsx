@@ -10,7 +10,7 @@ import {
 import { TextInput } from "react-native-paper";
 import * as ImagePicker from "expo-image-picker";
 import Toaster from "@/shared-uis/components/toaster/Toaster";
-import { styles } from "@/styles/header/EditProfile.styles";
+import { stylesFn } from "@/styles/header/EditProfile.styles";
 import { doc, updateDoc, getDoc } from "firebase/firestore";
 import { FirestoreDB } from "@/shared-libs/utilities/firestore";
 import { AuthApp } from "@/shared-libs/utilities/auth";
@@ -29,6 +29,7 @@ import {
 } from "firebase/storage";
 import Toast from "react-native-toast-message";
 import { useAuthContext } from "@/contexts";
+import { useTheme } from "@react-navigation/native";
 
 interface ProfilePopupProps {
   isVisible: boolean;
@@ -44,8 +45,10 @@ const ProfilePopup: React.FC<ProfilePopupProps> = ({ isVisible, onClose }) => {
   const [confirmNewPassword, setConfirmNewPassword] = useState("");
   const [profileImage, setProfileImage] = useState(
     user?.image ||
-      "https://pinnacle.works/wp-content/uploads/2022/06/dummy-image.jpg"
+    "https://pinnacle.works/wp-content/uploads/2022/06/dummy-image.jpg"
   );
+  const theme = useTheme();
+  const styles = stylesFn(theme);
 
   const validatePasswords = (): boolean => {
     if (newPassword !== confirmNewPassword) {

@@ -10,15 +10,17 @@ import {
   Button,
   TextInput,
   ActivityIndicator,
-  IconButton,
 } from "react-native-paper";
-import { styles } from "@/styles/sources/Sources.styles";
+import { stylesFn } from "@/styles/sources/Sources.styles";
 import { HttpService } from "@/services/httpService";
 import Toaster from "@/shared-uis/components/toaster/Toaster";
 import { PageUnit } from "@/interfaces/SourcePageInterfaces";
 import FacebookLoginButton from "@/components/sources/ConnectWithFacebook";
+import { useTheme } from "@react-navigation/native";
 
 const Sources = () => {
+  const theme = useTheme();
+  const styles = stylesFn(theme);
   const { lg } = useBreakPoints();
   const [modalVisible, setModalVisible] = useState(false);
   const [emailModalVisible, setEmailModalVisible] = useState(false);
