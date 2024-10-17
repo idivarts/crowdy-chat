@@ -1,16 +1,17 @@
 import { StyleSheet } from "react-native";
 import Colors from "@/constants/Colors";
+import { Theme } from "@react-navigation/native";
 
-const styles = StyleSheet.create({
+const stylesFn = (theme: Theme) => StyleSheet.create({
   modalContainer: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: Colors.regular.backdrop,
+    backgroundColor: Colors(theme).backdrop,
   },
   modalContent: {
     justifyContent: 'center',
-    backgroundColor: Colors.regular.white,
+    backgroundColor: Colors(theme).white,
     padding: 20,
     borderRadius: 10,
     width: '40%',
@@ -29,4 +30,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default styles;
+export default stylesFn;

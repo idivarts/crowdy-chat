@@ -5,12 +5,15 @@ import ImagePicker from '@/shared-uis/components/image-picker/ImagePicker';
 import InputField from '@/components/ui/input/InputField';
 import useBreakpoints from '@/hooks/use-breakpoints';
 import AppLayout from '@/layouts/app-layout';
-import styles from '@/styles/organization/OrganizationProfile.styles';
 import Button from '@/components/ui/button/Button';
 import { useOrganizationContext } from '@/contexts';
 import { ActivityIndicator } from 'react-native-paper';
+import { useTheme } from '@react-navigation/native';
+import stylesFn from '@/styles/organization/OrganizationProfile.styles';
 
 const OrganizationProfile: React.FC = () => {
+  const theme = useTheme();
+  const styles = stylesFn(theme);
   const [isEditable, setIsEditable] = useState(false);
   const {
     currentOrganization: organization,

@@ -3,6 +3,7 @@ import ImageComponent from './ImageComponent';
 import { IConversationUnit } from '@/types/CampaignsBoard';
 import Colors from '@/constants/Colors';
 import { Pressable, Text, View } from 'react-native';
+import { useTheme } from '@react-navigation/native';
 
 interface IProps {
   task: IConversationUnit;
@@ -10,6 +11,8 @@ interface IProps {
 }
 
 const ConversationCard: React.FC<IProps> = (props) => {
+  const theme = useTheme();
+
   return (
     <Pressable
       onPress={() => {
@@ -18,7 +21,7 @@ const ConversationCard: React.FC<IProps> = (props) => {
     >
       <View
         style={{
-          backgroundColor: Colors.regular.white,
+          backgroundColor: Colors(theme).white,
           borderColor: props.task.status > 0 ? '#11ca27' : '#e2e4e6',
           borderRadius: 10,
           borderWidth: 1,
@@ -70,7 +73,7 @@ const ConversationCard: React.FC<IProps> = (props) => {
           </View>
           <View
             style={{
-              borderBottomColor: Colors.regular.aliceBlue,
+              borderBottomColor: Colors(theme).aliceBlue,
               borderBottomWidth: 1,
               marginVertical: 8,
             }}

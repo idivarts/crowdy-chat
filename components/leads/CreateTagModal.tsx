@@ -2,8 +2,9 @@ import React, { useState } from 'react';
 import { View, Text, Modal } from 'react-native';
 import InputField from '../ui/input/InputField';
 import { useBreakPoints } from '@/hooks';
-import styles from '@/styles/leads/CreateTagModal.styles';
 import Button from '../ui/button/Button';
+import { useTheme } from '@react-navigation/native';
+import stylesFn from '@/styles/leads/CreateTagModal.styles';
 
 interface CreateTagModalProps {
   visible: boolean;
@@ -14,6 +15,8 @@ const CreateTagModal: React.FC<CreateTagModalProps> = ({
   visible,
   onDismiss,
 }) => {
+  const theme = useTheme();
+  const styles = stylesFn(theme);
   const { lg } = useBreakPoints();
   const [tagName, setTagName] = useState('');
 

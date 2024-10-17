@@ -14,14 +14,16 @@
     },
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "chat.crowdy.app"
+      "bundleIdentifier": "chat.crowdy.app",
+      "googleServicesFile": "./GoogleService-Info.plist"
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "chat.crowdy.app"
+      "package": "chat.crowdy.app",
+      "googleServicesFile": "./google-services.json"
     },
     "web": {
       "bundler": "metro",

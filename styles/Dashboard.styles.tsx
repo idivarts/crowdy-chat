@@ -1,5 +1,6 @@
+import { Theme } from "@react-navigation/native";
 import { StyleSheet } from "react-native";
-export const CreateCampaignstyles = StyleSheet.create({
+export const CreateCampaignstylesFn = (theme: Theme) => StyleSheet.create({
   container: {
     backgroundColor: "#fff",
     flex: 1,

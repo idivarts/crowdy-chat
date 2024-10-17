@@ -1,4 +1,5 @@
-import styles from '@/styles/input-field/InputField';
+import stylesFn from '@/styles/input-field/InputField';
+import { useTheme } from '@react-navigation/native';
 import React from 'react';
 import { View, Text, TextInput, TextInputProps } from 'react-native';
 
@@ -15,6 +16,9 @@ const InputField: React.FC<InputFieldProps> = ({
   numberOfLines = 1,
   ...props
 }) => {
+  const theme = useTheme();
+  const styles = stylesFn(theme);
+
   return (
     <View style={styles.container}>
       <Text style={styles.label}>{label}</Text>

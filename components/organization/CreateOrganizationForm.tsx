@@ -1,13 +1,14 @@
 import AppLayout from "@/layouts/app-layout";
 import { View } from "@/components/Themed";
 import { ScrollView } from "react-native";
-import styles from "@/styles/organization/CreateOrganizationForm.styles";
 import ImagePicker from "@/shared-uis/components/image-picker/ImagePicker";
 import InputField from "@/components/ui/input/InputField";
 import { useBreakPoints } from "@/hooks";
 import Button from "../ui/button/Button";
 import { useState } from "react";
 import Toaster from "@/shared-uis/components/toaster/Toaster";
+import { useTheme } from "@react-navigation/native";
+import stylesFn from "@/styles/organization/CreateOrganizationForm.styles";
 
 export interface OrganizationForm {
   name: string;
@@ -24,6 +25,8 @@ interface CreateOrganizationFormProps {
 const CreateOrganizationForm: React.FC<CreateOrganizationFormProps> = ({
   onSubmit,
 }) => {
+  const theme = useTheme();
+  const styles = stylesFn(theme);
   const { lg } = useBreakPoints();
   const [image, setImage] = useState<string>("");
   const [organizationFormData, setOrganizationFormData] =

@@ -4,13 +4,14 @@ import { Checkbox, PaperProvider } from 'react-native-paper';
 import { Ionicons } from '@expo/vector-icons';
 
 import FileUploadInput from '../ui/file-upload-input/FileUploadInput';
-import styles from '@/styles/leads/CreateLeadModal.styles';
 import Colors from '@/constants/Colors';
 import { useBreakPoints } from '@/hooks';
 import CustomPaperTheme from '@/constants/Theme';
 import Button from '../ui/button/Button';
 import Menu from '../ui/menu/Menu';
 import MenuItem from '../ui/menu/MenuItem';
+import { useTheme } from '@react-navigation/native';
+import stylesFn from '@/styles/leads/CreateLeadModal.styles';
 
 const sources = [
   { id: '1', name: 'Facebook' },
@@ -37,6 +38,8 @@ const CreateLeadModal: React.FC<CreateLeadModalProps> = ({
   setLeads,
   visible,
 }) => {
+  const theme = useTheme();
+  const styles = stylesFn(theme);
   const [selectedSources, setSelectedSources] = useState<any[]>([]);
   const [selectedTag, setSelectedTag] = useState<any>('');
   const [tagMenuVisible, setTagMenuVisible] = useState(false);
@@ -74,7 +77,7 @@ const CreateLeadModal: React.FC<CreateLeadModalProps> = ({
       animationType="slide"
       transparent={true}
     >
-      <PaperProvider theme={CustomPaperTheme}>
+      <PaperProvider theme={CustomPaperTheme(theme)}>
         <View style={styles.modalContainer}>
           <View
             style={[
@@ -135,7 +138,7 @@ const CreateLeadModal: React.FC<CreateLeadModalProps> = ({
                   <Pressable onPress={() => setTagMenuVisible(true)}>
                     <View style={styles.selectTagButton}>
                       <Text>{selectedTag?.name || 'Select Tag'}</Text>
-                      <Ionicons name="chevron-down" size={20} color={Colors.regular.black} />
+                      <Ionicons name="chevron-down" size={20} color={Colors(theme).black} />
                     </View>
                   </Pressable>
                 }

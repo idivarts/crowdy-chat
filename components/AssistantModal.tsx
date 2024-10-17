@@ -1,10 +1,11 @@
 import React, { useState } from "react";
-import { View, StyleSheet } from "react-native";
+import { View } from "react-native";
 import { Modal, Portal, Button, TextInput } from "react-native-paper";
 import Toaster from "@/shared-uis/components/toaster/Toaster";
 import { HttpService } from "@/services/httpService";
 import { PageUnit } from "@/interfaces/SourcePageInterfaces";
-import { AssistantModalstyles as styles } from "@/styles/sources/Modals.styles";
+import { AssistantModalstylesFn } from "@/styles/sources/Modals.styles";
+import { useTheme } from "@react-navigation/native";
 
 const AssistantModal: React.FC<{
   page: PageUnit;
@@ -12,6 +13,9 @@ const AssistantModal: React.FC<{
   //   handleCloseModal;
   handleCloseModal: () => void;
 }> = (props) => {
+  const theme = useTheme();
+  const styles = AssistantModalstylesFn(theme);
+
   const [assistant, setAssistant] = useState({
     assistantId: props.page.assistantId,
     reminderTimeMultiplier: props.page.reminderTimeMultiplier,

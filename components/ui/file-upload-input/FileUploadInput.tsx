@@ -1,8 +1,9 @@
 import { Text, View } from "@/components/Themed";
 import * as DocumentPicker from "expo-document-picker";
 import { useState } from "react";
-import styles from "@/styles/file-upload-input/FileUploadInput.styles";
 import Button from "../button/Button";
+import { useTheme } from "@react-navigation/native";
+import stylesFn from "@/styles/file-upload-input/FileUploadInput.styles";
 
 interface FileUploadInputProps {
   description?: string;
@@ -16,6 +17,8 @@ const FileUploadInput: React.FC<FileUploadInputProps> = ({
   buttonText = "Upload File",
 }) => {
   const [importedFileName, setImportedFileName] = useState("");
+  const theme = useTheme();
+  const styles = stylesFn(theme);
 
   const handleImportFromCSV = async () => {
     try {

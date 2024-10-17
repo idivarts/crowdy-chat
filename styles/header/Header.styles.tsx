@@ -1,6 +1,7 @@
+import { Theme } from "@react-navigation/native";
 import { StyleSheet } from "react-native";
 
-const styles = StyleSheet.create({
+const stylesFn = (theme: Theme) => StyleSheet.create({
   headerContainer: {
     alignItems: 'center',
     borderBottomColor: 'lightgray',
@@ -14,4 +15,4 @@ const styles = StyleSheet.create({
   }
 });
 
-export default styles;
+export default stylesFn;
