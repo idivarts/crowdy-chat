@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from "react";
-import { ScrollView, View } from "react-native";
-import { Text, Divider, Menu, IconButton } from "react-native-paper";
+import { ScrollView } from "react-native";
+import { Divider, Menu, IconButton } from "react-native-paper";
 import { IConversationUnit } from "@/types/CampaignsBoard";
 import { ConversationService } from "@/services";
 import { stylesFn } from "@/styles/campaigns/campaign-open-view/ListView.styles";
 import RenderTable from "./RenderListTable";
 import { useTheme } from "@react-navigation/native";
+import { Text, View } from "../Themed";
 
 type ChatBoard = {
   id: number;

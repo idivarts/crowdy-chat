@@ -1,8 +1,8 @@
 import React from "react";
-import { View } from "react-native";
-import { Text, TextInput } from "react-native-paper";
+import { TextInput } from "react-native-paper";
 import { CreateCampaignstylesFn } from "@/styles/Dashboard.styles";
 import { useTheme } from "@react-navigation/native";
+import { Text, View } from "@/components/Themed";
 
 export const CampaignStepOne = (
   campaignName: string,

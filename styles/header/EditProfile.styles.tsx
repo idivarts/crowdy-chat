@@ -49,4 +49,14 @@ export const stylesFn = (theme: Theme) => StyleSheet.create({
     gap: 10,
     width: "100%",
   },
+  settingsRow: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    width: "100%",
+    paddingVertical: 20,
+  },
+  settingsLabel: {
+    fontSize: 18,
+  },
 });

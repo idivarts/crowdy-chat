@@ -1,7 +1,5 @@
 import React, { useEffect, useState } from "react";
 import {
-  View,
-  Text,
   TouchableOpacity,
   ScrollView,
 } from "react-native";
@@ -20,6 +18,7 @@ import { useBreakPoints } from "@/hooks";
 import ExpoCheckbox from "expo-checkbox/build/ExpoCheckbox";
 import { useTheme } from "@react-navigation/native";
 import stylesFn from "@/styles/leads/LeadsTable.styles";
+import { Text, View } from "@/components/Themed";
 
 const Leads = () => {
   const theme = useTheme();

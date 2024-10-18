@@ -1,8 +1,6 @@
 //@ts-nocheck
 import React, { useState } from "react";
 import {
-  View,
-  Text,
   TextInput,
   Button,
   ScrollView,
@@ -29,6 +27,7 @@ import { ILeads } from "@/shared-libs/firestore/crowdy-chat/models/leads";
 import { useOrganizationContext } from "@/contexts";
 import { Stage, Collectible, Reminder } from "../campaigns/LeadStageTypes";
 import { CreateCampaignstylesFn } from "@/styles/Dashboard.styles";
+import { Text, View } from "../Themed";
 
 const CreateCampaign = () => {
   const theme = useTheme();

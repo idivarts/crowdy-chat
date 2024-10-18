@@ -4,9 +4,9 @@ import { PageUnit } from "@/types/PageActions";
 import { useTheme } from "@react-navigation/native";
 import { router, useLocalSearchParams } from "expo-router";
 import { useEffect, useState } from "react";
-import { Text, View } from "react-native";
 import { Pressable } from "react-native";
 import { Icon, Menu } from "react-native-paper";
+import { Text, View } from "../Themed";
 
 const CampaignsOpenViewFilter = () => {
   const theme = useTheme();

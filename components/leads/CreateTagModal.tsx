@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
-import { View, Text, Modal } from 'react-native';
+import { Modal } from 'react-native';
 import InputField from '../ui/input/InputField';
 import { useBreakPoints } from '@/hooks';
 import Button from '../ui/button/Button';
 import { useTheme } from '@react-navigation/native';
 import stylesFn from '@/styles/leads/CreateTagModal.styles';
+import { Text, View } from '../Themed';
 
 interface CreateTagModalProps {
   visible: boolean;

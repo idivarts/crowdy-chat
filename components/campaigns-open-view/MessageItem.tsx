@@ -3,7 +3,8 @@ import { MessageObject } from "@/types/Message";
 import { useTheme } from "@react-navigation/native";
 import { ResizeMode, Video } from "expo-av";
 import { useRef, useState } from "react";
-import { Image, Text, View } from "react-native";
+import { Image } from "react-native";
+import { Text, View } from "../Themed";
 
 interface MessageItemProps {
   igsid: string;

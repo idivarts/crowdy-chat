@@ -1,7 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { View } from "react-native";
 import {
-  Text,
   TextInput,
   Button,
   Card,
@@ -12,6 +10,7 @@ import { stylesFn } from "@/styles/OpenAI.styles";
 import { useOrganizationContext } from "@/contexts";
 import { useTheme } from "@react-navigation/native";
 import Colors from "@/constants/Colors";
+import { Text, View } from "@/components/Themed";
 
 const OpenAIComponent = () => {
   const theme = useTheme();

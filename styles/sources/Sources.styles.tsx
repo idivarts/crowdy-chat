@@ -4,10 +4,8 @@ import { StyleSheet } from "react-native";
 export const stylesFn = (theme: Theme) => StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#ffffff",
   },
   modalContent: {
-    backgroundColor: "white",
     padding: 20,
     borderRadius: 10,
     width: 300,

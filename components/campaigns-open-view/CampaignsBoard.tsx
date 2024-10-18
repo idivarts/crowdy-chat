@@ -1,4 +1,4 @@
-import { Text, View } from "react-native"
+import { Text, View } from "../Themed";
 
 const CampaignsBoard: React.FC = () => {
   return (

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { View, Text, Linking, TouchableOpacity } from "react-native";
+import { Linking, TouchableOpacity } from "react-native";
 import { Card, IconButton, Menu, ActivityIndicator } from "react-native-paper";
 import { stylesFn } from "@/styles/sources/ConnectedPage.styles";
 import { HttpService } from "@/services/httpService";
@@ -7,6 +7,7 @@ import Toaster from "@/shared-uis/components/toaster/Toaster";
 import ConfirmationModal from "../ConfirmationModal";
 import AssistantModal from "../AssistantModal";
 import { useTheme } from "@react-navigation/native";
+import { Text, View } from "../Themed";
 
 type page = {
   assistantId: string;

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, ScrollView } from 'react-native';
+import { ScrollView } from 'react-native';
 
 import ImagePicker from '@/shared-uis/components/image-picker/ImagePicker';
 import InputField from '@/components/ui/input/InputField';
@@ -10,6 +10,7 @@ import { useOrganizationContext } from '@/contexts';
 import { ActivityIndicator } from 'react-native-paper';
 import { useTheme } from '@react-navigation/native';
 import stylesFn from '@/styles/organization/OrganizationProfile.styles';
+import { View } from '@/components/Themed';
 
 const OrganizationProfile: React.FC = () => {
   const theme = useTheme();

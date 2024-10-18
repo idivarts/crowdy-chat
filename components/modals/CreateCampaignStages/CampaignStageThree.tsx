@@ -1,9 +1,10 @@
 import React from "react";
-import { View, Button, TouchableOpacity } from "react-native";
-import { Text, TextInput } from "react-native-paper";
+import { Button, TouchableOpacity } from "react-native";
+import { TextInput } from "react-native-paper";
 import Checkbox from "expo-checkbox";
 import { CreateCampaignstylesFn } from "@/styles/Dashboard.styles";
 import { useTheme } from "@react-navigation/native";
+import { Text, View } from "@/components/Themed";
 
 type Collectible = {
   name: string;

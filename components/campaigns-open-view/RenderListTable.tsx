@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import { Platform, ScrollView, View } from "react-native";
-import { DataTable, Text, Menu, Button, IconButton } from "react-native-paper";
+import { Platform, ScrollView } from "react-native";
+import { DataTable, Menu, Button, IconButton } from "react-native-paper";
 import TimeAgo from "timeago-react";
 import { Ionicons } from "@expo/vector-icons";
 import { stylesFn } from "@/styles/campaigns/campaign-open-view/ListView.styles";
@@ -8,6 +8,7 @@ import { IConversationUnit } from "@/types/CampaignsBoard";
 import Colors from "@/constants/Colors";
 import { formatDistanceToNow } from "date-fns";
 import { useTheme } from "@react-navigation/native";
+import { Text, View } from "../Themed";
 
 type ChatBoard = {
   id: number;

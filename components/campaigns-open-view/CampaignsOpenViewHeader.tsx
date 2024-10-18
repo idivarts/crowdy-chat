@@ -1,11 +1,11 @@
 import { TabView } from "./CampaignOpenView";
 import React from "react";
-import { View } from "react-native";
 import { Appbar, Button, TextInput } from "react-native-paper";
 import GoBackButton from "../ui/go-back-button";
 import CampaignsOpenViewFilter from "./CampaignsOpenViewFilter";
 import { useTheme } from "@react-navigation/native";
 import stylesFn from "@/styles/campaigns/CampaignsOpenViewHeader.styles";
+import { View } from "../Themed";
 
 interface CampaignsOpenViewHeaderProps {
   tabView: TabView;

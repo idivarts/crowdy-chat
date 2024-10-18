@@ -1,7 +1,8 @@
+import { Text, View } from '@/components/Themed';
 import stylesFn from '@/styles/input-field/InputField';
 import { useTheme } from '@react-navigation/native';
 import React from 'react';
-import { View, Text, TextInput, TextInputProps } from 'react-native';
+import { TextInput, TextInputProps } from 'react-native';
 
 interface InputFieldProps extends TextInputProps {
   label?: string;

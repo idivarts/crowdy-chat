@@ -13,13 +13,13 @@ import {
   PageActionsService,
 } from '@/services';
 import { MessageObject } from '@/types/Message';
-import { FlatList, View } from 'react-native';
-import { Text } from 'react-native';
+import { FlatList } from 'react-native';
 import MessageItem from './MessageItem';
 import InformationPanel from './InformationPanel';
 import { useBreakPoints } from '@/hooks';
 import Colors from '@/constants/Colors';
 import { useTheme } from '@react-navigation/native';
+import { Text, View } from '../Themed';
 
 interface IProps {
   handleCloseModal: () => void

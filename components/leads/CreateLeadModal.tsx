@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, Modal, Pressable } from 'react-native';
+import { Modal, Pressable } from 'react-native';
 import { Checkbox, PaperProvider } from 'react-native-paper';
 import { Ionicons } from '@expo/vector-icons';
 
@@ -12,6 +12,7 @@ import Menu from '../ui/menu/Menu';
 import MenuItem from '../ui/menu/MenuItem';
 import { useTheme } from '@react-navigation/native';
 import stylesFn from '@/styles/leads/CreateLeadModal.styles';
+import { Text, View } from '../Themed';
 
 const sources = [
   { id: '1', name: 'Facebook' },

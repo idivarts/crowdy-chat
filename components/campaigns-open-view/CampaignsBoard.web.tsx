@@ -9,9 +9,10 @@ import Colors from '@/constants/Colors';
 import Button from '../ui/button/Button';
 import { IconButton } from 'react-native-paper';
 import ChatModal from './ChatModal';
-import { ActivityIndicator, View } from 'react-native';
+import { ActivityIndicator } from 'react-native';
 import { useLocalSearchParams } from 'expo-router';
 import { useTheme } from '@react-navigation/native';
+import { View } from '../Themed';
 
 const CampaignsBoardWeb: React.FC = () => {
   const theme = useTheme();

@@ -1,9 +1,10 @@
 import React from "react";
-import { View, FlatList, TouchableOpacity, Text } from "react-native";
+import { FlatList, TouchableOpacity } from "react-native";
 import { Modal, Card, Avatar } from "react-native-paper";
 import { stylesFn } from "@/styles/organization-switcher/OrganizationSwitcherModal.styles";
 import { Organization } from "@/types/Organization";
 import { useTheme } from "@react-navigation/native";
+import { Text, View } from "@/components/Themed";
 
 interface OrganizationSwitcherModalProps {
   organizations: Organization[];

@@ -2,8 +2,9 @@ import React from 'react';
 import ImageComponent from './ImageComponent';
 import { IConversationUnit } from '@/types/CampaignsBoard';
 import Colors from '@/constants/Colors';
-import { Pressable, Text, View } from 'react-native';
+import { Pressable } from 'react-native';
 import { useTheme } from '@react-navigation/native';
+import { Text, View } from '../Themed';
 
 interface IProps {
   task: IConversationUnit;

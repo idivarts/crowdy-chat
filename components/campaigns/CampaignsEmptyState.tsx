@@ -1,10 +1,9 @@
 import { Image } from "react-native";
-import { View } from "react-native";
-import { Text } from "react-native-paper";
 import Button from "../ui/button/Button";
 import { router } from "expo-router";
 import { useTheme } from "@react-navigation/native";
 import stylesFn from "@/styles/campaigns/CampaignsList.styles";
+import { Text, View } from "../Themed";
 
 const CampaignsEmptyState = () => {
   const theme = useTheme();

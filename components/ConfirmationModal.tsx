@@ -1,6 +1,6 @@
 import React from "react";
-import { Text, View } from "react-native";
 import { Button, Portal, Modal, Icon, IconButton } from "react-native-paper";
+import { Text, View } from "./Themed";
 
 export interface IConfirmationModalProps {
   actionButtonLabel?: string;

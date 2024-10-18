@@ -10,7 +10,7 @@ import {
   Text,
   ActivityIndicator,
 } from "react-native-paper";
-import { View, ScrollView } from "react-native";
+import { ScrollView } from "react-native";
 import Dropdown from "@/shared-uis/components/dropdown/Dropdown";
 import DropdownTrigger from "@/shared-uis/components/dropdown/DropdownTrigger";
 import DropdownOptions from "@/shared-uis/components/dropdown/DropdownOptions";
@@ -45,6 +45,7 @@ import {
 } from "firebase/auth";
 import MembersModal from "@/components/modals/Members/MembersModal";
 import { useTheme } from "@react-navigation/native";
+import { View } from "@/components/Themed";
 
 const customTheme = {
   ...DefaultTheme,

@@ -81,7 +81,9 @@ const RootLayout = () => {
 
 const RootLayoutStack = () => {
   const colorScheme = useColorScheme();
-  const { session } = useAuthContext();
+  const { session, user } = useAuthContext();
+
+  const appTheme = user?.settings?.theme || colorScheme;
 
   // const router = useRouter();
   // const pathname = usePathname();
@@ -97,7 +99,7 @@ const RootLayoutStack = () => {
   // }, [router, session]);
 
   return (
-    <ThemeProvider value={colorScheme === "dark" ? DarkTheme : ExpoDefaultTheme}>
+    <ThemeProvider value={appTheme === "dark" ? DarkTheme : ExpoDefaultTheme}>
       <Stack
         screenOptions={{
           animation: "ios",

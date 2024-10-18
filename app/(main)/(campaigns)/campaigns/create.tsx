@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { View, Button, ScrollView } from "react-native";
+import { Button, ScrollView } from "react-native";
 import { CreateCampaignstylesFn } from "@/styles/Dashboard.styles";
 import {
   stepOneSchema,
@@ -23,6 +23,7 @@ import {
   IEditLeadStage,
 } from "@/interfaces/EditCampaignInterfaces";
 import { useTheme } from "@react-navigation/native";
+import { View } from "@/components/Themed";
 
 const CreateCampaign = ({ campaignData }: { campaignData?: IEditCampaign }) => {
   const theme = useTheme();
