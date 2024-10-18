@@ -10,7 +10,7 @@ import {
   Text,
   ActivityIndicator,
 } from "react-native-paper";
-import { View, ScrollView } from "react-native";
+import { ScrollView } from "react-native";
 import Dropdown from "@/shared-uis/components/dropdown/Dropdown";
 import DropdownTrigger from "@/shared-uis/components/dropdown/DropdownTrigger";
 import DropdownOptions from "@/shared-uis/components/dropdown/DropdownOptions";
@@ -18,7 +18,7 @@ import DropdownOption from "@/shared-uis/components/dropdown/DropdownOption";
 import DropdownButton from "@/shared-uis/components/dropdown/DropdownButton";
 import { MaterialIcons } from "@expo/vector-icons";
 import { z, ZodError } from "zod";
-import { styles } from "@/styles/Members";
+import { stylesFn } from "@/styles/Members";
 import { useOrganizationContext } from "@/contexts/organization-context.provider";
 import { MemberSchema } from "@/components/schemas/MemberPageSchema";
 import Toaster from "@/shared-uis/components/toaster/Toaster";
@@ -44,6 +44,8 @@ import {
   createUserWithEmailAndPassword,
 } from "firebase/auth";
 import MembersModal from "@/components/modals/Members/MembersModal";
+import { useTheme } from "@react-navigation/native";
+import { View } from "@/components/Themed";
 
 const customTheme = {
   ...DefaultTheme,
@@ -71,6 +73,8 @@ interface MemberDetails {
 }
 
 const MemberPage: React.FC = () => {
+  const theme = useTheme();
+  const styles = stylesFn(theme);
   const [members, setMembers] = useState<MemberDetails[]>([]);
   const [searchTerm, setSearchTerm] = useState<string>("");
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
@@ -326,7 +330,6 @@ const MemberPage: React.FC = () => {
   const renderMember = (
     member: {
       name: string;
-      username: string;
       email: string;
       permissions: {
         read: boolean;

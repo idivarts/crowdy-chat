@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, StyleSheet, ScrollView } from 'react-native';
+import { TextInput, StyleSheet, ScrollView } from 'react-native';
 import ConversationService, { IConversationByIdResponse, IConversationUpdateResponse } from '@/services/conversation.service';
 import { UpdateConversationSubject } from '@/subjects/conversation.update.subject';
 import Toaster from '@/shared-uis/components/toaster/Toaster';
 import { IconButton } from 'react-native-paper';
 import * as Clipboard from 'expo-clipboard';
+import { Text, View } from '../Themed';
 
 interface IProps {
   conversation: IConversationByIdResponse;

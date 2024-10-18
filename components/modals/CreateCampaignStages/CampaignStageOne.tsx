@@ -1,7 +1,8 @@
 import React from "react";
-import { View } from "react-native";
-import { Text, TextInput } from "react-native-paper";
-import { CreateCampaignstyles as styles } from "@/styles/Dashboard.styles";
+import { TextInput } from "react-native-paper";
+import { CreateCampaignstylesFn } from "@/styles/Dashboard.styles";
+import { useTheme } from "@react-navigation/native";
+import { Text, View } from "@/components/Themed";
 
 export const CampaignStepOne = (
   campaignName: string,
@@ -12,81 +13,86 @@ export const CampaignStepOne = (
   setReplySpeed: (newReplySpeed: { min: string; max: string }) => void,
   reminderTiming: { min: string; max: string },
   setReminderTiming: (newReminderTiming: { min: string; max: string }) => void
-) => (
-  <View
-    style={{
-      maxWidth: "50%",
-      justifyContent: "center",
-      alignItems: "center",
-    }}
-  >
-    <View style={styles.stepContainer}>
-      <View>
-        <Text>Campaign Name</Text>
-        <TextInput
-          style={styles.inputcampaign1}
-          value={campaignName}
-          onChangeText={setCampaignName}
-        />
-      </View>
-      <View>
-        <Text>Campaign Objective</Text>
-        <TextInput
-          style={styles.inputcampaign1}
-          value={campaignObjective}
-          onChangeText={setCampaignObjective}
-        />
-      </View>
-      <View>
-        <Text>Reply Speed</Text>
-        <View style={styles.rowCampaignOne}>
+) => {
+  const theme = useTheme();
+  const styles = CreateCampaignstylesFn(theme);
+
+  return (
+    <View
+      style={{
+        maxWidth: "50%",
+        justifyContent: "center",
+        alignItems: "center",
+      }}
+    >
+      <View style={styles.stepContainer}>
+        <View>
+          <Text>Campaign Name</Text>
           <TextInput
-            style={styles.inputTextcampaign1}
-            placeholder="Min"
-            keyboardType="numeric"
-            value={replySpeed.min}
-            onChangeText={(text) => {
-              const numericValue = text.replace(/[^0-9]/g, "");
-              setReplySpeed({ ...replySpeed, min: numericValue });
-            }}
-          />
-          <TextInput
-            style={styles.inputTextcampaign1}
-            placeholder="Max"
-            keyboardType="numeric"
-            value={replySpeed.max}
-            onChangeText={(text) => {
-              const numericValue = text.replace(/[^0-9]/g, "");
-              setReplySpeed({ ...replySpeed, max: numericValue });
-            }}
+            style={styles.inputcampaign1}
+            value={campaignName}
+            onChangeText={setCampaignName}
           />
         </View>
-      </View>
-      <View>
-        <Text>Reminder Timing</Text>
-        <View style={styles.rowCampaignOne}>
+        <View>
+          <Text>Campaign Objective</Text>
           <TextInput
-            style={styles.inputTextcampaign1}
-            placeholder="Min"
-            keyboardType="numeric"
-            value={reminderTiming.min}
-            onChangeText={(text) => {
-              const numericValue = text.replace(/[^0-9]/g, "");
-              setReminderTiming({ ...reminderTiming, min: numericValue });
-            }}
+            style={styles.inputcampaign1}
+            value={campaignObjective}
+            onChangeText={setCampaignObjective}
           />
-          <TextInput
-            style={styles.inputTextcampaign1}
-            placeholder="Max"
-            keyboardType="numeric"
-            value={reminderTiming.max}
-            onChangeText={(text) => {
-              const numericValue = text.replace(/[^0-9]/g, "");
-              setReminderTiming({ ...reminderTiming, max: numericValue });
-            }}
-          />
+        </View>
+        <View>
+          <Text>Reply Speed</Text>
+          <View style={styles.rowCampaignOne}>
+            <TextInput
+              style={styles.inputTextcampaign1}
+              placeholder="Min"
+              keyboardType="numeric"
+              value={replySpeed.min}
+              onChangeText={(text) => {
+                const numericValue = text.replace(/[^0-9]/g, "");
+                setReplySpeed({ ...replySpeed, min: numericValue });
+              }}
+            />
+            <TextInput
+              style={styles.inputTextcampaign1}
+              placeholder="Max"
+              keyboardType="numeric"
+              value={replySpeed.max}
+              onChangeText={(text) => {
+                const numericValue = text.replace(/[^0-9]/g, "");
+                setReplySpeed({ ...replySpeed, max: numericValue });
+              }}
+            />
+          </View>
+        </View>
+        <View>
+          <Text>Reminder Timing</Text>
+          <View style={styles.rowCampaignOne}>
+            <TextInput
+              style={styles.inputTextcampaign1}
+              placeholder="Min"
+              keyboardType="numeric"
+              value={reminderTiming.min}
+              onChangeText={(text) => {
+                const numericValue = text.replace(/[^0-9]/g, "");
+                setReminderTiming({ ...reminderTiming, min: numericValue });
+              }}
+            />
+            <TextInput
+              style={styles.inputTextcampaign1}
+              placeholder="Max"
+              keyboardType="numeric"
+              value={reminderTiming.max}
+              onChangeText={(text) => {
+                const numericValue = text.replace(/[^0-9]/g, "");
+                setReminderTiming({ ...reminderTiming, max: numericValue });
+              }}
+            />
+          </View>
         </View>
       </View>
     </View>
-  </View>
-);
+  );
+};

@@ -14,11 +14,12 @@ import {
   useState,
   type PropsWithChildren,
 } from "react";
-import { setDoc, collection, doc, getDoc, where } from "firebase/firestore";
+import { setDoc, collection, doc, getDoc, where, updateDoc } from "firebase/firestore";
 import { FirestoreDB } from "@/shared-libs/utilities/firestore";
-import { IUser } from "@/shared-libs/firestore/crowdy-chat/models/users";
 import Toaster from "@/shared-uis/components/toaster/Toaster";
 import { useRouter } from "expo-router";
+import { User } from "@/types/User";
+import { IUser } from "@/shared-libs/firestore/crowdy-chat/models/users";
 
 interface AuthContextProps {
   signIn: (email: string, password: string) => void;
@@ -28,7 +29,8 @@ interface AuthContextProps {
   fetchUser: () => void;
   session?: string | null;
   isLoading: boolean;
-  user?: IUser | null;
+  updateUser: (userId: string, user: Partial<User>) => Promise<void>;
+  user?: User | null;
 }
 
 const AuthContext = createContext<AuthContextProps>({
@@ -39,6 +41,7 @@ const AuthContext = createContext<AuthContextProps>({
   fetchUser: () => null,
   session: null,
   isLoading: false,
+  updateUser: (userId: string, user: Partial<User>) => Promise.resolve(),
   user: null,
 });
 
@@ -49,7 +52,11 @@ export const AuthContextProvider: React.FC<PropsWithChildren> = ({
 }) => {
   const [[isLoading, session], setSession] = useStorageState("session-id");
   const router = useRouter();
-  const [user, setUser] = useState<IUser | null>(null);
+  const [user, setUser] = useState<User | null>(null);
+
+  useEffect(() => {
+    if (session) fetchUser();
+  }, [session]);
 
   const signIn = async (email: string, password: string) => {
     try {
@@ -194,7 +201,10 @@ export const AuthContextProvider: React.FC<PropsWithChildren> = ({
         const query = where("email", "==", user.email);
         const userSnapshot = await getDoc(doc(colRef, user.uid));
         const userData = userSnapshot.data() as IUser;
-        setUser(userData);
+        setUser({
+          id: user.uid,
+          ...userData,
+        });
       }
     } catch (error) {
       console.error("Error fetching user: ", error);
@@ -202,9 +212,16 @@ export const AuthContextProvider: React.FC<PropsWithChildren> = ({
     }
   };
 
-  useEffect(() => {
-    if (session) fetchUser();
-  }, [session]);
+  const updateUser = async (
+    userId: string,
+    user: Partial<User>
+  ): Promise<void> => {
+    const userRef = doc(FirestoreDB, "users", userId);
+
+    await updateDoc(userRef, {
+      ...user,
+    });
+  };
 
   return (
     <AuthContext.Provider
@@ -216,6 +233,7 @@ export const AuthContextProvider: React.FC<PropsWithChildren> = ({
         fetchUser,
         session,
         isLoading,
+        updateUser,
         user,
       }}
     >

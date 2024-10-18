@@ -1,7 +1,8 @@
 import Colors from "@/constants/Colors";
+import { Theme } from "@react-navigation/native";
 import { StyleSheet } from "react-native";
 
-const styles = StyleSheet.create({
+const stylesFn = (theme: Theme) => StyleSheet.create({
   container: {
     flex: 1,
     padding: 16,
@@ -33,4 +34,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default styles;
+export default stylesFn;

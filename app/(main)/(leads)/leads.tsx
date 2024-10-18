@@ -1,14 +1,10 @@
 import React, { useEffect, useState } from "react";
 import {
-  View,
-  Text,
   TouchableOpacity,
-  Platform,
   ScrollView,
 } from "react-native";
 import {
   Appbar,
-  Checkbox,
   DataTable,
   Portal,
   TextInput,
@@ -19,12 +15,14 @@ import CreateTagModal from "@/components/leads/CreateTagModal";
 import Colors from "@/constants/Colors";
 import { DrawerToggle } from "@/components/ui";
 import { useBreakPoints } from "@/hooks";
-import styles from "@/styles/leads/LeadsTable.styles";
-import Button from "@/components/ui/button/Button";
-import CheckboxItem from "react-native-paper/lib/typescript/components/Checkbox/CheckboxItem";
 import ExpoCheckbox from "expo-checkbox/build/ExpoCheckbox";
+import { useTheme } from "@react-navigation/native";
+import stylesFn from "@/styles/leads/LeadsTable.styles";
+import { Text, View } from "@/components/Themed";
 
 const Leads = () => {
+  const theme = useTheme();
+  const styles = stylesFn(theme);
   const [isCreateLeadVisible, setCreateLeadVisible] = useState(false);
   const [isCreateTagVisible, setCreateTagVisible] = useState(false);
   const [leads, setLeads] = useState<any[]>([
@@ -95,7 +93,7 @@ const Leads = () => {
     <View
       style={{
         flex: 1,
-        backgroundColor: Colors.regular.white,
+        backgroundColor: Colors(theme).white,
       }}
     >
       <Appbar.Header statusBarHeight={0}>

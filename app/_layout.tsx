@@ -3,6 +3,7 @@ import {
   DarkTheme,
   DefaultTheme as ExpoDefaultTheme,
   ThemeProvider,
+  useTheme,
 } from "@react-navigation/native";
 import { useFonts } from "expo-font";
 import { Stack, usePathname, useRouter } from "expo-router";
@@ -48,6 +49,7 @@ const RootLayout = () => {
     SpaceMono: require("../assets/fonts/SpaceMono-Regular.ttf"),
     ...FontAwesome.font,
   });
+  const theme = useTheme();
 
   // Expo Router uses Error Boundaries to catch errors in the navigation tree.
   useEffect(() => {
@@ -68,7 +70,7 @@ const RootLayout = () => {
     <AuthContextProvider>
       <FirebaseStorageContextProvider>
         <OrganizationContextProvider>
-          <PaperProvider theme={CustomPaperTheme}>
+          <PaperProvider theme={CustomPaperTheme(theme)}>
             <RootLayoutStack />
           </PaperProvider>
         </OrganizationContextProvider>
@@ -79,7 +81,9 @@ const RootLayout = () => {
 
 const RootLayoutStack = () => {
   const colorScheme = useColorScheme();
-  const { session } = useAuthContext();
+  const { session, user } = useAuthContext();
+
+  const appTheme = user?.settings?.theme || colorScheme;
 
   // const router = useRouter();
   // const pathname = usePathname();
@@ -95,7 +99,7 @@ const RootLayoutStack = () => {
   // }, [router, session]);
 
   return (
-    <ThemeProvider value={colorScheme === "dark" ? DarkTheme : ExpoDefaultTheme}>
+    <ThemeProvider value={appTheme === "dark" ? DarkTheme : ExpoDefaultTheme}>
       <Stack
         screenOptions={{
           animation: "ios",

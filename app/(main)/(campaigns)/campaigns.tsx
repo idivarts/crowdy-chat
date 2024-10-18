@@ -4,7 +4,6 @@ import { router } from "expo-router";
 
 import AppLayout from "@/layouts/app-layout";
 import { View } from "@/components/Themed";
-import styles from "@/styles/campaigns/CampaignsList.styles";
 import { DrawerToggle } from "@/components/ui";
 import { useBreakPoints } from "@/hooks";
 import CampaignsEmptyState from "@/components/campaigns/CampaignsEmptyState";
@@ -15,8 +14,12 @@ import { useCampaignContext } from "@/contexts/campaign-context.provider";
 import { Campaign } from "@/types/campaign";
 import { useOrganizationContext } from "@/contexts";
 import { FlatList, Platform } from "react-native";
+import { useTheme } from "@react-navigation/native";
+import stylesFn from "@/styles/campaigns/CampaignsList.styles";
 
 const Campaigns = () => {
+  const theme = useTheme();
+  const styles = stylesFn(theme);
   const [searchQuery, setSearchQuery] = useState("");
   const [filteredCampaigns, setFilteredCampaigns] = useState<Campaign[]>([]);
   const { lg } = useBreakPoints();

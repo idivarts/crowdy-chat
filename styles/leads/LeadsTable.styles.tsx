@@ -1,10 +1,10 @@
 import Colors from "@/constants/Colors";
-import CustomPaperTheme from "@/constants/Theme";
+import { Theme } from "@react-navigation/native";
 import { StyleSheet } from "react-native";
 
-const styles = StyleSheet.create({
+const stylesFn = (theme: Theme) => StyleSheet.create({
   headerContainer: {
-    backgroundColor: Colors.regular.aliceBlue,
+    backgroundColor: Colors(theme).aliceBlue,
     alignItems: "center",
   },
   headerTitleContainer: {
@@ -14,7 +14,7 @@ const styles = StyleSheet.create({
   headerTitle: {
     fontWeight: 500,
     fontSize: 14,
-    color: CustomPaperTheme.colors.primary,
+    color: Colors(theme).primary,
   },
   checkboxContainer: {
     justifyContent: "center",
@@ -27,7 +27,7 @@ const styles = StyleSheet.create({
   actionText: {
     fontWeight: 500,
     fontSize: 14,
-    color: CustomPaperTheme.colors.primary,
+    color: Colors(theme).primary,
   },
   rowContainer: {
     padding: 10,
@@ -45,4 +45,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default styles;
+export default stylesFn;

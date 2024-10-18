@@ -2,7 +2,6 @@ import ConnectedPage from "@/components/sources/ConnectedPage";
 import { DrawerToggle } from "@/components/ui";
 import { useBreakPoints } from "@/hooks";
 import React, { useEffect, useState } from "react";
-import { View, Text } from "react-native";
 import {
   Appbar,
   Modal,
@@ -10,15 +9,18 @@ import {
   Button,
   TextInput,
   ActivityIndicator,
-  IconButton,
 } from "react-native-paper";
-import { styles } from "@/styles/sources/Sources.styles";
+import { stylesFn } from "@/styles/sources/Sources.styles";
 import { HttpService } from "@/services/httpService";
 import Toaster from "@/shared-uis/components/toaster/Toaster";
 import { PageUnit } from "@/interfaces/SourcePageInterfaces";
 import FacebookLoginButton from "@/components/sources/ConnectWithFacebook";
+import { useTheme } from "@react-navigation/native";
+import { Text, View } from "@/components/Themed";
 
 const Sources = () => {
+  const theme = useTheme();
+  const styles = stylesFn(theme);
   const { lg } = useBreakPoints();
   const [modalVisible, setModalVisible] = useState(false);
   const [emailModalVisible, setEmailModalVisible] = useState(false);

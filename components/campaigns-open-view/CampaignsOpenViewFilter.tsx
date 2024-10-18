@@ -1,13 +1,15 @@
 import Colors from "@/constants/Colors";
 import { PageActionsService } from "@/services";
 import { PageUnit } from "@/types/PageActions";
+import { useTheme } from "@react-navigation/native";
 import { router, useLocalSearchParams } from "expo-router";
 import { useEffect, useState } from "react";
-import { Text, View } from "react-native";
 import { Pressable } from "react-native";
 import { Icon, Menu } from "react-native-paper";
+import { Text, View } from "../Themed";
 
 const CampaignsOpenViewFilter = () => {
+  const theme = useTheme();
   const { pageId } = useLocalSearchParams<any>()
   const [value, setValue] = useState(pageId ? pageId : "all")
   const [pages, setPages] = useState<PageUnit[]>([])
@@ -47,8 +49,8 @@ const CampaignsOpenViewFilter = () => {
         <Pressable onPress={() => setMenuVisible(true)}>
           <View
             style={{
-              backgroundColor: Colors.regular.white,
-              borderColor: Colors.regular.black,
+              backgroundColor: Colors(theme).white,
+              borderColor: Colors(theme).black,
               borderWidth: 1,
               paddingVertical: 13,
               paddingHorizontal: 20,
@@ -61,7 +63,7 @@ const CampaignsOpenViewFilter = () => {
             <Text>Select Page</Text>
             <Icon
               size={20}
-              color={Colors.regular.black}
+              color={Colors(theme).black}
               source="chevron-down"
             />
           </View>
@@ -70,7 +72,7 @@ const CampaignsOpenViewFilter = () => {
       contentStyle={{
         paddingVertical: 0,
         borderRadius: 5,
-        backgroundColor: Colors.regular.white,
+        backgroundColor: Colors(theme).white,
       }}
     >
       <Menu.Item

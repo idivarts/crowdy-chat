@@ -1,13 +1,14 @@
 import { StyleSheet } from 'react-native';
 import Colors from '@/constants/Colors';
+import { Theme } from '@react-navigation/native';
 
-const styles = StyleSheet.create({
+const stylesFn = (theme: Theme) => StyleSheet.create({
   container: {
     alignItems: 'center',
     justifyContent: 'center',
     paddingVertical: 40,
     paddingHorizontal: 20,
-    borderColor: Colors.regular.lightgray,
+    borderColor: Colors(theme).lightgray,
     borderWidth: 1,
     borderRadius: 10,
     borderStyle: 'dashed',
@@ -23,4 +24,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default styles;
+export default stylesFn;
