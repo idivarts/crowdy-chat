@@ -16,6 +16,7 @@ import { useOrganizationContext } from "@/contexts";
 import { FlatList, Platform } from "react-native";
 import { useTheme } from "@react-navigation/native";
 import stylesFn from "@/styles/campaigns/CampaignsList.styles";
+import Colors from "@/constants/Colors";
 
 const Campaigns = () => {
   const theme = useTheme();
@@ -62,7 +63,12 @@ const Campaigns = () => {
 
   return (
     <AppLayout>
-      <Appbar.Header statusBarHeight={0}>
+      <Appbar.Header
+        statusBarHeight={0}
+        style={{
+          backgroundColor: Colors(theme).background,
+        }}
+      >
         {!lg && <DrawerToggle />}
         <Appbar.Content title="Campaigns" />
         <Appbar.Action

@@ -2,7 +2,6 @@ import { Theme } from "@react-navigation/native";
 import { StyleSheet } from "react-native";
 export const CreateCampaignstylesFn = (theme: Theme) => StyleSheet.create({
   container: {
-    backgroundColor: "#fff",
     flex: 1,
     padding: 16,
   },
@@ -14,7 +13,6 @@ export const CreateCampaignstylesFn = (theme: Theme) => StyleSheet.create({
   },
   modalContainer: {
     width: "80%",
-    backgroundColor: "white",
     borderRadius: 8,
     padding: 16,
     height: "90%",

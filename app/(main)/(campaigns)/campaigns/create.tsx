@@ -24,6 +24,7 @@ import {
 } from "@/interfaces/EditCampaignInterfaces";
 import { useTheme } from "@react-navigation/native";
 import { View } from "@/components/Themed";
+import Colors from "@/constants/Colors";
 
 const CreateCampaign = ({ campaignData }: { campaignData?: IEditCampaign }) => {
   const theme = useTheme();
@@ -302,6 +303,7 @@ const CreateCampaign = ({ campaignData }: { campaignData?: IEditCampaign }) => {
       <ScrollView
         style={{
           width: "100%",
+          backgroundColor: Colors(theme).background,
         }}
         contentContainerStyle={{
           justifyContent: "center",

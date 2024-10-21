@@ -13,7 +13,6 @@ export const stylesFn = (theme: Theme) => StyleSheet.create({
     // width: "100%",
     width: 400,
     padding: 40,
-    backgroundColor: "white",
     borderRadius: 10,
     justifyContent: "center",
     display: "flex",

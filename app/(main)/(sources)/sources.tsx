@@ -17,6 +17,7 @@ import { PageUnit } from "@/interfaces/SourcePageInterfaces";
 import FacebookLoginButton from "@/components/sources/ConnectWithFacebook";
 import { useTheme } from "@react-navigation/native";
 import { Text, View } from "@/components/Themed";
+import Colors from "@/constants/Colors";
 
 const Sources = () => {
   const theme = useTheme();
@@ -63,15 +64,17 @@ const Sources = () => {
   };
 
   const handleEmailSubmit = () => {
-    console.log(`SendGrid API Key: ${sendGridApiKey}`);
-    console.log(`SendGrid Domain: ${sendGridDomain}`);
-    console.log(`Email Username: ${emailUsername}`);
     setEmailModalVisible(false);
   };
 
   return (
     <View style={styles.container}>
-      <Appbar.Header statusBarHeight={0}>
+      <Appbar.Header
+        statusBarHeight={0}
+        style={{
+          backgroundColor: Colors(theme).background,
+        }}
+      >
         {!lg && <DrawerToggle />}
         <Appbar.Content title="Sources" />
         <Appbar.Action icon="plus" onPress={handleAddSource} />

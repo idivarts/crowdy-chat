@@ -46,6 +46,7 @@ import {
 import MembersModal from "@/components/modals/Members/MembersModal";
 import { useTheme } from "@react-navigation/native";
 import { View } from "@/components/Themed";
+import Colors from "@/constants/Colors";
 
 const customTheme = {
   ...DefaultTheme,
@@ -344,7 +345,7 @@ const MemberPage: React.FC = () => {
       <DataTable.Row
         key={index}
         style={{
-          backgroundColor: index % 2 === 0 ? "#f5f5f5" : "white",
+          backgroundColor: index % 2 === 0 ? Colors(theme).aliceBlue : Colors(theme).background,
           zIndex: -10 - index,
         }}
       >
@@ -418,7 +419,12 @@ const MemberPage: React.FC = () => {
 
   return (
     <Provider theme={customTheme}>
-      <Appbar.Header statusBarHeight={0}>
+      <Appbar.Header
+        statusBarHeight={0}
+        style={{
+          backgroundColor: Colors(theme).background,
+        }}
+      >
         {!lg && <DrawerToggle />}
         <Appbar.Content title="Members" />
         <Appbar.Action icon="plus" onPress={handleAddMemberClick} />

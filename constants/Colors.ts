@@ -22,7 +22,6 @@ export default (theme: Theme) => ({
       }),
   aliceBlue: "#E9F1F7",
   backdrop: "rgba(0, 0, 0, 0.5)",
-  background: "#ffffff",
   black: "#000",
   lightgray: "lightgray",
   onSurface: "#1976d2",
@@ -32,6 +31,5 @@ export default (theme: Theme) => ({
   red: "red",
   surface: "#ffffff",
   surfaceVariant: "#ffffff",
-  text: "#000000",
   white: "#ffffff",
 });

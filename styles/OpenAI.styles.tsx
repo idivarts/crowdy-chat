@@ -7,13 +7,11 @@ export const stylesFn = (theme: Theme) => StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     padding: 20,
-    backgroundColor: "#ffffff",
   },
   card: {
     width: "90%",
     maxWidth: 400,
     elevation: 4,
-    backgroundColor: "#ffffff",
     borderRadius: 12,
   },
   cardTitle: {
@@ -25,7 +23,6 @@ export const stylesFn = (theme: Theme) => StyleSheet.create({
     textAlign: "center",
     marginBottom: 20,
     lineHeight: 24,
-    color: "#333",
   },
   inputContainer: {
     marginBottom: 20,

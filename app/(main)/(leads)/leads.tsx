@@ -93,10 +93,14 @@ const Leads = () => {
     <View
       style={{
         flex: 1,
-        backgroundColor: Colors(theme).white,
       }}
     >
-      <Appbar.Header statusBarHeight={0}>
+      <Appbar.Header
+        statusBarHeight={0}
+        style={{
+          backgroundColor: Colors(theme).background,
+        }}
+      >
         {!lg && <DrawerToggle />}
         <Appbar.Content title="Leads" />
         <Appbar.Action icon="plus" onPress={showCreateLeadModal} />

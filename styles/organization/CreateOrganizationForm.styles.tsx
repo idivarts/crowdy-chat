@@ -10,7 +10,6 @@ const stylesFn = (theme: Theme) => StyleSheet.create({
   container: {
     padding: 20,
     gap: 20,
-    backgroundColor: Colors(theme).white,
     width: '100%',
   },
   row: {

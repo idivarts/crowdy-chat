@@ -6,6 +6,8 @@ import { Ionicons } from "@expo/vector-icons";
 import { Portal } from "react-native-paper";
 import { useBreakPoints } from "@/hooks";
 import { useOrganizationContext } from "@/contexts/organization-context.provider";
+import Colors from "@/constants/Colors";
+import { useTheme } from "@react-navigation/native";
 
 type OrganizationSwitcherProps = {};
 
@@ -19,6 +21,7 @@ const OrganizationSwitcher: React.FC<OrganizationSwitcherProps> = () => {
     isOrganizationsLoading,
     organizations,
   } = useOrganizationContext();
+  const theme = useTheme();
 
   const handleSwitchOrganization = (id: string) => {
     const currentOrg = organizations.find((org) => org.id === id);
@@ -59,7 +62,7 @@ const OrganizationSwitcher: React.FC<OrganizationSwitcherProps> = () => {
           <Ionicons
             name="chevron-up"
             size={lg ? 24 : 16}
-            color="black"
+            color={Colors(theme).text}
             style={{
               marginTop: 6,
             }}
@@ -68,7 +71,7 @@ const OrganizationSwitcher: React.FC<OrganizationSwitcherProps> = () => {
           <Ionicons
             name="chevron-down"
             size={lg ? 24 : 16}
-            color="black"
+            color={Colors(theme).text}
             style={{
               marginTop: 6,
             }}

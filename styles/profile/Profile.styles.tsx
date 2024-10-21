@@ -19,7 +19,6 @@ const stylesFn = (theme: Theme) => StyleSheet.create({
   popup: {
     width: "80%",
     padding: 20,
-    backgroundColor: "white",
     borderRadius: 10,
     alignItems: "center",
   },

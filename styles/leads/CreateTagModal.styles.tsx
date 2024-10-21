@@ -11,7 +11,7 @@ const stylesFn = (theme: Theme) => StyleSheet.create({
   },
   modalContent: {
     justifyContent: 'center',
-    backgroundColor: Colors(theme).white,
+    backgroundColor: Colors(theme).background,
     padding: 20,
     borderRadius: 10,
     width: '40%',
@@ -21,8 +21,10 @@ const stylesFn = (theme: Theme) => StyleSheet.create({
     fontSize: 20,
     fontWeight: 'bold',
     textAlign: 'center',
+    color: Colors(theme).text,
   },
   actions: {
+    backgroundColor: Colors(theme).background,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'flex-end',

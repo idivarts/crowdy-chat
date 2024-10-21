@@ -10,7 +10,6 @@ export const stylesFn = (theme: Theme) => StyleSheet.create({
     elevation: 2,
     borderWidth: 0.5,
     width: "100%",
-    backgroundColor: "#fff",
     borderColor: "#ddd",
   },
   row: {

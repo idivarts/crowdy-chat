@@ -12,7 +12,6 @@ const stylesFn = (theme: Theme) => StyleSheet.create({
     paddingTop: 0,
     gap: 20,
     justifyContent: 'space-between',
-    backgroundColor: Colors(theme).white,
     width: '100%',
   },
   row: {
