@@ -1,6 +1,7 @@
+import { Theme } from "@react-navigation/native";
 import { StyleSheet, Dimensions } from "react-native";
 
-export const styles = StyleSheet.create({
+export const stylesFn = (theme: Theme) => StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: "center",
@@ -12,7 +13,6 @@ export const styles = StyleSheet.create({
     // width: "100%",
     width: 400,
     padding: 40,
-    backgroundColor: "white",
     borderRadius: 10,
     justifyContent: "center",
     display: "flex",
@@ -47,5 +47,15 @@ export const styles = StyleSheet.create({
     justifyContent: "center",
     gap: 10,
     width: "100%",
+  },
+  settingsRow: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    width: "100%",
+    paddingVertical: 20,
+  },
+  settingsLabel: {
+    fontSize: 18,
   },
 });

@@ -1,16 +1,17 @@
 import Colors from "@/constants/Colors";
+import { Theme } from "@react-navigation/native";
 import { StyleSheet } from "react-native";
 
-const styles = StyleSheet.create({
+const stylesFn = (theme: Theme) => StyleSheet.create({
   button: {
-    backgroundColor: Colors.regular.primary,
+    backgroundColor: Colors(theme).primary,
     paddingHorizontal: 24,
     paddingVertical: 12,
     borderRadius: 4,
   },
   buttonText: {
-    color: Colors.regular.white,
+    color: Colors(theme).white,
   },
 });
 
-export default styles;
+export default stylesFn;

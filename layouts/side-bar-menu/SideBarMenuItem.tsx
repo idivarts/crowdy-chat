@@ -1,10 +1,10 @@
 import { Text, View } from "@/components/Themed";
-import { usePathname, useRouter } from "expo-router";
+import { Href, usePathname, useRouter } from "expo-router";
 import { Pressable } from "react-native";
-import { styles } from "./side-bar.styles";
 import Colors from "@/constants/Colors";
-import { useColorScheme } from "@/components/useColorScheme";
 import { Ionicons } from "@expo/vector-icons";
+import { useTheme } from "@react-navigation/native";
+import { stylesFn } from "./side-bar.styles";
 
 interface SideBarMenuItemProps {
   href: string;
@@ -17,19 +17,20 @@ const SideBarMenuItem: React.FC<SideBarMenuItemProps> = ({
 }) => {
   const router = useRouter();
   const pathname = usePathname();
-  const colorScheme = useColorScheme();
+  const theme = useTheme();
+  const styles = stylesFn(theme);
 
   return (
     <Pressable
       onPress={() => {
-        router.push(href);
+        router.push(href as Href);
       }}
     >
       <View
         style={[
           styles.sideBarMenuItem,
           {
-            backgroundColor: href.includes(pathname) ? Colors.regular.primary : Colors[colorScheme].background,
+            backgroundColor: href.includes(pathname) ? Colors(theme).primary : Colors(theme).background,
           }
         ]}
       >
@@ -43,15 +44,15 @@ const SideBarMenuItem: React.FC<SideBarMenuItemProps> = ({
           }}
         >
           <Text
-            darkColor={href.includes(pathname) ? Colors.regular.white : Colors.regular.primary}
-            lightColor={href.includes(pathname) ? Colors.regular.white : Colors.regular.primary}
+            darkColor={href.includes(pathname) ? Colors(theme).white : Colors(theme).primary}
+            lightColor={href.includes(pathname) ? Colors(theme).white : Colors(theme).primary}
           >
             {label}
           </Text>
           <Ionicons
             name={"chevron-forward"}
             size={24}
-            color={href.includes(pathname) ? Colors.regular.white : Colors.regular.primary}
+            color={href.includes(pathname) ? Colors(theme).white : Colors(theme).primary}
           />
         </View>
       </View>

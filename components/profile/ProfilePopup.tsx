@@ -1,16 +1,14 @@
 import React, { useState, useEffect } from "react";
 import {
-  View,
-  Text,
   Button,
   Modal,
   Image,
   TouchableOpacity,
 } from "react-native";
-import { TextInput } from "react-native-paper";
+import { Switch, TextInput } from "react-native-paper";
 import * as ImagePicker from "expo-image-picker";
 import Toaster from "@/shared-uis/components/toaster/Toaster";
-import { styles } from "@/styles/header/EditProfile.styles";
+import { stylesFn } from "@/styles/header/EditProfile.styles";
 import { doc, updateDoc, getDoc } from "firebase/firestore";
 import { FirestoreDB } from "@/shared-libs/utilities/firestore";
 import { AuthApp } from "@/shared-libs/utilities/auth";
@@ -29,6 +27,8 @@ import {
 } from "firebase/storage";
 import Toast from "react-native-toast-message";
 import { useAuthContext } from "@/contexts";
+import { useTheme } from "@react-navigation/native";
+import { Text, View } from "../Themed";
 
 interface ProfilePopupProps {
   isVisible: boolean;
@@ -36,7 +36,11 @@ interface ProfilePopupProps {
 }
 
 const ProfilePopup: React.FC<ProfilePopupProps> = ({ isVisible, onClose }) => {
-  const { user, fetchUser } = useAuthContext();
+  const {
+    user,
+    fetchUser,
+    updateUser,
+  } = useAuthContext();
   const auth = AuthApp;
   const [profileName, setProfileName] = useState(user?.name || "");
   const [oldPassword, setOldPassword] = useState("");
@@ -44,8 +48,33 @@ const ProfilePopup: React.FC<ProfilePopupProps> = ({ isVisible, onClose }) => {
   const [confirmNewPassword, setConfirmNewPassword] = useState("");
   const [profileImage, setProfileImage] = useState(
     user?.image ||
-      "https://pinnacle.works/wp-content/uploads/2022/06/dummy-image.jpg"
+    "https://pinnacle.works/wp-content/uploads/2022/06/dummy-image.jpg"
   );
+  const [isSwitchOn, setIsSwitchOn] = useState(false);
+  const theme = useTheme();
+  const styles = stylesFn(theme);
+
+  const onToggleSwitch = () => {
+    setIsSwitchOn(!isSwitchOn);
+    if (!user) {
+      return;
+    }
+
+    updateUser(
+      user?.id,
+      {
+        settings: {
+          theme: isSwitchOn ? "light" : "dark"
+        },
+      },
+    );
+  };
+
+  useEffect(() => {
+    if (user?.settings?.theme) {
+      setIsSwitchOn(user.settings.theme === "dark");
+    }
+  }, [user]);
 
   const validatePasswords = (): boolean => {
     if (newPassword !== confirmNewPassword) {
@@ -195,6 +224,19 @@ const ProfilePopup: React.FC<ProfilePopupProps> = ({ isVisible, onClose }) => {
               value={confirmNewPassword}
               onChangeText={setConfirmNewPassword}
             />
+            <View
+              style={styles.settingsRow}
+            >
+              <Text
+                style={styles.settingsLabel}
+              >
+                Theme ({isSwitchOn ? "Dark" : "Light"})
+              </Text>
+              <Switch
+                value={isSwitchOn}
+                onValueChange={onToggleSwitch}
+              />
+            </View>
           </View>
 
           <View style={styles.footer}>

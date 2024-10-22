@@ -1,7 +1,8 @@
 import Colors from "@/constants/Colors";
+import { Theme } from "@react-navigation/native";
 import { StyleSheet } from "react-native";
 
-const styles = StyleSheet.create({
+const stylesFn = (theme: Theme) => StyleSheet.create({
   scrollViewContent: {
     flex: 1,
     alignItems: 'center',
@@ -9,7 +10,6 @@ const styles = StyleSheet.create({
   container: {
     padding: 20,
     gap: 20,
-    backgroundColor: Colors.regular.white,
     width: '100%',
   },
   row: {
@@ -24,4 +24,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default styles;
+export default stylesFn;

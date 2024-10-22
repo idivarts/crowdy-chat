@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from "react";
-import { Dimensions, ScrollView, StyleSheet, View } from "react-native";
-import { Text, Button, Divider, Menu, IconButton } from "react-native-paper";
+import { ScrollView } from "react-native";
+import { Divider, Menu, IconButton } from "react-native-paper";
 import { IConversationUnit } from "@/types/CampaignsBoard";
 import { ConversationService } from "@/services";
-import { styles } from "@/styles/campaigns/campaign-open-view/ListView.styles";
+import { stylesFn } from "@/styles/campaigns/campaign-open-view/ListView.styles";
 import RenderTable from "./RenderListTable";
+import { useTheme } from "@react-navigation/native";
+import { Text, View } from "../Themed";
 
 type ChatBoard = {
   id: number;
@@ -13,6 +15,8 @@ type ChatBoard = {
 }[];
 
 const CampaignListView = (props: { pageId: string | null }) => {
+  const theme = useTheme();
+  const styles = stylesFn(theme);
   const [columns, setColumns] = useState<ChatBoard>([]);
   const [allConversation, setAllConversation] = useState<IConversationUnit[]>(
     []
@@ -75,7 +79,7 @@ const CampaignListView = (props: { pageId: string | null }) => {
       .then((res) => {
         setAllConversation(res);
       })
-      .catch((e) => {});
+      .catch((e) => { });
   };
 
   const PhaseMap = {

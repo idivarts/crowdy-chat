@@ -10,7 +10,7 @@ import {
   Text,
   ActivityIndicator,
 } from "react-native-paper";
-import { View, ScrollView } from "react-native";
+import { ScrollView } from "react-native";
 import Dropdown from "@/shared-uis/components/dropdown/Dropdown";
 import DropdownTrigger from "@/shared-uis/components/dropdown/DropdownTrigger";
 import DropdownOptions from "@/shared-uis/components/dropdown/DropdownOptions";
@@ -18,7 +18,7 @@ import DropdownOption from "@/shared-uis/components/dropdown/DropdownOption";
 import DropdownButton from "@/shared-uis/components/dropdown/DropdownButton";
 import { MaterialIcons } from "@expo/vector-icons";
 import { z, ZodError } from "zod";
-import { styles } from "@/styles/Members";
+import { stylesFn } from "@/styles/Members";
 import { useOrganizationContext } from "@/contexts/organization-context.provider";
 import { MemberSchema } from "@/components/schemas/MemberPageSchema";
 import Toaster from "@/shared-uis/components/toaster/Toaster";
@@ -44,6 +44,9 @@ import {
   createUserWithEmailAndPassword,
 } from "firebase/auth";
 import MembersModal from "@/components/modals/Members/MembersModal";
+import { useTheme } from "@react-navigation/native";
+import { View } from "@/components/Themed";
+import Colors from "@/constants/Colors";
 
 const customTheme = {
   ...DefaultTheme,
@@ -71,6 +74,8 @@ interface MemberDetails {
 }
 
 const MemberPage: React.FC = () => {
+  const theme = useTheme();
+  const styles = stylesFn(theme);
   const [members, setMembers] = useState<MemberDetails[]>([]);
   const [searchTerm, setSearchTerm] = useState<string>("");
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
@@ -326,7 +331,6 @@ const MemberPage: React.FC = () => {
   const renderMember = (
     member: {
       name: string;
-      username: string;
       email: string;
       permissions: {
         read: boolean;
@@ -341,7 +345,7 @@ const MemberPage: React.FC = () => {
       <DataTable.Row
         key={index}
         style={{
-          backgroundColor: index % 2 === 0 ? "#f5f5f5" : "white",
+          backgroundColor: index % 2 === 0 ? Colors(theme).aliceBlue : Colors(theme).background,
           zIndex: -10 - index,
         }}
       >
@@ -415,7 +419,12 @@ const MemberPage: React.FC = () => {
 
   return (
     <Provider theme={customTheme}>
-      <Appbar.Header statusBarHeight={0}>
+      <Appbar.Header
+        statusBarHeight={0}
+        style={{
+          backgroundColor: Colors(theme).background,
+        }}
+      >
         {!lg && <DrawerToggle />}
         <Appbar.Content title="Members" />
         <Appbar.Action icon="plus" onPress={handleAddMemberClick} />

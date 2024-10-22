@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
-import { View, Button, ScrollView } from "react-native";
-import { CreateCampaignstyles as styles } from "@/styles/Dashboard.styles";
+import { Button, ScrollView } from "react-native";
+import { CreateCampaignstylesFn } from "@/styles/Dashboard.styles";
 import {
   stepOneSchema,
   stepTwoSchema,
@@ -22,8 +22,13 @@ import {
   ICollectible,
   IEditLeadStage,
 } from "@/interfaces/EditCampaignInterfaces";
+import { useTheme } from "@react-navigation/native";
+import { View } from "@/components/Themed";
+import Colors from "@/constants/Colors";
 
 const CreateCampaign = ({ campaignData }: { campaignData?: IEditCampaign }) => {
+  const theme = useTheme();
+  const styles = CreateCampaignstylesFn(theme);
   const navigation = useNavigation();
   const router = useRouter();
   const [currentStep, setCurrentStep] = useState(1);
@@ -298,6 +303,7 @@ const CreateCampaign = ({ campaignData }: { campaignData?: IEditCampaign }) => {
       <ScrollView
         style={{
           width: "100%",
+          backgroundColor: Colors(theme).background,
         }}
         contentContainerStyle={{
           justifyContent: "center",

@@ -1,8 +1,10 @@
 import Colors from "@/constants/Colors";
 import { MessageObject } from "@/types/Message";
+import { useTheme } from "@react-navigation/native";
 import { ResizeMode, Video } from "expo-av";
 import { useRef, useState } from "react";
-import { Image, Text, View } from "react-native";
+import { Image } from "react-native";
+import { Text, View } from "../Themed";
 
 interface MessageItemProps {
   igsid: string;
@@ -19,6 +21,7 @@ const MessageItem: React.FC<MessageItemProps> = ({
   msg,
   shouldRenderData,
 }) => {
+  const theme = useTheme();
   const video = useRef(null);
   const [status, setStatus] = useState({});
 
@@ -64,13 +67,13 @@ const MessageItem: React.FC<MessageItemProps> = ({
                 paddingHorizontal: 20,
                 paddingVertical: 20,
                 borderRadius: 10,
-                backgroundColor: msg.from.id != igsid ? Colors.regular.primary : Colors.regular.platinum,
+                backgroundColor: msg.from.id != igsid ? Colors(theme).primary : Colors(theme).platinum,
                 maxWidth: "100%",
               }}
             >
               <Text
                 style={{
-                  color: msg.from.id != igsid ? Colors.regular.white : Colors.regular.black,
+                  color: msg.from.id != igsid ? Colors(theme).white : Colors(theme).black,
                   lineHeight: 24,
                   textAlign: msg.from.id != igsid ? 'left' : 'right',
                 }}
