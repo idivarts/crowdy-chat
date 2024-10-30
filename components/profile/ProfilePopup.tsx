@@ -58,8 +58,6 @@ const ProfilePopup: React.FC<ProfilePopupProps> = ({ isVisible, onClose }) => {
     if (!user) {
       return;
     }
-    console.log(isSwitchOn);
-    console.log(user);
 
     updateUser(
       user?.id,
@@ -73,7 +71,6 @@ const ProfilePopup: React.FC<ProfilePopupProps> = ({ isVisible, onClose }) => {
 
   useEffect(() => {
     if (user?.settings?.theme) {
-      console.log(user.settings.theme);
       setIsSwitchOn(user.settings.theme === "dark");
     }
   }, [user?.id]);

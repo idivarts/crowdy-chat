@@ -237,8 +237,6 @@ export const AuthContextProvider: React.FC<PropsWithChildren> = ({
     user: Partial<User>
   ): Promise<void> => {
     const userRef = doc(FirestoreDB, "users", userId);
-    console.log(userRef);
-    console.log(user);
 
     await updateDoc(userRef, {
       ...user,
