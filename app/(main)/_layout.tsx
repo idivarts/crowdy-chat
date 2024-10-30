@@ -37,7 +37,7 @@ const DrawerLayout = () => {
             key="sources"
             name="(sources)"
             options={{
-              headerShown: true,
+              headerShown: false,
               title: "Sources",
             }}
           />
@@ -45,7 +45,7 @@ const DrawerLayout = () => {
             key="leads"
             name="(leads)"
             options={{
-              headerShown: true,
+              headerShown: false,
               title: "Leads",
             }}
           />
@@ -53,7 +53,7 @@ const DrawerLayout = () => {
             key="open-ai"
             name="(openAI)"
             options={{
-              headerShown: true,
+              headerShown: false,
               title: "OpenAI",
             }}
           />
@@ -61,7 +61,7 @@ const DrawerLayout = () => {
             key="organization-profile"
             name="(organization)"
             options={{
-              headerShown: true,
+              headerShown: false,
               title: "Organization Profile",
             }}
           />
