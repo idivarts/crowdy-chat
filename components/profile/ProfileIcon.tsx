@@ -30,7 +30,7 @@ const ProfileIcon: React.FC<ProfileIconProps> = ({
   const [user, setUser] = useState(AuthApp.currentUser);
   // useas different name
   // const {user} = useAuthContext();
-  const { user: AuthUser, fetchUser } = useAuthContext();
+  const { user: AuthUser } = useAuthContext();
 
   useEffect(() => {
     const unsubscribe = AuthApp.onAuthStateChanged((user) => {
@@ -43,7 +43,6 @@ const ProfileIcon: React.FC<ProfileIconProps> = ({
   useEffect(() => {
     const fetchUserProfile = async () => {
       try {
-        fetchUser();
         setProfileImage(AuthUser?.image);
       } catch (error) {
         console.error("Error getting document:", error);
