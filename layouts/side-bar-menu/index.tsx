@@ -44,7 +44,12 @@ const SideBarMenu: React.FC = () => {
         flex: 1,
       }}
     >
-      <DrawerContentScrollView>
+      <DrawerContentScrollView
+        style={{
+          flex: 1,
+          marginTop: -60,
+        }}
+      >
         <View
           style={{
             flex: 1,
