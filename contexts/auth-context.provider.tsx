@@ -14,7 +14,7 @@ import {
   useState,
   type PropsWithChildren,
 } from "react";
-import { setDoc, collection, doc, getDoc, where, updateDoc } from "firebase/firestore";
+import { setDoc, collection, doc, getDoc, where, updateDoc, onSnapshot } from "firebase/firestore";
 import { FirestoreDB } from "@/shared-libs/utilities/firestore";
 import Toaster from "@/shared-uis/components/toaster/Toaster";
 import { useRouter } from "expo-router";
@@ -54,8 +54,28 @@ export const AuthContextProvider: React.FC<PropsWithChildren> = ({
   const router = useRouter();
   const [user, setUser] = useState<User | null>(null);
 
+  const fetchUser = async () => {
+    if (session) {
+      const userDocRef = doc(FirestoreDB, "users", session);
+
+      const unsubscribe = onSnapshot(userDocRef, (userSnap) => {
+        if (userSnap.exists()) {
+          const userData = {
+            ...(userSnap.data() as User),
+            id: userSnap.id as string,
+          };
+          setUser(userData);
+        } else {
+          console.error("User not found");
+        }
+      });
+
+      return unsubscribe;
+    }
+  };
+
   useEffect(() => {
-    if (session) fetchUser();
+    fetchUser();
   }, [session]);
 
   const signIn = async (email: string, password: string) => {
@@ -193,7 +213,7 @@ export const AuthContextProvider: React.FC<PropsWithChildren> = ({
     }
   };
 
-  const fetchUser = async () => {
+  const getUser = async () => {
     try {
       const user = AuthApp.currentUser;
       if (user) {
@@ -217,6 +237,8 @@ export const AuthContextProvider: React.FC<PropsWithChildren> = ({
     user: Partial<User>
   ): Promise<void> => {
     const userRef = doc(FirestoreDB, "users", userId);
+    console.log(userRef);
+    console.log(user);
 
     await updateDoc(userRef, {
       ...user,

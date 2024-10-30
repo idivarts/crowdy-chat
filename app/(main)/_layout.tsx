@@ -27,7 +27,7 @@ const DrawerLayout = () => {
         >
           <Drawer.Screen
             key="campaigns"
-            name="(campaigns)/campaigns"
+            name="(campaigns)"
             options={{
               headerShown: false,
               title: "Campaigns",
@@ -35,7 +35,7 @@ const DrawerLayout = () => {
           />
           <Drawer.Screen
             key="sources"
-            name="(sources)/sources"
+            name="(sources)"
             options={{
               headerShown: true,
               title: "Sources",
@@ -43,7 +43,7 @@ const DrawerLayout = () => {
           />
           <Drawer.Screen
             key="leads"
-            name="(leads)/leads"
+            name="(leads)"
             options={{
               headerShown: true,
               title: "Leads",
@@ -51,7 +51,7 @@ const DrawerLayout = () => {
           />
           <Drawer.Screen
             key="open-ai"
-            name="(openAI)/open-ai"
+            name="(openAI)"
             options={{
               headerShown: true,
               title: "OpenAI",
@@ -59,7 +59,7 @@ const DrawerLayout = () => {
           />
           <Drawer.Screen
             key="organization-profile"
-            name="(organization)/organization-profile"
+            name="(organization)"
             options={{
               headerShown: true,
               title: "Organization Profile",

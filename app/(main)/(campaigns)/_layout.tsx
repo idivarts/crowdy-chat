@@ -19,19 +19,6 @@ const CampaignsLayout = () => {
     }
   }, [isLoading, session]);
 
-  if (isLoading || organizations.length === 0) {
-    return (
-      <View
-        style={{
-          flex: 1,
-          justifyContent: "center",
-        }}
-      >
-        <ActivityIndicator />
-      </View>
-    );
-  }
-
 
   return (
     <CampaignContextProvider>

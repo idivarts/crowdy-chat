@@ -38,7 +38,6 @@ interface ProfilePopupProps {
 const ProfilePopup: React.FC<ProfilePopupProps> = ({ isVisible, onClose }) => {
   const {
     user,
-    fetchUser,
     updateUser,
   } = useAuthContext();
   const auth = AuthApp;
@@ -59,6 +58,8 @@ const ProfilePopup: React.FC<ProfilePopupProps> = ({ isVisible, onClose }) => {
     if (!user) {
       return;
     }
+    console.log(isSwitchOn);
+    console.log(user);
 
     updateUser(
       user?.id,
@@ -72,9 +73,10 @@ const ProfilePopup: React.FC<ProfilePopupProps> = ({ isVisible, onClose }) => {
 
   useEffect(() => {
     if (user?.settings?.theme) {
+      console.log(user.settings.theme);
       setIsSwitchOn(user.settings.theme === "dark");
     }
-  }, [user]);
+  }, [user?.id]);
 
   const validatePasswords = (): boolean => {
     if (newPassword !== confirmNewPassword) {
@@ -129,7 +131,6 @@ const ProfilePopup: React.FC<ProfilePopupProps> = ({ isVisible, onClose }) => {
 
           const downloadURL = await getDownloadURL(storageRef);
           updates.image = downloadURL;
-          fetchUser();
         }
 
         if (Object.keys(updates).length > 0) {
