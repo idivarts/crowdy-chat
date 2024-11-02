@@ -1,5 +1,6 @@
 import { View } from "@/components/Themed";
 import { useAuthContext } from "@/contexts";
+import AppLayout from "@/layouts/app-layout";
 import { Stack, useRouter } from "expo-router";
 import { useEffect } from "react";
 
@@ -13,7 +14,7 @@ const CampaignsLayout = () => {
   }, [isLoading, session]);
 
   return (
-    <>
+    <AppLayout>
       <View
         style={{
           flex: 1,
@@ -45,7 +46,7 @@ const CampaignsLayout = () => {
           /> */}
         </Stack>
       </View>
-    </>
+    </AppLayout>
   );
 };
 

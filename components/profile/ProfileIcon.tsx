@@ -1,14 +1,12 @@
 import { View } from "@/components/Themed";
 import Colors from "@/constants/Colors";
-import styles from "@/styles/profile/Profile.styles";
 import { Ionicons } from "@expo/vector-icons";
 import { Image, ActivityIndicator } from "react-native";
 import { ComponentProps, useEffect, useState } from "react";
-import { doc, getDoc } from "firebase/firestore";
-import { FirestoreDB } from "@/shared-libs/utilities/firestore";
 import { AuthApp } from "@/shared-libs/utilities/auth";
-import { IUser } from "@/shared-libs/firestore/crowdy-chat/models/users";
 import { useAuthContext } from "@/contexts";
+import { useTheme } from "@react-navigation/native";
+import stylesFn from "@/styles/profile/Profile.styles";
 
 interface ProfileIconProps {
   iconColor?: string;
@@ -23,6 +21,8 @@ const ProfileIcon: React.FC<ProfileIconProps> = ({
   iconColor,
   profileURL,
 }) => {
+  const theme = useTheme();
+  const styles = stylesFn(theme);
   const [profileImage, setProfileImage] = useState<string | undefined>(
     profileURL
   );
@@ -30,7 +30,7 @@ const ProfileIcon: React.FC<ProfileIconProps> = ({
   const [user, setUser] = useState(AuthApp.currentUser);
   // useas different name
   // const {user} = useAuthContext();
-  const { user: AuthUser, fetchUser } = useAuthContext();
+  const { user: AuthUser } = useAuthContext();
 
   useEffect(() => {
     const unsubscribe = AuthApp.onAuthStateChanged((user) => {
@@ -43,7 +43,6 @@ const ProfileIcon: React.FC<ProfileIconProps> = ({
   useEffect(() => {
     const fetchUserProfile = async () => {
       try {
-        fetchUser();
         setProfileImage(AuthUser?.image);
       } catch (error) {
         console.error("Error getting document:", error);
@@ -77,7 +76,7 @@ const ProfileIcon: React.FC<ProfileIconProps> = ({
           },
         ]}
       >
-        <ActivityIndicator size="small" color={Colors.regular.primary} />
+        <ActivityIndicator size="small" color={Colors(theme).primary} />
       </View>
     );
   }
@@ -106,7 +105,7 @@ const ProfileIcon: React.FC<ProfileIconProps> = ({
         <Ionicons
           name={iconName}
           size={size}
-          color={iconColor || Colors.regular.primary}
+          color={iconColor || Colors(theme).primary}
         />
       )}
     </View>

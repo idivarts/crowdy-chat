@@ -1,7 +1,6 @@
 import { Image, Pressable, TouchableOpacity } from "react-native";
 import { Text, View } from "../Themed";
 import { Ionicons, MaterialIcons } from "@expo/vector-icons";
-import styles from "@/styles/campaigns/CampaignCard.styles";
 import Toaster from "@/shared-uis/components/toaster/Toaster";
 import { useBreakPoints } from "@/hooks";
 import * as Clipboard from "expo-clipboard";
@@ -14,12 +13,16 @@ import { useState } from "react";
 import ConfirmationModal from "../ConfirmationModal";
 import { useCampaignContext } from "@/contexts/campaign-context.provider";
 import { Portal } from "react-native-paper";
+import { useTheme } from "@react-navigation/native";
+import stylesFn from "@/styles/campaigns/CampaignCard.styles";
 
 interface CampaignCardProps {
   item: Campaign;
 }
 
 const CampaignCard = ({ item }: CampaignCardProps) => {
+  const theme = useTheme();
+  const styles = stylesFn(theme);
   const { xl } = useBreakPoints();
   const router = useRouter();
   const [menuVisible, setMenuVisible] = useState(false);

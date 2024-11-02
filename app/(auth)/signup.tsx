@@ -1,8 +1,7 @@
 import { useAuthContext } from "@/contexts";
 import SignupUI from "@/shared-uis/components/AuthenticationUI/SignupUI";
-import Toaster from "@/shared-uis/components/toaster/Toaster";
-import { styles } from "@/styles/Signup.styles";
-import { useRouter } from "expo-router";
+import { stylesFn } from "@/styles/Signup.styles";
+import { useTheme } from "@react-navigation/native";
 
 interface SignupData {
   email: string;
@@ -11,6 +10,8 @@ interface SignupData {
 
 const Signup = () => {
   const { signUp } = useAuthContext();
+  const theme = useTheme();
+  const styles = stylesFn(theme);
 
   return (
     <SignupUI

@@ -1,11 +1,13 @@
 import React, { useState } from "react";
-import { View, Text, Linking, TouchableOpacity } from "react-native";
+import { Linking, TouchableOpacity } from "react-native";
 import { Card, IconButton, Menu, ActivityIndicator } from "react-native-paper";
-import { styles } from "@/styles/sources/ConnectedPage.styles";
+import { stylesFn } from "@/styles/sources/ConnectedPage.styles";
 import { HttpService } from "@/services/httpService";
 import Toaster from "@/shared-uis/components/toaster/Toaster";
 import ConfirmationModal from "../ConfirmationModal";
 import AssistantModal from "../AssistantModal";
+import { useTheme } from "@react-navigation/native";
+import { Text, View } from "../Themed";
 
 type page = {
   assistantId: string;
@@ -31,8 +33,10 @@ const ConnectedPage: React.FC<ConnectedPageProps> = ({ page: pageProps }) => {
     useState(false);
   const [assistantModalVisible, setAssistantModalVisible] = useState(false);
   const [modalMessage, setModalMessage] = useState("");
-  const [modalAction, setModalAction] = useState<() => void>(() => {});
+  const [modalAction, setModalAction] = useState<() => void>(() => { });
   const [loading, setLoading] = useState(false);
+  const theme = useTheme();
+  const styles = stylesFn(theme);
 
   const toggleMenu = () => setMenuVisible(!menuVisible);
 

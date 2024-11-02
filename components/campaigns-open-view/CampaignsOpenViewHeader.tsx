@@ -1,10 +1,11 @@
-import { TabView } from './CampaignOpenView';
+import { TabView } from "./CampaignOpenView";
 import React from "react";
-import { View } from "react-native";
 import { Appbar, Button, TextInput } from "react-native-paper";
 import GoBackButton from "../ui/go-back-button";
-import styles from "@/styles/campaigns/CampaignsOpenViewHeader.styles";
-import CampaignsOpenViewFilter from './CampaignsOpenViewFilter';
+import CampaignsOpenViewFilter from "./CampaignsOpenViewFilter";
+import { useTheme } from "@react-navigation/native";
+import stylesFn from "@/styles/campaigns/CampaignsOpenViewHeader.styles";
+import { View } from "../Themed";
 
 interface CampaignsOpenViewHeaderProps {
   tabView: TabView;
@@ -15,8 +16,11 @@ const CampaignsOpenViewHeader: React.FC<CampaignsOpenViewHeaderProps> = ({
   tabView,
   setTabView,
 }) => {
+  const theme = useTheme();
+  const styles = stylesFn(theme);
+
   return (
-    <Appbar.Header>
+    <Appbar.Header statusBarHeight={0}>
       <GoBackButton />
       <View style={styles.container}>
         <View style={styles.tabButtonsContainer}>

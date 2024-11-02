@@ -37,7 +37,6 @@ const stageSchema = z.object({
     reminderExamples: z.string(),
   }),
   exampleConversations: z.string(),
-  reminderTiming: z.string(),
   stopConversation: z.boolean(),
   leadConversion: z.boolean(),
 });

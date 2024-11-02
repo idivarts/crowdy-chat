@@ -1,53 +1,42 @@
 import Colors from "@/constants/Colors";
-import CustomPaperTheme from "@/constants/Theme";
+import { Theme } from "@react-navigation/native";
 import { StyleSheet } from "react-native";
 
-const styles = StyleSheet.create({
+const stylesFn = (theme: Theme) => StyleSheet.create({
   headerContainer: {
-    padding: 10,
-    backgroundColor: Colors.regular.aliceBlue,
+    backgroundColor: Colors(theme).aliceBlue,
+    alignItems: "center",
   },
   headerTitleContainer: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    maxHeight: 36,
-    paddingVertical: 0,
+    justifyContent: "center",
   },
   headerTitle: {
     fontWeight: 500,
     fontSize: 14,
-    color: CustomPaperTheme.colors.primary,
+    color: Colors(theme).primary,
   },
   checkboxContainer: {
-    maxWidth: 36,
-    maxHeight: 36,
-    justifyContent: 'center',
-    paddingVertical: 0,
+    justifyContent: "center",
   },
-  checkboxText: {
-    minWidth: 36,
-    minHeight: 36,
-  },
+  checkboxText: {},
   actionContainer: {
-    minWidth: 90,
-    maxWidth: 90,
-    maxHeight: 36,
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
   },
   actionText: {
     fontWeight: 500,
     fontSize: 14,
-    color: CustomPaperTheme.colors.primary,
+    color: Colors(theme).primary,
   },
   rowContainer: {
     padding: 10,
+    minHeight: 55,
   },
   rowTextContainer: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
     maxHeight: 36,
     paddingVertical: 0,
   },
@@ -56,4 +45,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default styles;
+export default stylesFn;

@@ -1,8 +1,7 @@
 import { useAuthContext } from "@/contexts";
 import LoginUI from "@/shared-uis/components/AuthenticationUI/LoginUI";
-import Toaster from "@/shared-uis/components/toaster/Toaster";
-import { styles } from "@/styles/Login.styles";
-import { useRouter } from "expo-router";
+import { stylesFn } from "@/styles/Login.styles";
+import { useTheme } from "@react-navigation/native";
 
 interface LoginData {
   emailOrUsername: string;
@@ -11,6 +10,8 @@ interface LoginData {
 
 const Login = () => {
   const { signIn } = useAuthContext();
+  const theme = useTheme();
+  const styles = stylesFn(theme);
 
   return (
     <LoginUI

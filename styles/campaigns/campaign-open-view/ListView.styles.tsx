@@ -1,7 +1,8 @@
 import { StyleSheet } from "react-native";
 import Colors from "@/constants/Colors";
+import { Theme } from "@react-navigation/native";
 
-export const styles = StyleSheet.create({
+export const stylesFn = (theme: Theme) => StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#FFF",
@@ -37,7 +38,7 @@ export const styles = StyleSheet.create({
   },
   cell: {
     paddingHorizontal: 16,
-    minWidth: 120,
+    width: 120,
     borderWidth: 0.1,
     borderColor: "#e0e0e0",
   },
@@ -65,7 +66,7 @@ export const styles = StyleSheet.create({
     color: "#666",
   },
   timeAgo: {
-    color: Colors.regular.primary,
+    color: Colors(theme).primary,
     fontSize: 12,
   },
   sortIcon: {},

@@ -10,7 +10,7 @@ import {
   Text,
   ActivityIndicator,
 } from "react-native-paper";
-import { View, ScrollView } from "react-native";
+import { ScrollView } from "react-native";
 import Dropdown from "@/shared-uis/components/dropdown/Dropdown";
 import DropdownTrigger from "@/shared-uis/components/dropdown/DropdownTrigger";
 import DropdownOptions from "@/shared-uis/components/dropdown/DropdownOptions";
@@ -18,7 +18,7 @@ import DropdownOption from "@/shared-uis/components/dropdown/DropdownOption";
 import DropdownButton from "@/shared-uis/components/dropdown/DropdownButton";
 import { MaterialIcons } from "@expo/vector-icons";
 import { z, ZodError } from "zod";
-import { styles } from "@/styles/Members";
+import { stylesFn } from "@/styles/Members";
 import { useOrganizationContext } from "@/contexts/organization-context.provider";
 import { MemberSchema } from "@/components/schemas/MemberPageSchema";
 import Toaster from "@/shared-uis/components/toaster/Toaster";
@@ -44,6 +44,9 @@ import {
   createUserWithEmailAndPassword,
 } from "firebase/auth";
 import MembersModal from "@/components/modals/Members/MembersModal";
+import { useTheme } from "@react-navigation/native";
+import { View } from "@/components/Themed";
+import Colors from "@/constants/Colors";
 
 const customTheme = {
   ...DefaultTheme,
@@ -58,7 +61,6 @@ const customTheme = {
 };
 
 interface MemberDetails {
-  username: string;
   userId?: string;
   organizationId?: string;
   name: string;
@@ -72,6 +74,8 @@ interface MemberDetails {
 }
 
 const MemberPage: React.FC = () => {
+  const theme = useTheme();
+  const styles = stylesFn(theme);
   const [members, setMembers] = useState<MemberDetails[]>([]);
   const [searchTerm, setSearchTerm] = useState<string>("");
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
@@ -161,7 +165,6 @@ const MemberPage: React.FC = () => {
           write: member.permissions.write,
           admin: member.permissions.admin,
         },
-        username: member.username,
       };
 
       await updateDoc(memberDocRef, memberData);
@@ -185,7 +188,6 @@ const MemberPage: React.FC = () => {
   };
 
   const handleAddUser = async (newMember: {
-    username: string;
     name: string;
     password: string;
     permissions: {
@@ -234,7 +236,6 @@ const MemberPage: React.FC = () => {
             const newUser: IUser = {
               email: newMember.email,
               name: newMember.name,
-              username: newMember.username,
             };
             const docUserRef = await setDoc(
               doc(userColRef, user.user.uid),
@@ -249,30 +250,32 @@ const MemberPage: React.FC = () => {
                 write: newMember.permissions.write,
                 admin: newMember.permissions.admin,
               },
-              username: newMember.username,
             };
 
             const docRef = await setDoc(
               doc(memberColRef, user.user.uid),
               memberData
             );
-          }
-          const userDoc = userSnapshot.docs[0];
-          let memberData: IMembers = {
-            userId: userDoc.id,
-            organizationId: currentOrganization?.id,
-            permissions: {
-              read: newMember.permissions.read,
-              write: newMember.permissions.write,
-              admin: newMember.permissions.admin,
-            },
-            username: newMember.username,
-          };
 
-          const docRef = await setDoc(
-            doc(memberColRef, userDoc.id),
-            memberData
-          );
+            Toaster.success("Member added successfully");
+            return;
+          } else {
+            const userDoc = userSnapshot.docs[0];
+            let memberData: IMembers = {
+              userId: userDoc.id,
+              organizationId: currentOrganization?.id,
+              permissions: {
+                read: newMember.permissions.read,
+                write: newMember.permissions.write,
+                admin: newMember.permissions.admin,
+              },
+            };
+
+            const docRef = await setDoc(
+              doc(memberColRef, userDoc.id),
+              memberData
+            );
+          }
         } catch (e) {
           Toaster.error("Failed to add member");
           console.error(e);
@@ -328,7 +331,6 @@ const MemberPage: React.FC = () => {
   const renderMember = (
     member: {
       name: string;
-      username: string;
       email: string;
       permissions: {
         read: boolean;
@@ -343,12 +345,12 @@ const MemberPage: React.FC = () => {
       <DataTable.Row
         key={index}
         style={{
-          backgroundColor: index % 2 === 0 ? "#f5f5f5" : "white",
+          backgroundColor: index % 2 === 0 ? Colors(theme).aliceBlue : Colors(theme).background,
           zIndex: -10 - index,
         }}
       >
         <DataTable.Cell>{member.name || "No Name"}</DataTable.Cell>
-        <DataTable.Cell>{member.username || member.email}</DataTable.Cell>
+        <DataTable.Cell>{member.email}</DataTable.Cell>
         <DataTable.Cell>
           <View style={styles.chipContainer}>
             {member.permissions.read && <Chip style={styles.chip}>Read</Chip>}
@@ -417,7 +419,12 @@ const MemberPage: React.FC = () => {
 
   return (
     <Provider theme={customTheme}>
-      <Appbar.Header>
+      <Appbar.Header
+        statusBarHeight={0}
+        style={{
+          backgroundColor: Colors(theme).background,
+        }}
+      >
         {!lg && <DrawerToggle />}
         <Appbar.Content title="Members" />
         <Appbar.Action icon="plus" onPress={handleAddMemberClick} />
@@ -434,7 +441,7 @@ const MemberPage: React.FC = () => {
         <DataTable>
           <DataTable.Header>
             <DataTable.Title>Name</DataTable.Title>
-            <DataTable.Title>Username</DataTable.Title>
+            <DataTable.Title>Email</DataTable.Title>
             <DataTable.Title>Permissions</DataTable.Title>
             <DataTable.Title numeric>Actions</DataTable.Title>
           </DataTable.Header>

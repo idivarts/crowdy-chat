@@ -1,19 +1,20 @@
 import React, { useEffect, useState } from "react";
-import { View } from "react-native";
 import {
-  Text,
   TextInput,
   Button,
-  useTheme,
   Card,
   IconButton,
 } from "react-native-paper";
 import Toaster from "@/shared-uis/components/toaster/Toaster";
-import { styles } from "@/styles/OpenAI.styles";
+import { stylesFn } from "@/styles/OpenAI.styles";
 import { useOrganizationContext } from "@/contexts";
+import { useTheme } from "@react-navigation/native";
+import Colors from "@/constants/Colors";
+import { Text, View } from "@/components/Themed";
 
 const OpenAIComponent = () => {
-  const { colors } = useTheme();
+  const theme = useTheme();
+  const styles = stylesFn(theme);
   const [apiKey, setApiKey] = useState("");
   const [isEditing, setIsEditing] = useState(false);
   const [displayKey, setDisplayKey] = useState("");
@@ -80,7 +81,7 @@ const OpenAIComponent = () => {
                 <TextInput.Icon
                   icon={isEditing ? "eye-off" : "eye"}
                   onPress={() => setIsEditing(!isEditing)}
-                  color={colors.primary}
+                  color={Colors(theme).primary}
                 />
               }
             />

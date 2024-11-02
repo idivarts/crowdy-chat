@@ -1,12 +1,13 @@
 import Colors from "@/constants/Colors";
+import { Theme } from "@react-navigation/native";
 import { StyleSheet } from "react-native";
 
-const styles = StyleSheet.create({
+const stylesFn = (theme: Theme) => StyleSheet.create({
   container: {
   },
   profileIconContainer: {
     alignItems: "center",
-    backgroundColor: Colors.regular.primary,
+    backgroundColor: Colors(theme).primary,
     justifyContent: "center",
   },
   profilePopupContainer: {
@@ -18,7 +19,6 @@ const styles = StyleSheet.create({
   popup: {
     width: "80%",
     padding: 20,
-    backgroundColor: "white",
     borderRadius: 10,
     alignItems: "center",
   },
@@ -29,4 +29,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default styles;
+export default stylesFn;

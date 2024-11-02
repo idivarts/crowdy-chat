@@ -1,8 +1,9 @@
+import Colors from "@/constants/Colors";
+import { Theme } from "@react-navigation/native";
 import { StyleSheet, Dimensions } from "react-native";
 
-export const styles = StyleSheet.create({
+export const stylesFn = (theme: Theme) => StyleSheet.create({
   modalContainer: {
-    backgroundColor: "white",
     position: "absolute",
     top: 50,
     left: 10,
@@ -12,7 +13,7 @@ export const styles = StyleSheet.create({
   },
   card: {
     width: "100%",
-    backgroundColor: "white",
+    backgroundColor: Colors(theme).background,
     padding: 10,
   },
   cardContent: {

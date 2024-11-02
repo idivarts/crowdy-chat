@@ -1,19 +1,18 @@
 import { Pressable } from 'react-native';
-import { DrawerActions } from '@react-navigation/native';
+import { DrawerActions, useTheme } from '@react-navigation/native';
 import { useNavigation } from "expo-router";
 import { Ionicons } from '@expo/vector-icons';
 
 import { View } from '@/components/Themed';
-import { useColorScheme } from '@/components/useColorScheme';
 import Colors from '@/constants/Colors';
 
-interface DrawerToggleProps extends React.ComponentProps<typeof Pressable> {}
+interface DrawerToggleProps extends React.ComponentProps<typeof Pressable> { }
 
 const DrawerToggle: React.FC<DrawerToggleProps> = ({
   ...props
 }) => {
+  const theme = useTheme();
   const navigation = useNavigation();
-  const colorScheme = useColorScheme();
 
   return (
     <Pressable
@@ -34,7 +33,7 @@ const DrawerToggle: React.FC<DrawerToggleProps> = ({
           name='menu'
           size={28}
           style={[{
-            color: Colors[colorScheme].tint,
+            color: Colors(theme).tint,
             marginBottom: -2,
           }]}
         />

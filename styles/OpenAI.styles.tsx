@@ -1,18 +1,17 @@
+import { Theme } from "@react-navigation/native";
 import { StyleSheet } from "react-native";
 
-export const styles = StyleSheet.create({
+export const stylesFn = (theme: Theme) => StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
     padding: 20,
-    backgroundColor: "#ffffff",
   },
   card: {
     width: "90%",
     maxWidth: 400,
     elevation: 4,
-    backgroundColor: "#ffffff",
     borderRadius: 12,
   },
   cardTitle: {
@@ -24,7 +23,6 @@ export const styles = StyleSheet.create({
     textAlign: "center",
     marginBottom: 20,
     lineHeight: 24,
-    color: "#333",
   },
   inputContainer: {
     marginBottom: 20,

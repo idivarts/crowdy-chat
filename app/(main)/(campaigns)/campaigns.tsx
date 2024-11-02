@@ -4,7 +4,6 @@ import { router } from "expo-router";
 
 import AppLayout from "@/layouts/app-layout";
 import { View } from "@/components/Themed";
-import styles from "@/styles/campaigns/CampaignsList.styles";
 import { DrawerToggle } from "@/components/ui";
 import { useBreakPoints } from "@/hooks";
 import CampaignsEmptyState from "@/components/campaigns/CampaignsEmptyState";
@@ -14,18 +13,20 @@ import { TextInput } from "react-native-paper";
 import { useCampaignContext } from "@/contexts/campaign-context.provider";
 import { Campaign } from "@/types/campaign";
 import { useOrganizationContext } from "@/contexts";
+import { FlatList, Platform } from "react-native";
+import { useTheme } from "@react-navigation/native";
+import stylesFn from "@/styles/campaigns/CampaignsList.styles";
+import Colors from "@/constants/Colors";
 
 const Campaigns = () => {
+  const theme = useTheme();
+  const styles = stylesFn(theme);
   const [searchQuery, setSearchQuery] = useState("");
   const [filteredCampaigns, setFilteredCampaigns] = useState<Campaign[]>([]);
   const { lg } = useBreakPoints();
 
-  const {
-    campaigns,
-  } = useCampaignContext();
-  const {
-    currentOrganization,
-  } = useOrganizationContext();
+  const { campaigns } = useCampaignContext();
+  const { currentOrganization } = useOrganizationContext();
 
   const handleSearch = (query: string) => {
     setSearchQuery(query);
@@ -62,10 +63,18 @@ const Campaigns = () => {
 
   return (
     <AppLayout>
-      <Appbar.Header>
+      <Appbar.Header
+        statusBarHeight={0}
+        style={{
+          backgroundColor: Colors(theme).background,
+        }}
+      >
         {!lg && <DrawerToggle />}
         <Appbar.Content title="Campaigns" />
-        <Appbar.Action icon="plus" onPress={() => router.push("/campaigns/create")} />
+        <Appbar.Action
+          icon="plus"
+          onPress={() => router.push("/campaigns/create")}
+        />
       </Appbar.Header>
       <View style={styles.container}>
         <TextInput
@@ -74,11 +83,31 @@ const Campaigns = () => {
           onChangeText={handleSearch}
           value={searchQuery}
         />
-        <View style={styles.campaignsSection}>
-          {filteredCampaigns.length > 0
-            ? <CampaignsFilledState campaigns={filteredCampaigns} />
-            : <CampaignsEmptyState />}
-        </View>
+        {Platform.OS === "web" && (
+          <View style={styles.campaignsSection}>
+            {filteredCampaigns.length > 0 ? (
+              <CampaignsFilledState campaigns={filteredCampaigns} />
+            ) : (
+              <CampaignsEmptyState />
+            )}
+          </View>
+        )}
+        {Platform.OS !== "web" && (
+          <View style={styles.campaignsSection}>
+            {filteredCampaigns.length > 0 ? (
+              // ? <CampaignsFilledState campaigns={filteredCampaigns} />
+              <FlatList
+                data={filteredCampaigns}
+                renderItem={({ item }) => (
+                  <CampaignsFilledState campaigns={filteredCampaigns} />
+                )}
+                keyExtractor={(item) => item.id}
+              />
+            ) : (
+              <CampaignsEmptyState />
+            )}
+          </View>
+        )}
       </View>
     </AppLayout>
   );

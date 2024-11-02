@@ -17,8 +17,6 @@ const FacebookLoginButton: React.FC<FacebookLoginButtonProps> = ({
   onFacebookLogin,
 }) => {
   const responseFacebook = (response: any) => {
-    console.log("Success ", JSON.stringify(response));
-
     if (response.accessToken) {
       HttpService.login({
         accessToken: response.accessToken,
@@ -29,14 +27,11 @@ const FacebookLoginButton: React.FC<FacebookLoginButtonProps> = ({
         .then((r) => {
           Toaster.success("Successfully Logged in");
           onFacebookLogin(response.id);
-          console.log(r);
         })
         .catch((e) => {
           Toaster.error("Something went wrong");
-          console.log(e);
         });
     } else {
-      console.log(response);
       Toaster.error("Something went wrong");
       onFacebookLogin(null);
       // Handle login error
@@ -66,12 +61,12 @@ const FacebookLoginButton: React.FC<FacebookLoginButtonProps> = ({
         onFacebookLogin(null);
       }}
 
-      //   containerStyle={{
-      //     height: "100px",
-      //     width: "100%",
-      //     borderWidth: 0,
-      //     backgroundColor: "#1976D2",
-      //   }}
+    //   containerStyle={{
+    //     height: "100px",
+    //     width: "100%",
+    //     borderWidth: 0,
+    //     backgroundColor: "#1976D2",
+    //   }}
     />
   );
 };

@@ -2,7 +2,6 @@ import ConnectedPage from "@/components/sources/ConnectedPage";
 import { DrawerToggle } from "@/components/ui";
 import { useBreakPoints } from "@/hooks";
 import React, { useEffect, useState } from "react";
-import { View, Text } from "react-native";
 import {
   Appbar,
   Modal,
@@ -10,15 +9,19 @@ import {
   Button,
   TextInput,
   ActivityIndicator,
-  IconButton,
 } from "react-native-paper";
-import { styles } from "@/styles/sources/Sources.styles";
+import { stylesFn } from "@/styles/sources/Sources.styles";
 import { HttpService } from "@/services/httpService";
 import Toaster from "@/shared-uis/components/toaster/Toaster";
 import { PageUnit } from "@/interfaces/SourcePageInterfaces";
 import FacebookLoginButton from "@/components/sources/ConnectWithFacebook";
+import { useTheme } from "@react-navigation/native";
+import { Text, View } from "@/components/Themed";
+import Colors from "@/constants/Colors";
 
 const Sources = () => {
+  const theme = useTheme();
+  const styles = stylesFn(theme);
   const { lg } = useBreakPoints();
   const [modalVisible, setModalVisible] = useState(false);
   const [emailModalVisible, setEmailModalVisible] = useState(false);
@@ -61,15 +64,17 @@ const Sources = () => {
   };
 
   const handleEmailSubmit = () => {
-    console.log(`SendGrid API Key: ${sendGridApiKey}`);
-    console.log(`SendGrid Domain: ${sendGridDomain}`);
-    console.log(`Email Username: ${emailUsername}`);
     setEmailModalVisible(false);
   };
 
   return (
     <View style={styles.container}>
-      <Appbar.Header>
+      <Appbar.Header
+        statusBarHeight={0}
+        style={{
+          backgroundColor: Colors(theme).background,
+        }}
+      >
         {!lg && <DrawerToggle />}
         <Appbar.Content title="Sources" />
         <Appbar.Action icon="plus" onPress={handleAddSource} />
@@ -81,6 +86,7 @@ const Sources = () => {
         <View
           style={{
             alignItems: "center",
+            width: "100%",
           }}
         >
           {loading && <ActivityIndicator animating={true} color="#000" />}

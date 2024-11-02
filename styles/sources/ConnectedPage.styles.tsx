@@ -1,6 +1,7 @@
+import { Theme } from "@react-navigation/native";
 import { StyleSheet } from "react-native";
 
-export const styles = StyleSheet.create({
+export const stylesFn = (theme: Theme) => StyleSheet.create({
   card: {
     marginVertical: 10,
     marginHorizontal: 15,
@@ -8,8 +9,7 @@ export const styles = StyleSheet.create({
     borderRadius: 8,
     elevation: 2,
     borderWidth: 0.5,
-    width: "80%",
-    backgroundColor: "#fff",
+    width: "100%",
     borderColor: "#ddd",
   },
   row: {

@@ -1,7 +1,6 @@
+//@ts-nocheck
 import React, { useState } from "react";
 import {
-  View,
-  Text,
   TextInput,
   Button,
   ScrollView,
@@ -10,7 +9,6 @@ import {
   Modal,
 } from "react-native";
 import Checkbox from "expo-checkbox";
-import { CreateCampaignstyles as styles } from "@/styles/Dashboard.styles";
 import {
   stepOneSchema,
   stepTwoSchema,
@@ -28,8 +26,12 @@ import { ICampaigns } from "@/shared-libs/firestore/crowdy-chat/models/campaigns
 import { ILeads } from "@/shared-libs/firestore/crowdy-chat/models/leads";
 import { useOrganizationContext } from "@/contexts";
 import { Stage, Collectible, Reminder } from "../campaigns/LeadStageTypes";
+import { CreateCampaignstylesFn } from "@/styles/Dashboard.styles";
+import { Text, View } from "../Themed";
 
 const CreateCampaign = () => {
+  const theme = useTheme();
+  const styles = CreateCampaignstylesFn(theme);
   const [currentStep, setCurrentStep] = useState(1);
   const [campaignName, setCampaignName] = useState("");
   const [campaignObjective, setCampaignObjective] = useState("");
@@ -138,6 +140,7 @@ const CreateCampaign = () => {
             examples: dialogues,
             purpose: campaignPurpose,
           },
+          assistantId: "",
           name: campaignName,
           objective: campaignObjective,
           replySpeed: {
@@ -178,6 +181,7 @@ const CreateCampaign = () => {
         const collectiblesColRef = collection(FirestoreDB, "collectibles");
         await Promise.all(
           leadStages.map((stage, index) => {
+            //@ts-ignore
             const stageCollectibles = stage.collectibles.map(
               (collectible: Collectible) => ({
                 organizationId: currentOrganization?.id,

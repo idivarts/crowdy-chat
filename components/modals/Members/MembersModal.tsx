@@ -1,7 +1,8 @@
 import React from "react";
-import { View, StyleSheet } from "react-native";
-import { Button, Chip, Modal, Portal, TextInput } from "react-native-paper";
-import { styles } from "@/styles/Members";
+import { Button, Chip, Modal, TextInput } from "react-native-paper";
+import { stylesFn } from "@/styles/Members";
+import { useTheme } from "@react-navigation/native";
+import { View } from "@/components/Themed";
 
 interface MembersModalProps {
   visible: boolean;
@@ -21,6 +22,8 @@ const MembersModal: React.FC<MembersModalProps> = ({
   editingIndex,
   updateMember,
 }) => {
+  const theme = useTheme();
+  const styles = stylesFn(theme);
   const [newMember, setNewMember] = React.useState({
     username: "",
     name: "",

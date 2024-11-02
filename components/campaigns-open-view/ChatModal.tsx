@@ -2,8 +2,7 @@ import React, { useState, useEffect } from 'react';
 import ChatWindow from './ChatWindow';
 import { IConversationUnit } from '@/types/CampaignsBoard';
 import { Modal, Portal } from 'react-native-paper';
-import { View } from 'react-native';
-import Colors from '@/constants/Colors';
+import { View } from '../Themed';
 
 interface IProps {
   igsid: string,

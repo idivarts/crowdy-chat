@@ -21,8 +21,8 @@ const SIDE_BAR_MENU = [
     label: "OpenAI",
   },
   {
-    href: '/members',
-    label: 'Members',
+    href: "/members",
+    label: "Members",
   },
 ];
 
@@ -32,8 +32,8 @@ const SIDE_BAR_MENU_BOTTOM = [
     label: "Create New Organization",
   },
   {
-    href: '/organization-profile',
-    label: 'Organization Profile',
+    href: "/organization-profile",
+    label: "Organization Profile",
   },
 ];
 
@@ -44,7 +44,12 @@ const SideBarMenu: React.FC = () => {
         flex: 1,
       }}
     >
-      <DrawerContentScrollView>
+      <DrawerContentScrollView
+        style={{
+          flex: 1,
+          marginTop: -60,
+        }}
+      >
         <View
           style={{
             flex: 1,

@@ -5,11 +5,12 @@ import Header from "@/layouts/header";
 import { View } from "@/components/Themed";
 import { useAuthContext } from "@/contexts";
 import { useEffect } from "react";
+import AppLayout from "@/layouts/app-layout";
 
 const DrawerLayout = () => {
   const { lg } = useBreakPoints();
   return (
-    <>
+    <AppLayout>
       <Header />
       <View
         style={{
@@ -26,7 +27,7 @@ const DrawerLayout = () => {
         >
           <Drawer.Screen
             key="campaigns"
-            name="(campaigns)/campaigns"
+            name="(campaigns)"
             options={{
               headerShown: false,
               title: "Campaigns",
@@ -34,39 +35,39 @@ const DrawerLayout = () => {
           />
           <Drawer.Screen
             key="sources"
-            name="(sources)/sources"
+            name="(sources)"
             options={{
-              headerShown: true,
+              headerShown: false,
               title: "Sources",
             }}
           />
           <Drawer.Screen
             key="leads"
-            name="(leads)/leads"
+            name="(leads)"
             options={{
-              headerShown: true,
+              headerShown: false,
               title: "Leads",
             }}
           />
           <Drawer.Screen
             key="open-ai"
-            name="(openAI)/open-ai"
+            name="(openAI)"
             options={{
-              headerShown: true,
+              headerShown: false,
               title: "OpenAI",
             }}
           />
           <Drawer.Screen
             key="organization-profile"
-            name="(organization)/organization-profile"
+            name="(organization)"
             options={{
-              headerShown: true,
+              headerShown: false,
               title: "Organization Profile",
             }}
           />
         </Drawer>
       </View>
-    </>
+    </AppLayout>
   );
 };
 

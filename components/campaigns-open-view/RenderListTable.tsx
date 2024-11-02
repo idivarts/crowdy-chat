@@ -1,11 +1,15 @@
 import React, { useState } from "react";
-import { ScrollView, View } from "react-native";
-import { DataTable, Text, Menu, Button, IconButton } from "react-native-paper";
+import { Platform, ScrollView } from "react-native";
+import { DataTable, Menu, Button, IconButton } from "react-native-paper";
 import TimeAgo from "timeago-react";
 import { Ionicons } from "@expo/vector-icons";
-import { styles } from "@/styles/campaigns/campaign-open-view/ListView.styles";
+import { stylesFn } from "@/styles/campaigns/campaign-open-view/ListView.styles";
 import { IConversationUnit } from "@/types/CampaignsBoard";
 import Colors from "@/constants/Colors";
+import { formatDistanceToNow } from "date-fns";
+import { useTheme } from "@react-navigation/native";
+import { Text, View } from "../Themed";
+
 type ChatBoard = {
   id: number;
   title: string;
@@ -22,6 +26,8 @@ const RenderTable = ({
   columns: ChatBoard;
   handlePhaseChange: (id: string, phase: number) => void;
 }) => {
+  const theme = useTheme();
+  const styles = stylesFn(theme);
   const [visibleMenu, setVisibleMenu] = useState<string | null>(null);
   const [sortColumn, setSortColumn] = useState<string | null>(null);
   const [sortOrder, setSortOrder] = useState<"asc" | "desc" | null>(null);
@@ -50,7 +56,7 @@ const RenderTable = ({
           <Ionicons
             name={sortOrder === "asc" ? "caret-up" : "caret-down"}
             size={16}
-            color={Colors.regular.primary}
+            color={Colors(theme).primary}
             style={styles.sortIcon}
           />
         )}
@@ -111,115 +117,230 @@ const RenderTable = ({
   return (
     <View style={styles.tableContainer}>
       {title && <Text style={styles.groupTitle}>{title}</Text>}
-      <ScrollView
-        horizontal
-        contentContainerStyle={{
-          width: "100%",
-        }}
-      >
-        <DataTable>
-          <DataTable.Header>
-            {renderHeader("User", "user")}
-            {renderHeader("Phase", "phase")}
-            {renderHeader("Last Message", "lastMessage")}
-            {renderHeader("Bot Count", "botCount")}
-            {renderHeader("Source", "source")}
-            {renderHeader("Notes", "notes")}
-          </DataTable.Header>
+      {Platform.OS === "web" ? (
+        <ScrollView
+          horizontal
+          contentContainerStyle={{
+            width: "100%",
+          }}
+        >
+          <DataTable>
+            <DataTable.Header>
+              {renderHeader("User", "user")}
+              {renderHeader("Phase", "phase")}
+              {renderHeader("Last Message", "lastMessage")}
+              {renderHeader("Bot Count", "botCount")}
+              {renderHeader("Source", "source")}
+              {renderHeader("Notes", "notes")}
+            </DataTable.Header>
 
-          {sortConversations(conversations).map((conversation, index) => (
-            <DataTable.Row key={index} style={styles.row}>
+            {sortConversations(conversations).map((conversation, index) => (
+              <DataTable.Row key={index} style={styles.row}>
+                <DataTable.Cell style={styles.cell}>
+                  <View
+                    style={{
+                      flexDirection: "row",
+                      alignItems: "center",
+                      width: "100%",
+                      justifyContent: "space-between",
+                    }}
+                  >
+                    <View style={styles.userInfo}>
+                      <Text style={styles.userName}>
+                        {conversation.user.name}
+                      </Text>
+                      <Text style={styles.userHandle}>
+                        @{conversation.user.userName}
+                      </Text>
+                    </View>
+                    <IconButton
+                      icon="comment-plus"
+                      iconColor="#e1e1e1"
+                      size={20}
+                      onPress={() => { }}
+                    />
+                  </View>
+                </DataTable.Cell>
+                <DataTable.Cell style={styles.cell}>
+                  <Menu
+                    visible={visibleMenu === conversation.igsid}
+                    onDismiss={closeMenu}
+                    style={{
+                      backgroundColor: "#fff",
+                    }}
+                    anchor={
+                      <Button onPress={() => openMenu(conversation.igsid)}>
+                        {columns.find(
+                          (col) => col.id === conversation.currentPhase
+                        )?.title || "Select"}
+                      </Button>
+                    }
+                  >
+                    {columns.map((col) => (
+                      <Menu.Item
+                        key={col.id}
+                        onPress={() => {
+                          handlePhaseChange(conversation.igsid, col.id);
+                          closeMenu();
+                        }}
+                        title={col.title}
+                      />
+                    ))}
+                  </Menu>
+                </DataTable.Cell>
+                <DataTable.Cell style={styles.cell}>
+                  {conversation.lastBotMessageTime <= 0 ? (
+                    <Text>No messages</Text>
+                  ) : (
+                    <Text>
+                      {formatDistanceToNow(
+                        new Date(conversation.lastBotMessageTime)
+                      )}
+                    </Text>
+                  )}
+                </DataTable.Cell>
+                <DataTable.Cell style={styles.cell}>
+                  <Text>{conversation.botMessageCount}</Text>
+                </DataTable.Cell>
+                <DataTable.Cell style={styles.cell}>
+                  <Text>
+                    {conversation.page.isInstagram ? "Instagram" : "Other"}
+                  </Text>
+                </DataTable.Cell>
+                <DataTable.Cell style={styles.cell}>
+                  <Text>Notes...</Text>
+                </DataTable.Cell>
+              </DataTable.Row>
+            ))}
+            <DataTable.Row>
               <DataTable.Cell style={styles.cell}>
                 <View
                   style={{
                     flexDirection: "row",
                     alignItems: "center",
-                    width: "100%",
-                    justifyContent: "space-between",
+                    justifyContent: "center",
                   }}
                 >
-                  <View style={styles.userInfo}>
-                    <Text style={styles.userName}>
-                      {conversation.user.name}
-                    </Text>
-                    <Text style={styles.userHandle}>
-                      @{conversation.user.userName}
-                    </Text>
-                  </View>
-                  <IconButton
-                    icon="comment-plus"
-                    iconColor="#e1e1e1"
-                    size={20}
-                    onPress={() => {}}
-                  />
+                  <IconButton icon="plus" onPress={() => { }} />
+                  <Text>Add New</Text>
                 </View>
               </DataTable.Cell>
-              <DataTable.Cell style={styles.cell}>
-                <Menu
-                  visible={visibleMenu === conversation.igsid}
-                  onDismiss={closeMenu}
-                  style={{
-                    backgroundColor: "#fff",
-                  }}
-                  anchor={
-                    <Button onPress={() => openMenu(conversation.igsid)}>
-                      {columns.find(
-                        (col) => col.id === conversation.currentPhase
-                      )?.title || "Select"}
-                    </Button>
-                  }
-                >
-                  {columns.map((col) => (
-                    <Menu.Item
-                      key={col.id}
-                      onPress={() => {
-                        handlePhaseChange(conversation.igsid, col.id);
-                        closeMenu();
-                      }}
-                      title={col.title}
+            </DataTable.Row>
+          </DataTable>
+        </ScrollView>
+      ) : (
+        <ScrollView
+          horizontal
+          contentContainerStyle={{}}
+          style={{
+            width: "100%",
+          }}
+        >
+          <DataTable>
+            <DataTable.Header>
+              {renderHeader("User", "user")}
+              {renderHeader("Phase", "phase")}
+              {renderHeader("Last Message", "lastMessage")}
+              {renderHeader("Bot Count", "botCount")}
+              {renderHeader("Source", "source")}
+              {renderHeader("Notes", "notes")}
+            </DataTable.Header>
+
+            {sortConversations(conversations).map((conversation, index) => (
+              <DataTable.Row key={index} style={styles.row}>
+                <DataTable.Cell style={styles.cell}>
+                  <View
+                    style={{
+                      flexDirection: "row",
+                      alignItems: "center",
+                      width: "100%",
+                      justifyContent: "space-between",
+                    }}
+                  >
+                    <View style={styles.userInfo}>
+                      <Text style={styles.userName}>
+                        {conversation.user.name}
+                      </Text>
+                      <Text style={styles.userHandle}>
+                        @{conversation.user.userName}
+                      </Text>
+                    </View>
+                    <IconButton
+                      icon="comment-plus"
+                      iconColor="#e1e1e1"
+                      size={20}
+                      onPress={() => { }}
                     />
-                  ))}
-                </Menu>
-              </DataTable.Cell>
+                  </View>
+                </DataTable.Cell>
+                <DataTable.Cell style={styles.cell}>
+                  <Menu
+                    visible={visibleMenu === conversation.igsid}
+                    onDismiss={closeMenu}
+                    style={{
+                      backgroundColor: "#fff",
+                    }}
+                    anchor={
+                      <Button onPress={() => openMenu(conversation.igsid)}>
+                        {columns.find(
+                          (col) => col.id === conversation.currentPhase
+                        )?.title || "Select"}
+                      </Button>
+                    }
+                  >
+                    {columns.map((col) => (
+                      <Menu.Item
+                        key={col.id}
+                        onPress={() => {
+                          handlePhaseChange(conversation.igsid, col.id);
+                          closeMenu();
+                        }}
+                        title={col.title}
+                      />
+                    ))}
+                  </Menu>
+                </DataTable.Cell>
+                <DataTable.Cell style={styles.cell}>
+                  {conversation.lastBotMessageTime <= 0 ? (
+                    <Text>No messages</Text>
+                  ) : (
+                    <Text>
+                      {formatDistanceToNow(
+                        new Date(conversation.lastBotMessageTime)
+                      )}
+                    </Text>
+                  )}
+                </DataTable.Cell>
+                <DataTable.Cell style={styles.cell}>
+                  <Text>{conversation.botMessageCount}</Text>
+                </DataTable.Cell>
+                <DataTable.Cell style={styles.cell}>
+                  <Text>
+                    {conversation.page.isInstagram ? "Instagram" : "Other"}
+                  </Text>
+                </DataTable.Cell>
+                <DataTable.Cell style={styles.cell}>
+                  <Text>Notes...</Text>
+                </DataTable.Cell>
+              </DataTable.Row>
+            ))}
+            <DataTable.Row>
               <DataTable.Cell style={styles.cell}>
-                {conversation.lastBotMessageTime <= 0 ? (
-                  <Text>No messages</Text>
-                ) : (
-                  <TimeAgo
-                    datetime={conversation.lastBotMessageTime}
-                    style={styles.timeAgo}
-                  />
-                )}
-              </DataTable.Cell>
-              <DataTable.Cell style={styles.cell}>
-                <Text>{conversation.botMessageCount}</Text>
-              </DataTable.Cell>
-              <DataTable.Cell style={styles.cell}>
-                <Text>
-                  {conversation.page.isInstagram ? "Instagram" : "Other"}
-                </Text>
-              </DataTable.Cell>
-              <DataTable.Cell style={styles.cell}>
-                <Text>Notes...</Text>
+                <View
+                  style={{
+                    flexDirection: "row",
+                    alignItems: "center",
+                    justifyContent: "center",
+                  }}
+                >
+                  <IconButton icon="plus" onPress={() => { }} />
+                  <Text>Add New</Text>
+                </View>
               </DataTable.Cell>
             </DataTable.Row>
-          ))}
-          <DataTable.Row>
-            <DataTable.Cell style={styles.cell}>
-              <View
-                style={{
-                  flexDirection: "row",
-                  alignItems: "center",
-                  justifyContent: "center",
-                }}
-              >
-                <IconButton icon="plus" onPress={() => {}} />
-                <Text>Add New</Text>
-              </View>
-            </DataTable.Cell>
-          </DataTable.Row>
-        </DataTable>
-      </ScrollView>
+          </DataTable>
+        </ScrollView>
+      )}
     </View>
   );
 };

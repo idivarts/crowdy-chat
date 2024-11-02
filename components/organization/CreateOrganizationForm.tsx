@@ -1,13 +1,14 @@
 import AppLayout from "@/layouts/app-layout";
 import { View } from "@/components/Themed";
 import { ScrollView } from "react-native";
-import styles from "@/styles/organization/CreateOrganizationForm.styles";
 import ImagePicker from "@/shared-uis/components/image-picker/ImagePicker";
 import InputField from "@/components/ui/input/InputField";
 import { useBreakPoints } from "@/hooks";
 import Button from "../ui/button/Button";
 import { useState } from "react";
 import Toaster from "@/shared-uis/components/toaster/Toaster";
+import { useTheme } from "@react-navigation/native";
+import stylesFn from "@/styles/organization/CreateOrganizationForm.styles";
 
 export interface OrganizationForm {
   name: string;
@@ -24,14 +25,17 @@ interface CreateOrganizationFormProps {
 const CreateOrganizationForm: React.FC<CreateOrganizationFormProps> = ({
   onSubmit,
 }) => {
+  const theme = useTheme();
+  const styles = stylesFn(theme);
   const { lg } = useBreakPoints();
-  const [image, setImage] = useState<string>('');
-  const [organizationFormData, setOrganizationFormData] = useState<OrganizationForm>({
-    name: '',
-    description: '',
-    industry: '',
-    website: '',
-  });
+  const [image, setImage] = useState<string>("");
+  const [organizationFormData, setOrganizationFormData] =
+    useState<OrganizationForm>({
+      name: "",
+      description: "",
+      industry: "",
+      website: "",
+    });
 
   const handleChange = (key: keyof OrganizationForm, value: string) => {
     setOrganizationFormData({
@@ -43,11 +47,11 @@ const CreateOrganizationForm: React.FC<CreateOrganizationFormProps> = ({
 
   const onUploadImage = (imageUrl: string) => {
     setImage(imageUrl);
-  }
+  };
 
   const handleSubmit = () => {
     if (!organizationFormData.name) {
-      Toaster.error('Name is required');
+      Toaster.error("Name is required");
       return;
     }
     onSubmit(organizationFormData);
@@ -60,23 +64,23 @@ const CreateOrganizationForm: React.FC<CreateOrganizationFormProps> = ({
           styles.scrollViewContent,
           {
             paddingTop: lg ? 40 : 0,
-          }
+          },
         ]}
       >
         <View
           style={[
             styles.container,
             {
-              maxWidth: lg ? 1000 : '100%',
-            }
+              maxWidth: lg ? 1000 : "100%",
+            },
           ]}
         >
           <View
             style={[
               styles.row,
               {
-                flexDirection: lg ? 'row' : 'column',
-                alignItems: lg ? 'center' : 'stretch',
+                flexDirection: lg ? "row" : "column",
+                alignItems: lg ? "center" : "stretch",
               },
             ]}
           >
@@ -87,14 +91,12 @@ const CreateOrganizationForm: React.FC<CreateOrganizationFormProps> = ({
                 setImage={setImage}
               />
             </View>
-            <View style={styles.flex}>
-              <InputField
-                label="Name"
-                placeholder="Enter organization name"
-                value={organizationFormData.name}
-                onChangeText={(value) => handleChange('name', value)}
-              />
-            </View>
+            <InputField
+              label="Name"
+              placeholder="Enter organization name"
+              value={organizationFormData.name}
+              onChangeText={(value) => handleChange("name", value)}
+            />
           </View>
 
           <InputField
@@ -103,27 +105,24 @@ const CreateOrganizationForm: React.FC<CreateOrganizationFormProps> = ({
             multiline
             numberOfLines={4}
             value={organizationFormData.description}
-            onChangeText={(value) => handleChange('description', value)}
+            onChangeText={(value) => handleChange("description", value)}
           />
 
           <InputField
             label="Industry"
             placeholder="Enter industry"
             value={organizationFormData.industry}
-            onChangeText={(value) => handleChange('industry', value)}
+            onChangeText={(value) => handleChange("industry", value)}
           />
 
           <InputField
             label="Website"
             placeholder="Enter website URL"
             value={organizationFormData.website}
-            onChangeText={(value) => handleChange('website', value)}
+            onChangeText={(value) => handleChange("website", value)}
           />
 
-          <Button
-            mode="contained"
-            onPress={handleSubmit}
-          >
+          <Button mode="contained" onPress={handleSubmit}>
             Submit
           </Button>
         </View>
