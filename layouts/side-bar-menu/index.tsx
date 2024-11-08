@@ -2,6 +2,7 @@ import { DrawerContentScrollView } from "@react-navigation/drawer";
 
 import { View } from "../../components/Themed";
 import SideBarMenuItem from "./SideBarMenuItem";
+import { Platform } from "react-native";
 
 const SIDE_BAR_MENU = [
   {
@@ -47,7 +48,7 @@ const SideBarMenu: React.FC = () => {
       <DrawerContentScrollView
         style={{
           flex: 1,
-          marginTop: -60,
+          marginTop: Platform.OS === 'web' ? 0 : -60,
         }}
       >
         <View
