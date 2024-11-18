@@ -1,42 +1,50 @@
-import React, { useEffect, useState } from 'react';
-import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
-import { ConversationService } from '@/services';
-import { UpdateConversationSubject } from '@/subjects/conversation.update.subject';
-import ConversationCard from './ConversationCard';
-import { CAMPAIGNS_BOARD_COLUMNS } from '@/constants/CampaignsBoard';
-import { CampaignsBoardColumn, IConversationUnit } from '@/types/CampaignsBoard';
-import Colors from '@/constants/Colors';
-import Button from '../ui/button/Button';
-import { IconButton } from 'react-native-paper';
-import ChatModal from './ChatModal';
-import { ActivityIndicator } from 'react-native';
-import { useLocalSearchParams } from 'expo-router';
-import { useTheme } from '@react-navigation/native';
-import { View } from '../Themed';
+import React, { useEffect, useState } from "react";
+import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
+import { ConversationService } from "@/services";
+import { UpdateConversationSubject } from "@/subjects/conversation.update.subject";
+import ConversationCard from "./ConversationCard";
+import { CAMPAIGNS_BOARD_COLUMNS } from "@/constants/CampaignsBoard";
+import {
+  CampaignsBoardColumn,
+  IConversationUnit,
+} from "@/types/CampaignsBoard";
+import Colors from "@/constants/Colors";
+import Button from "../ui/button/Button";
+import { IconButton } from "react-native-paper";
+import ChatModal from "./ChatModal";
+import { ActivityIndicator } from "react-native";
+import { useLocalSearchParams } from "expo-router";
+import { useTheme } from "@react-navigation/native";
+import { View } from "../Themed";
 
-const CampaignsBoardWeb: React.FC = () => {
+interface CampaignsBoardWebProps {
+  getAllConversations: () => any;
+  conversations: IConversationUnit[];
+}
+
+const CampaignsBoardWeb: React.FC<CampaignsBoardWebProps> = (
+  props: CampaignsBoardWebProps
+) => {
   const theme = useTheme();
-  const [allConversation, setAllConversation] = useState<IConversationUnit[]>([]);
-  const [currentConversation, setCurrentConversation] = useState<IConversationUnit | undefined>(undefined);
+  const [allConversation, setAllConversation] = useState<IConversationUnit[]>(
+    []
+  );
+  const [currentConversation, setCurrentConversation] = useState<
+    IConversationUnit | undefined
+  >(undefined);
   const [columns, setColumns] = useState<CampaignsBoardColumn>([]);
 
   const { pageId } = useLocalSearchParams();
 
   const PhaseMap: Record<number, number> = {
-    0: 0, 1: 0, 2: 2, 3: 3, 4: 4, 5: 5, 6: 6, 7: 1,
-  };
-
-  const getAllConversations = async () => {
-    try {
-      const res = await ConversationService.getConversations({
-        pageId: pageId as string,
-      });
-      setAllConversation(res);
-
-      handleColumnsChange(res);
-    } catch (e) {
-      console.error(e);
-    }
+    0: 0,
+    1: 0,
+    2: 2,
+    3: 3,
+    4: 4,
+    5: 5,
+    6: 6,
+    7: 1,
   };
 
   const changePhase = (igsid: string, newPhase: number) => {
@@ -62,7 +70,7 @@ const CampaignsBoardWeb: React.FC = () => {
   };
 
   const handleColumnsChange = (conversations: IConversationUnit[]) => {
-    const cols: CampaignsBoardColumn = CAMPAIGNS_BOARD_COLUMNS.map(col => ({
+    const cols: CampaignsBoardColumn = CAMPAIGNS_BOARD_COLUMNS.map((col) => ({
       ...col,
       tasks: [],
     }));
@@ -74,22 +82,34 @@ const CampaignsBoardWeb: React.FC = () => {
     }
 
     setColumns(cols);
-  }
+  };
 
   useEffect(() => {
     const subscription = UpdateConversationSubject.subscribe(() => {
-      getAllConversations();
+      const x = props.getAllConversations();
+      x.then((res: any) => {
+        setAllConversation(res);
+        handleColumnsChange(res);
+      });
     });
     return () => subscription.unsubscribe();
   }, []);
 
   useEffect(() => {
-    getAllConversations();
+    props.getAllConversations().then((res: any) => {
+      setAllConversation(res);
+      handleColumnsChange(res);
+    });
   }, [pageId]);
+
+  useEffect(() => {
+    setAllConversation(props.conversations);
+    handleColumnsChange(props.conversations);
+  }, [props.conversations]);
 
   const handleCurrentConversation = (conversation: IConversationUnit) => {
     setCurrentConversation(conversation);
-  }
+  };
 
   if (allConversation.length === 0) {
     return (
@@ -106,17 +126,15 @@ const CampaignsBoardWeb: React.FC = () => {
 
   return (
     <>
-      {
-        currentConversation && (
-          <ChatModal
-            igsid={currentConversation?.igsid || ''}
-            onCloseModal={() => {
-              setCurrentConversation(undefined);
-            }}
-            conversation={currentConversation}
-          />
-        )
-      }
+      {currentConversation && (
+        <ChatModal
+          igsid={currentConversation?.igsid || ""}
+          onCloseModal={() => {
+            setCurrentConversation(undefined);
+          }}
+          conversation={currentConversation}
+        />
+      )}
       <DragDropContext
         onDragEnd={(result) => {
           if (!result.destination) return;
@@ -127,12 +145,12 @@ const CampaignsBoardWeb: React.FC = () => {
       >
         <div
           style={{
-            fontFamily: 'Arial, sans-serif',
-            display: 'flex',
-            overflowX: 'auto',
-            padding: '20px',
+            fontFamily: "Arial, sans-serif",
+            display: "flex",
+            overflowX: "auto",
+            padding: "20px",
             backgroundColor: Colors(theme).primary,
-            height: '100vh',
+            height: "100vh",
           }}
         >
           {columns.map((column) => (
@@ -141,43 +159,47 @@ const CampaignsBoardWeb: React.FC = () => {
                 <div
                   style={{
                     backgroundColor: Colors(theme).aliceBlue,
-                    borderRadius: '3px',
-                    width: '272px',
-                    padding: '8px',
-                    marginRight: '8px',
-                    display: 'flex',
-                    flexDirection: 'column',
+                    borderRadius: "3px",
+                    width: "272px",
+                    padding: "8px",
+                    marginRight: "8px",
+                    display: "flex",
+                    flexDirection: "column",
                   }}
                   {...provided.droppableProps}
                   ref={provided.innerRef}
                 >
                   <div
                     style={{
-                      display: 'flex',
-                      fontSize: '14px',
-                      fontWeight: 'bold',
-                      paddingLeft: '12px',
-                      alignItems: 'center',
+                      display: "flex",
+                      fontSize: "14px",
+                      fontWeight: "bold",
+                      paddingLeft: "12px",
+                      alignItems: "center",
                     }}
                   >
                     <span>{column.title}</span>
                     <span style={{ flex: 1 }} />
-                    <IconButton
+                    {/* <IconButton
                       style={{
                         zIndex: 1,
                       }}
                       icon="refresh"
                       onPress={getAllConversations}
-                    />
+                    /> */}
                   </div>
                   <div
                     style={{
                       flexGrow: 1,
-                      overflowY: 'auto',
+                      overflowY: "auto",
                     }}
                   >
                     {column.tasks.map((task, index) => (
-                      <Draggable key={task.igsid} draggableId={task.igsid} index={index}>
+                      <Draggable
+                        key={task.igsid}
+                        draggableId={task.igsid}
+                        index={index}
+                      >
                         {(provided) => (
                           <div
                             ref={provided.innerRef}
@@ -186,7 +208,9 @@ const CampaignsBoardWeb: React.FC = () => {
                           >
                             <ConversationCard
                               task={task}
-                              handleCurrentConversation={handleCurrentConversation}
+                              handleCurrentConversation={
+                                handleCurrentConversation
+                              }
                             />
                           </div>
                         )}
@@ -194,14 +218,14 @@ const CampaignsBoardWeb: React.FC = () => {
                     ))}
                     {provided.placeholder}
                   </div>
-                  <Button
+                  {/* <Button
                     mode="contained"
                     onPress={() => {
                       console.log('Add a card');
                     }}
                   >
                     + Add a card
-                  </Button>
+                  </Button> */}
                 </div>
               )}
             </Droppable>

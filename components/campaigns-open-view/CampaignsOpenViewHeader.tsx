@@ -1,6 +1,6 @@
 import { TabView } from "./CampaignOpenView";
 import React from "react";
-import { Appbar, Button, TextInput } from "react-native-paper";
+import { Appbar, Button, IconButton, TextInput } from "react-native-paper";
 import GoBackButton from "../ui/go-back-button";
 import CampaignsOpenViewFilter from "./CampaignsOpenViewFilter";
 import { useTheme } from "@react-navigation/native";
@@ -10,11 +10,13 @@ import { View } from "../Themed";
 interface CampaignsOpenViewHeaderProps {
   tabView: TabView;
   setTabView: React.Dispatch<React.SetStateAction<TabView>>;
+  refreshConversations: () => void;
 }
 
 const CampaignsOpenViewHeader: React.FC<CampaignsOpenViewHeaderProps> = ({
   tabView,
   setTabView,
+  refreshConversations,
 }) => {
   const theme = useTheme();
   const styles = stylesFn(theme);
@@ -52,6 +54,13 @@ const CampaignsOpenViewHeader: React.FC<CampaignsOpenViewHeaderProps> = ({
             />
           </View>
         </View>
+        <IconButton
+          style={{
+            zIndex: 1,
+          }}
+          icon="refresh"
+          onPress={refreshConversations}
+        />
         <CampaignsOpenViewFilter />
       </View>
     </Appbar.Header>

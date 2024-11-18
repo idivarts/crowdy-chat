@@ -9,7 +9,8 @@ import {
   ICollectible,
   IEditLeadStage,
 } from "@/interfaces/EditCampaignInterfaces";
-import { ILeadStage } from "@/shared-libs/firestore/crowdy-chat/models/campaigns";
+import { AuthApp } from "@/shared-libs/utilities/auth";
+import CampaignService from "@/services/campaigns.service";
 
 export const updateCampaign = async (
   campaignData: IEditCampaign,
@@ -92,7 +93,6 @@ export const updateCampaign = async (
       const existingStage = existingLeadStages.find(
         (s) => s.name === stage.name
       );
-
 
       let leadStageDocRef: any;
       if (existingStage) {
@@ -199,5 +199,14 @@ export const updateCampaign = async (
   );
 
   Toaster.success("Campaign Updated Successfully");
+
+  const idToken = await AuthApp.currentUser?.getIdToken();
+
+  await CampaignService.createCampaign({
+    campaignId: campaignData.id,
+    organizationId: organizationId,
+    firebaseId: idToken ? idToken : "",
+  });
+
   resetForm();
 };

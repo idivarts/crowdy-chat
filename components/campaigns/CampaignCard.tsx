@@ -26,11 +26,10 @@ const CampaignCard = ({ item }: CampaignCardProps) => {
   const { xl } = useBreakPoints();
   const router = useRouter();
   const [menuVisible, setMenuVisible] = useState(false);
-  const [confirmationModalVisible, setConfirmationModalVisible] = useState(false);
+  const [confirmationModalVisible, setConfirmationModalVisible] =
+    useState(false);
 
-  const {
-    deleteCampaign,
-  } = useCampaignContext();
+  const { deleteCampaign } = useCampaignContext();
 
   const copyToClipboard = (textToCopy: string) => {
     Clipboard.setStringAsync(textToCopy);
@@ -54,7 +53,7 @@ const CampaignCard = ({ item }: CampaignCardProps) => {
             <View style={styles.chatAssistantIdContainer}>
               <Text style={styles.chatAssistantId}>{item.assistantId}</Text>
               <TouchableOpacity
-                onPress={() => copyToClipboard(item.assistantId || '')}
+                onPress={() => copyToClipboard(item.assistantId || "")}
                 style={styles.copyIdIcon}
               >
                 <Ionicons name="copy-outline" size={16} color="black" />
@@ -75,7 +74,10 @@ const CampaignCard = ({ item }: CampaignCardProps) => {
             <>
               <MenuItem
                 key="edit"
-                onPress={() => { console.log('Edit') }}
+                onPress={() => {
+                  setMenuVisible(false);
+                  router.push(`/campaigns/edit/${item.id}`);
+                }}
                 title="Edit"
               />
               <MenuItem

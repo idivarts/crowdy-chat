@@ -18,6 +18,10 @@ import FacebookLoginButton from "@/components/sources/ConnectWithFacebook";
 import { useTheme } from "@react-navigation/native";
 import { Text, View } from "@/components/Themed";
 import Colors from "@/constants/Colors";
+import { collection, getDocs } from "firebase/firestore";
+import { FirestoreDB } from "@/shared-libs/utilities/firestore";
+import { useOrganizationContext } from "@/contexts";
+import { FlatList } from "react-native";
 
 const Sources = () => {
   const theme = useTheme();
@@ -27,6 +31,7 @@ const Sources = () => {
   const [emailModalVisible, setEmailModalVisible] = useState(false);
   const [sendGridApiKey, setSendGridApiKey] = useState("");
   const [sendGridDomain, setSendGridDomain] = useState("");
+  const { currentOrganization } = useOrganizationContext();
   const [loading, setLoading] = useState(true);
   const [emailUsername, setEmailUsername] = useState("");
   const [myPages, setMyPages] = useState<PageUnit[]>([]);
@@ -35,14 +40,30 @@ const Sources = () => {
   const getPages = async (userId: string) => {
     try {
       // const response = await axios.get("https://backend.trendshub.co.in/business/pages?userId=" + (userId ? userId : "TEMP"))
-      let pData = await HttpService.getPages(userId);
-      setMyPages(pData.myPages);
-      setOtherPages(pData.otherPages);
+      // let pData = await HttpService.getPages(userId);
+      // setMyPages(pData.myPages);
+      // setOtherPages(pData.otherPages);
+
+      if (!currentOrganization) {
+        return;
+      }
+
+      const sourceRef = collection(
+        FirestoreDB,
+        "organizations",
+        currentOrganization?.id,
+        "sources"
+      );
+      const sourceSnapshot = await getDocs(sourceRef);
+      const sourceData = sourceSnapshot.docs.map(
+        (doc) => doc.data() as PageUnit
+      );
+      setMyPages(sourceData);
+      setOtherPages(sourceData);
       setLoading(false);
     } catch (e) {
       // addToast("Something went wrong while fetching pages", { appearance: "error" })
       Toaster.error("Something went wrong while fetching pages");
-      console.log(e);
     }
   };
 
@@ -87,13 +108,20 @@ const Sources = () => {
           style={{
             alignItems: "center",
             width: "100%",
+            flex: 1,
           }}
         >
           {loading && <ActivityIndicator animating={true} color="#000" />}
-          {!loading &&
-            otherPages.map((page, index) => (
-              <ConnectedPage key={index} page={page} />
-            ))}
+          {!loading && (
+            <FlatList
+              data={otherPages}
+              renderItem={({ item, index }) => (
+                <ConnectedPage page={item} key={index} />
+              )}
+              keyExtractor={(item) => item.id}
+              style={{ width: "100%", paddingHorizontal: 30 }}
+            />
+          )}
         </View>
       </View>
       <Portal>
@@ -108,30 +136,6 @@ const Sources = () => {
               onFacebookLogin={(userId) => getPages(userId ? userId : "TEMP")}
               isConnected={false}
             />
-            <Button
-              icon="instagram"
-              mode="contained"
-              style={styles.modalButton}
-              onPress={() => handleConnectSource("Instagram")}
-            >
-              Connect with Instagram
-            </Button>
-            <Button
-              icon="whatsapp"
-              mode="contained"
-              style={styles.modalButton}
-              onPress={() => handleConnectSource("WhatsApp")}
-            >
-              Connect with WhatsApp
-            </Button>
-            <Button
-              icon="email"
-              mode="contained"
-              style={styles.modalButton}
-              onPress={() => handleConnectSource("Email")}
-            >
-              Connect with Email
-            </Button>
           </View>
         </Modal>
         <Modal

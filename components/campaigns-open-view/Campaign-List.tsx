@@ -14,7 +14,15 @@ type ChatBoard = {
   tasks: IConversationUnit[];
 }[];
 
-const CampaignListView = (props: { pageId: string | null }) => {
+interface CampaignListViewProps {
+  pageId: string | null;
+  getAllConversations: () => any;
+  conversations: IConversationUnit[];
+}
+
+const CampaignListView: React.FC<CampaignListViewProps> = (
+  props: CampaignListViewProps
+) => {
   const theme = useTheme();
   const styles = stylesFn(theme);
   const [columns, setColumns] = useState<ChatBoard>([]);
@@ -72,16 +80,6 @@ const CampaignListView = (props: { pageId: string | null }) => {
     );
   };
 
-  const getAllConversations = () => {
-    ConversationService.getConversations({
-      pageId: pageId,
-    })
-      .then((res) => {
-        setAllConversation(res);
-      })
-      .catch((e) => { });
-  };
-
   const PhaseMap = {
     0: 0,
     1: 0,
@@ -113,8 +111,14 @@ const CampaignListView = (props: { pageId: string | null }) => {
   }, [allConversation]);
 
   useEffect(() => {
-    getAllConversations();
+    props.getAllConversations().then((res: any) => {
+      setAllConversation(res);
+    });
   }, []);
+
+  useEffect(() => {
+    setAllConversation(props.conversations);
+  }, [props.conversations]);
 
   const handlePhaseChange = (igsid: string, newPhase: number) => {
     ConversationService.updateConversation(igsid, {
