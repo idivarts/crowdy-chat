@@ -7,6 +7,12 @@ import { stylesFn } from "@/styles/campaigns/campaign-open-view/ListView.styles"
 import RenderTable from "./RenderListTable";
 import { useTheme } from "@react-navigation/native";
 import { Text, View } from "../Themed";
+import { collection, getDocs } from "firebase/firestore";
+import { FirestoreDB } from "@/shared-libs/utilities/firestore";
+import { AuthApp } from "@/shared-libs/utilities/auth";
+import { useOrganizationContext } from "@/contexts";
+import { useLocalSearchParams } from "expo-router";
+import Colors from "@/constants/Colors";
 
 type ChatBoard = {
   id: number;
@@ -18,6 +24,7 @@ interface CampaignListViewProps {
   pageId: string | null;
   getAllConversations: () => any;
   conversations: IConversationUnit[];
+  refreshKey: number;
 }
 
 const CampaignListView: React.FC<CampaignListViewProps> = (
@@ -29,10 +36,93 @@ const CampaignListView: React.FC<CampaignListViewProps> = (
   const [allConversation, setAllConversation] = useState<IConversationUnit[]>(
     []
   );
+  const { currentOrganization } = useOrganizationContext();
   const [groupBy, setGroupBy] = useState<string | null>(null);
   const [groupBySource, setGroupBySource] = useState<string | null>(null);
   const [menuVisible, setMenuVisible] = useState(false);
-  const { pageId } = props;
+  const { campaignId, pageID } = useLocalSearchParams();
+
+  const fetchColumnsAndPhaseMap = async () => {
+    if (!currentOrganization || !campaignId)
+      return { fetchedColumns: [], phaseMap: {} };
+    try {
+      const leadStageRef = collection(
+        FirestoreDB,
+        "organizations",
+        currentOrganization?.id,
+        "campaigns",
+        campaignId as string,
+        "leadStages"
+      );
+
+      const data = await getDocs(leadStageRef);
+
+      const phaseMap: Record<number, number> = {};
+      const fetchedColumns = data.docs.map((doc) => {
+        const columnData = doc.data();
+        phaseMap[columnData.index] = columnData.index;
+
+        return {
+          id: columnData.index,
+          title: columnData.name,
+          tasks: [],
+        };
+      });
+
+      return { fetchedColumns, phaseMap };
+    } catch (error) {
+      console.error("Error fetching columns:", error);
+      return { fetchedColumns: [], phaseMap: {} };
+    }
+  };
+
+  const setColumnsAll = async () => {
+    const { fetchedColumns, phaseMap } = await fetchColumnsAndPhaseMap();
+
+    const updatedColumns = fetchedColumns.map((column) => {
+      const columnTasks = allConversation.filter(
+        (conversation) => phaseMap[conversation.currentPhase] === column.id
+      );
+      return { ...column, tasks: columnTasks };
+    });
+
+    setColumns(updatedColumns);
+  };
+
+  useEffect(() => {
+    props.getAllConversations().then((res: any) => {
+      setAllConversation(res);
+      setColumnsAll();
+    });
+  }, [props.refreshKey]);
+
+  useEffect(() => {
+    setAllConversation(props.conversations);
+    setColumnsAll();
+  }, [props.conversations]);
+
+  const handlePhaseChange = async (igsid: string, newPhase: number) => {
+    setAllConversation((allCs) => {
+      const updatedConversations = allCs.map((conversation) =>
+        conversation.id === igsid
+          ? { ...conversation, currentPhase: newPhase, status: 0 }
+          : conversation
+      );
+      setColumnsAll();
+      return updatedConversations;
+    });
+
+    const user = await AuthApp.currentUser?.getIdToken();
+
+    await ConversationService.updateConversation(
+      campaignId as string,
+      igsid,
+      currentOrganization?.id as string,
+      newPhase,
+      undefined,
+      user as string
+    );
+  };
 
   const groupedTables = () => {
     if (groupBy === "phase") {
@@ -51,7 +141,7 @@ const CampaignListView: React.FC<CampaignListViewProps> = (
 
     if (groupBySource === "source") {
       const groupedBySource = allConversation.reduce((acc, conversation) => {
-        const source = conversation.page.isInstagram ? "Instagram" : "Other";
+        const source = conversation.sourceId ? "Instagram" : "Other";
         if (!acc[source]) acc[source] = [];
         acc[source].push(conversation);
         return acc;
@@ -69,6 +159,7 @@ const CampaignListView: React.FC<CampaignListViewProps> = (
         </View>
       ));
     }
+
     return (
       <RenderTable
         conversations={allConversation}
@@ -80,62 +171,29 @@ const CampaignListView: React.FC<CampaignListViewProps> = (
     );
   };
 
-  const PhaseMap = {
-    0: 0,
-    1: 0,
-    2: 2,
-    3: 3,
-    4: 4,
-    5: 5,
-    6: 6,
-    7: 1,
-  };
-
-  useEffect(() => {
-    const cols: ChatBoard = [
-      { id: 1, title: "Initial", tasks: [] },
-      { id: 7, title: "Take Action", tasks: [] },
-      { id: 2, title: "Data Collection", tasks: [] },
-      { id: 3, title: "Beta Intro", tasks: [] },
-      { id: 4, title: "Brands", tasks: [] },
-      { id: 5, title: "Wait Stage", tasks: [] },
-      { id: 6, title: "Uninterested", tasks: [] },
-    ];
-    for (let i = 0; i < allConversation.length; i++) {
-      const ele = allConversation[i];
-      //@ts-ignore
-      let colInd = PhaseMap[ele.currentPhase];
-      cols[colInd].tasks.push(ele);
-    }
-    setColumns(cols);
-  }, [allConversation]);
-
-  useEffect(() => {
-    props.getAllConversations().then((res: any) => {
-      setAllConversation(res);
-    });
-  }, []);
-
-  useEffect(() => {
-    setAllConversation(props.conversations);
-  }, [props.conversations]);
-
-  const handlePhaseChange = (igsid: string, newPhase: number) => {
-    ConversationService.updateConversation(igsid, {
-      currentPhase: newPhase,
-      status: 0,
-    });
-    setAllConversation((allCs) => {
-      for (let i = 0; i < allCs.length; i++) {
-        const c = allCs[i];
-        if (c.igsid == igsid) {
-          c.currentPhase = newPhase;
-          c.status = 0;
-        }
-      }
-      return [...allCs];
-    });
-  };
+  if (!pageID) {
+    return (
+      <View
+        style={{
+          flex: 1,
+          justifyContent: "center",
+          alignItems: "center",
+          backgroundColor: Colors(theme).background,
+        }}
+      >
+        <Text
+          style={{
+            fontSize: 18,
+            color: Colors(theme).text,
+            textAlign: "center",
+            paddingHorizontal: 20,
+          }}
+        >
+          Please select a source to view conversations.
+        </Text>
+      </View>
+    );
+  }
 
   return (
     <ScrollView>
@@ -144,9 +202,7 @@ const CampaignListView: React.FC<CampaignListViewProps> = (
           <Text>Group by: </Text>
           <Menu
             visible={menuVisible}
-            style={{
-              backgroundColor: "#fff",
-            }}
+            style={{ backgroundColor: "#fff" }}
             onDismiss={() => setMenuVisible(false)}
             anchor={
               <IconButton
@@ -179,4 +235,5 @@ const CampaignListView: React.FC<CampaignListViewProps> = (
     </ScrollView>
   );
 };
+
 export default CampaignListView;

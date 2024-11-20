@@ -2,17 +2,17 @@ import APIService from "./newApi.service";
 
 const apiService = new APIService();
 
-export default class SourceService {
-  static changeWebhook = async (req: {
-    pageId: string;
-    enable: boolean;
+export default class SourceCampaignService {
+  static connectSource = async (req: {
+    sourceId: string;
+    campaignId: string;
     organizationId: string;
     firebaseId: string;
   }) => {
     const response = await apiService.apiUrl.post(
-      `sources/facebook/${req.pageId}/webhook`,
+      `campaigns/${req.campaignId}/sources`,
       {
-        enable: req.enable,
+        sourceId: req.sourceId,
       },
       {
         headers: {
@@ -23,14 +23,14 @@ export default class SourceService {
     );
   };
 
-  static syncChat = async (req: {
-    pageId: string;
+  static disconnectSource = async (req: {
+    sourceId: string;
+    campaignId: string;
     organizationId: string;
     firebaseId: string;
   }) => {
-    const response = await apiService.apiUrl.post(
-      `sources/facebook/${req.pageId}/leads`,
-      {},
+    const response = await apiService.apiUrl.delete(
+      `campaigns/${req.campaignId}/sources?sourceId=${req.sourceId}`,
       {
         headers: {
           "X-Organization-ID": req.organizationId,

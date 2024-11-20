@@ -81,8 +81,8 @@ const RenderTable = ({
 
       switch (sortColumn) {
         case "user":
-          valueA = a.user.name;
-          valueB = b.user.name;
+          valueA = a.user.userProfile?.name || "";
+          valueB = b.user.userProfile?.name || "";
           break;
         case "phase":
           valueA = a.currentPhase;
@@ -96,9 +96,9 @@ const RenderTable = ({
           valueA = a.botMessageCount;
           valueB = b.botMessageCount;
           break;
-        case "source":
-          valueA = a.page.isInstagram ? "Instagram" : "Other";
-          valueB = b.page.isInstagram ? "Instagram" : "Other";
+          // case "source":
+          //   valueA = a.page.isInstagram ? "Instagram" : "Other";
+          //   valueB = b.page.isInstagram ? "Instagram" : "Other";
           break;
         default:
           return 0;
@@ -147,29 +147,29 @@ const RenderTable = ({
                   >
                     <View style={styles.userInfo}>
                       <Text style={styles.userName}>
-                        {conversation.user.name}
+                        {conversation.user.userProfile?.name}
                       </Text>
                       <Text style={styles.userHandle}>
-                        @{conversation.user.userName}
+                        @{conversation.user.userProfile?.username}
                       </Text>
                     </View>
                     <IconButton
                       icon="comment-plus"
                       iconColor="#e1e1e1"
                       size={20}
-                      onPress={() => { }}
+                      onPress={() => {}}
                     />
                   </View>
                 </DataTable.Cell>
                 <DataTable.Cell style={styles.cell}>
                   <Menu
-                    visible={visibleMenu === conversation.igsid}
+                    visible={visibleMenu === conversation.id}
                     onDismiss={closeMenu}
                     style={{
                       backgroundColor: "#fff",
                     }}
                     anchor={
-                      <Button onPress={() => openMenu(conversation.igsid)}>
+                      <Button onPress={() => openMenu(conversation.id)}>
                         {columns.find(
                           (col) => col.id === conversation.currentPhase
                         )?.title || "Select"}
@@ -180,7 +180,7 @@ const RenderTable = ({
                       <Menu.Item
                         key={col.id}
                         onPress={() => {
-                          handlePhaseChange(conversation.igsid, col.id);
+                          handlePhaseChange(conversation.id, col.id);
                           closeMenu();
                         }}
                         title={col.title}
@@ -204,7 +204,7 @@ const RenderTable = ({
                 </DataTable.Cell>
                 <DataTable.Cell style={styles.cell}>
                   <Text>
-                    {conversation.page.isInstagram ? "Instagram" : "Other"}
+                    {/* {conversation.page.isInstagram ? "Instagram" : "Other"} */}
                   </Text>
                 </DataTable.Cell>
                 <DataTable.Cell style={styles.cell}>
@@ -221,7 +221,7 @@ const RenderTable = ({
                     justifyContent: "center",
                   }}
                 >
-                  <IconButton icon="plus" onPress={() => { }} />
+                  <IconButton icon="plus" onPress={() => {}} />
                   <Text>Add New</Text>
                 </View>
               </DataTable.Cell>
@@ -259,29 +259,29 @@ const RenderTable = ({
                   >
                     <View style={styles.userInfo}>
                       <Text style={styles.userName}>
-                        {conversation.user.name}
+                        {conversation.user.userProfile?.name}
                       </Text>
                       <Text style={styles.userHandle}>
-                        @{conversation.user.userName}
+                        @{conversation.user.userProfile?.username}
                       </Text>
                     </View>
                     <IconButton
                       icon="comment-plus"
                       iconColor="#e1e1e1"
                       size={20}
-                      onPress={() => { }}
+                      onPress={() => {}}
                     />
                   </View>
                 </DataTable.Cell>
                 <DataTable.Cell style={styles.cell}>
                   <Menu
-                    visible={visibleMenu === conversation.igsid}
+                    visible={visibleMenu === conversation.id}
                     onDismiss={closeMenu}
                     style={{
                       backgroundColor: "#fff",
                     }}
                     anchor={
-                      <Button onPress={() => openMenu(conversation.igsid)}>
+                      <Button onPress={() => openMenu(conversation.id)}>
                         {columns.find(
                           (col) => col.id === conversation.currentPhase
                         )?.title || "Select"}
@@ -292,7 +292,7 @@ const RenderTable = ({
                       <Menu.Item
                         key={col.id}
                         onPress={() => {
-                          handlePhaseChange(conversation.igsid, col.id);
+                          handlePhaseChange(conversation.id, col.id);
                           closeMenu();
                         }}
                         title={col.title}
@@ -316,7 +316,7 @@ const RenderTable = ({
                 </DataTable.Cell>
                 <DataTable.Cell style={styles.cell}>
                   <Text>
-                    {conversation.page.isInstagram ? "Instagram" : "Other"}
+                    {/* {conversation.page.isInstagram ? "Instagram" : "Other"} */}
                   </Text>
                 </DataTable.Cell>
                 <DataTable.Cell style={styles.cell}>
@@ -333,7 +333,7 @@ const RenderTable = ({
                     justifyContent: "center",
                   }}
                 >
-                  <IconButton icon="plus" onPress={() => { }} />
+                  <IconButton icon="plus" onPress={() => {}} />
                   <Text>Add New</Text>
                 </View>
               </DataTable.Cell>

@@ -1,25 +1,26 @@
 import React, { useEffect, useState } from "react";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
-import { ConversationService } from "@/services";
-import { UpdateConversationSubject } from "@/subjects/conversation.update.subject";
-import ConversationCard from "./ConversationCard";
-import { CAMPAIGNS_BOARD_COLUMNS } from "@/constants/CampaignsBoard";
-import {
-  CampaignsBoardColumn,
-  IConversationUnit,
-} from "@/types/CampaignsBoard";
-import Colors from "@/constants/Colors";
-import Button from "../ui/button/Button";
-import { IconButton } from "react-native-paper";
-import ChatModal from "./ChatModal";
-import { ActivityIndicator } from "react-native";
-import { useLocalSearchParams } from "expo-router";
-import { useTheme } from "@react-navigation/native";
+import { ActivityIndicator, Text } from "react-native";
 import { View } from "../Themed";
+import { useTheme } from "@react-navigation/native";
+import { useLocalSearchParams } from "expo-router";
+import Colors from "@/constants/Colors";
+import ConversationCard from "./ConversationCard";
+import ChatModal from "./ChatModal";
+import {
+  IConversationUnit,
+  CampaignsBoardColumn,
+} from "@/types/CampaignsBoard";
+import { AuthApp } from "@/shared-libs/utilities/auth";
+import { useOrganizationContext } from "@/contexts";
+import { collection, getDocs } from "firebase/firestore";
+import { FirestoreDB } from "@/shared-libs/utilities/firestore";
+import { ConversationService } from "@/services";
 
 interface CampaignsBoardWebProps {
   getAllConversations: () => any;
   conversations: IConversationUnit[];
+  refreshKey: number;
 }
 
 const CampaignsBoardWeb: React.FC<CampaignsBoardWebProps> = (
@@ -31,87 +32,121 @@ const CampaignsBoardWeb: React.FC<CampaignsBoardWebProps> = (
   );
   const [currentConversation, setCurrentConversation] = useState<
     IConversationUnit | undefined
-  >(undefined);
+  >();
   const [columns, setColumns] = useState<CampaignsBoardColumn>([]);
+  const { pageID, campaignId } = useLocalSearchParams();
+  const { currentOrganization } = useOrganizationContext();
 
-  const { pageId } = useLocalSearchParams();
-
-  const PhaseMap: Record<number, number> = {
-    0: 0,
-    1: 0,
-    2: 2,
-    3: 3,
-    4: 4,
-    5: 5,
-    6: 6,
-    7: 1,
-  };
-
-  const changePhase = (igsid: string, newPhase: number) => {
-    // Update the backend
-    ConversationService.updateConversation(igsid, {
-      currentPhase: newPhase,
-      status: 0,
-    });
-
-    // Update the frontend state
+  const changePhase = async (igsid: string, newPhase: number) => {
+    const user = await AuthApp.currentUser?.getIdToken();
     setAllConversation((prevConversations) => {
-      const updatedConversations = prevConversations.map((conversation) => {
-        if (conversation.igsid === igsid) {
-          return { ...conversation, currentPhase: newPhase, status: 0 };
-        }
-        return conversation;
-      });
-
-      // Update the frontend columns
-      handleColumnsChange(updatedConversations);
+      const updatedConversations = prevConversations.map((conversation) =>
+        conversation.id === igsid
+          ? { ...conversation, currentPhase: newPhase, status: 0 }
+          : conversation
+      );
+      setColumnsAll(updatedConversations);
       return updatedConversations;
     });
+
+    ConversationService.updateConversation(
+      campaignId as string,
+      igsid,
+      currentOrganization?.id as string,
+      newPhase,
+      undefined,
+      user as string
+    );
   };
 
-  const handleColumnsChange = (conversations: IConversationUnit[]) => {
-    const cols: CampaignsBoardColumn = CAMPAIGNS_BOARD_COLUMNS.map((col) => ({
-      ...col,
-      tasks: [],
-    }));
-
-    for (let i = 0; i < conversations.length; i++) {
-      const ele = conversations[i];
-      let colIndex = PhaseMap[ele.currentPhase];
-      cols[colIndex].tasks.push(ele);
-    }
-
-    setColumns(cols);
-  };
-
-  useEffect(() => {
-    const subscription = UpdateConversationSubject.subscribe(() => {
-      const x = props.getAllConversations();
-      x.then((res: any) => {
-        setAllConversation(res);
-        handleColumnsChange(res);
+  const fetchColumnsAndPhaseMap = async (campaignId: string) => {
+    try {
+      if (!currentOrganization) {
+        return { columns: [], phaseMap: {} };
+      }
+      const leadStageRef = collection(
+        FirestoreDB,
+        "organizations",
+        currentOrganization?.id,
+        "campaigns",
+        campaignId,
+        "leadStages"
+      );
+      const data = await getDocs(leadStageRef);
+      const phaseMap: Record<number, string> = {};
+      const columns = data.docs.map((doc) => {
+        const columnData = doc.data();
+        phaseMap[columnData.index] = columnData.index;
+        return {
+          id: columnData.index,
+          title: columnData.name,
+          tasks: [],
+          index: columnData.index,
+          ...columnData,
+        };
       });
-    });
-    return () => subscription.unsubscribe();
-  }, []);
-
-  useEffect(() => {
-    props.getAllConversations().then((res: any) => {
-      setAllConversation(res);
-      handleColumnsChange(res);
-    });
-  }, [pageId]);
-
-  useEffect(() => {
-    setAllConversation(props.conversations);
-    handleColumnsChange(props.conversations);
-  }, [props.conversations]);
-
-  const handleCurrentConversation = (conversation: IConversationUnit) => {
-    setCurrentConversation(conversation);
+      return { columns, phaseMap };
+    } catch (error) {
+      console.error("Error fetching columns:", error);
+      return { columns: [], phaseMap: {} };
+    }
   };
 
-  if (allConversation.length === 0) {
+  const setColumnsAll = async (updatedConversations: IConversationUnit[]) => {
+    const { columns: fetchedColumns, phaseMap } = await fetchColumnsAndPhaseMap(
+      campaignId as string
+    );
+    const sortedColumns = fetchedColumns.sort((a, b) => a.index - b.index);
+    const columnsWithTasks = fetchedColumns.map((column) => {
+      const columnTasks = updatedConversations.filter(
+        (task) => phaseMap[task.currentPhase] === column.index
+      );
+      return { ...column, tasks: columnTasks };
+    });
+    setColumns(columnsWithTasks);
+  };
+
+  useEffect(() => {
+    if (pageID) {
+      props.getAllConversations().then(async (res: any) => {
+        setAllConversation(res);
+        setColumnsAll(res);
+      });
+    }
+    //whenever props refresh, we need to update the columns
+  }, [pageID, props.refreshKey]);
+
+  useEffect(() => {
+    if (pageID) {
+      setColumnsAll(allConversation);
+    }
+  }, [allConversation]);
+
+  if (!pageID) {
+    return (
+      <View
+        style={{
+          flex: 1,
+          justifyContent: "center",
+          alignItems: "center",
+          backgroundColor: Colors(theme).background,
+        }}
+      >
+        <Text
+          style={{
+            fontSize: 18,
+            color: Colors(theme).text,
+            textAlign: "center",
+            paddingHorizontal: 20,
+          }}
+        >
+          Please select a source to view conversations.
+        </Text>
+      </View>
+    );
+  }
+
+  if (allConversation && allConversation.length === 0) {
     return (
       <View
         style={{
@@ -128,10 +163,9 @@ const CampaignsBoardWeb: React.FC<CampaignsBoardWebProps> = (
     <>
       {currentConversation && (
         <ChatModal
-          igsid={currentConversation?.igsid || ""}
-          onCloseModal={() => {
-            setCurrentConversation(undefined);
-          }}
+          igsid={currentConversation?.id || ""}
+          campaignId={campaignId as string}
+          onCloseModal={() => setCurrentConversation(undefined)}
           conversation={currentConversation}
         />
       )}
@@ -154,7 +188,7 @@ const CampaignsBoardWeb: React.FC<CampaignsBoardWebProps> = (
           }}
         >
           {columns.map((column) => (
-            <Droppable key={column.id} droppableId={String(column.id)}>
+            <Droppable key={column.index} droppableId={column.index.toString()}>
               {(provided) => (
                 <div
                   style={{
@@ -179,25 +213,12 @@ const CampaignsBoardWeb: React.FC<CampaignsBoardWebProps> = (
                     }}
                   >
                     <span>{column.title}</span>
-                    <span style={{ flex: 1 }} />
-                    {/* <IconButton
-                      style={{
-                        zIndex: 1,
-                      }}
-                      icon="refresh"
-                      onPress={getAllConversations}
-                    /> */}
                   </div>
-                  <div
-                    style={{
-                      flexGrow: 1,
-                      overflowY: "auto",
-                    }}
-                  >
+                  <div style={{ flexGrow: 1, overflowY: "auto" }}>
                     {column.tasks.map((task, index) => (
                       <Draggable
-                        key={task.igsid}
-                        draggableId={task.igsid}
+                        key={task.id}
+                        draggableId={task.id}
                         index={index}
                       >
                         {(provided) => (
@@ -208,9 +229,7 @@ const CampaignsBoardWeb: React.FC<CampaignsBoardWebProps> = (
                           >
                             <ConversationCard
                               task={task}
-                              handleCurrentConversation={
-                                handleCurrentConversation
-                              }
+                              handleCurrentConversation={setCurrentConversation}
                             />
                           </div>
                         )}
@@ -218,14 +237,6 @@ const CampaignsBoardWeb: React.FC<CampaignsBoardWebProps> = (
                     ))}
                     {provided.placeholder}
                   </div>
-                  {/* <Button
-                    mode="contained"
-                    onPress={() => {
-                      console.log('Add a card');
-                    }}
-                  >
-                    + Add a card
-                  </Button> */}
                 </div>
               )}
             </Droppable>

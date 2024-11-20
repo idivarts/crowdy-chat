@@ -1,3 +1,4 @@
+import { API_URL } from "@/constants/Apiurl";
 import axios, { AxiosInstance, CreateAxiosDefaults } from "axios";
 
 export default class APIService {
@@ -6,9 +7,9 @@ export default class APIService {
 
   constructor() {
     if (process.env.EXPO_PUBLIC_BACKEND_SERVER_URL) {
-      this.appHost = "https://be.crowdy.chat/api/v1";
+      this.appHost = API_URL;
     } else {
-      this.appHost = "https://be.crowdy.chat/api/v1";
+      this.appHost = API_URL;
     }
     this.apiUrl = APIService.getAxiosInstance({
       baseURL: `${this.appHost}`,

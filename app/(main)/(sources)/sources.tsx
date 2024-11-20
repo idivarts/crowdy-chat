@@ -79,7 +79,6 @@ const Sources = () => {
     if (source === "Email") {
       setEmailModalVisible(true);
     } else {
-      console.log(`Connecting to ${source}`);
     }
     setModalVisible(false);
   };

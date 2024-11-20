@@ -110,7 +110,10 @@ const CampaignCard = ({ item }: CampaignCardProps) => {
         <Button
           mode="contained"
           onPress={() => {
-            router.push(`/campaign-detailed-view`);
+            router.push({
+              pathname: `/campaign-detailed-view`,
+              params: { campaignId: item.id },
+            });
           }}
         >
           Open Campaign Board
