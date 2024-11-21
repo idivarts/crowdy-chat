@@ -5,6 +5,9 @@ import { useOrganizationContext } from "@/contexts";
 import { Stage } from "@/components/campaigns/LeadStageTypes";
 import Toaster from "@/shared-uis/components/toaster/Toaster";
 import { ICampaigns } from "@/shared-libs/firestore/crowdy-chat/models/campaigns";
+import { AuthApp } from "@/shared-libs/utilities/auth";
+import axios from "axios";
+import CampaignService from "@/services/campaigns.service";
 
 export const createCampaign = async (
   campaignName: string,
@@ -26,7 +29,7 @@ export const createCampaign = async (
     organizationId,
     "campaigns"
   );
-  const campaignData: ICampaigns = {
+  const campaignData = {
     chatgpt: {
       prescript,
       actor: actorDefinition,
@@ -104,6 +107,14 @@ export const createCampaign = async (
     return collectibles.map((collectible) => {
       addDoc(collectiblesColRef, collectible);
     });
+  });
+
+  const idToken = await AuthApp.currentUser?.getIdToken();
+
+  await CampaignService.createCampaign({
+    campaignId: campaignDocRef.id,
+    organizationId: organizationId,
+    firebaseId: idToken ? idToken : "",
   });
 
   Toaster.success("Campaign Created Successfully");
