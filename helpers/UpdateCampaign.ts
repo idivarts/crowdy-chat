@@ -9,7 +9,8 @@ import {
   ICollectible,
   IEditLeadStage,
 } from "@/interfaces/EditCampaignInterfaces";
-import { ILeadStage } from "@/shared-libs/firestore/crowdy-chat/models/campaigns";
+import { AuthApp } from "@/shared-libs/utilities/auth";
+import CampaignService from "@/services/campaigns.service";
 
 export const updateCampaign = async (
   campaignData: IEditCampaign,
@@ -66,6 +67,7 @@ export const updateCampaign = async (
     campaignData.id,
     "leadStages"
   );
+
   const existingLeadStagesSnapshot = await getDocs(leadStagesColRef);
   const existingLeadStages: IEditLeadStage[] =
     existingLeadStagesSnapshot.docs.map((doc) => ({
@@ -93,11 +95,11 @@ export const updateCampaign = async (
         (s) => s.name === stage.name
       );
 
-
       let leadStageDocRef: any;
       if (existingStage) {
         // Update existing stage
         leadStageDocRef = doc(leadStagesColRef, existingStage.id);
+
         await updateDoc(leadStageDocRef, {
           name: stage.name,
           purpose: stage.purpose,
@@ -106,6 +108,7 @@ export const updateCampaign = async (
             reminderCount: Number(stage.reminders.reminderCount),
             reminderExamples: stage.reminders.reminderExamples,
           },
+          index: index,
           exampleConversations: stage.exampleConversations,
           stopConversation: stage.stopConversation,
           leadConversion: stage.leadConversion,
@@ -122,6 +125,7 @@ export const updateCampaign = async (
             reminderCount: Number(stage.reminders.reminderCount),
             reminderExamples: stage.reminders.reminderExamples,
           },
+          index: index,
           exampleConversations: stage.exampleConversations,
           stopConversation: stage.stopConversation,
           leadConversion: stage.leadConversion,
@@ -143,7 +147,12 @@ export const updateCampaign = async (
       const existingCollectiblesSnapshot = await getDocs(collectiblesColRef);
       const existingCollectibles: ICollectible[] =
         existingCollectiblesSnapshot.docs.map(
-          (doc) => doc.data() as ICollectible
+          // fetch with id
+
+          (doc) => ({
+            ...(doc.data() as ICollectible),
+            id: doc.id,
+          })
         );
 
       // Map existing collectible IDs
@@ -175,6 +184,7 @@ export const updateCampaign = async (
               collectiblesColRef,
               existingCollectible.id
             );
+
             await updateDoc(collectibleDocRef, {
               name: collectible.name,
               type: collectible.type,
@@ -199,5 +209,14 @@ export const updateCampaign = async (
   );
 
   Toaster.success("Campaign Updated Successfully");
+
+  const idToken = await AuthApp.currentUser?.getIdToken();
+
+  await CampaignService.createCampaign({
+    campaignId: campaignData.id,
+    organizationId: organizationId,
+    firebaseId: idToken ? idToken : "",
+  });
+
   resetForm();
 };

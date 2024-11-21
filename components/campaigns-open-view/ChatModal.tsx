@@ -1,13 +1,14 @@
-import React, { useState, useEffect } from 'react';
-import ChatWindow from './ChatWindow';
-import { IConversationUnit } from '@/types/CampaignsBoard';
-import { Modal, Portal } from 'react-native-paper';
-import { View } from '../Themed';
+import React, { useState, useEffect } from "react";
+import ChatWindow from "./ChatWindow";
+import { IConversationUnit } from "@/types/CampaignsBoard";
+import { Modal, Portal } from "react-native-paper";
+import { View } from "../Themed";
 
 interface IProps {
-  igsid: string,
-  conversation: IConversationUnit
-  onCloseModal: () => void
+  igsid: string;
+  campaignId: string;
+  conversation: IConversationUnit;
+  onCloseModal: () => void;
 }
 const ChatModal: React.FC<IProps> = (props: IProps) => {
   const [isOpen, setIsOpen] = useState(true);
@@ -19,7 +20,7 @@ const ChatModal: React.FC<IProps> = (props: IProps) => {
 
   const handleCloseModal = () => {
     setIsOpen(false);
-    props.onCloseModal()
+    props.onCloseModal();
     // Additional logic on modal close
   };
 
@@ -33,8 +34,8 @@ const ChatModal: React.FC<IProps> = (props: IProps) => {
         visible={isOpen}
         onDismiss={handleCloseModal}
         style={{
-          justifyContent: 'center',
-          alignItems: 'center',
+          justifyContent: "center",
+          alignItems: "center",
           zIndex: 10000,
         }}
         contentContainerStyle={{
@@ -43,8 +44,8 @@ const ChatModal: React.FC<IProps> = (props: IProps) => {
       >
         <View
           style={{
-            justifyContent: 'center',
-            alignItems: 'center',
+            justifyContent: "center",
+            alignItems: "center",
           }}
         >
           <ChatWindow handleCloseModal={handleCloseModal} {...props} />

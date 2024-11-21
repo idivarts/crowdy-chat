@@ -1,45 +1,121 @@
-import Colors from "@/constants/Colors";
-import { PageActionsService } from "@/services";
-import { PageUnit } from "@/types/PageActions";
-import { useTheme } from "@react-navigation/native";
-import { router, useLocalSearchParams } from "expo-router";
-import { useEffect, useState } from "react";
-import { Pressable } from "react-native";
+import React, { useEffect, useState } from "react";
+import {
+  Platform,
+  Pressable,
+  TouchableOpacity,
+  ActivityIndicator,
+} from "react-native";
 import { Icon, Menu } from "react-native-paper";
 import { Text, View } from "../Themed";
+import { collection, getDocs } from "firebase/firestore";
+import { FirestoreDB } from "@/shared-libs/utilities/firestore";
+import { ISources } from "@/shared-libs/firestore/crowdy-chat/models/sources";
+import SourceCampaignService from "@/services/sources-campaign.service";
+import { AuthApp } from "@/shared-libs/utilities/auth";
+import { useOrganizationContext } from "@/contexts";
+import Toaster from "@/shared-uis/components/toaster/Toaster";
+import Colors from "@/constants/Colors";
+import { useTheme } from "@react-navigation/native";
+import { router, useLocalSearchParams } from "expo-router";
 
-const CampaignsOpenViewFilter = () => {
+const CampaignsOpenViewFilter = (props: any) => {
   const theme = useTheme();
-  const { pageId } = useLocalSearchParams<any>()
-  const [value, setValue] = useState(pageId ? pageId : "all")
-  const [pages, setPages] = useState<PageUnit[]>([])
+  const { pageID } = useLocalSearchParams<any>();
+  const [value, setValue] = useState(pageID ? pageID : "all");
+  const [pages, setPages] = useState<any[]>([]);
   const [menuVisible, setMenuVisible] = useState(false);
+  const [loadingSourceId, setLoadingSourceId] = useState<string | null>(null);
+  const campaignId = props.campaignId;
+  const { currentOrganization } = useOrganizationContext();
 
   const getAllPages = async () => {
-    const res = await PageActionsService.getPages();
-    setPages(res.otherPages);
-  }
+    if (!currentOrganization) return;
+    const sourcesRef = collection(
+      FirestoreDB,
+      "organizations",
+      currentOrganization?.id,
+      "sources"
+    );
+    const sourceData = await getDocs(sourcesRef);
+    let sourceList = sourceData.docs.map((doc) => doc.data() as ISources);
+
+    if (pageID) {
+      sourceList = sourceList.map((result: any) => ({
+        ...result,
+        isConnected: result.id === pageID,
+      }));
+    }
+
+    setPages(sourceList);
+  };
 
   useEffect(() => {
-    setValue(pageId ? pageId : "all")
-  }, [pageId])
+    setValue(pageID ? pageID : "all");
+  }, [pageID]);
 
   useEffect(() => {
-    getAllPages()
-  }, [])
+    getAllPages();
+  }, []);
 
   const onChangePage = (v: string) => {
-    if (v == "all") {
-      router.push("/campaign-detailed-view")
+    setValue(v);
+
+    if (v === "all") {
+      router.push({
+        pathname: "/campaign-detailed-view",
+        params: { campaignId },
+      });
     } else {
-      router.push(`/campaign-detailed-view/${v}`)
+      router.push({
+        pathname: `/campaign-detailed-view`,
+        params: {
+          pageID: v,
+          campaignId,
+        },
+      });
     }
+
     setMenuVisible(false);
-  }
+  };
+
+  const connectSource = async (sourceId: string) => {
+    const user = await AuthApp.currentUser?.getIdToken();
+    if (!user || !currentOrganization) return;
+    setLoadingSourceId(sourceId);
+    await SourceCampaignService.connectSource({
+      sourceId,
+      campaignId,
+      organizationId: currentOrganization?.id,
+      firebaseId: user,
+    }).then(() => {
+      getAllPages();
+      setLoadingSourceId(null);
+    });
+  };
+
+  const disconnectSource = async (sourceId: string) => {
+    const user = await AuthApp.currentUser?.getIdToken();
+    if (!user || !currentOrganization) return;
+    setLoadingSourceId(sourceId);
+    await SourceCampaignService.disconnectSource({
+      sourceId,
+      campaignId,
+      organizationId: currentOrganization?.id,
+      firebaseId: user,
+    }).then(() => {
+      getAllPages();
+      setLoadingSourceId(null);
+    });
+  };
 
   if (pages.length === 0) {
     return null;
   }
+
+  const selectedPageName =
+    value === "all"
+      ? "Select Source"
+      : pages.find((page) => page.id === value)?.name || "Select Page";
 
   return (
     <Menu
@@ -56,16 +132,13 @@ const CampaignsOpenViewFilter = () => {
               paddingHorizontal: 20,
               borderRadius: 5,
               flexDirection: "row",
-              gap: 8,
+              alignItems: "center",
+              justifyContent: "space-between",
               marginTop: 12,
             }}
           >
-            <Text>Select Page</Text>
-            <Icon
-              size={20}
-              color={Colors(theme).black}
-              source="chevron-down"
-            />
+            <Text>{selectedPageName}</Text>
+            <Icon size={20} color={Colors(theme).black} source="chevron-down" />
           </View>
         </Pressable>
       }
@@ -75,20 +148,48 @@ const CampaignsOpenViewFilter = () => {
         backgroundColor: Colors(theme).white,
       }}
     >
-      <Menu.Item
-        key="all-pages"
-        onPress={() => onChangePage("all")}
-        title={"All pages"}
-      />
-      {
-        pages.map((page) => (
-          <Menu.Item
-            key={page.id}
-            onPress={() => onChangePage(page.id)}
-            title={page.name}
-          />
-        ))
-      }
+      {pages.map((page) => (
+        <View
+          key={page.id} // Ensure each View has a unique key
+          style={{
+            flexDirection: "row",
+            justifyContent: "space-between",
+            alignItems: "center",
+            paddingHorizontal: 20,
+          }}
+        >
+          <TouchableOpacity
+            onPress={() =>
+              page.campaignId && page.campaignId === campaignId
+                ? disconnectSource(page.id)
+                : connectSource(page.id)
+            }
+          >
+            {loadingSourceId === page.id ? (
+              <ActivityIndicator size="small" color={Colors(theme).primary} />
+            ) : (
+              <Icon
+                size={20}
+                color={Colors(theme).black}
+                source={
+                  page.campaignId && page.campaignId === campaignId
+                    ? "link-off"
+                    : "plus"
+                }
+              />
+            )}
+          </TouchableOpacity>
+          <TouchableOpacity
+            onPress={() =>
+              page.campaignId && page.campaignId === campaignId
+                ? onChangePage(page.id)
+                : alert("This page is not connected to this campaign")
+            }
+          >
+            <Menu.Item key={page.id} title={page.name} />
+          </TouchableOpacity>
+        </View>
+      ))}
     </Menu>
   );
 };

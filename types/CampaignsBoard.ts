@@ -1,3 +1,5 @@
+import { SourceType } from "@/shared-libs/firestore/crowdy-chat/models/sources";
+
 interface User {
   name: string;
   userName: string;
@@ -12,15 +14,45 @@ interface Page {
 }
 
 export interface IConversationUnit {
-  igsid: string;
-  user: User;
+  organizationId: string;
+  campaignId: string;
+  id: string;
+  sourceId: string;
+  threadId: string;
+  leadId: string;
+
+  lastMid: string;
   lastBotMessageTime: number;
   botMessageCount: number;
+  isProfileFetched: boolean;
+
+  phases: number[];
   currentPhase: number;
+  collectibles: {
+    [collectibleId: string]: string;
+  };
+  messageQueue?: string;
+  nextMessageTime?: number;
+  nextReminderTime?: number;
+  reminderQueue?: string;
   reminderCount: number;
   status: number;
-  informationCount: number;
-  page: Page;
+  user: {
+    id: string;
+    email?: string;
+
+    name?: string;
+
+    sourceType: SourceType;
+    sourceId: string;
+
+    userProfile?: UserProfile;
+
+    tagId?: string;
+    status: number;
+    createdAt: number;
+    updatedAt: number;
+  };
 }
 
 export type IConversationsResponse = {
@@ -30,6 +62,7 @@ export type IConversationsResponse = {
 
 export type CampaignsBoardColumn = {
   id: number;
+  index: number;
   title: string;
   tasks: IConversationUnit[];
 }[];

@@ -1,12 +1,12 @@
 import { Text, View } from "../Themed";
 
-const CampaignsBoard: React.FC = () => {
+const CampaignsBoard = () => {
   return (
     <View
       style={{
         flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
+        justifyContent: "center",
+        alignItems: "center",
       }}
     >
       <Text>Please open web version to see the board</Text>

@@ -86,7 +86,12 @@ const Campaigns = () => {
         {Platform.OS === "web" && (
           <View style={styles.campaignsSection}>
             {filteredCampaigns.length > 0 ? (
-              <CampaignsFilledState campaigns={filteredCampaigns} />
+              <FlatList
+                data={[,]}
+                renderItem={({ item }) => (
+                  <CampaignsFilledState campaigns={filteredCampaigns} />
+                )}
+              />
             ) : (
               <CampaignsEmptyState />
             )}
@@ -97,11 +102,10 @@ const Campaigns = () => {
             {filteredCampaigns.length > 0 ? (
               // ? <CampaignsFilledState campaigns={filteredCampaigns} />
               <FlatList
-                data={filteredCampaigns}
+                data={[,]}
                 renderItem={({ item }) => (
                   <CampaignsFilledState campaigns={filteredCampaigns} />
                 )}
-                keyExtractor={(item) => item.id}
               />
             ) : (
               <CampaignsEmptyState />

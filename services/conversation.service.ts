@@ -1,5 +1,5 @@
 import { IConversationUnit } from "@/types/CampaignsBoard";
-import APIService from "./api.service";
+import APIService from "./newApi.service";
 import { convertObjectToUrlQuery } from "@/helpers/url";
 
 interface UserProfile {
@@ -63,12 +63,10 @@ interface Page {
 
 export interface IConversationByIdResponse {
   conversation: Conversation;
-  message?: string;
-  page?: Page;
 }
 
 export interface IConversationUpdateResponse {
-  conversation: Conversation;
+  conversation: IConversationUnit;
   message?: string;
 }
 
@@ -90,22 +88,47 @@ export default class ConversationService {
   };
 
   static getConversationById = async (
-    igsid: string
-  ): Promise<IConversationByIdResponse> => {
+    campaignId: string,
+    leadId: string,
+    after: string | undefined,
+    firebaseId: string,
+    organizationId: string
+  ): Promise<any> => {
     const response = await apiService.apiUrl.get(
-      `/business/conversations/${igsid}`
+      `campaigns/${campaignId}/conversations/${leadId}/messages?limit=${10}${
+        after !== undefined ? `&after=${after}` : ""
+      }`,
+      {
+        headers: {
+          Authorization: `Bearer ${firebaseId}`,
+          "X-Organization-ID": organizationId,
+        },
+      }
     );
-    return response.data;
+    return response;
   };
 
   static updateConversation = async (
+    campaignId: string,
     igsid: string,
-    data: IConversationUpdateRequest
-  ): Promise<IConversationUpdateResponse> => {
-    const response = await apiService.apiUrl.put(
-      `/business/conversations/${igsid}`,
-      data
-    );
-    return response.data;
+    organizationId: string,
+    newPhase: number | undefined,
+    status: number | undefined,
+    firebaseId: string
+  ): Promise<any> => {
+    const response = await apiService.apiUrl
+      .put(
+        `campaigns/${campaignId}/conversations/${igsid}`,
+        { currentPhase: newPhase, status: status },
+        {
+          headers: {
+            Authorization: `Bearer ${firebaseId}`,
+            "X-Organization-ID": organizationId,
+          },
+        }
+      )
+      .catch((err) => {
+        console.log("Error updating phase:", err);
+      });
   };
 }

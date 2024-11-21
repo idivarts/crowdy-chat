@@ -1,5 +1,5 @@
 import { IMessageSendRequest, IMessagesResponse } from "@/types/Message";
-import APIService from "./api.service";
+import APIService from "./newApi.service";
 import { convertObjectToUrlQuery } from "@/helpers/url";
 
 const apiService = new APIService();
@@ -16,14 +16,24 @@ export default class MessageService {
   };
 
   static sendMessage = async (
-    igsid: string,
-    req: IMessageSendRequest
+    campaignId: string,
+    conversationId: string,
+    req: IMessageSendRequest,
+    organizationId: string,
+    firebaseToken: string
   ): Promise<{
     message: any;
   }> => {
     const response = await apiService.apiUrl.post(
-      `/business/messages/${igsid}`,
-      req
+      `/campaigns/${campaignId}/conversations/${conversationId}/messages`,
+      req,
+      {
+        headers: {
+          "Content-Type": "application/json",
+          "X-Organization-ID": organizationId,
+          Authorization: `Bearer ${firebaseToken}`,
+        },
+      }
     );
     return response.data;
   };

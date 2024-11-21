@@ -5,21 +5,28 @@ import { stylesFn } from "@/styles/sources/ConnectedPage.styles";
 import { HttpService } from "@/services/httpService";
 import Toaster from "@/shared-uis/components/toaster/Toaster";
 import ConfirmationModal from "../ConfirmationModal";
-import AssistantModal from "../AssistantModal";
 import { useTheme } from "@react-navigation/native";
 import { Text, View } from "../Themed";
+import axios from "axios";
+import { useOrganizationContext } from "@/contexts";
+import { AuthApp } from "@/shared-libs/utilities/auth";
+import { doc, updateDoc } from "firebase/firestore";
+import { FirestoreDB } from "@/shared-libs/utilities/firestore";
+import { SourceType } from "@/shared-libs/firestore/crowdy-chat/models/sources";
+import SourceService from "@/services/sources.service";
 
 type page = {
   assistantId: string;
   id: string;
   isInstagram: boolean;
-  isWebHookConnected: boolean;
+  isWebhookConnected: boolean;
   name: string;
   ownerName: string;
   reminderTimeMultiplier: number;
   replyTimeMax: number;
   replyTimeMin: number;
   userName: string;
+  sourceType: SourceType;
 };
 
 interface ConnectedPageProps {
@@ -31,10 +38,10 @@ const ConnectedPage: React.FC<ConnectedPageProps> = ({ page: pageProps }) => {
   const [menuVisible, setMenuVisible] = useState(false);
   const [confirmationModalVisible, setConfirmationModalVisible] =
     useState(false);
-  const [assistantModalVisible, setAssistantModalVisible] = useState(false);
   const [modalMessage, setModalMessage] = useState("");
-  const [modalAction, setModalAction] = useState<() => void>(() => { });
+  const [modalAction, setModalAction] = useState<() => void>(() => {});
   const [loading, setLoading] = useState(false);
+  const { currentOrganization } = useOrganizationContext();
   const theme = useTheme();
   const styles = stylesFn(theme);
 
@@ -49,9 +56,19 @@ const ConnectedPage: React.FC<ConnectedPageProps> = ({ page: pageProps }) => {
   const connectToWebhook = async () => {
     setLoading(true);
     try {
-      await HttpService.setPageWebhook(page.id, true);
-      setPage({ ...page, isWebHookConnected: true });
-      Toaster.success("Successfully Connected Webhook");
+      // await HttpService.setPageWebhook(page.id, true);
+      const user = await AuthApp.currentUser?.getIdToken();
+      if (!currentOrganization) return;
+      if (!user) return;
+      await SourceService.changeWebhook({
+        pageId: page.id,
+        enable: true,
+        organizationId: currentOrganization?.id,
+        firebaseId: user,
+      }).then(async () => {
+        setPage({ ...page, isWebhookConnected: true });
+        Toaster.success("Successfully Connected Webhook");
+      });
     } catch (e) {
       Toaster.error("Error Connecting Webhook");
     } finally {
@@ -62,8 +79,23 @@ const ConnectedPage: React.FC<ConnectedPageProps> = ({ page: pageProps }) => {
   const syncChat = async (all: boolean) => {
     setLoading(true);
     try {
-      const res = await HttpService.syncPageMessages(page.id, { all: all });
-      Toaster.success(res.message);
+      // const res = await HttpService.syncPageMessages(page.id, { all: all });
+      const user = await AuthApp.currentUser?.getIdToken();
+
+      if (!currentOrganization) return;
+      if (!user) return;
+
+      const res = await SourceService.syncChat({
+        pageId: page.id,
+        organizationId: currentOrganization?.id,
+        firebaseId: user,
+      })
+        .then(() => {
+          Toaster.success("Successfully Synced Chat");
+        })
+        .catch((e) => {
+          console.log(e);
+        });
     } catch (e) {
       Toaster.error("Something went wrong!");
     } finally {
@@ -74,8 +106,22 @@ const ConnectedPage: React.FC<ConnectedPageProps> = ({ page: pageProps }) => {
   const disConnectWebhook = async () => {
     setLoading(true);
     try {
-      await HttpService.setPageWebhook(page.id, false);
-      setPage({ ...page, isWebHookConnected: false });
+      // await HttpService.setPageWebhook(page.ID, false);
+      const user = await AuthApp.currentUser?.getIdToken();
+      if (!currentOrganization) return;
+      if (!user) return;
+      await SourceService.changeWebhook({
+        pageId: page.id,
+        enable: false,
+        organizationId: currentOrganization?.id,
+        firebaseId: user,
+      })
+        .then(async () => {
+          setPage({ ...page, isWebhookConnected: false });
+        })
+        .catch((e) => {
+          console.log(e);
+        });
       Toaster.success("Successfully Disconnected Webhook");
     } catch (e) {
       Toaster.error("Error Disconnecting Webhook");
@@ -91,11 +137,6 @@ const ConnectedPage: React.FC<ConnectedPageProps> = ({ page: pageProps }) => {
     setMenuVisible(false);
   };
 
-  const openAssistantModal = () => {
-    setAssistantModalVisible(true);
-    setMenuVisible(false);
-  };
-
   return (
     <>
       <Card style={styles.card}>
@@ -104,18 +145,16 @@ const ConnectedPage: React.FC<ConnectedPageProps> = ({ page: pageProps }) => {
             <Text style={styles.title}>{page.name}</Text>
             <Text style={styles.link} onPress={() => handleExpandEvents(page)}>
               <Text style={styles.underline}>
-                {page.isInstagram ? "@" + page.userName : null}
+                {page.userName ? "@" + page.userName : ""}
               </Text>
             </Text>
           </View>
           <View style={styles.rightSection}>
             <Text style={styles.owner}>{page.ownerName}</Text>
-            <Text style={styles.platform}>
-              {page.isInstagram ? "Instagram" : "Facebook"}
-            </Text>
+            <Text style={styles.platform}>{page.sourceType}</Text>
           </View>
           <View>
-            {!page.isWebHookConnected ? (
+            {!page.isWebhookConnected ? (
               <TouchableOpacity
                 onPress={() =>
                   openConfirmationModal(
@@ -131,29 +170,29 @@ const ConnectedPage: React.FC<ConnectedPageProps> = ({ page: pageProps }) => {
           <View>
             <IconButton icon="send" style={styles.iconButton} />
           </View>
-          <Menu
-            visible={menuVisible}
-            onDismiss={toggleMenu}
-            anchor={
-              <IconButton
-                icon="dots-vertical"
-                onPress={toggleMenu}
-                style={styles.iconButton}
-              />
-            }
-            contentStyle={{ marginTop: 40, backgroundColor: "#fff" }}
-          >
-            <Menu.Item onPress={openAssistantModal} title="Change Assistant" />
-            <Menu.Item
-              onPress={() =>
-                openConfirmationModal(
-                  "Are you sure you want to sync all chats?",
-                  () => syncChat(true)
-                )
+          {page.isWebhookConnected && (
+            <Menu
+              visible={menuVisible}
+              onDismiss={toggleMenu}
+              anchor={
+                <IconButton
+                  icon="dots-vertical"
+                  onPress={toggleMenu}
+                  style={styles.iconButton}
+                />
               }
-              title="Sync all Chat"
-            />
-            <Menu.Item
+              contentStyle={{ marginTop: 40, backgroundColor: "#fff" }}
+            >
+              <Menu.Item
+                onPress={() =>
+                  openConfirmationModal(
+                    "Are you sure you want to sync all chats?",
+                    () => syncChat(true)
+                  )
+                }
+                title="Sync all Chat"
+              />
+              {/* <Menu.Item
               onPress={() =>
                 openConfirmationModal(
                   "Are you sure you want to sync missing chats?",
@@ -161,17 +200,18 @@ const ConnectedPage: React.FC<ConnectedPageProps> = ({ page: pageProps }) => {
                 )
               }
               title="Sync Missing Chat"
-            />
-            <Menu.Item
-              onPress={() =>
-                openConfirmationModal(
-                  "Are you sure you want to disconnect the webhook?",
-                  disConnectWebhook
-                )
-              }
-              title="Disconnect Webhook"
-            />
-          </Menu>
+            /> */}
+              <Menu.Item
+                onPress={() =>
+                  openConfirmationModal(
+                    "Are you sure you want to disconnect the webhook?",
+                    disConnectWebhook
+                  )
+                }
+                title="Disconnect Webhook"
+              />
+            </Menu>
+          )}
         </View>
         {loading && (
           <View style={styles.loadingOverlay}>
@@ -189,14 +229,6 @@ const ConnectedPage: React.FC<ConnectedPageProps> = ({ page: pageProps }) => {
         }}
         handleCancel={() => setConfirmationModalVisible(false)}
       />
-
-      {assistantModalVisible && (
-        <AssistantModal
-          page={page}
-          setPage={setPage}
-          handleCloseModal={() => setAssistantModalVisible(false)}
-        />
-      )}
     </>
   );
 };

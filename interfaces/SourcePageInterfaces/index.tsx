@@ -1,13 +1,16 @@
+import { SourceType } from "@/shared-libs/firestore/crowdy-chat/models/sources";
+
 export interface PageUnit {
   id: string;
   name: string;
   userName: string;
   ownerName: string;
   isInstagram: boolean;
-  isWebHookConnected: boolean;
+  isWebhookConnected: boolean;
   reminderTimeMultiplier: number;
   replyTimeMin: number;
   replyTimeMax: number;
+  sourceType: SourceType;
   assistantId: string;
 }
 
