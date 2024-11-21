@@ -60,13 +60,6 @@ const Leads = () => {
     );
 
     const leadData = leads.find((lead) => lead.id === leadId);
-    console.log({
-      createdAt: leadData.createdAt,
-      sourceType: leadData.sourceType,
-      sourceId: leadData.sourceId,
-      updatedAt: new Date().getTime(),
-      status: 30,
-    });
 
     const leadUpdate = await updateDoc(leadRef, {
       createdAt: leadData.createdAt,
@@ -197,16 +190,6 @@ const Leads = () => {
                     style={styles.checkboxContainer}
                     textStyle={styles.checkboxText}
                   >
-                    {/* <Checkbox
-                    status={
-                      selectedLeads?.length === leads?.length
-                        ? "checked"
-                        : "unchecked"
-                    }
-                    onPress={() => {
-                      handleSelectAll();
-                    }}
-                  /> */}
                     <ExpoCheckbox
                       value={selectedLeads?.length === leads?.length}
                       onValueChange={() => {
@@ -243,16 +226,6 @@ const Leads = () => {
                       style={styles.checkboxContainer}
                       textStyle={styles.checkboxText}
                     >
-                      {/* <Checkbox
-                      status={
-                        selectedLeads?.includes(lead.id)
-                          ? "checked"
-                          : "unchecked"
-                      }
-                      onPress={() => {
-                        handleSelectLead(lead.id);
-                      }}
-                    /> */}
                       <ExpoCheckbox
                         value={selectedLeads?.includes(lead.id)}
                         onValueChange={() => {
