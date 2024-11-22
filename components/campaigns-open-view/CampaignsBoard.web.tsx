@@ -16,6 +16,7 @@ import { useOrganizationContext } from "@/contexts";
 import { collection, getDocs } from "firebase/firestore";
 import { FirestoreDB } from "@/shared-libs/utilities/firestore";
 import { ConversationService } from "@/services";
+import EmptyState from "../EmptyState";
 
 interface CampaignsBoardWebProps {
   getAllConversations: () => any;
@@ -36,6 +37,7 @@ const CampaignsBoardWeb: React.FC<CampaignsBoardWebProps> = (
   const [columns, setColumns] = useState<CampaignsBoardColumn>([]);
   const { pageID, campaignId } = useLocalSearchParams();
   const { currentOrganization } = useOrganizationContext();
+  const [loading, setLoading] = useState<boolean>(true);
 
   const changePhase = async (igsid: string, newPhase: number) => {
     const user = await AuthApp.currentUser?.getIdToken();
@@ -107,12 +109,12 @@ const CampaignsBoardWeb: React.FC<CampaignsBoardWebProps> = (
   };
 
   useEffect(() => {
-    if (pageID) {
-      props.getAllConversations().then(async (res: any) => {
-        setAllConversation(res);
-        setColumnsAll(res);
-      });
-    }
+    setLoading(true);
+    props.getAllConversations().then(async (res: any) => {
+      setAllConversation(res);
+      setColumnsAll(res);
+      setLoading(false);
+    });
     //whenever props refresh, we need to update the columns
   }, [pageID, props.refreshKey]);
 
@@ -122,31 +124,7 @@ const CampaignsBoardWeb: React.FC<CampaignsBoardWebProps> = (
     }
   }, [allConversation]);
 
-  if (!pageID) {
-    return (
-      <View
-        style={{
-          flex: 1,
-          justifyContent: "center",
-          alignItems: "center",
-          backgroundColor: Colors(theme).background,
-        }}
-      >
-        <Text
-          style={{
-            fontSize: 18,
-            color: Colors(theme).text,
-            textAlign: "center",
-            paddingHorizontal: 20,
-          }}
-        >
-          Please select a source to view conversations.
-        </Text>
-      </View>
-    );
-  }
-
-  if (allConversation && allConversation.length === 0) {
+  if (loading) {
     return (
       <View
         style={{
@@ -154,7 +132,25 @@ const CampaignsBoardWeb: React.FC<CampaignsBoardWebProps> = (
           justifyContent: "center",
         }}
       >
-        <ActivityIndicator size="large" />
+        <ActivityIndicator size="large" color={Colors(theme).primary} />
+      </View>
+    );
+  }
+  if (!loading && allConversation && allConversation.length === 0) {
+    return (
+      <View
+        style={{
+          flexGrow: 1,
+          justifyContent: "center",
+        }}
+      >
+        <EmptyState
+          buttonName="Create a conversation"
+          image={require("@/assets/images/empty-illusatration.png")}
+          message="No conversations found"
+          buttonPresent={false}
+          onPress={() => {}}
+        />
       </View>
     );
   }
