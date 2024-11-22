@@ -128,7 +128,7 @@ const Sources = () => {
               </View>
             ) : (
               <EmptyState
-                image="../../../assets/images/empty-illusatration.png"
+                image={require("@/assets/images/empty-illusatration.png")}
                 message="No connected pages"
                 buttonPresent={true}
                 onPress={handleAddSource}

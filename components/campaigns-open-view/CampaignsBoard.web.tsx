@@ -146,7 +146,7 @@ const CampaignsBoardWeb: React.FC<CampaignsBoardWebProps> = (
       >
         <EmptyState
           buttonName="Create a conversation"
-          image="../../assets/images/empty-illusatration.png"
+          image={require("@/assets/images/empty-illusatration.png")}
           message="No conversations found"
           buttonPresent={false}
           onPress={() => {}}

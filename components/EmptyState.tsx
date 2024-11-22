@@ -4,6 +4,7 @@ import { router } from "expo-router";
 import { useTheme } from "@react-navigation/native";
 import stylesFn from "@/styles/campaigns/CampaignsList.styles";
 import { Text, View } from "./Themed";
+import { imageUrl } from "@/helpers/imageurl";
 
 interface EmptyStateProps {
   message: string;
@@ -19,7 +20,7 @@ const EmptyState: React.FC<EmptyStateProps> = (props: EmptyStateProps) => {
 
   return (
     <View style={styles.emptyStateContainer}>
-      <Image source={{ uri: props.image }} style={styles.emptyImage} />
+      <Image source={imageUrl(props.image)} style={styles.emptyImage} />
       <Text style={styles.emptyText}>{props.message}</Text>
       {props.buttonPresent && (
         <Button onPress={props.onPress}>{props.buttonName}</Button>

@@ -99,7 +99,7 @@ const Campaigns = () => {
               />
             ) : (
               <EmptyState
-                image="../../../assets/images/empty-illusatration.png"
+                image={require("@/assets/images/empty-illusatration.png")}
                 message="No campaigns found"
                 buttonPresent={true}
                 onPress={() => router.push("/campaigns/create")}
@@ -121,7 +121,7 @@ const Campaigns = () => {
               />
             ) : (
               <EmptyState
-                image="../../../assets/images/empty-illusatration.png"
+                image={require("@/assets/images/empty-illusatration.png")}
                 message="No campaigns found"
                 buttonPresent={true}
                 onPress={() => router.push("/campaigns/create")}

@@ -7,12 +7,12 @@ export const stylesFn = (theme: Theme) =>
   StyleSheet.create({
     container: {
       flex: 1,
-      backgroundColor: "#FFF",
+      backgroundColor: Colors(theme).background,
       padding: StyleConstant.paddingHorizontalForScreen,
     },
     tableContainer: {
       marginBottom: 20,
-      backgroundColor: "#ffffff",
+      backgroundColor: Colors(theme).background,
       borderRadius: 8,
       overflow: "hidden",
       shadowOffset: { width: 0, height: 2 },

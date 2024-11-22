@@ -161,7 +161,7 @@ const Leads = () => {
             message="No leads found"
             onPress={showCreateLeadModal}
             buttonPresent={true}
-            image="../../../assets/images/empty-illusatration.png"
+            image={require("@/assets/images/empty-illusatration.png")}
             buttonName="Create Lead"
           />
         ) : (
