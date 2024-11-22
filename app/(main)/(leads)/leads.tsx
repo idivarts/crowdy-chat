@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { TouchableOpacity, ScrollView } from "react-native";
+import { TouchableOpacity, ScrollView, ActivityIndicator } from "react-native";
 import { Appbar, DataTable, Portal, TextInput } from "react-native-paper";
 
 import CreateLeadModal from "@/components/leads/CreateLeadModal";
@@ -8,38 +8,28 @@ import Colors from "@/constants/Colors";
 import { DrawerToggle } from "@/components/ui";
 import { useBreakPoints } from "@/hooks";
 import ExpoCheckbox from "expo-checkbox/build/ExpoCheckbox";
-import { useTheme } from "@react-navigation/native";
+import { useIsFocused, useTheme } from "@react-navigation/native";
 import stylesFn from "@/styles/leads/LeadsTable.styles";
 import { Text, View } from "@/components/Themed";
 import { collection, doc, getDocs, updateDoc } from "firebase/firestore";
 import { FirestoreDB } from "@/shared-libs/utilities/firestore";
 import { useOrganizationContext } from "@/contexts";
+import { StyleConstant } from "@/constants/Style";
+import EmptyState from "@/components/EmptyState";
 
 const Leads = () => {
   const theme = useTheme();
   const styles = stylesFn(theme);
   const [isCreateLeadVisible, setCreateLeadVisible] = useState(false);
   const [isCreateTagVisible, setCreateTagVisible] = useState(false);
-  const [leads, setLeads] = useState<any[]>([
-    {
-      id: "1",
-      name: "John Doe",
-      source: "Facebook",
-      campaigns: ["Campaign 1"],
-      image: "https://via.placeholder.com/50",
-    },
-    {
-      id: "2",
-      name: "Jane Smith",
-      source: "Instagram",
-      campaigns: ["Campaign 2"],
-      image: "https://via.placeholder.com/50",
-    },
-  ]);
+  const [leads, setLeads] = useState<any[]>([]);
   const [selectedLeads, setSelectedLeads] = useState<any>([]);
   const [filteredLeads, setFilteredLeads] = useState<any[]>(leads);
   const [searchQuery, setSearchQuery] = useState("");
   const { lg } = useBreakPoints();
+  const [loadingLeads, setLoadingLeads] = useState<{ [key: string]: boolean }>(
+    {}
+  );
   const { currentOrganization } = useOrganizationContext();
 
   const showCreateLeadModal = () => setCreateLeadVisible(true);
@@ -48,37 +38,46 @@ const Leads = () => {
   const showCreateTagModal = () => setCreateTagVisible(true);
   const hideCreateTagModal = () => setCreateTagVisible(false);
 
-  const handleDeleteLead = async (leadId: string) => {
-    if (!currentOrganization) return;
-    setLeads(leads.filter((lead) => lead.id === leadId));
-    const leadRef = doc(
-      FirestoreDB,
-      "organizations",
-      currentOrganization?.id,
-      "leads",
-      leadId
-    );
+  const modifyLeadStatus = async (leadId: string) => {
+    try {
+      setLoadingLeads((prev) => ({ ...prev, [leadId]: true }));
 
-    const leadData = leads.find((lead) => lead.id === leadId);
+      if (!currentOrganization) return;
 
-    const leadUpdate = await updateDoc(leadRef, {
-      createdAt: leadData.createdAt,
-      sourceType: leadData.sourceType,
-      sourceId: leadData.sourceId,
-      updatedAt: new Date().getTime(),
-      status: 30,
-    });
-    setLeads(
-      leads.map((lead) => {
-        if (lead.id === leadId) {
-          return {
-            ...lead,
-            status: 30,
-          };
-        }
-        return lead;
-      })
-    );
+      const leadRef = doc(
+        FirestoreDB,
+        "organizations",
+        currentOrganization?.id,
+        "leads",
+        leadId
+      );
+      const leadData = leads.find((lead) => lead.id === leadId);
+      if (!leadData) return;
+
+      const updatedStatus = leadData.status === 1 ? 30 : 1;
+
+      await updateDoc(leadRef, {
+        ...leadData,
+        status: updatedStatus,
+        updatedAt: new Date().getTime(),
+      });
+
+      const updatedLeads = leads.map((lead) =>
+        lead.id === leadId ? { ...lead, status: updatedStatus } : lead
+      );
+
+      setLeads(updatedLeads);
+
+      setFilteredLeads((prevFilteredLeads) =>
+        prevFilteredLeads.map((lead) =>
+          lead.id === leadId ? { ...lead, status: updatedStatus } : lead
+        )
+      );
+    } catch (error) {
+      console.error("Error updating lead:", error);
+    } finally {
+      setLoadingLeads((prev) => ({ ...prev, [leadId]: false }));
+    }
   };
 
   const handleSelectLead = (leadId: string) => {
@@ -119,14 +118,19 @@ const Leads = () => {
     );
     const leadData = await getDocs(leadCols);
     const leads = leadData.docs.map((doc) => doc.data());
-
     setLeads(leads);
+    setFilteredLeads(leads);
   };
 
   useEffect(() => {
     fetchLeads();
-    setFilteredLeads(leads);
-  }, [leads]);
+  }, [, useIsFocused()]);
+
+  useEffect(() => {
+    if (!searchQuery) {
+      setFilteredLeads(leads);
+    }
+  }, [leads, searchQuery]);
 
   return (
     <View
@@ -148,27 +152,18 @@ const Leads = () => {
 
       <View
         style={{
-          padding: 16,
+          padding: StyleConstant.paddingHorizontalForScreen,
           flex: 1,
         }}
       >
         {!leads?.length ? (
-          <View
-            style={{
-              flex: 1,
-              justifyContent: "center",
-              alignItems: "center",
-            }}
-          >
-            <Text
-              style={{
-                fontSize: 18,
-                fontWeight: "400",
-              }}
-            >
-              No leads yet
-            </Text>
-          </View>
+          <EmptyState
+            message="No leads found"
+            onPress={showCreateLeadModal}
+            buttonPresent={true}
+            image="../../../assets/images/empty-illusatration.png"
+            buttonName="Create Lead"
+          />
         ) : (
           <View
             style={{
@@ -221,7 +216,10 @@ const Leads = () => {
                 </DataTable.Header>
 
                 {filteredLeads.map((lead, index) => (
-                  <DataTable.Row key={index} style={styles.rowContainer}>
+                  <DataTable.Row
+                    key={index}
+                    style={[styles.rowContainer]} // Differentiate visually
+                  >
                     <DataTable.Cell
                       style={styles.checkboxContainer}
                       textStyle={styles.checkboxText}
@@ -251,23 +249,21 @@ const Leads = () => {
                     >
                       {lead.id}
                     </DataTable.Cell>
-                    <DataTable.Cell
-                      style={styles.actionContainer}
-                      textStyle={styles.actionText}
-                    >
-                      {/* <Button
-                      mode="contained"
-                      onPress={() => handleDeleteLead(lead.id)}
-                    >
-                      Delete
-                    </Button> */}
-                      <TouchableOpacity
-                        onPress={() => handleDeleteLead(lead.id)}
-                      >
-                        <Text style={styles.actionText}>
-                          {lead.status === 1 ? "Disable" : "Enable"}
-                        </Text>
-                      </TouchableOpacity>
+                    <DataTable.Cell numeric>
+                      {loadingLeads[lead.id] ? (
+                        <ActivityIndicator
+                          size="small"
+                          color={Colors(theme).primary}
+                        />
+                      ) : (
+                        <TouchableOpacity
+                          onPress={() => modifyLeadStatus(lead.id)}
+                        >
+                          <Text style={{ color: Colors(theme).primary }}>
+                            {lead.status === 1 ? "Disable" : "Enable"}
+                          </Text>
+                        </TouchableOpacity>
+                      )}
                     </DataTable.Cell>
                   </DataTable.Row>
                 ))}

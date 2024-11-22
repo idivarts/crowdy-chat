@@ -22,7 +22,7 @@ const CampaignsOpenViewFilter = (props: any) => {
   const theme = useTheme();
   const { pageID } = useLocalSearchParams<any>();
   const [value, setValue] = useState(pageID ? pageID : "all");
-  const [pages, setPages] = useState<any[]>([]);
+  const [pages, setPages] = useState<ISources[]>([]);
   const [menuVisible, setMenuVisible] = useState(false);
   const [loadingSourceId, setLoadingSourceId] = useState<string | null>(null);
   const campaignId = props.campaignId;
@@ -186,7 +186,10 @@ const CampaignsOpenViewFilter = (props: any) => {
                 : alert("This page is not connected to this campaign")
             }
           >
-            <Menu.Item key={page.id} title={page.name} />
+            <Menu.Item
+              key={page.id}
+              title={page.name + " (" + page.sourceType + ")"}
+            />
           </TouchableOpacity>
         </View>
       ))}

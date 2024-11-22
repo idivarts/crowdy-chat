@@ -6,7 +6,7 @@ import AppLayout from "@/layouts/app-layout";
 import { View } from "@/components/Themed";
 import { DrawerToggle } from "@/components/ui";
 import { useBreakPoints } from "@/hooks";
-import CampaignsEmptyState from "@/components/campaigns/CampaignsEmptyState";
+import EmptyState from "@/components/EmptyState";
 import CampaignsFilledState from "@/components/campaigns/CampaignsFilledState";
 // import TextInput from "@/components/ui/text-input/TextInput";
 import { TextInput } from "react-native-paper";
@@ -34,7 +34,9 @@ const Campaigns = () => {
       setFilteredCampaigns(campaigns);
     } else {
       const filtered = campaigns.filter((campaign) =>
-        campaign.name.toLowerCase().includes(query.toLowerCase())
+        campaign.name
+          ? campaign.name.toLowerCase().includes(query.toLowerCase())
+          : false
       );
       setFilteredCampaigns(filtered);
     }
@@ -77,12 +79,14 @@ const Campaigns = () => {
         />
       </Appbar.Header>
       <View style={styles.container}>
-        <TextInput
-          label="Search Campaigns"
-          mode="outlined"
-          onChangeText={handleSearch}
-          value={searchQuery}
-        />
+        {campaigns.length > 0 && (
+          <TextInput
+            label="Search Campaigns"
+            mode="outlined"
+            onChangeText={handleSearch}
+            value={searchQuery}
+          />
+        )}
         {Platform.OS === "web" && (
           <View style={styles.campaignsSection}>
             {filteredCampaigns.length > 0 ? (
@@ -91,9 +95,16 @@ const Campaigns = () => {
                 renderItem={({ item }) => (
                   <CampaignsFilledState campaigns={filteredCampaigns} />
                 )}
+                showsVerticalScrollIndicator={false}
               />
             ) : (
-              <CampaignsEmptyState />
+              <EmptyState
+                image="../../../assets/images/empty-illusatration.png"
+                message="No campaigns found"
+                buttonPresent={true}
+                onPress={() => router.push("/campaigns/create")}
+                buttonName="Create a Campaign"
+              />
             )}
           </View>
         )}
@@ -106,9 +117,16 @@ const Campaigns = () => {
                 renderItem={({ item }) => (
                   <CampaignsFilledState campaigns={filteredCampaigns} />
                 )}
+                showsVerticalScrollIndicator={false}
               />
             ) : (
-              <CampaignsEmptyState />
+              <EmptyState
+                image="../../../assets/images/empty-illusatration.png"
+                message="No campaigns found"
+                buttonPresent={true}
+                onPress={() => router.push("/campaigns/create")}
+                buttonName="Create a Campaign"
+              />
             )}
           </View>
         )}

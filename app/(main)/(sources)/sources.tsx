@@ -15,13 +15,14 @@ import { HttpService } from "@/services/httpService";
 import Toaster from "@/shared-uis/components/toaster/Toaster";
 import { PageUnit } from "@/interfaces/SourcePageInterfaces";
 import FacebookLoginButton from "@/components/sources/ConnectWithFacebook";
-import { useTheme } from "@react-navigation/native";
+import { useIsFocused, useTheme } from "@react-navigation/native";
 import { Text, View } from "@/components/Themed";
 import Colors from "@/constants/Colors";
 import { collection, getDocs } from "firebase/firestore";
 import { FirestoreDB } from "@/shared-libs/utilities/firestore";
 import { useOrganizationContext } from "@/contexts";
 import { FlatList } from "react-native";
+import EmptyState from "@/components/EmptyState";
 
 const Sources = () => {
   const theme = useTheme();
@@ -36,14 +37,10 @@ const Sources = () => {
   const [emailUsername, setEmailUsername] = useState("");
   const [myPages, setMyPages] = useState<PageUnit[]>([]);
   const [otherPages, setOtherPages] = useState<PageUnit[]>([]);
+  const isFocused = useIsFocused();
 
-  const getPages = async (userId: string) => {
+  const getPages = async () => {
     try {
-      // const response = await axios.get("https://backend.trendshub.co.in/business/pages?userId=" + (userId ? userId : "TEMP"))
-      // let pData = await HttpService.getPages(userId);
-      // setMyPages(pData.myPages);
-      // setOtherPages(pData.otherPages);
-
       if (!currentOrganization) {
         return;
       }
@@ -62,14 +59,13 @@ const Sources = () => {
       setOtherPages(sourceData);
       setLoading(false);
     } catch (e) {
-      // addToast("Something went wrong while fetching pages", { appearance: "error" })
       Toaster.error("Something went wrong while fetching pages");
     }
   };
 
   useEffect(() => {
-    getPages("TEMP");
-  }, []);
+    getPages();
+  }, [, isFocused]);
 
   const handleAddSource = () => {
     setModalVisible(true);
@@ -100,9 +96,6 @@ const Sources = () => {
         <Appbar.Action icon="plus" onPress={handleAddSource} />
       </Appbar.Header>
       <View style={{ flex: 1, padding: 20 }}>
-        <Text style={{ fontSize: 20, fontWeight: "bold", marginVertical: 10 }}>
-          Connected Pages
-        </Text>
         <View
           style={{
             alignItems: "center",
@@ -111,16 +104,37 @@ const Sources = () => {
           }}
         >
           {loading && <ActivityIndicator animating={true} color="#000" />}
-          {!loading && (
-            <FlatList
-              data={otherPages}
-              renderItem={({ item, index }) => (
-                <ConnectedPage page={item} key={index} />
-              )}
-              keyExtractor={(item) => item.id}
-              style={{ width: "100%", paddingHorizontal: 30 }}
-            />
-          )}
+          {!loading &&
+            (otherPages.length !== 0 ? (
+              <View style={{ width: "100%", flex: 1 }}>
+                <Text
+                  style={{
+                    fontSize: 20,
+                    fontWeight: "bold",
+                    marginVertical: 10,
+                  }}
+                >
+                  Connected Pages
+                </Text>
+                <FlatList
+                  data={otherPages}
+                  renderItem={({ item, index }) => (
+                    <ConnectedPage page={item} key={index} />
+                  )}
+                  keyExtractor={(item) => item.id}
+                  style={{ width: "100%" }}
+                  showsVerticalScrollIndicator={false}
+                />
+              </View>
+            ) : (
+              <EmptyState
+                image="../../../assets/images/empty-illusatration.png"
+                message="No connected pages"
+                buttonPresent={true}
+                onPress={handleAddSource}
+                buttonName="Connect a Page"
+              />
+            ))}
         </View>
       </View>
       <Portal>
@@ -132,7 +146,7 @@ const Sources = () => {
           <View style={styles.modalContent}>
             <Text style={styles.modalTitle}>Connect to a Source</Text>
             <FacebookLoginButton
-              onFacebookLogin={(userId) => getPages(userId ? userId : "TEMP")}
+              onFacebookLogin={(userId) => getPages()}
               isConnected={false}
             />
           </View>

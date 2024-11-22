@@ -6,7 +6,8 @@ import CampaignsOpenViewFilter from "./CampaignsOpenViewFilter";
 import { useTheme } from "@react-navigation/native";
 import stylesFn from "@/styles/campaigns/CampaignsOpenViewHeader.styles";
 import { View } from "../Themed";
-import { Platform } from "react-native";
+import { Platform, Pressable } from "react-native";
+import { router } from "expo-router";
 
 interface CampaignsOpenViewHeaderProps {
   tabView: TabView;
@@ -28,7 +29,23 @@ const CampaignsOpenViewHeader: React.FC<CampaignsOpenViewHeaderProps> = ({
 
   return (
     <Appbar.Header statusBarHeight={0}>
-      <GoBackButton />
+      <Pressable
+        key={0}
+        onPress={() => router.navigate("/(campaigns)/campaigns")}
+      >
+        <View
+          style={{
+            display: "flex",
+            flexDirection: "row",
+            alignItems: "center",
+          }}
+        >
+          <IconButton
+            icon="arrow-left"
+            onPress={() => router.navigate("/(campaigns)/campaigns")}
+          />
+        </View>
+      </Pressable>
 
       <View style={styles.container}>
         {Platform.OS === "web" && (
