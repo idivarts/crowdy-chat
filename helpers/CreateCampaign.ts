@@ -55,7 +55,7 @@ export const createCampaign = async (
 
   const campaignDocRef = await addDoc(campaignColRef, campaignData);
 
-  const leadStages = stages.map((stage) => ({
+  const leadStages = stages.map((stage, index) => ({
     organizationId: organizationId,
     campaignId: campaignDocRef.id,
     name: stage.name,
@@ -68,6 +68,7 @@ export const createCampaign = async (
     exampleConversations: stage.exampleConversations,
     stopConversation: stage.stopConversation,
     leadConversion: stage.leadConversion,
+    index: index,
   }));
 
   const leadStagesColRef = collection(

@@ -57,7 +57,6 @@ const RenderTable = ({
             name={sortOrder === "asc" ? "caret-up" : "caret-down"}
             size={16}
             color={Colors(theme).primary}
-            style={styles.sortIcon}
           />
         )}
       </View>

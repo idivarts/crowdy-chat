@@ -127,7 +127,10 @@ const CampaignListView: React.FC<CampaignListViewProps> = (
   const groupedTables = () => {
     if (groupBy === "phase") {
       return columns.map((column) => (
-        <View key={column.id} style={{ backgroundColor: "#fff" }}>
+        <View
+          key={column.id}
+          style={{ backgroundColor: Colors(theme).background, width: "100%" }}
+        >
           <RenderTable
             conversations={column.tasks}
             title={column.title}
@@ -148,7 +151,10 @@ const CampaignListView: React.FC<CampaignListViewProps> = (
       }, {} as Record<string, IConversationUnit[]>);
 
       return Object.keys(groupedBySource).map((source) => (
-        <View key={source} style={{ backgroundColor: "#fff" }}>
+        <View
+          key={source}
+          style={{ backgroundColor: Colors(theme).background, width: "100%" }}
+        >
           <RenderTable
             conversations={groupedBySource[source]}
             title={source}
@@ -171,30 +177,6 @@ const CampaignListView: React.FC<CampaignListViewProps> = (
     );
   };
 
-  if (!pageID) {
-    return (
-      <View
-        style={{
-          flex: 1,
-          justifyContent: "center",
-          alignItems: "center",
-          backgroundColor: Colors(theme).background,
-        }}
-      >
-        <Text
-          style={{
-            fontSize: 18,
-            color: Colors(theme).text,
-            textAlign: "center",
-            paddingHorizontal: 20,
-          }}
-        >
-          Please select a source to view conversations.
-        </Text>
-      </View>
-    );
-  }
-
   return (
     <ScrollView>
       <View style={styles.container}>
@@ -202,7 +184,7 @@ const CampaignListView: React.FC<CampaignListViewProps> = (
           <Text>Group by: </Text>
           <Menu
             visible={menuVisible}
-            style={{ backgroundColor: "#fff" }}
+            style={{ backgroundColor: Colors(theme).background }}
             onDismiss={() => setMenuVisible(false)}
             anchor={
               <IconButton
