@@ -22,7 +22,7 @@ const ConversationCard: React.FC<IProps> = (props) => {
     >
       <View
         style={{
-          backgroundColor: Colors(theme).white,
+          backgroundColor: Colors(theme).background,
           borderColor: props.task.status > 0 ? "#11ca27" : "#e2e4e6",
           borderRadius: 10,
           borderWidth: 1,

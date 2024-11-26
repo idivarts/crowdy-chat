@@ -1,3 +1,4 @@
+import Colors from "@/constants/Colors";
 import { StyleConstant } from "@/constants/Style";
 import { Theme } from "@react-navigation/native";
 import { StyleSheet } from "react-native";
@@ -11,12 +12,14 @@ export const stylesFn = (theme: Theme) =>
       padding: 20,
       borderRadius: 10,
       width: 300,
+      backgroundColor: Colors(theme).background,
     },
     modalTitle: {
       fontSize: 18,
       fontWeight: "bold",
       marginBottom: 20,
       textAlign: "center",
+      color: Colors(theme).text,
     },
     modalButton: {
       marginVertical: 10,

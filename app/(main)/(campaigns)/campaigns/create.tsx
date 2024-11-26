@@ -7,7 +7,6 @@ import {
   stepThreeSchema,
 } from "@/components/schemas/CampaignCreateSchema";
 import { CampaignStepOne } from "@/components/modals/CreateCampaignStages/CampaignStageOne";
-import { ICampaigns } from "@/shared-libs/firestore/crowdy-chat/models/campaigns";
 import { CampaignStepTwo } from "@/components/modals/CreateCampaignStages/CampaignStageTwo";
 import { CampaignStepThree } from "@/components/modals/CreateCampaignStages/CampaignStageThree";
 import Toaster from "@/shared-uis/components/toaster/Toaster";
@@ -17,11 +16,7 @@ import { useOrganizationContext } from "@/contexts";
 import { Stage } from "@/components/campaigns/LeadStageTypes";
 import { updateCampaign } from "@/helpers/UpdateCampaign";
 import { createCampaign } from "@/helpers/CreateCampaign";
-import {
-  IEditCampaign,
-  ICollectible,
-  IEditLeadStage,
-} from "@/interfaces/EditCampaignInterfaces";
+import { IEditCampaign } from "@/interfaces/EditCampaignInterfaces";
 import { useTheme } from "@react-navigation/native";
 import { View } from "@/components/Themed";
 import Colors from "@/constants/Colors";

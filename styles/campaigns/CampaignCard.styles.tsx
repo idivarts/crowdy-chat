@@ -53,6 +53,7 @@ const stylesFn = (theme: Theme) =>
     },
     copyIdIcon: {
       marginTop: 4,
+      color: Colors(theme).text,
     },
     cardBody: {
       flexDirection: "row",

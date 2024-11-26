@@ -12,6 +12,7 @@ export const stylesFn = (theme: Theme) =>
     },
     searchInput: {
       marginBottom: 16,
+      backgroundColor: Colors(theme).background,
     },
     scrollView: {
       paddingBottom: 160,
@@ -34,9 +35,10 @@ export const stylesFn = (theme: Theme) =>
     },
     input: {
       marginBottom: 10,
+      backgroundColor: Colors(theme).background,
     },
     chipContainer: {
-      backgroundColor: Colors(theme).aliceBlue,
+      backgroundColor: Colors(theme).background,
       flexDirection: "row",
       flexWrap: "wrap",
       marginVertical: 10,

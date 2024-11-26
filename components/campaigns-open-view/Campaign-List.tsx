@@ -13,6 +13,7 @@ import { AuthApp } from "@/shared-libs/utilities/auth";
 import { useOrganizationContext } from "@/contexts";
 import { useLocalSearchParams } from "expo-router";
 import Colors from "@/constants/Colors";
+import ChatModal from "./ChatModal";
 
 type ChatBoard = {
   id: number;
@@ -40,6 +41,9 @@ const CampaignListView: React.FC<CampaignListViewProps> = (
   const [groupBy, setGroupBy] = useState<string | null>(null);
   const [groupBySource, setGroupBySource] = useState<string | null>(null);
   const [menuVisible, setMenuVisible] = useState(false);
+  const [currentConversation, setCurrentConversation] = useState<
+    IConversationUnit | undefined
+  >();
   const { campaignId, pageID } = useLocalSearchParams();
 
   const fetchColumnsAndPhaseMap = async () => {
@@ -136,6 +140,7 @@ const CampaignListView: React.FC<CampaignListViewProps> = (
             title={column.title}
             columns={columns}
             handlePhaseChange={handlePhaseChange}
+            setCurrentConversation={setCurrentConversation}
           />
           <Divider style={styles.divider} />
         </View>
@@ -160,6 +165,7 @@ const CampaignListView: React.FC<CampaignListViewProps> = (
             title={source}
             columns={columns}
             handlePhaseChange={handlePhaseChange}
+            setCurrentConversation={setCurrentConversation}
           />
           <Divider style={styles.divider} />
         </View>
@@ -173,12 +179,22 @@ const CampaignListView: React.FC<CampaignListViewProps> = (
         handlePhaseChange={handlePhaseChange}
         title="All Conversations"
         key={"all"}
+        setCurrentConversation={setCurrentConversation}
       />
     );
   };
 
   return (
     <ScrollView>
+      {currentConversation && (
+        <ChatModal
+          igsid={currentConversation?.id || ""}
+          campaignId={campaignId as string}
+          onCloseModal={() => setCurrentConversation(undefined)}
+          conversation={currentConversation}
+          theme={theme}
+        />
+      )}
       <View style={styles.container}>
         <View style={styles.groupByContainer}>
           <Text>Group by: </Text>
@@ -200,6 +216,8 @@ const CampaignListView: React.FC<CampaignListViewProps> = (
                 setMenuVisible(false);
               }}
               title={groupBy === "phase" ? "Ungroup Phase" : "Phase"}
+              style={{ backgroundColor: Colors(theme).background }}
+              titleStyle={{ color: Colors(theme).text }}
             />
             <Menu.Item
               onPress={() => {
@@ -208,6 +226,8 @@ const CampaignListView: React.FC<CampaignListViewProps> = (
                 setMenuVisible(false);
               }}
               title={groupBySource === "source" ? "Ungroup Source" : "Source"}
+              style={{ backgroundColor: Colors(theme).background }}
+              titleStyle={{ color: Colors(theme).text }}
             />
           </Menu>
         </View>

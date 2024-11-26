@@ -35,10 +35,10 @@ interface IProps {
   igsid: string;
   campaignId: string;
   conversation: IConversationUnit;
+  theme: any;
 }
 
 const ChatWindow: React.FC<IProps> = (props) => {
-  const theme = useTheme();
   const [showInfo, setShowInfo] = useState(false);
   const [loading, setLoading] = useState(true);
   const [after, setAfter] = useState<string | undefined>(undefined);
@@ -46,6 +46,7 @@ const ChatWindow: React.FC<IProps> = (props) => {
   const [conversation, setConversation] = useState<IConversation | undefined>(
     undefined
   );
+  const theme = props.theme;
   const [msg, setMsg] = useState("");
   const [botInst, setBotInst] = useState("");
   const { lg, sm, md } = useBreakPoints();
@@ -246,7 +247,11 @@ const ChatWindow: React.FC<IProps> = (props) => {
 
   if (!conversation || !messages || !props.igsid) {
     return (
-      <View>
+      <View
+        style={{
+          backgroundColor: Colors(theme).background,
+        }}
+      >
         <ActivityIndicator />
       </View>
     );
@@ -257,7 +262,7 @@ const ChatWindow: React.FC<IProps> = (props) => {
       style={{
         flex: 1,
         width: lg ? 900 : sm || md ? 540 : 320,
-        backgroundColor: Colors(theme).white,
+        backgroundColor: Colors(theme).background,
         padding: 20,
         borderRadius: 5,
       }}
@@ -267,7 +272,7 @@ const ChatWindow: React.FC<IProps> = (props) => {
           flexDirection: "row",
           alignItems: "center",
           padding: 4,
-          backgroundColor: "#f7f7f8",
+          backgroundColor: Colors(theme).background,
           borderBottomColor: "#ccc",
           borderBottomWidth: 1,
         }}
@@ -285,22 +290,39 @@ const ChatWindow: React.FC<IProps> = (props) => {
         <View
           style={{
             flexDirection: "row",
+            backgroundColor: Colors(theme).background,
           }}
         >
-          <Text>
+          <Text
+            style={{
+              color: Colors(theme).text,
+            }}
+          >
             {props.conversation.user.userProfile?.name ||
               props.conversation.user.userProfile?.username ||
               props.conversation.id}
           </Text>
         </View>
 
-        <View style={{ flexDirection: "row", flex: 1 }}>
-          <View style={{ flex: 1, flexDirection: "row" }}></View>
+        <View
+          style={{
+            flexDirection: "row",
+            flex: 1,
+          }}
+        >
+          <View
+            style={{
+              flex: 1,
+              flexDirection: "row",
+              backgroundColor: Colors(theme).background,
+            }}
+          ></View>
           <View
             style={{
               flexDirection: "row",
               justifyContent: "space-between",
               alignItems: "center",
+              backgroundColor: Colors(theme).background,
             }}
           >
             {conversation && (
@@ -317,6 +339,9 @@ const ChatWindow: React.FC<IProps> = (props) => {
                   <Switch
                     value={conversation.status == 1}
                     onValueChange={onChangeStatus}
+                    style={{
+                      backgroundColor: Colors(theme).background,
+                    }}
                   />
                 </Tooltip>
               </View>
@@ -384,6 +409,7 @@ const ChatWindow: React.FC<IProps> = (props) => {
             padding: 12,
             maxHeight: 400,
             flex: 1,
+            backgroundColor: Colors(theme).background,
           }}
           keyExtractor={(item) => item.id.toString()}
           renderItem={({ item, index }) => (
@@ -393,6 +419,7 @@ const ChatWindow: React.FC<IProps> = (props) => {
               messages={messages}
               msg={item}
               shouldRenderData={shouldRenderData}
+              theme={theme}
             />
           )}
           onEndReached={() => {
@@ -407,6 +434,7 @@ const ChatWindow: React.FC<IProps> = (props) => {
                 style={{
                   paddingTop: 10,
                   paddingBottom: 22,
+                  backgroundColor: Colors(theme).background,
                 }}
               >
                 <ActivityIndicator />
@@ -439,11 +467,17 @@ const ChatWindow: React.FC<IProps> = (props) => {
               onChangeText={(value) => {
                 setMsg(value);
               }}
+              style={{
+                backgroundColor: Colors(theme).background,
+              }}
             />
             <TextInput
               mode="outlined"
               placeholder="Write a prompt for chat assistant"
-              style={{ marginTop: 3 }}
+              style={{
+                marginTop: 3,
+                backgroundColor: Colors(theme).background,
+              }}
               value={botInst}
               onChangeText={(value) => {
                 setBotInst(value);
@@ -468,11 +502,13 @@ const ChatWindow: React.FC<IProps> = (props) => {
             padding: 10,
             borderTopColor: "#ccc",
             borderTopWidth: 1,
+            backgroundColor: Colors(theme).background,
           }}
         >
           <View
             style={{
               flex: 1,
+              backgroundColor: Colors(theme).background,
             }}
           >
             <TextInput
@@ -482,22 +518,38 @@ const ChatWindow: React.FC<IProps> = (props) => {
               onChangeText={(value) => {
                 setMsg(value);
               }}
+              style={{
+                backgroundColor: Colors(theme).background,
+              }}
             />
           </View>
-          <View style={{ flexDirection: "row" }}>
+          <View
+            style={{
+              flexDirection: "row",
+              backgroundColor: Colors(theme).background,
+            }}
+          >
             <Tooltip
               enterTouchDelay={100}
               leaveTouchDelay={0}
               title="Send instructions to bot"
             >
-              <IconButton icon="robot" onPress={() => onSendMessage(true)} />
+              <IconButton
+                icon="robot"
+                onPress={() => onSendMessage(true)}
+                iconColor={Colors(theme).primary}
+              />
             </Tooltip>
             <Tooltip
               enterTouchDelay={100}
               leaveTouchDelay={0}
               title="Send Message"
             >
-              <IconButton icon="send" onPress={() => onSendMessage(false)} />
+              <IconButton
+                icon="send"
+                onPress={() => onSendMessage(false)}
+                iconColor={Colors(theme).primary}
+              />
             </Tooltip>
           </View>
         </View>

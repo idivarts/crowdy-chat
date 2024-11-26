@@ -1,3 +1,4 @@
+import Colors from "@/constants/Colors";
 import { StyleConstant } from "@/constants/Style";
 import { Theme } from "@react-navigation/native";
 import { StyleSheet, Dimensions } from "react-native";
@@ -36,6 +37,7 @@ export const stylesFn = (theme: Theme) =>
       borderWidth: 1,
       borderColor: "#ccc",
       borderRadius: 5,
+      backgroundColor: Colors(theme).background,
       marginBottom: 10,
     },
     profileImage: {

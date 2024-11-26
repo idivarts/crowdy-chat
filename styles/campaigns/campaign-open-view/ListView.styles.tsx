@@ -59,8 +59,7 @@ export const stylesFn = (theme: Theme) =>
     row: {
       flexDirection: "row",
       alignItems: "center",
-      borderBottomWidth: 1,
-      borderColor: "#e0e0e0",
+      borderBottomWidth: 0,
     },
     rowText: {
       fontSize: 14,

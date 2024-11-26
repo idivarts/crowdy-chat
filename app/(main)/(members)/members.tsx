@@ -345,14 +345,19 @@ const MemberPage: React.FC = () => {
       <DataTable.Row
         key={index}
         style={{
-          backgroundColor: index % 2 === 0 ? Colors(theme).aliceBlue : Colors(theme).background,
+          backgroundColor: Colors(theme).background,
           zIndex: -10 - index,
         }}
       >
         <DataTable.Cell>{member.name || "No Name"}</DataTable.Cell>
         <DataTable.Cell>{member.email}</DataTable.Cell>
         <DataTable.Cell>
-          <View style={styles.chipContainer}>
+          <View
+            style={[
+              styles.chipContainer,
+              { backgroundColor: Colors(theme).background },
+            ]}
+          >
             {member.permissions.read && <Chip style={styles.chip}>Read</Chip>}
             {member.permissions.write && <Chip style={styles.chip}>Write</Chip>}
             {member.permissions.admin && <Chip style={styles.chip}>Admin</Chip>}
@@ -361,7 +366,11 @@ const MemberPage: React.FC = () => {
         <DataTable.Cell style={styles.actionsCell}>
           <Dropdown>
             <DropdownTrigger>
-              <MaterialIcons name="more-vert" size={24} color="black" />
+              <MaterialIcons
+                name="more-vert"
+                size={24}
+                color={Colors(theme).primary}
+              />
             </DropdownTrigger>
             <DropdownOptions
               position={{

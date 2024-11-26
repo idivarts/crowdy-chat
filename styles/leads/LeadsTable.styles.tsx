@@ -5,7 +5,7 @@ import { StyleSheet } from "react-native";
 const stylesFn = (theme: Theme) =>
   StyleSheet.create({
     headerContainer: {
-      backgroundColor: Colors(theme).aliceBlue,
+      backgroundColor: Colors(theme).lightgray,
       alignItems: "center",
     },
     headerTitleContainer: {

@@ -8,7 +8,6 @@ import { DrawerToggle } from "@/components/ui";
 import { useBreakPoints } from "@/hooks";
 import EmptyState from "@/components/EmptyState";
 import CampaignsFilledState from "@/components/campaigns/CampaignsFilledState";
-// import TextInput from "@/components/ui/text-input/TextInput";
 import { TextInput } from "react-native-paper";
 import { useCampaignContext } from "@/contexts/campaign-context.provider";
 import { Campaign } from "@/types/campaign";
@@ -83,6 +82,9 @@ const Campaigns = () => {
           <TextInput
             label="Search Campaigns"
             mode="outlined"
+            style={{
+              backgroundColor: Colors(theme).background,
+            }}
             onChangeText={handleSearch}
             value={searchQuery}
           />
@@ -111,7 +113,6 @@ const Campaigns = () => {
         {Platform.OS !== "web" && (
           <View style={styles.campaignsSection}>
             {filteredCampaigns.length > 0 ? (
-              // ? <CampaignsFilledState campaigns={filteredCampaigns} />
               <FlatList
                 data={[,]}
                 renderItem={({ item }) => (

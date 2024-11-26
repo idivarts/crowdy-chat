@@ -5,6 +5,7 @@ import { stylesFn } from "@/styles/organization-switcher/OrganizationSwitcherMod
 import { Organization } from "@/types/Organization";
 import { useTheme } from "@react-navigation/native";
 import { Text, View } from "@/components/Themed";
+import Colors from "@/constants/Colors";
 
 interface OrganizationSwitcherModalProps {
   organizations: Organization[];
@@ -37,9 +38,7 @@ const OrganizationSwitcherModal: React.FC<OrganizationSwitcherModalProps> = ({
               <TouchableOpacity onPress={() => onSwitch(item.id)}>
                 <View style={styles.organizationCard}>
                   <Avatar.Image source={{ uri: item.image }} />
-                  <Text style={styles.organizationName}>
-                    {item.name}
-                  </Text>
+                  <Text style={styles.organizationName}>{item.name}</Text>
                 </View>
               </TouchableOpacity>
             )}

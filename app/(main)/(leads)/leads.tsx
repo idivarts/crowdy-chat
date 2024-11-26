@@ -16,13 +16,14 @@ import { FirestoreDB } from "@/shared-libs/utilities/firestore";
 import { useOrganizationContext } from "@/contexts";
 import { StyleConstant } from "@/constants/Style";
 import EmptyState from "@/components/EmptyState";
+import { ILeads } from "@/shared-libs/firestore/crowdy-chat/models/leads";
 
 const Leads = () => {
   const theme = useTheme();
   const styles = stylesFn(theme);
   const [isCreateLeadVisible, setCreateLeadVisible] = useState(false);
   const [isCreateTagVisible, setCreateTagVisible] = useState(false);
-  const [leads, setLeads] = useState<any[]>([]);
+  const [leads, setLeads] = useState<ILeads[]>([]);
   const [selectedLeads, setSelectedLeads] = useState<any>([]);
   const [filteredLeads, setFilteredLeads] = useState<any[]>(leads);
   const [searchQuery, setSearchQuery] = useState("");
@@ -102,7 +103,7 @@ const Leads = () => {
       setFilteredLeads(leads);
     } else {
       const filtered = leads.filter((lead) =>
-        lead.name.toLowerCase().includes(query.toLowerCase())
+        lead.name?.toLowerCase().includes(query.toLowerCase())
       );
       setFilteredLeads(filtered);
     }
@@ -117,7 +118,7 @@ const Leads = () => {
       "leads"
     );
     const leadData = await getDocs(leadCols);
-    const leads = leadData.docs.map((doc) => doc.data());
+    const leads = leadData.docs.map((doc) => doc.data() as ILeads);
     setLeads(leads);
     setFilteredLeads(leads);
   };
@@ -174,6 +175,9 @@ const Leads = () => {
             <TextInput
               label="Search Leads"
               mode="outlined"
+              style={{
+                backgroundColor: Colors(theme).background,
+              }}
               onChangeText={handleSearch}
               value={searchQuery}
             />
@@ -216,10 +220,7 @@ const Leads = () => {
                 </DataTable.Header>
 
                 {filteredLeads.map((lead, index) => (
-                  <DataTable.Row
-                    key={index}
-                    style={[styles.rowContainer]} // Differentiate visually
-                  >
+                  <DataTable.Row key={index} style={[styles.rowContainer]}>
                     <DataTable.Cell
                       style={styles.checkboxContainer}
                       textStyle={styles.checkboxText}

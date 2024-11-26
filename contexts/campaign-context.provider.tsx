@@ -1,6 +1,6 @@
 import { FirestoreDB } from "@/shared-libs/utilities/firestore";
 import { Campaign } from "@/types/campaign";
-import { collection, deleteDoc, doc, getDocs, } from "firebase/firestore";
+import { collection, deleteDoc, doc, getDocs } from "firebase/firestore";
 import {
   useContext,
   createContext,
@@ -25,9 +25,7 @@ export const CampaignContextProvider: React.FC<PropsWithChildren> = ({
   children,
 }) => {
   const [campaigns, setCampaigns] = useState<Campaign[]>([]);
-  const {
-    currentOrganization,
-  } = useOrganizationContext();
+  const { currentOrganization } = useOrganizationContext();
 
   useEffect(() => {
     if (currentOrganization) {
@@ -36,7 +34,10 @@ export const CampaignContextProvider: React.FC<PropsWithChildren> = ({
   }, [currentOrganization]);
 
   const getCampaigns = async () => {
-    const campaignsRef = collection(FirestoreDB, `/organizations/${currentOrganization?.id}/campaigns`);
+    const campaignsRef = collection(
+      FirestoreDB,
+      `/organizations/${currentOrganization?.id}/campaigns`
+    );
     const campaignsSnapshot = await getDocs(campaignsRef);
 
     const campaignsData = campaignsSnapshot.docs.map((doc) => {
@@ -44,11 +45,10 @@ export const CampaignContextProvider: React.FC<PropsWithChildren> = ({
         id: doc.id,
         ...doc.data(),
         // Replace with correct implementation
-        image: 'https://via.placeholder.com/150',
+        image: "https://picsum.photos/150",
         totalConversions: 100,
         totalLeads: 10,
         totalPages: 3,
-
       } as Campaign;
     });
 
@@ -58,23 +58,27 @@ export const CampaignContextProvider: React.FC<PropsWithChildren> = ({
     }
 
     return campaignsData;
-  }
+  };
 
   const deleteCampaign = async (campaignId: string) => {
     try {
       if (!currentOrganization?.id || !campaignId) {
-        console.error('Invalid organization ID or campaign ID.');
+        console.error("Invalid organization ID or campaign ID.");
         return;
       }
 
-      const docRef = doc(FirestoreDB, `/organizations/${currentOrganization?.id}/campaigns`, campaignId);
+      const docRef = doc(
+        FirestoreDB,
+        `/organizations/${currentOrganization?.id}/campaigns`,
+        campaignId
+      );
       await deleteDoc(docRef);
       Toaster.success("Campaign deleted successfully");
       getCampaigns();
     } catch (error) {
       console.error("Error deleting document:", error);
     }
-  }
+  };
 
   return (
     <CampaignContext.Provider

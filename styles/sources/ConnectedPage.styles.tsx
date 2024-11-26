@@ -1,3 +1,4 @@
+import Colors from "@/constants/Colors";
 import { Theme } from "@react-navigation/native";
 import { StyleSheet } from "react-native";
 
@@ -33,6 +34,13 @@ export const stylesFn = (theme: Theme) =>
       fontSize: 16,
       fontWeight: "bold",
     },
+    menuStyle: {
+      backgroundColor: Colors(theme).background,
+    },
+    menuTitleStyle: {
+      color: Colors(theme).text,
+    },
+
     link: {
       marginTop: 5,
       color: "#007bff",

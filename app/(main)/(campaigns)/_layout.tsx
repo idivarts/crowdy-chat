@@ -6,9 +6,12 @@ import { useEffect } from "react";
 import { View } from "@/components/Themed";
 import GoBackButton from "@/components/ui/go-back-button";
 import { CampaignContextProvider } from "@/contexts/campaign-context.provider";
+import Colors from "@/constants/Colors";
+import { useTheme } from "@react-navigation/native";
 
 const CampaignsLayout = () => {
   const { lg } = useBreakPoints();
+  const theme = useTheme();
 
   const { isLoading, session } = useAuthContext();
   const router = useRouter();
@@ -18,7 +21,6 @@ const CampaignsLayout = () => {
       router.replace("/(auth)/login");
     }
   }, [isLoading, session]);
-
 
   return (
     <CampaignContextProvider>
@@ -48,6 +50,9 @@ const CampaignsLayout = () => {
             ),
             title: "Create Campaign",
             headerShown: true,
+            headerStyle: {
+              backgroundColor: Colors(theme).background,
+            },
           }}
         />
         <Stack.Screen
@@ -59,8 +64,11 @@ const CampaignsLayout = () => {
                 {!lg && <DrawerToggle />}
               </View>
             ),
-            title: "Create Campaign",
+            title: "Edit Campaign",
             headerShown: true,
+            headerStyle: {
+              backgroundColor: Colors(theme).background,
+            },
           }}
         />
       </Stack>
