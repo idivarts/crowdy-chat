@@ -1,10 +1,5 @@
 import React, { useEffect, useState } from "react";
-import {
-  TextInput,
-  Button,
-  Card,
-  IconButton,
-} from "react-native-paper";
+import { TextInput, Button, Card, IconButton } from "react-native-paper";
 import Toaster from "@/shared-uis/components/toaster/Toaster";
 import { stylesFn } from "@/styles/OpenAI.styles";
 import { useOrganizationContext } from "@/contexts";
@@ -18,10 +13,7 @@ const OpenAIComponent = () => {
   const [apiKey, setApiKey] = useState("");
   const [isEditing, setIsEditing] = useState(false);
   const [displayKey, setDisplayKey] = useState("");
-  const {
-    currentOrganization,
-    updateOrganization,
-  } = useOrganizationContext();
+  const { currentOrganization, updateOrganization } = useOrganizationContext();
 
   useEffect(() => {
     setApiKey(currentOrganization?.openAIKey || "");
@@ -39,14 +31,12 @@ const OpenAIComponent = () => {
     }
 
     // Update the organization's openAIKey field
-    updateOrganization(
-      currentOrganization.id,
-      {
-        openAIKey: apiKey,
-      }).then(() => {
-        setIsEditing(false);
-        setDisplayKey(apiKey.replace(/./g, "*"));
-      });
+    updateOrganization(currentOrganization.id, {
+      openAIKey: apiKey,
+    }).then(() => {
+      setIsEditing(false);
+      setDisplayKey(apiKey.replace(/./g, "*"));
+    });
   };
 
   const handleEdit = () => {
@@ -61,7 +51,11 @@ const OpenAIComponent = () => {
           titleStyle={styles.cardTitle}
           left={(props) => <IconButton {...props} icon="robot" size={30} />}
         />
-        <Card.Content>
+        <Card.Content
+          style={{
+            paddingHorizontal: 0,
+          }}
+        >
           <Text style={styles.instructions}>
             To use OpenAI services, please obtain an API key from the OpenAI
             website. Visit the API section on the OpenAI website to generate
@@ -69,22 +63,35 @@ const OpenAIComponent = () => {
           </Text>
           <View style={styles.inputContainer}>
             <TextInput
-              mode="outlined"
-              label="API Key"
+              label={isEditing ? "API Key" : "API Key (Hidden)"}
               value={isEditing ? apiKey : displayKey}
               onChangeText={setApiKey}
-              editable={isEditing}
+              disabled={!isEditing}
               secureTextEntry={!isEditing}
-              placeholder="Enter your API key"
-              style={styles.input}
-              right={
-                <TextInput.Icon
-                  icon={isEditing ? "eye-off" : "eye"}
-                  onPress={() => setIsEditing(!isEditing)}
-                  color={Colors(theme).primary}
-                />
-              }
+              theme={{
+                colors: {
+                  text: Colors(theme).text,
+                  disabled: Colors(theme).text,
+                  background: Colors(theme).lightgray,
+                },
+              }}
+              style={[
+                styles.textInput,
+                {
+                  borderColor: Colors(theme).border,
+                },
+              ]}
             />
+            <View style={styles.iconContainer}>
+              <IconButton
+                icon={isEditing ? "eye-off" : "eye"}
+                onPress={() => {
+                  setIsEditing(!isEditing);
+                }}
+                size={24}
+                iconColor={Colors(theme).text}
+              />
+            </View>
           </View>
         </Card.Content>
         <Card.Actions style={styles.cardActions}>

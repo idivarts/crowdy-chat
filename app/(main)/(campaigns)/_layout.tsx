@@ -43,13 +43,19 @@ const CampaignsLayout = () => {
           name="campaigns/create"
           options={{
             headerLeft: () => (
-              <View style={{ flexDirection: "row", alignItems: "center" }}>
+              <View
+                style={{
+                  flexDirection: "row",
+                  alignItems: "center",
+                }}
+              >
                 <GoBackButton />
                 {!lg && <DrawerToggle />}
               </View>
             ),
             title: "Create Campaign",
             headerShown: true,
+
             headerStyle: {
               backgroundColor: Colors(theme).background,
             },

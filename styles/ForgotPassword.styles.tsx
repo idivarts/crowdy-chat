@@ -19,7 +19,7 @@ export const stylesFn = (theme: Theme) =>
       borderWidth: 1,
       borderColor: "#ccc",
       borderRadius: 5,
-      padding: 50,
+      padding: 20,
       position: "relative",
     },
     title: {

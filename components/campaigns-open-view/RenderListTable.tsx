@@ -245,7 +245,10 @@ const RenderTable = ({
       ) : (
         <ScrollView
           horizontal
-          contentContainerStyle={{}}
+          contentContainerStyle={{
+            flexGrow: 1, // Allow horizontal scrolling
+            alignItems: "stretch", // Stretch child views
+          }}
           style={{
             width: "100%",
           }}
@@ -284,7 +287,9 @@ const RenderTable = ({
                       icon="comment-plus"
                       iconColor="#e1e1e1"
                       size={20}
-                      onPress={() => {}}
+                      onPress={() => {
+                        setCurrentConversation(conversation);
+                      }}
                     />
                   </View>
                 </DataTable.Cell>

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { ScrollView } from "react-native";
+import { ActivityIndicator, ScrollView } from "react-native";
 import { Divider, Menu, IconButton } from "react-native-paper";
 import { IConversationUnit } from "@/types/CampaignsBoard";
 import { ConversationService } from "@/services";
@@ -14,6 +14,7 @@ import { useOrganizationContext } from "@/contexts";
 import { useLocalSearchParams } from "expo-router";
 import Colors from "@/constants/Colors";
 import ChatModal from "./ChatModal";
+import EmptyState from "../EmptyState";
 
 type ChatBoard = {
   id: number;
@@ -37,6 +38,7 @@ const CampaignListView: React.FC<CampaignListViewProps> = (
   const [allConversation, setAllConversation] = useState<IConversationUnit[]>(
     []
   );
+  const [loading, setLoading] = useState<boolean>(true);
   const { currentOrganization } = useOrganizationContext();
   const [groupBy, setGroupBy] = useState<string | null>(null);
   const [groupBySource, setGroupBySource] = useState<string | null>(null);
@@ -94,9 +96,11 @@ const CampaignListView: React.FC<CampaignListViewProps> = (
   };
 
   useEffect(() => {
+    setLoading(true);
     props.getAllConversations().then((res: any) => {
       setAllConversation(res);
       setColumnsAll();
+      setLoading(false);
     });
   }, [props.refreshKey]);
 
@@ -183,6 +187,38 @@ const CampaignListView: React.FC<CampaignListViewProps> = (
       />
     );
   };
+
+  if (loading) {
+    return (
+      <View
+        style={{
+          flexGrow: 1,
+          justifyContent: "center",
+        }}
+      >
+        <ActivityIndicator size="large" color={Colors(theme).primary} />
+      </View>
+    );
+  }
+
+  if (allConversation && allConversation.length === 0) {
+    return (
+      <View
+        style={{
+          flexGrow: 1,
+          justifyContent: "center",
+        }}
+      >
+        <EmptyState
+          buttonName="Create a conversation"
+          image={require("@/assets/images/empty-illusatration.png")}
+          message="No conversations found"
+          buttonPresent={false}
+          onPress={() => {}}
+        />
+      </View>
+    );
+  }
 
   return (
     <ScrollView>

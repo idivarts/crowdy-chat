@@ -1,4 +1,5 @@
 import Colors from "@/constants/Colors";
+import { StyleConstant } from "@/constants/Style";
 import { Theme } from "@react-navigation/native";
 import { StyleSheet } from "react-native";
 
@@ -9,7 +10,7 @@ const stylesFn = (theme: Theme) =>
       alignItems: "center",
     },
     container: {
-      padding: 20,
+      padding: StyleConstant.paddingHorizontalForScreen,
       gap: 20,
       width: "100%",
     },

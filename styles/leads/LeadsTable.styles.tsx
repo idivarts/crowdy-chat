@@ -6,19 +6,27 @@ const stylesFn = (theme: Theme) =>
   StyleSheet.create({
     headerContainer: {
       backgroundColor: Colors(theme).lightgray,
+      flexDirection: "row",
       alignItems: "center",
+      minHeight: 56, // Ensures uniform height across rows
+      borderBottomWidth: 0.5,
+      borderColor: Colors(theme).lightgray,
     },
     headerTitleContainer: {
-      flex: 2, // Adjust flex to balance space distribution
+      flex: 2, // Match flex with header
       justifyContent: "center",
+      alignItems: "center",
+      minWidth: 100, // Min width for text
+      paddingHorizontal: 8,
     },
     headerTitle: {
       fontWeight: "500",
       fontSize: 14,
       color: Colors(theme).primary,
+      textAlign: "center",
     },
     checkboxContainer: {
-      flex: 1, // Ensure minimal space for checkboxes
+      flex: 1,
       alignItems: "center",
       justifyContent: "center",
       paddingHorizontal: 4,
@@ -36,12 +44,20 @@ const stylesFn = (theme: Theme) =>
       color: Colors(theme).primary,
     },
     rowContainer: {
-      paddingVertical: 6, // Reduce padding for rows
-      minHeight: 50,
+      flexDirection: "row",
+      alignItems: "center",
+      paddingVertical: 12, // Consistent padding
+      minHeight: 56, // Ensures uniform height across rows
+      borderBottomWidth: 0.5,
+      borderColor: Colors(theme).lightgray,
     },
+
     rowTextContainer: {
-      flex: 2, // Match with headerTitleContainer for alignment
+      flex: 2, // Match flex with header
       justifyContent: "center",
+      alignItems: "center",
+      minWidth: 100, // Min width for text
+      paddingHorizontal: 8,
     },
     rowText: {
       fontWeight: "400",

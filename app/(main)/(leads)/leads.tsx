@@ -1,5 +1,10 @@
 import React, { useEffect, useState } from "react";
-import { TouchableOpacity, ScrollView, ActivityIndicator } from "react-native";
+import {
+  TouchableOpacity,
+  ScrollView,
+  ActivityIndicator,
+  Platform,
+} from "react-native";
 import { Appbar, DataTable, Portal, TextInput } from "react-native-paper";
 
 import CreateLeadModal from "@/components/leads/CreateLeadModal";
@@ -181,76 +186,47 @@ const Leads = () => {
               onChangeText={handleSearch}
               value={searchQuery}
             />
-            <ScrollView>
+            <ScrollView horizontal={Platform.OS !== "web"}>
               <DataTable>
-                <ScrollView horizontal></ScrollView>
                 <DataTable.Header style={styles.headerContainer}>
-                  <DataTable.Title
-                    style={styles.checkboxContainer}
-                    textStyle={styles.checkboxText}
-                  >
+                  <DataTable.Title style={styles.checkboxContainer}>
                     <ExpoCheckbox
                       value={selectedLeads?.length === leads?.length}
-                      onValueChange={() => {
-                        handleSelectAll();
-                      }}
+                      onValueChange={handleSelectAll}
                     />
                   </DataTable.Title>
-                  <DataTable.Title
-                    style={styles.headerTitleContainer}
-                    textStyle={styles.headerTitle}
-                  >
+                  <DataTable.Title style={styles.headerTitleContainer}>
                     Name
                   </DataTable.Title>
-                  <DataTable.Title
-                    style={styles.headerTitleContainer}
-                    textStyle={styles.headerTitle}
-                  >
+                  <DataTable.Title style={styles.headerTitleContainer}>
                     Source
                   </DataTable.Title>
-                  <DataTable.Title
-                    style={styles.headerTitleContainer}
-                    textStyle={styles.headerTitle}
-                  >
+                  <DataTable.Title style={styles.headerTitleContainer}>
                     Campaigns
                   </DataTable.Title>
-                  <DataTable.Title textStyle={styles.actionText} numeric>
+                  <DataTable.Title style={styles.actionContainer} numeric>
                     Actions
                   </DataTable.Title>
                 </DataTable.Header>
 
                 {filteredLeads.map((lead, index) => (
-                  <DataTable.Row key={index} style={[styles.rowContainer]}>
-                    <DataTable.Cell
-                      style={styles.checkboxContainer}
-                      textStyle={styles.checkboxText}
-                    >
+                  <DataTable.Row key={index} style={styles.rowContainer}>
+                    <DataTable.Cell style={styles.checkboxContainer}>
                       <ExpoCheckbox
                         value={selectedLeads?.includes(lead.id)}
-                        onValueChange={() => {
-                          handleSelectLead(lead.id);
-                        }}
+                        onValueChange={() => handleSelectLead(lead.id)}
                       />
                     </DataTable.Cell>
-                    <DataTable.Cell
-                      style={styles.rowTextContainer}
-                      textStyle={styles.rowText}
-                    >
+                    <DataTable.Cell style={styles.rowTextContainer}>
                       {lead.name}
                     </DataTable.Cell>
-                    <DataTable.Cell
-                      style={styles.rowTextContainer}
-                      textStyle={styles.rowText}
-                    >
+                    <DataTable.Cell style={styles.rowTextContainer}>
                       {lead.sourceId}
                     </DataTable.Cell>
-                    <DataTable.Cell
-                      style={styles.rowTextContainer}
-                      textStyle={styles.rowText}
-                    >
+                    <DataTable.Cell style={styles.rowTextContainer}>
                       {lead.id}
                     </DataTable.Cell>
-                    <DataTable.Cell numeric>
+                    <DataTable.Cell style={styles.actionContainer} numeric>
                       {loadingLeads[lead.id] ? (
                         <ActivityIndicator
                           size="small"

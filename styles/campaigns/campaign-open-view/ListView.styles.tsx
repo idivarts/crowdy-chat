@@ -50,17 +50,22 @@ export const stylesFn = (theme: Theme) =>
     },
     cell: {
       flex: 1,
-      minWidth: 120,
+      width: 120, // Retain the minimum width
       paddingHorizontal: 8,
       paddingVertical: 12,
       borderWidth: 0.1,
       borderColor: "#e0e0e0",
+      justifyContent: "center", // Ensure text aligns in the center
+      alignItems: "center", // Align items in the center
     },
     row: {
       flexDirection: "row",
       alignItems: "center",
-      borderBottomWidth: 0,
+      borderBottomWidth: 0.1,
+      borderColor: "#e0e0e0",
+      minHeight: 50, // Ensure consistent height
     },
+
     rowText: {
       fontSize: 14,
     },

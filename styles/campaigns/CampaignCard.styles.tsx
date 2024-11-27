@@ -46,6 +46,7 @@ const stylesFn = (theme: Theme) =>
     },
     chatAssistantIdContainer: {
       flexDirection: "row",
+      width: "70%",
       alignItems: "center",
     },
     chatAssistantId: {
