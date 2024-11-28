@@ -46,6 +46,7 @@ const stylesFn = (theme: Theme) =>
     },
     chatAssistantIdContainer: {
       flexDirection: "row",
+      width: "70%",
       alignItems: "center",
     },
     chatAssistantId: {
@@ -53,6 +54,7 @@ const stylesFn = (theme: Theme) =>
     },
     copyIdIcon: {
       marginTop: 4,
+      color: Colors(theme).text,
     },
     cardBody: {
       flexDirection: "row",

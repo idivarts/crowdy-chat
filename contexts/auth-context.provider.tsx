@@ -14,7 +14,15 @@ import {
   useState,
   type PropsWithChildren,
 } from "react";
-import { setDoc, collection, doc, getDoc, where, updateDoc, onSnapshot } from "firebase/firestore";
+import {
+  setDoc,
+  collection,
+  doc,
+  getDoc,
+  where,
+  updateDoc,
+  onSnapshot,
+} from "firebase/firestore";
 import { FirestoreDB } from "@/shared-libs/utilities/firestore";
 import Toaster from "@/shared-uis/components/toaster/Toaster";
 import { useRouter } from "expo-router";
@@ -94,7 +102,7 @@ export const AuthContextProvider: React.FC<PropsWithChildren> = ({
       }
       setSession(userCredential.user.uid);
       Toaster.success("Signed In Successfully!");
-      router.replace("/(main)/(campaigns)/campaigns");
+      router.replace("/campaigns");
     } catch (error: any) {
       let errorMessage = "An unknown error occurred. Please try again.";
       switch (error.code) {
@@ -150,7 +158,7 @@ export const AuthContextProvider: React.FC<PropsWithChildren> = ({
               "Email Verified",
               "Your email has been successfully verified."
             );
-            router.replace("/(main)/(campaigns)/campaigns");
+            router.replace("/campaigns");
           } else {
             setTimeout(checkVerification, 2000);
           }

@@ -9,6 +9,7 @@ interface IProps {
   campaignId: string;
   conversation: IConversationUnit;
   onCloseModal: () => void;
+  theme: any;
 }
 const ChatModal: React.FC<IProps> = (props: IProps) => {
   const [isOpen, setIsOpen] = useState(true);

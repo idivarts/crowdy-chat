@@ -5,47 +5,56 @@ import { StyleSheet } from "react-native";
 const stylesFn = (theme: Theme) =>
   StyleSheet.create({
     headerContainer: {
-      backgroundColor: Colors(theme).aliceBlue,
+      flexDirection: "row",
       alignItems: "center",
-    },
-    headerTitleContainer: {
-      flex: 2, // Adjust flex to balance space distribution
-      justifyContent: "center",
-    },
-    headerTitle: {
-      fontWeight: "500",
-      fontSize: 14,
-      color: Colors(theme).primary,
+      paddingVertical: 8,
+      paddingHorizontal: 16,
+      backgroundColor: Colors(theme).lightgray,
     },
     checkboxContainer: {
-      flex: 1, // Ensure minimal space for checkboxes
-      alignItems: "center",
       justifyContent: "center",
-      paddingHorizontal: 4,
-    },
-    checkboxText: {
-      textAlign: "center",
+      alignItems: "center",
+      width: 48,
     },
     actionContainer: {
-      flex: 1, // Minimal space for actions
+      justifyContent: "center",
       alignItems: "center",
+      paddingHorizontal: 8,
     },
     actionText: {
       fontWeight: "500",
       fontSize: 14,
-      color: Colors(theme).primary,
+      textAlign: "center",
     },
     rowContainer: {
-      paddingVertical: 6, // Reduce padding for rows
-      minHeight: 50,
+      flexDirection: "row",
+      alignItems: "center",
+      minHeight: 56,
+      borderBottomWidth: 1,
+      borderColor: Colors(theme).lightgray,
+      paddingHorizontal: 16,
     },
     rowTextContainer: {
-      flex: 2, // Match with headerTitleContainer for alignment
+      width: 150,
       justifyContent: "center",
+      alignItems: "flex-start",
+      paddingVertical: 8,
     },
     rowText: {
       fontWeight: "400",
-      fontSize: 13,
+      fontSize: 14,
+    },
+    headerTitle: {
+      fontWeight: "600",
+      fontSize: 16,
+      textAlign: "left",
+      paddingHorizontal: 16,
+    },
+    headerTitleContainer: {
+      flex: 1,
+      justifyContent: "center",
+      paddingVertical: 8,
     },
   });
+
 export default stylesFn;

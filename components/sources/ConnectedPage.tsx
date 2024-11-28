@@ -14,6 +14,7 @@ import { doc, updateDoc } from "firebase/firestore";
 import { FirestoreDB } from "@/shared-libs/utilities/firestore";
 import { SourceType } from "@/shared-libs/firestore/crowdy-chat/models/sources";
 import SourceService from "@/services/sources.service";
+import Colors from "@/constants/Colors";
 
 type page = {
   assistantId: string;
@@ -181,7 +182,12 @@ const ConnectedPage: React.FC<ConnectedPageProps> = ({ page: pageProps }) => {
                   style={styles.iconButton}
                 />
               }
-              contentStyle={{ marginTop: 40, backgroundColor: "#fff" }}
+              contentStyle={{
+                marginTop: 40,
+                backgroundColor: Colors(theme).background,
+                borderWidth: 0.5,
+                borderColor: Colors(theme).aliceBlue,
+              }}
             >
               <Menu.Item
                 onPress={() =>
@@ -191,16 +197,9 @@ const ConnectedPage: React.FC<ConnectedPageProps> = ({ page: pageProps }) => {
                   )
                 }
                 title="Sync all Chat"
+                style={styles.menuStyle}
+                titleStyle={styles.menuTitleStyle}
               />
-              {/* <Menu.Item
-              onPress={() =>
-                openConfirmationModal(
-                  "Are you sure you want to sync missing chats?",
-                  () => syncChat(false)
-                )
-              }
-              title="Sync Missing Chat"
-            /> */}
               <Menu.Item
                 onPress={() =>
                   openConfirmationModal(
@@ -209,6 +208,8 @@ const ConnectedPage: React.FC<ConnectedPageProps> = ({ page: pageProps }) => {
                   )
                 }
                 title="Disconnect Webhook"
+                style={styles.menuStyle}
+                titleStyle={styles.menuTitleStyle}
               />
             </Menu>
           )}

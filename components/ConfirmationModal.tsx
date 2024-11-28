@@ -1,6 +1,8 @@
 import React from "react";
 import { Button, Portal, Modal, Icon, IconButton } from "react-native-paper";
 import { Text, View } from "./Themed";
+import Colors from "@/constants/Colors";
+import { useTheme } from "@react-navigation/native";
 
 export interface IConfirmationModalProps {
   actionButtonLabel?: string;
@@ -11,6 +13,7 @@ export interface IConfirmationModalProps {
 }
 
 const ConfirmationModal: React.FC<IConfirmationModalProps> = (props) => {
+  const theme = useTheme();
   return (
     <Portal>
       <Modal
@@ -20,13 +23,14 @@ const ConfirmationModal: React.FC<IConfirmationModalProps> = (props) => {
       >
         <View
           style={{
-            backgroundColor: "white",
+            backgroundColor: Colors(theme).background,
             borderRadius: 10,
           }}
         >
           <View
             style={{
               padding: 20,
+              backgroundColor: Colors(theme).background,
               width: 300,
             }}
           >
@@ -44,6 +48,7 @@ const ConfirmationModal: React.FC<IConfirmationModalProps> = (props) => {
                 fontSize: 16,
                 marginVertical: 10,
                 paddingVertical: 20,
+                color: Colors(theme).text,
               }}
             >
               {props.message}

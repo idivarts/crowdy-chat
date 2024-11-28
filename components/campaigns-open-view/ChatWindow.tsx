@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import {
   ActivityIndicator,
   IconButton,
+  Modal,
+  Portal,
   Switch,
   TextInput,
   Tooltip,
@@ -9,7 +11,13 @@ import {
 import { IConversationUnit } from "@/types/CampaignsBoard";
 import Toaster from "@/shared-uis/components/toaster/Toaster";
 import { MessageObject } from "@/types/Message";
-import { FlatList } from "react-native";
+import {
+  Dimensions,
+  FlatList,
+  Linking,
+  Platform,
+  TouchableOpacity,
+} from "react-native";
 import MessageItem from "./MessageItem";
 import InformationPanel from "./InformationPanel";
 import { useBreakPoints } from "@/hooks";
@@ -29,23 +37,26 @@ import { AuthApp } from "@/shared-libs/utilities/auth";
 import ConfirmationModal from "../ConfirmationModal";
 import { useLocalSearchParams } from "expo-router";
 import { useOrganizationContext } from "@/contexts";
+import { RenderToolkit } from "./RenderToolkit";
+import Toast from "react-native-toast-message";
 
 interface IProps {
   handleCloseModal: () => void;
   igsid: string;
   campaignId: string;
   conversation: IConversationUnit;
+  theme: any;
 }
 
 const ChatWindow: React.FC<IProps> = (props) => {
-  const theme = useTheme();
   const [showInfo, setShowInfo] = useState(false);
   const [loading, setLoading] = useState(true);
   const [after, setAfter] = useState<string | undefined>(undefined);
   const [messages, setMessages] = useState<MessageObject[]>([]);
-  const [conversation, setConversation] = useState<IConversation | undefined>(
-    undefined
-  );
+  const [conversation, setConversation] = useState<IConversationUnit>();
+
+  const [isMenuVisible, setIsMenuVisible] = useState(false);
+  const theme = props.theme;
   const [msg, setMsg] = useState("");
   const [botInst, setBotInst] = useState("");
   const { lg, sm, md } = useBreakPoints();
@@ -54,7 +65,6 @@ const ChatWindow: React.FC<IProps> = (props) => {
   const [modalMessage, setModalMessage] = useState("");
   const [modalAction, setModalAction] = useState<() => void>(() => {});
   const { currentOrganization } = useOrganizationContext();
-
   const loadMessages = async (after: any) => {
     setLoading(true);
     const user = await AuthApp.currentUser?.getIdToken();
@@ -95,7 +105,7 @@ const ChatWindow: React.FC<IProps> = (props) => {
         props.conversation.id
       );
       const conservationData = await getDoc(conservationDoc);
-      setConversation(conservationData.data() as IConversation);
+      setConversation(conservationData.data() as IConversationUnit);
     } catch (e) {
       console.error(e);
     }
@@ -244,9 +254,42 @@ const ChatWindow: React.FC<IProps> = (props) => {
     setConfirmationModalVisible(true);
   };
 
+  const renderHamburgerMenu = () => (
+    <Portal>
+      <Modal
+        visible={isMenuVisible}
+        onDismiss={() => setIsMenuVisible(false)}
+        contentContainerStyle={{
+          backgroundColor: Colors(theme).background,
+          padding: 20,
+          borderRadius: 10,
+          marginHorizontal: 20,
+        }}
+        style={{
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+      >
+        {/* {renderToolkit()} */}
+        {conversation && (
+          <RenderToolkit
+            conversation={props.conversation}
+            onChangeStatus={onChangeStatus}
+            syncChat={syncChat}
+            refreshChat={refreshChat}
+          />
+        )}
+      </Modal>
+    </Portal>
+  );
+
   if (!conversation || !messages || !props.igsid) {
     return (
-      <View>
+      <View
+        style={{
+          backgroundColor: Colors(theme).background,
+        }}
+      >
         <ActivityIndicator />
       </View>
     );
@@ -255,19 +298,26 @@ const ChatWindow: React.FC<IProps> = (props) => {
   return (
     <View
       style={{
-        flex: 1,
-        width: lg ? 900 : sm || md ? 540 : 320,
-        backgroundColor: Colors(theme).white,
+        width:
+          Platform.OS === "web" ? 800 : Dimensions.get("window").width - 100,
+        backgroundColor: Colors(theme).background,
         padding: 20,
         borderRadius: 5,
       }}
     >
       <View
         style={{
+          zIndex: 1000,
+        }}
+      >
+        <Toast />
+      </View>
+      <View
+        style={{
           flexDirection: "row",
           alignItems: "center",
           padding: 4,
-          backgroundColor: "#f7f7f8",
+          backgroundColor: Colors(theme).background,
           borderBottomColor: "#ccc",
           borderBottomWidth: 1,
         }}
@@ -285,92 +335,51 @@ const ChatWindow: React.FC<IProps> = (props) => {
         <View
           style={{
             flexDirection: "row",
+            backgroundColor: Colors(theme).background,
           }}
         >
-          <Text>
+          <Text
+            style={{
+              color: Colors(theme).text,
+            }}
+          >
             {props.conversation.user.userProfile?.name ||
               props.conversation.user.userProfile?.username ||
               props.conversation.id}
           </Text>
         </View>
 
-        <View style={{ flexDirection: "row", flex: 1 }}>
-          <View style={{ flex: 1, flexDirection: "row" }}></View>
+        <View
+          style={{
+            flexDirection: "row",
+            flex: 1,
+          }}
+        >
           <View
             style={{
+              flex: 1,
               flexDirection: "row",
-              justifyContent: "space-between",
-              alignItems: "center",
+              backgroundColor: Colors(theme).background,
             }}
-          >
-            {conversation && (
-              <View
-                style={{
-                  marginRight: 10,
-                }}
-              >
-                <Tooltip
-                  enterTouchDelay={100}
-                  leaveTouchDelay={0}
-                  title="Status of automatic chat activation"
-                >
-                  <Switch
-                    value={conversation.status == 1}
-                    onValueChange={onChangeStatus}
-                  />
-                </Tooltip>
-              </View>
-            )}
-            {props.conversation?.user?.userProfile?.username && (
-              <Tooltip
-                enterTouchDelay={100}
-                leaveTouchDelay={0}
-                title="Open Conversation on Instagram"
-              >
-                <IconButton
-                  icon="open-in-new"
-                  onPress={() =>
-                    window.open(
-                      `https://ig.me/m/${props.conversation?.user?.userProfile?.username}`,
-                      "_blank"
-                    )
-                  }
-                />
-              </Tooltip>
-            )}
-            <Tooltip
-              enterTouchDelay={100}
-              leaveTouchDelay={0}
-              title="Sync Instagram"
+          ></View>
+          {Platform.OS === "web" ? (
+            <RenderToolkit
+              conversation={props.conversation}
+              onChangeStatus={onChangeStatus}
+              syncChat={syncChat}
+              refreshChat={refreshChat}
+            />
+          ) : (
+            <TouchableOpacity
+              onPress={() => setIsMenuVisible(true)}
+              style={{
+                backgroundColor: Colors(theme).background,
+              }}
             >
-              <IconButton
-                icon="download"
-                onPress={() =>
-                  openConfirmationModal(
-                    "Are you sure you want to sync all chats?",
-                    syncChat
-                  )
-                }
-              />
-            </Tooltip>
-            <Tooltip
-              enterTouchDelay={100}
-              leaveTouchDelay={0}
-              title="Refresh the user chats"
-            >
-              <IconButton icon="refresh" onPress={refreshChat} />
-            </Tooltip>
-            <Tooltip
-              enterTouchDelay={100}
-              leaveTouchDelay={0}
-              title="Open info about this user"
-            >
-              <IconButton
-                icon="information"
-                onPress={() => setShowInfo(!showInfo)}
-              />
-            </Tooltip>
-          </View>
+              <IconButton icon="menu" />
+            </TouchableOpacity>
+          )}
+          {Platform.OS !== "web" && renderHamburgerMenu()}
         </View>
       </View>
       <View
@@ -384,6 +393,8 @@ const ChatWindow: React.FC<IProps> = (props) => {
             padding: 12,
             maxHeight: 400,
             flex: 1,
+            width: 800,
+            backgroundColor: Colors(theme).background,
           }}
           keyExtractor={(item) => item.id.toString()}
           renderItem={({ item, index }) => (
@@ -393,6 +404,7 @@ const ChatWindow: React.FC<IProps> = (props) => {
               messages={messages}
               msg={item}
               shouldRenderData={shouldRenderData}
+              theme={theme}
             />
           )}
           onEndReached={() => {
@@ -407,6 +419,7 @@ const ChatWindow: React.FC<IProps> = (props) => {
                 style={{
                   paddingTop: 10,
                   paddingBottom: 22,
+                  backgroundColor: Colors(theme).background,
                 }}
               >
                 <ActivityIndicator />
@@ -439,11 +452,17 @@ const ChatWindow: React.FC<IProps> = (props) => {
               onChangeText={(value) => {
                 setMsg(value);
               }}
+              style={{
+                backgroundColor: Colors(theme).background,
+              }}
             />
             <TextInput
               mode="outlined"
               placeholder="Write a prompt for chat assistant"
-              style={{ marginTop: 3 }}
+              style={{
+                marginTop: 3,
+                backgroundColor: Colors(theme).background,
+              }}
               value={botInst}
               onChangeText={(value) => {
                 setBotInst(value);
@@ -468,11 +487,13 @@ const ChatWindow: React.FC<IProps> = (props) => {
             padding: 10,
             borderTopColor: "#ccc",
             borderTopWidth: 1,
+            backgroundColor: Colors(theme).background,
           }}
         >
           <View
             style={{
               flex: 1,
+              backgroundColor: Colors(theme).background,
             }}
           >
             <TextInput
@@ -482,22 +503,38 @@ const ChatWindow: React.FC<IProps> = (props) => {
               onChangeText={(value) => {
                 setMsg(value);
               }}
+              style={{
+                backgroundColor: Colors(theme).background,
+              }}
             />
           </View>
-          <View style={{ flexDirection: "row" }}>
+          <View
+            style={{
+              flexDirection: "row",
+              backgroundColor: Colors(theme).background,
+            }}
+          >
             <Tooltip
               enterTouchDelay={100}
               leaveTouchDelay={0}
               title="Send instructions to bot"
             >
-              <IconButton icon="robot" onPress={() => onSendMessage(true)} />
+              <IconButton
+                icon="robot"
+                onPress={() => onSendMessage(true)}
+                iconColor={Colors(theme).primary}
+              />
             </Tooltip>
             <Tooltip
               enterTouchDelay={100}
               leaveTouchDelay={0}
               title="Send Message"
             >
-              <IconButton icon="send" onPress={() => onSendMessage(false)} />
+              <IconButton
+                icon="send"
+                onPress={() => onSendMessage(false)}
+                iconColor={Colors(theme).primary}
+              />
             </Tooltip>
           </View>
         </View>

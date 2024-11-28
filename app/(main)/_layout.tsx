@@ -6,68 +6,40 @@ import { View } from "@/components/Themed";
 import { useAuthContext } from "@/contexts";
 import { useEffect } from "react";
 import AppLayout from "@/layouts/app-layout";
+import { CampaignContextProvider } from "@/contexts/campaign-context.provider";
+import { Stack } from "expo-router";
 
 const DrawerLayout = () => {
   const { lg } = useBreakPoints();
   return (
-    <AppLayout>
-      <Header />
-      <View
-        style={{
-          flex: 1,
+    <CampaignContextProvider>
+      <Stack
+        screenOptions={{
+          animation: "ios",
+          headerShown: true,
+          headerTitleAlign: "center",
         }}
       >
-        <Drawer
-          backBehavior="history"
-          drawerContent={() => <SideBarMenu />}
-          screenOptions={{
-            drawerType: lg ? "permanent" : "slide",
+        <Stack.Screen
+          name="(drawer)"
+          options={{
             headerShown: false,
           }}
-        >
-          <Drawer.Screen
-            key="campaigns"
-            name="(campaigns)"
-            options={{
-              headerShown: false,
-              title: "Campaigns",
-            }}
-          />
-          <Drawer.Screen
-            key="sources"
-            name="(sources)"
-            options={{
-              headerShown: false,
-              title: "Sources",
-            }}
-          />
-          <Drawer.Screen
-            key="leads"
-            name="(leads)"
-            options={{
-              headerShown: false,
-              title: "Leads",
-            }}
-          />
-          <Drawer.Screen
-            key="open-ai"
-            name="(openAI)"
-            options={{
-              headerShown: false,
-              title: "OpenAI",
-            }}
-          />
-          <Drawer.Screen
-            key="organization-profile"
-            name="(organization)"
-            options={{
-              headerShown: false,
-              title: "Organization Profile",
-            }}
-          />
-        </Drawer>
-      </View>
-    </AppLayout>
+        />
+        <Stack.Screen
+          name="(screens)"
+          options={{
+            headerShown: false,
+          }}
+        />
+        <Stack.Screen
+          name="(campaigns)"
+          options={{
+            headerShown: false,
+          }}
+        />
+      </Stack>
+    </CampaignContextProvider>
   );
 };
 

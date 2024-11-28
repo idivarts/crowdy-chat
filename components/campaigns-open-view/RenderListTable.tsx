@@ -20,10 +20,12 @@ const RenderTable = ({
   title,
   columns,
   handlePhaseChange,
+  setCurrentConversation,
 }: {
   conversations: IConversationUnit[];
   title?: string;
   columns: ChatBoard;
+  setCurrentConversation: (conversation: IConversationUnit) => void;
   handlePhaseChange: (id: string, phase: number) => void;
 }) => {
   const theme = useTheme();
@@ -49,6 +51,7 @@ const RenderTable = ({
           flexDirection: "row",
           display: "flex",
           gap: 10,
+          borderBottomWidth: 0,
         }}
       >
         <Text>{title}</Text>
@@ -124,7 +127,11 @@ const RenderTable = ({
           }}
         >
           <DataTable>
-            <DataTable.Header>
+            <DataTable.Header
+              style={{
+                borderBottomWidth: 0,
+              }}
+            >
               {renderHeader("User", "user")}
               {renderHeader("Phase", "phase")}
               {renderHeader("Last Message", "lastMessage")}
@@ -156,7 +163,9 @@ const RenderTable = ({
                       icon="comment-plus"
                       iconColor="#e1e1e1"
                       size={20}
-                      onPress={() => {}}
+                      onPress={() => {
+                        setCurrentConversation(conversation);
+                      }}
                     />
                   </View>
                 </DataTable.Cell>
@@ -165,7 +174,7 @@ const RenderTable = ({
                     visible={visibleMenu === conversation.id}
                     onDismiss={closeMenu}
                     style={{
-                      backgroundColor: "#fff",
+                      backgroundColor: Colors(theme).background,
                     }}
                     anchor={
                       <Button onPress={() => openMenu(conversation.id)}>
@@ -183,6 +192,8 @@ const RenderTable = ({
                           closeMenu();
                         }}
                         title={col.title}
+                        style={{ backgroundColor: Colors(theme).background }}
+                        titleStyle={{ color: Colors(theme).text }}
                       />
                     ))}
                   </Menu>
@@ -211,7 +222,11 @@ const RenderTable = ({
                 </DataTable.Cell>
               </DataTable.Row>
             ))}
-            <DataTable.Row>
+            <DataTable.Row
+              style={{
+                borderBottomWidth: 0,
+              }}
+            >
               <DataTable.Cell style={styles.cell}>
                 <View
                   style={{
@@ -230,7 +245,10 @@ const RenderTable = ({
       ) : (
         <ScrollView
           horizontal
-          contentContainerStyle={{}}
+          contentContainerStyle={{
+            flexGrow: 1, // Allow horizontal scrolling
+            alignItems: "stretch", // Stretch child views
+          }}
           style={{
             width: "100%",
           }}
@@ -254,6 +272,7 @@ const RenderTable = ({
                       alignItems: "center",
                       width: "100%",
                       justifyContent: "space-between",
+                      borderBottomWidth: 0,
                     }}
                   >
                     <View style={styles.userInfo}>
@@ -268,7 +287,9 @@ const RenderTable = ({
                       icon="comment-plus"
                       iconColor="#e1e1e1"
                       size={20}
-                      onPress={() => {}}
+                      onPress={() => {
+                        setCurrentConversation(conversation);
+                      }}
                     />
                   </View>
                 </DataTable.Cell>
@@ -295,6 +316,8 @@ const RenderTable = ({
                           closeMenu();
                         }}
                         title={col.title}
+                        style={{ backgroundColor: Colors(theme).background }}
+                        titleStyle={{ color: Colors(theme).text }}
                       />
                     ))}
                   </Menu>

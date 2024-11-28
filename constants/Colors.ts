@@ -28,6 +28,7 @@ export default (theme: Theme) => ({
   orange: "#F64740",
   platinum: "#DBDBDB",
   primary: "#1976d2",
+  transparent: "transparent",
   red: "red",
   surface: "#ffffff",
   surfaceVariant: "#ffffff",

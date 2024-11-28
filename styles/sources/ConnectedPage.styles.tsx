@@ -1,3 +1,4 @@
+import Colors from "@/constants/Colors";
 import { Theme } from "@react-navigation/native";
 import { StyleSheet } from "react-native";
 
@@ -5,16 +6,15 @@ export const stylesFn = (theme: Theme) =>
   StyleSheet.create({
     card: {
       marginVertical: 10,
-      padding: 10,
       borderRadius: 8,
-      elevation: 2,
       borderWidth: 0.5,
-      width: "100%",
       borderColor: "#ddd",
     },
     row: {
       flexDirection: "row",
       alignItems: "center",
+      padding: 10,
+      borderRadius: 8,
       justifyContent: "space-between",
     },
     leftSection: {
@@ -33,6 +33,13 @@ export const stylesFn = (theme: Theme) =>
       fontSize: 16,
       fontWeight: "bold",
     },
+    menuStyle: {
+      backgroundColor: Colors(theme).background,
+    },
+    menuTitleStyle: {
+      color: Colors(theme).text,
+    },
+
     link: {
       marginTop: 5,
       color: "#007bff",
