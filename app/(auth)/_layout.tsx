@@ -10,7 +10,7 @@ const AuthLayout = () => {
   const router = useRouter();
   useEffect(() => {
     if (!isLoading && session) {
-      router.replace("/(main)/(campaigns)/campaigns");
+      router.replace("/campaigns");
     }
   }, [isLoading, session]);
 

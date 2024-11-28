@@ -8,6 +8,7 @@ import stylesFn from "@/styles/campaigns/CampaignsOpenViewHeader.styles";
 import { View } from "../Themed";
 import { Platform, Pressable } from "react-native";
 import { router } from "expo-router";
+import Colors from "@/constants/Colors";
 
 interface CampaignsOpenViewHeaderProps {
   tabView: TabView;
@@ -28,11 +29,13 @@ const CampaignsOpenViewHeader: React.FC<CampaignsOpenViewHeaderProps> = ({
   const styles = stylesFn(theme);
 
   return (
-    <Appbar.Header statusBarHeight={0}>
-      <Pressable
-        key={0}
-        onPress={() => router.navigate("/(campaigns)/campaigns")}
-      >
+    <Appbar.Header
+      statusBarHeight={0}
+      style={{
+        backgroundColor: Colors(theme).background,
+      }}
+    >
+      <Pressable key={0} onPress={() => router.navigate("/campaigns")}>
         <View
           style={{
             display: "flex",
@@ -42,7 +45,7 @@ const CampaignsOpenViewHeader: React.FC<CampaignsOpenViewHeaderProps> = ({
         >
           <IconButton
             icon="arrow-left"
-            onPress={() => router.navigate("/(campaigns)/campaigns")}
+            onPress={() => router.navigate("/campaigns")}
           />
         </View>
       </Pressable>
@@ -76,7 +79,20 @@ const CampaignsOpenViewHeader: React.FC<CampaignsOpenViewHeaderProps> = ({
               <TextInput
                 label="Search Campaigns"
                 mode="outlined"
-                style={styles.searchInput}
+                outlineStyle={{
+                  borderColor: Colors(theme).border,
+                }}
+                style={[
+                  styles.searchInput,
+                  {
+                    textAlignVertical: "center",
+                    marginBottom: 6,
+                    color: Colors(theme).text,
+                  },
+                ]}
+                contentStyle={{
+                  color: Colors(theme).text,
+                }}
               />
             </View>
           </View>
@@ -85,11 +101,12 @@ const CampaignsOpenViewHeader: React.FC<CampaignsOpenViewHeaderProps> = ({
           style={{
             flexDirection: "row",
             alignItems: "center",
+            gap: 10,
           }}
         >
+          <CampaignsOpenViewFilter campaignId={campaignId} />
           <IconButton
             style={{
-              marginTop: 15,
               zIndex: 1,
             }}
             icon="refresh"
@@ -98,7 +115,6 @@ const CampaignsOpenViewHeader: React.FC<CampaignsOpenViewHeaderProps> = ({
               refreshConversations();
             }}
           />
-          <CampaignsOpenViewFilter campaignId={campaignId} />
         </View>
       </View>
     </Appbar.Header>

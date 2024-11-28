@@ -7,11 +7,14 @@ import { useProfilePopupContext } from "@/contexts/profile-popup-context.provide
 import ProfileIcon from "./ProfileIcon";
 import MenuItem from "../ui/menu/MenuItem";
 import Menu from "../ui/menu/Menu";
+import Colors from "@/constants/Colors";
+import { useTheme } from "@react-navigation/native";
 
 const Profile = () => {
   const { signOut } = useAuthContext();
   const { setProfilePopupVisible } = useProfilePopupContext();
   const router = useRouter();
+  const theme = useTheme();
   const [menuVisible, setMenuVisible] = useState(false);
 
   const handleSignout = () => {
@@ -39,8 +42,24 @@ const Profile = () => {
           onPress={() => {
             setProfilePopupVisible(true);
           }}
+          style={{
+            backgroundColor: Colors(theme).background,
+          }}
+          titleStyle={{
+            color: Colors(theme).text,
+          }}
         />
-        <MenuItem key="delete" title="Logout" onPress={handleSignout} />
+        <MenuItem
+          key="delete"
+          title="Logout"
+          onPress={handleSignout}
+          style={{
+            backgroundColor: Colors(theme).background,
+          }}
+          titleStyle={{
+            color: Colors(theme).text,
+          }}
+        />
       </>
     </Menu>
   );

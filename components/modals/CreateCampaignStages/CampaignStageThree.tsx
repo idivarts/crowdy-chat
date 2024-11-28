@@ -5,6 +5,7 @@ import Checkbox from "expo-checkbox";
 import { CreateCampaignstylesFn } from "@/styles/Dashboard.styles";
 import { useTheme } from "@react-navigation/native";
 import { Text, View } from "@/components/Themed";
+import Colors from "@/constants/Colors";
 
 type Collectible = {
   name: string;
@@ -56,7 +57,7 @@ export const CampaignStepThree = (
             alignItems: "center",
           }}
         >
-          <Text style={{ color: "#1b1b1b" }}>Stages</Text>
+          <Text style={{ color: Colors(theme).text }}>Stages</Text>
           <Button
             title="Add Stage"
             onPress={() => {
@@ -127,7 +128,11 @@ export const CampaignStepThree = (
                   onChangeText={(text) => {
                     const updatedCollectibles = [...stage.collectibles];
                     updatedCollectibles[i].name = text;
-                    handleStageChange(index, "collectibles", updatedCollectibles);
+                    handleStageChange(
+                      index,
+                      "collectibles",
+                      updatedCollectibles
+                    );
                   }}
                 />
                 <TextInput
@@ -137,7 +142,11 @@ export const CampaignStepThree = (
                   onChangeText={(text) => {
                     const updatedCollectibles = [...stage.collectibles];
                     updatedCollectibles[i].type = text;
-                    handleStageChange(index, "collectibles", updatedCollectibles);
+                    handleStageChange(
+                      index,
+                      "collectibles",
+                      updatedCollectibles
+                    );
                   }}
                 />
                 <TextInput
@@ -147,7 +156,11 @@ export const CampaignStepThree = (
                   onChangeText={(text) => {
                     const updatedCollectibles = [...stage.collectibles];
                     updatedCollectibles[i].description = text;
-                    handleStageChange(index, "collectibles", updatedCollectibles);
+                    handleStageChange(
+                      index,
+                      "collectibles",
+                      updatedCollectibles
+                    );
                   }}
                 />
                 <View style={styles.row}>

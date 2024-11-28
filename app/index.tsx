@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from 'react';
-import { ActivityIndicator } from 'react-native';
-import { useRouter } from 'expo-router';
-import { useAuthContext } from '@/contexts';
-import { View } from '@/components/Themed';
+import React, { useEffect, useState } from "react";
+import { ActivityIndicator } from "react-native";
+import { useRouter } from "expo-router";
+import { useAuthContext } from "@/contexts";
+import { View } from "@/components/Themed";
 
 const Index = () => {
   const router = useRouter();
@@ -12,22 +12,21 @@ const Index = () => {
     const checkSession = async () => {
       try {
         if (session) {
-          router.replace('/(main)/(campaigns)/campaigns');
+          router.replace("/campaigns");
         } else {
-          router.replace('/(auth)/login');
+          router.replace("/(auth)/login");
         }
       } catch (error) {
-        console.error('Failed to fetch session', error);
+        console.error("Failed to fetch session", error);
       }
     };
 
-    if (!isLoading)
-      checkSession();
+    if (!isLoading) checkSession();
   }, [session, isLoading]);
 
   if (isLoading) {
     return (
-      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+      <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
         <ActivityIndicator size="large" />
       </View>
     );

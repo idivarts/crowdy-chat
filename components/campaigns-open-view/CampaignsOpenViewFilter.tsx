@@ -125,36 +125,36 @@ const CampaignsOpenViewFilter = (props: any) => {
         <Pressable onPress={() => setMenuVisible(true)}>
           <View
             style={{
-              backgroundColor: Colors(theme).white,
-              borderColor: Colors(theme).black,
+              backgroundColor: Colors(theme).background,
+              borderColor: Colors(theme).border,
               borderWidth: 1,
               paddingVertical: 13,
               paddingHorizontal: 20,
-              borderRadius: 5,
+              borderRadius: 4,
               flexDirection: "row",
               alignItems: "center",
               justifyContent: "space-between",
-              marginTop: 12,
             }}
           >
             <Text>{selectedPageName}</Text>
-            <Icon size={20} color={Colors(theme).black} source="chevron-down" />
+            <Icon size={20} color={Colors(theme).text} source="chevron-down" />
           </View>
         </Pressable>
       }
       contentStyle={{
         paddingVertical: 0,
         borderRadius: 5,
-        backgroundColor: Colors(theme).white,
+        backgroundColor: Colors(theme).background,
       }}
     >
       {pages.map((page) => (
         <View
-          key={page.id} // Ensure each View has a unique key
+          key={page.id}
           style={{
             flexDirection: "row",
             justifyContent: "space-between",
             alignItems: "center",
+            backgroundColor: Colors(theme).background,
             paddingHorizontal: 20,
           }}
         >
@@ -170,7 +170,7 @@ const CampaignsOpenViewFilter = (props: any) => {
             ) : (
               <Icon
                 size={20}
-                color={Colors(theme).black}
+                color={Colors(theme).text}
                 source={
                   page.campaignId && page.campaignId === campaignId
                     ? "link-off"

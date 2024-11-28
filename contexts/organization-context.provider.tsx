@@ -67,14 +67,14 @@ export const OrganizationContextProvider: React.FC<PropsWithChildren> = ({
     if (!result) {
       router.push("/(organization)/create-new-organization");
     } else {
-      router.push("/(main)/(campaigns)/campaigns");
+      router.push("/campaigns");
     }
   };
 
   const changeOrganization = async (org: Organization) => {
     setCurrentOrganization(org);
     setOrgId(org.id);
-  }
+  };
 
   useEffect(() => {
     if (session) {
@@ -192,11 +192,19 @@ export const OrganizationContextProvider: React.FC<PropsWithChildren> = ({
         return undefined;
       }
 
-      if (orgId) { // If orgId is present in storage, set the current organization to that
-        setCurrentOrganization(data.find((org) => org?.id === orgId) || data[0] as Organization);
-      } else if (currentOrganization) { // If current organization is set, update it with the latest data
-        setCurrentOrganization(data.find((org) => org?.id === currentOrganization?.id) || currentOrganization);
-      } else { // By default, set the first organization as current organization
+      if (orgId) {
+        // If orgId is present in storage, set the current organization to that
+        setCurrentOrganization(
+          data.find((org) => org?.id === orgId) || (data[0] as Organization)
+        );
+      } else if (currentOrganization) {
+        // If current organization is set, update it with the latest data
+        setCurrentOrganization(
+          data.find((org) => org?.id === currentOrganization?.id) ||
+            currentOrganization
+        );
+      } else {
+        // By default, set the first organization as current organization
         changeOrganization(data[0] as Organization);
       }
 

@@ -1,10 +1,8 @@
-import { DrawerToggle } from "@/components/ui";
 import { useBreakPoints } from "@/hooks";
 import { Stack } from "expo-router";
 
-const MembersLayout = () => {
+const DrawerLayout = () => {
   const { lg } = useBreakPoints();
-
   return (
     <Stack
       screenOptions={{
@@ -14,14 +12,19 @@ const MembersLayout = () => {
       }}
     >
       <Stack.Screen
-        name="members"
+        name="(campaigns)"
         options={{
           headerShown: false,
-          title: "Members",
+        }}
+      />
+      <Stack.Screen
+        name="(organization)"
+        options={{
+          headerShown: false,
         }}
       />
     </Stack>
   );
 };
 
-export default MembersLayout;
+export default DrawerLayout;

@@ -87,13 +87,6 @@ const FacebookLoginButton: React.FC<FacebookLoginButtonProps> = ({
         Toaster.error("Something went wrong");
         onFacebookLogin(null);
       }}
-
-      //   containerStyle={{
-      //     height: "100px",
-      //     width: "100%",
-      //     borderWidth: 0,
-      //     backgroundColor: "#1976D2",
-      //   }}
     />
   );
 };

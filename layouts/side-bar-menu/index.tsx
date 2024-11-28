@@ -1,8 +1,15 @@
 import { DrawerContentScrollView } from "@react-navigation/drawer";
 
-import { View } from "../../components/Themed";
+import { Text, View } from "../../components/Themed";
 import SideBarMenuItem from "./SideBarMenuItem";
-import { Platform } from "react-native";
+import { Platform, Pressable } from "react-native";
+import { useOrganizationContext } from "@/contexts";
+import { Ionicons } from "@expo/vector-icons";
+import Colors from "@/constants/Colors";
+import { stylesFn } from "./side-bar.styles";
+import { Href, router, usePathname } from "expo-router";
+import { useTheme } from "@react-navigation/native";
+import AppLayout from "../app-layout";
 
 const SIDE_BAR_MENU = [
   {
@@ -39,55 +46,102 @@ const SIDE_BAR_MENU_BOTTOM = [
 ];
 
 const SideBarMenu: React.FC = () => {
+  const { organizations } = useOrganizationContext();
+  const pathname = usePathname();
+  const theme = useTheme();
+  const styles = stylesFn(theme);
   return (
-    <View
-      style={{
-        flex: 1,
-      }}
-    >
-      <DrawerContentScrollView
+    <AppLayout>
+      <View
         style={{
           flex: 1,
-          marginTop: Platform.OS === 'web' ? 0 : -60,
         }}
       >
-        <View
+        <DrawerContentScrollView
           style={{
             flex: 1,
+            marginTop: Platform.OS === "web" ? 0 : -60,
           }}
         >
           <View
             style={{
-              gap: 8,
+              flex: 1,
             }}
           >
-            {SIDE_BAR_MENU.map((sideBarMenuItem, index) => (
-              <SideBarMenuItem
-                key={index}
-                href={sideBarMenuItem.href}
-                label={sideBarMenuItem.label}
-              />
-            ))}
+            <View
+              style={{
+                gap: 8,
+              }}
+            >
+              <Text
+                style={{
+                  padding: 16,
+                  fontSize: 16,
+                  fontWeight: "bold",
+                  color: Colors(theme).text,
+                }}
+              >
+                Organizations
+              </Text>
+              {organizations.map((organization) => (
+                <SideBarMenuItem
+                  organization={organization}
+                  label={organization.name}
+                />
+              ))}
+            </View>
           </View>
+        </DrawerContentScrollView>
+        <View
+          style={{
+            borderTopColor: "lightgray",
+            borderTopWidth: 1,
+            paddingBottom: 16,
+            paddingTop: 16,
+          }}
+        >
+          {SIDE_BAR_MENU_BOTTOM.map((item) => (
+            <Pressable
+              onPress={() => {
+                router.push(item.href as Href);
+              }}
+            >
+              <View
+                style={[
+                  styles.sideBarMenuItem,
+                  {
+                    backgroundColor: item.href.includes(pathname)
+                      ? Colors(theme).primary
+                      : Colors(theme).background,
+                  },
+                ]}
+              >
+                <View
+                  style={{
+                    alignItems: "center",
+                    cursor: "pointer",
+                    flexDirection: "row",
+                    justifyContent: "space-between",
+                    backgroundColor: "transparent",
+                  }}
+                >
+                  <Text>{item.label}</Text>
+                  <Ionicons
+                    name={"chevron-forward"}
+                    size={24}
+                    color={
+                      item.href.includes(pathname)
+                        ? Colors(theme).white
+                        : Colors(theme).primary
+                    }
+                  />
+                </View>
+              </View>
+            </Pressable>
+          ))}
         </View>
-      </DrawerContentScrollView>
-      <View
-        style={{
-          borderTopColor: "lightgray",
-          borderTopWidth: 1,
-          paddingBottom: 16,
-          paddingTop: 16,
-        }}
-      >
-        {SIDE_BAR_MENU_BOTTOM.map((sideBarMenuItem, index) => (
-          <SideBarMenuItem
-            key={index}
-            href={sideBarMenuItem.href}
-            label={sideBarMenuItem.label}
-          />
-        ))}
       </View>
-    </View>
+    </AppLayout>
   );
 };
 

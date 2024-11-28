@@ -15,6 +15,7 @@ import { useCampaignContext } from "@/contexts/campaign-context.provider";
 import { Portal } from "react-native-paper";
 import { useTheme } from "@react-navigation/native";
 import stylesFn from "@/styles/campaigns/CampaignCard.styles";
+import Colors from "@/constants/Colors";
 
 interface CampaignCardProps {
   item: Campaign;
@@ -56,7 +57,11 @@ const CampaignCard = ({ item }: CampaignCardProps) => {
                 onPress={() => copyToClipboard(item.assistantId || "")}
                 style={styles.copyIdIcon}
               >
-                <Ionicons name="copy-outline" size={16} color="black" />
+                <Ionicons
+                  name="copy-outline"
+                  size={16}
+                  color={Colors(theme).text}
+                />
               </TouchableOpacity>
             </View>
           </View>
@@ -67,7 +72,11 @@ const CampaignCard = ({ item }: CampaignCardProps) => {
             }}
             anchor={
               <Pressable onPress={() => setMenuVisible(true)}>
-                <MaterialIcons name="more-vert" size={24} color="black" />
+                <MaterialIcons
+                  name="more-vert"
+                  size={24}
+                  color={Colors(theme).text}
+                />
               </Pressable>
             }
           >
@@ -79,6 +88,12 @@ const CampaignCard = ({ item }: CampaignCardProps) => {
                   router.push(`/campaigns/edit/${item.id}`);
                 }}
                 title="Edit"
+                titleStyle={{
+                  color: Colors(theme).text,
+                }}
+                style={{
+                  backgroundColor: Colors(theme).background,
+                }}
               />
               <MenuItem
                 key="delete"
@@ -87,6 +102,12 @@ const CampaignCard = ({ item }: CampaignCardProps) => {
                   setConfirmationModalVisible(true);
                 }}
                 title="Delete"
+                titleStyle={{
+                  color: Colors(theme).text,
+                }}
+                style={{
+                  backgroundColor: Colors(theme).background,
+                }}
               />
             </>
           </Menu>

@@ -163,6 +163,7 @@ const CampaignsBoardWeb: React.FC<CampaignsBoardWebProps> = (
           campaignId={campaignId as string}
           onCloseModal={() => setCurrentConversation(undefined)}
           conversation={currentConversation}
+          theme={theme}
         />
       )}
       <DragDropContext
@@ -188,7 +189,7 @@ const CampaignsBoardWeb: React.FC<CampaignsBoardWebProps> = (
               {(provided) => (
                 <div
                   style={{
-                    backgroundColor: Colors(theme).aliceBlue,
+                    backgroundColor: Colors(theme).background,
                     borderRadius: "3px",
                     width: "272px",
                     padding: "8px",
@@ -206,6 +207,7 @@ const CampaignsBoardWeb: React.FC<CampaignsBoardWebProps> = (
                       fontWeight: "bold",
                       paddingLeft: "12px",
                       alignItems: "center",
+                      color: Colors(theme).text,
                     }}
                   >
                     <span>{column.title}</span>
