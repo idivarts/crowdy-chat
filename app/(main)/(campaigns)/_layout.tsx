@@ -1,21 +1,12 @@
-import { DrawerToggle } from "@/components/ui";
+import { View } from "@/components/Themed";
 import { useAuthContext } from "@/contexts";
-import { useBreakPoints } from "@/hooks";
+import AppLayout from "@/layouts/app-layout";
 import { Stack, useRouter } from "expo-router";
 import { useEffect } from "react";
-import { View } from "@/components/Themed";
-import GoBackButton from "@/components/ui/go-back-button";
-import { CampaignContextProvider } from "@/contexts/campaign-context.provider";
-import Colors from "@/constants/Colors";
-import { useTheme } from "@react-navigation/native";
 
 const CampaignsLayout = () => {
-  const { lg } = useBreakPoints();
-  const theme = useTheme();
-
   const { isLoading, session } = useAuthContext();
   const router = useRouter();
-
   useEffect(() => {
     if (!isLoading && !session) {
       router.replace("/(auth)/login");
@@ -23,62 +14,39 @@ const CampaignsLayout = () => {
   }, [isLoading, session]);
 
   return (
-    <CampaignContextProvider>
-      <Stack
-        screenOptions={{
-          animation: "ios",
-          headerShown: true,
-          headerTitleAlign: "center",
+    <AppLayout>
+      <View
+        style={{
+          flex: 1,
         }}
       >
-        <Stack.Screen
-          name="campaigns"
-          options={{
-            headerLeft: () => (lg ? null : <DrawerToggle />),
-            title: "Campaigns",
+        <Stack
+          screenOptions={{
+            animation: "ios",
             headerShown: false,
           }}
-        />
-        <Stack.Screen
-          name="campaigns/create"
-          options={{
-            headerLeft: () => (
-              <View
-                style={{
-                  flexDirection: "row",
-                  alignItems: "center",
-                }}
-              >
-                <GoBackButton />
-                {!lg && <DrawerToggle />}
-              </View>
-            ),
-            title: "Create Campaign",
-            headerShown: true,
-
-            headerStyle: {
-              backgroundColor: Colors(theme).background,
-            },
-          }}
-        />
-        <Stack.Screen
-          name="campaigns/edit/[pageID]"
-          options={{
-            headerLeft: () => (
-              <View style={{ flexDirection: "row", alignItems: "center" }}>
-                <GoBackButton />
-                {!lg && <DrawerToggle />}
-              </View>
-            ),
-            title: "Edit Campaign",
-            headerShown: true,
-            headerStyle: {
-              backgroundColor: Colors(theme).background,
-            },
-          }}
-        />
-      </Stack>
-    </CampaignContextProvider>
+        >
+          <Stack.Screen
+            name="campaign-detailed-view"
+            options={{
+              headerShown: false,
+            }}
+          />
+          <Stack.Screen
+            name="campaign-detailed-view/:pageId"
+            options={{
+              headerShown: false,
+            }}
+          />
+          {/* <Stack.Screen
+            name="campaigns-open-view/:pageId"
+            options={{
+              headerShown: false,
+            }}
+          /> */}
+        </Stack>
+      </View>
+    </AppLayout>
   );
 };
 

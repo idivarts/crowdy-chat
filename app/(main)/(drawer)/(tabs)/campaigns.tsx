@@ -16,13 +16,16 @@ import { FlatList, Platform } from "react-native";
 import { useTheme } from "@react-navigation/native";
 import stylesFn from "@/styles/campaigns/CampaignsList.styles";
 import Colors from "@/constants/Colors";
+import ProfileIcon from "@/components/profile/ProfileIcon";
+import ProfileCircle from "@/components/profile/ProfileCircle";
+import OrganizationSwitcherMenu from "@/components/org-switcher";
 
 const Campaigns = () => {
   const theme = useTheme();
   const styles = stylesFn(theme);
   const [searchQuery, setSearchQuery] = useState("");
   const [filteredCampaigns, setFilteredCampaigns] = useState<Campaign[]>([]);
-  const { lg } = useBreakPoints();
+  const { lg, xl } = useBreakPoints();
 
   const { campaigns } = useCampaignContext();
   const { currentOrganization } = useOrganizationContext();
@@ -68,14 +71,17 @@ const Campaigns = () => {
         statusBarHeight={0}
         style={{
           backgroundColor: Colors(theme).background,
+          gap: 10,
         }}
       >
         {!lg && <DrawerToggle />}
+        {xl && <OrganizationSwitcherMenu />}
         <Appbar.Content title="Campaigns" />
         <Appbar.Action
           icon="plus"
           onPress={() => router.push("/campaigns/create")}
         />
+        <ProfileCircle />
       </Appbar.Header>
       <View style={styles.container}>
         {campaigns.length > 0 && (

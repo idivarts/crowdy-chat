@@ -22,6 +22,10 @@ import { useOrganizationContext } from "@/contexts";
 import { StyleConstant } from "@/constants/Style";
 import EmptyState from "@/components/EmptyState";
 import { ILeads } from "@/shared-libs/firestore/crowdy-chat/models/leads";
+import AppLayout from "@/layouts/app-layout";
+import ProfileIcon from "@/components/profile/ProfileIcon";
+import ProfileCircle from "@/components/profile/ProfileCircle";
+import OrganizationSwitcherMenu from "@/components/org-switcher";
 
 const Leads = () => {
   const theme = useTheme();
@@ -32,7 +36,7 @@ const Leads = () => {
   const [selectedLeads, setSelectedLeads] = useState<any>([]);
   const [filteredLeads, setFilteredLeads] = useState<any[]>(leads);
   const [searchQuery, setSearchQuery] = useState("");
-  const { lg } = useBreakPoints();
+  const { xl, lg } = useBreakPoints();
   const [loadingLeads, setLoadingLeads] = useState<{ [key: string]: boolean }>(
     {}
   );
@@ -139,133 +143,141 @@ const Leads = () => {
   }, [leads, searchQuery]);
 
   return (
-    <View
-      style={{
-        flex: 1,
-      }}
-    >
-      <Appbar.Header
-        statusBarHeight={0}
-        style={{
-          backgroundColor: Colors(theme).background,
-        }}
-      >
-        {!lg && <DrawerToggle />}
-        <Appbar.Content title="Leads" />
-        <Appbar.Action icon="plus" onPress={showCreateLeadModal} />
-        <Appbar.Action icon="tag" onPress={showCreateTagModal} />
-      </Appbar.Header>
-
+    <AppLayout>
       <View
         style={{
-          padding: StyleConstant.paddingHorizontalForScreen,
           flex: 1,
         }}
       >
-        {!leads?.length ? (
-          <EmptyState
-            message="No leads found"
-            onPress={showCreateLeadModal}
-            buttonPresent={true}
-            image={require("@/assets/images/empty-illusatration.png")}
-            buttonName="Create Lead"
-          />
-        ) : (
-          <View
-            style={{
-              gap: 16,
-              flex: 1,
-            }}
-          >
-            <TextInput
-              label="Search Leads"
-              mode="outlined"
-              style={{
-                backgroundColor: Colors(theme).background,
-              }}
-              onChangeText={handleSearch}
-              value={searchQuery}
-            />
-            <ScrollView horizontal={Platform.OS !== "web"}>
-              <DataTable>
-                <DataTable.Header style={styles.headerContainer}>
-                  <DataTable.Title style={styles.checkboxContainer}>
-                    <ExpoCheckbox
-                      value={selectedLeads?.length === leads?.length}
-                      onValueChange={handleSelectAll}
-                    />
-                  </DataTable.Title>
-                  <DataTable.Title style={styles.headerTitleContainer}>
-                    Name
-                  </DataTable.Title>
-                  <DataTable.Title style={styles.headerTitleContainer}>
-                    Source
-                  </DataTable.Title>
-                  <DataTable.Title style={styles.headerTitleContainer}>
-                    Campaigns
-                  </DataTable.Title>
-                  <DataTable.Title style={styles.actionContainer} numeric>
-                    Actions
-                  </DataTable.Title>
-                </DataTable.Header>
+        <Appbar.Header
+          statusBarHeight={0}
+          style={{
+            backgroundColor: Colors(theme).background,
+            gap: 10,
+          }}
+        >
+          {!lg && <DrawerToggle />}
+          {xl && <OrganizationSwitcherMenu />}
+          <Appbar.Content title="Leads" />
+          <Appbar.Action icon="plus" onPress={showCreateLeadModal} />
+          <Appbar.Action icon="tag" onPress={showCreateTagModal} />
+          <ProfileCircle />
+        </Appbar.Header>
 
-                {filteredLeads.map((lead, index) => (
-                  <DataTable.Row key={index} style={styles.rowContainer}>
+        <View
+          style={{
+            padding: StyleConstant.paddingHorizontalForScreen,
+            flex: 1,
+          }}
+        >
+          {!leads?.length ? (
+            <EmptyState
+              message="No leads found"
+              onPress={showCreateLeadModal}
+              buttonPresent={true}
+              image={require("@/assets/images/empty-illusatration.png")}
+              buttonName="Create Lead"
+            />
+          ) : (
+            <View
+              style={{
+                gap: 16,
+                flex: 1,
+              }}
+            >
+              <TextInput
+                label="Search Leads"
+                mode="outlined"
+                style={{
+                  backgroundColor: Colors(theme).background,
+                }}
+                onChangeText={handleSearch}
+                value={searchQuery}
+              />
+              <ScrollView horizontal={Platform.OS !== "web"}>
+                <DataTable>
+                  <View style={styles.headerContainer}>
                     <DataTable.Cell style={styles.checkboxContainer}>
                       <ExpoCheckbox
-                        value={selectedLeads?.includes(lead.id)}
-                        onValueChange={() => handleSelectLead(lead.id)}
+                        value={
+                          selectedLeads?.length === leads?.length &&
+                          selectedLeads?.length > 0
+                        }
+                        onValueChange={handleSelectAll}
                       />
                     </DataTable.Cell>
                     <DataTable.Cell style={styles.rowTextContainer}>
-                      {lead.name}
+                      Name
                     </DataTable.Cell>
                     <DataTable.Cell style={styles.rowTextContainer}>
-                      {lead.sourceId}
+                      Source
                     </DataTable.Cell>
                     <DataTable.Cell style={styles.rowTextContainer}>
-                      {lead.id}
+                      ID
                     </DataTable.Cell>
-                    <DataTable.Cell style={styles.actionContainer} numeric>
-                      {loadingLeads[lead.id] ? (
-                        <ActivityIndicator
-                          size="small"
-                          color={Colors(theme).primary}
+                    <DataTable.Cell style={styles.rowTextContainer}>
+                      Actions
+                    </DataTable.Cell>
+                  </View>
+
+                  {filteredLeads.map((lead, index) => (
+                    <DataTable.Row key={index} style={styles.rowContainer}>
+                      <DataTable.Cell style={styles.checkboxContainer}>
+                        <ExpoCheckbox
+                          value={selectedLeads?.includes(lead.id)}
+                          onValueChange={() => handleSelectLead(lead.id)}
                         />
-                      ) : (
-                        <TouchableOpacity
-                          onPress={() => modifyLeadStatus(lead.id)}
-                        >
-                          <Text style={{ color: Colors(theme).primary }}>
-                            {lead.status === 1 ? "Disable" : "Enable"}
-                          </Text>
-                        </TouchableOpacity>
-                      )}
-                    </DataTable.Cell>
-                  </DataTable.Row>
-                ))}
-              </DataTable>
-            </ScrollView>
-          </View>
-        )}
-      </View>
+                      </DataTable.Cell>
+                      <DataTable.Cell style={styles.rowTextContainer}>
+                        {lead.name}
+                      </DataTable.Cell>
+                      <DataTable.Cell style={styles.rowTextContainer}>
+                        {lead.sourceId}
+                      </DataTable.Cell>
+                      <DataTable.Cell style={styles.rowTextContainer}>
+                        {lead.id}
+                      </DataTable.Cell>
+                      <DataTable.Cell style={styles.rowTextContainer}>
+                        {loadingLeads[lead.id] ? (
+                          <ActivityIndicator
+                            size="small"
+                            color={Colors(theme).primary}
+                          />
+                        ) : (
+                          <TouchableOpacity
+                            onPress={() => modifyLeadStatus(lead.id)}
+                          >
+                            <Text style={{ color: Colors(theme).primary }}>
+                              {lead.status === 1 ? "Disable" : "Enable"}
+                            </Text>
+                          </TouchableOpacity>
+                        )}
+                      </DataTable.Cell>
+                    </DataTable.Row>
+                  ))}
+                </DataTable>
+              </ScrollView>
+            </View>
+          )}
+        </View>
 
-      <Portal>
-        {leads?.length > 0 && (
-          <CreateLeadModal
-            visible={isCreateLeadVisible}
-            onDismiss={hideCreateLeadModal}
-            setLeads={setLeads}
-            leads={leads}
+        <Portal>
+          {leads?.length > 0 && (
+            <CreateLeadModal
+              visible={isCreateLeadVisible}
+              onDismiss={hideCreateLeadModal}
+              setLeads={setLeads}
+              leads={leads}
+            />
+          )}
+
+          <CreateTagModal
+            visible={isCreateTagVisible}
+            onDismiss={hideCreateTagModal}
           />
-        )}
-
-        <CreateTagModal
-          visible={isCreateTagVisible}
-          onDismiss={hideCreateTagModal}
-        />
-      </Portal>
-    </View>
+        </Portal>
+      </View>
+    </AppLayout>
   );
 };
 

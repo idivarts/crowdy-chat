@@ -28,10 +28,12 @@ export const stylesFn = (theme: Theme) =>
     modalContent: {
       padding: 20,
       borderRadius: 10,
+      backgroundColor: Colors(theme).background,
       width: 300,
     },
     modalInputContainer: {
       marginBottom: 10,
+      backgroundColor: Colors(theme).background,
     },
     input: {
       marginBottom: 10,

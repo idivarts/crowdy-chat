@@ -1,63 +1,42 @@
 import { Text, View } from "@/components/Themed";
 import { Href, usePathname, useRouter } from "expo-router";
-import { Pressable } from "react-native";
+import { Pressable, TouchableOpacity } from "react-native";
 import Colors from "@/constants/Colors";
 import { Ionicons } from "@expo/vector-icons";
 import { useTheme } from "@react-navigation/native";
 import { stylesFn } from "./side-bar.styles";
+import { useOrganizationContext } from "@/contexts";
+import { Organization } from "@/types/Organization";
+import { Avatar, Card } from "react-native-paper";
 
 interface SideBarMenuItemProps {
-  href: string;
+  organization: Organization;
   label: string;
 }
 
 const SideBarMenuItem: React.FC<SideBarMenuItemProps> = ({
-  href,
+  organization,
   label,
 }) => {
   const router = useRouter();
-  const pathname = usePathname();
+
   const theme = useTheme();
   const styles = stylesFn(theme);
+  const { changeOrganization } = useOrganizationContext();
 
   return (
     <Pressable
       onPress={() => {
-        router.push(href as Href);
+        changeOrganization(organization);
+        router.push("/");
       }}
     >
-      <View
-        style={[
-          styles.sideBarMenuItem,
-          {
-            backgroundColor: href.includes(pathname) ? Colors(theme).primary : Colors(theme).background,
-          }
-        ]}
-      >
-        <View
-          style={{
-            alignItems: 'center',
-            cursor: 'pointer',
-            flexDirection: 'row',
-            justifyContent: 'space-between',
-            backgroundColor: 'transparent',
-          }}
-        >
-          <Text
-            darkColor={href.includes(pathname) ? Colors(theme).white : Colors(theme).primary}
-            lightColor={href.includes(pathname) ? Colors(theme).white : Colors(theme).primary}
-          >
-            {label}
-          </Text>
-          <Ionicons
-            name={"chevron-forward"}
-            size={24}
-            color={href.includes(pathname) ? Colors(theme).white : Colors(theme).primary}
-          />
-        </View>
+      <View style={styles.organizationCard}>
+        <Avatar.Image source={{ uri: organization.image }} />
+        <Text style={styles.organizationName}>{label}</Text>
       </View>
     </Pressable>
   );
-}
+};
 
 export default SideBarMenuItem;

@@ -5,63 +5,56 @@ import { StyleSheet } from "react-native";
 const stylesFn = (theme: Theme) =>
   StyleSheet.create({
     headerContainer: {
-      backgroundColor: Colors(theme).lightgray,
       flexDirection: "row",
       alignItems: "center",
-      minHeight: 56, // Ensures uniform height across rows
-      borderBottomWidth: 0.5,
-      borderColor: Colors(theme).lightgray,
-    },
-    headerTitleContainer: {
-      flex: 2, // Match flex with header
-      justifyContent: "center",
-      alignItems: "center",
-      minWidth: 100, // Min width for text
-      paddingHorizontal: 8,
-    },
-    headerTitle: {
-      fontWeight: "500",
-      fontSize: 14,
-      color: Colors(theme).primary,
-      textAlign: "center",
+      paddingVertical: 8,
+      paddingHorizontal: 16,
+      backgroundColor: Colors(theme).lightgray,
     },
     checkboxContainer: {
-      flex: 1,
-      alignItems: "center",
       justifyContent: "center",
-      paddingHorizontal: 4,
-    },
-    checkboxText: {
-      textAlign: "center",
+      alignItems: "center",
+      width: 48,
     },
     actionContainer: {
-      flex: 1, // Minimal space for actions
+      justifyContent: "center",
       alignItems: "center",
+      paddingHorizontal: 8,
     },
     actionText: {
       fontWeight: "500",
       fontSize: 14,
-      color: Colors(theme).primary,
+      textAlign: "center",
     },
     rowContainer: {
       flexDirection: "row",
       alignItems: "center",
-      paddingVertical: 12, // Consistent padding
-      minHeight: 56, // Ensures uniform height across rows
-      borderBottomWidth: 0.5,
+      minHeight: 56,
+      borderBottomWidth: 1,
       borderColor: Colors(theme).lightgray,
+      paddingHorizontal: 16,
     },
-
     rowTextContainer: {
-      flex: 2, // Match flex with header
+      width: 150,
       justifyContent: "center",
-      alignItems: "center",
-      minWidth: 100, // Min width for text
-      paddingHorizontal: 8,
+      alignItems: "flex-start",
+      paddingVertical: 8,
     },
     rowText: {
       fontWeight: "400",
-      fontSize: 13,
+      fontSize: 14,
+    },
+    headerTitle: {
+      fontWeight: "600",
+      fontSize: 16,
+      textAlign: "left",
+      paddingHorizontal: 16,
+    },
+    headerTitleContainer: {
+      flex: 1,
+      justifyContent: "center",
+      paddingVertical: 8,
     },
   });
+
 export default stylesFn;

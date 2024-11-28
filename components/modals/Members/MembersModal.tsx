@@ -3,6 +3,7 @@ import { Button, Chip, Modal, TextInput } from "react-native-paper";
 import { stylesFn } from "@/styles/Members";
 import { useTheme } from "@react-navigation/native";
 import { View } from "@/components/Themed";
+import Colors from "@/constants/Colors";
 
 interface MembersModalProps {
   visible: boolean;
@@ -11,6 +12,7 @@ interface MembersModalProps {
   handleAddUser: (member: any) => void;
   editingIndex: number | null;
   updateMember: (member: any, index: number, userId: string) => void;
+  theme: any;
 }
 type PermissionKey = "read" | "write" | "admin";
 
@@ -21,8 +23,8 @@ const MembersModal: React.FC<MembersModalProps> = ({
   handleAddUser,
   editingIndex,
   updateMember,
+  theme,
 }) => {
-  const theme = useTheme();
   const styles = stylesFn(theme);
   const [newMember, setNewMember] = React.useState({
     username: "",

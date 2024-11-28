@@ -35,10 +35,7 @@ const CampaignsOpenViewHeader: React.FC<CampaignsOpenViewHeaderProps> = ({
         backgroundColor: Colors(theme).background,
       }}
     >
-      <Pressable
-        key={0}
-        onPress={() => router.navigate("/(campaigns)/campaigns")}
-      >
+      <Pressable key={0} onPress={() => router.navigate("/campaigns")}>
         <View
           style={{
             display: "flex",
@@ -48,7 +45,7 @@ const CampaignsOpenViewHeader: React.FC<CampaignsOpenViewHeaderProps> = ({
         >
           <IconButton
             icon="arrow-left"
-            onPress={() => router.navigate("/(campaigns)/campaigns")}
+            onPress={() => router.navigate("/campaigns")}
           />
         </View>
       </Pressable>

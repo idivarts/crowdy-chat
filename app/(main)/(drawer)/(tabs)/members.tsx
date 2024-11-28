@@ -47,18 +47,10 @@ import MembersModal from "@/components/modals/Members/MembersModal";
 import { useTheme } from "@react-navigation/native";
 import { View } from "@/components/Themed";
 import Colors from "@/constants/Colors";
-
-const customTheme = {
-  ...DefaultTheme,
-  colors: {
-    ...DefaultTheme.colors,
-    primary: "#1976d2",
-    background: "#ffffff",
-    text: "#000000",
-    surface: "#ffffff",
-    onSurface: "#1976d2",
-  },
-};
+import AppLayout from "@/layouts/app-layout";
+import ProfileIcon from "@/components/profile/ProfileIcon";
+import ProfileCircle from "@/components/profile/ProfileCircle";
+import OrganizationSwitcherMenu from "@/components/org-switcher";
 
 interface MemberDetails {
   userId?: string;
@@ -80,7 +72,7 @@ const MemberPage: React.FC = () => {
   const [searchTerm, setSearchTerm] = useState<string>("");
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const { currentOrganization } = useOrganizationContext();
-  const { lg } = useBreakPoints();
+  const { lg, xl } = useBreakPoints();
   const [editingIndex, setEditingIndex] = useState<number | null>(null);
 
   const fetchMembers = async () => {
@@ -427,16 +419,19 @@ const MemberPage: React.FC = () => {
   }
 
   return (
-    <Provider theme={customTheme}>
+    <AppLayout>
       <Appbar.Header
         statusBarHeight={0}
         style={{
           backgroundColor: Colors(theme).background,
+          gap: 10,
         }}
       >
         {!lg && <DrawerToggle />}
+        {xl && <OrganizationSwitcherMenu />}
         <Appbar.Content title="Members" />
         <Appbar.Action icon="plus" onPress={handleAddMemberClick} />
+        <ProfileCircle />
       </Appbar.Header>
 
       <ScrollView style={styles.container}>
@@ -476,9 +471,10 @@ const MemberPage: React.FC = () => {
           editingIndex={editingIndex}
           updateMember={updateMember}
           member={members}
+          theme={theme}
         />
       </Portal>
-    </Provider>
+    </AppLayout>
   );
 };
 

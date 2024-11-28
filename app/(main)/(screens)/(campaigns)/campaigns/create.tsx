@@ -205,7 +205,7 @@ const CreateCampaign = ({ campaignData }: { campaignData?: IEditCampaign }) => {
           stages,
           resetForm
         ).then(() => {
-          router.replace("/(main)/(campaigns)/campaigns");
+          router.replace("/campaigns");
         });
       }
 
@@ -225,7 +225,7 @@ const CreateCampaign = ({ campaignData }: { campaignData?: IEditCampaign }) => {
           stages,
           resetForm
         ).then(() => {
-          router.replace("/(main)/(campaigns)/campaigns");
+          router.replace("/campaigns");
         });
       } else {
         setCurrentStep(currentStep + 1);
