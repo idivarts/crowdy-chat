@@ -52,8 +52,7 @@ const FacebookLoginButton: React.FC<FacebookLoginButtonProps> = ({
         `https://graph.facebook.com/v21.0/me`,
         {
           params: {
-            fields:
-              "accounts{access_token,id,instagram_business_account,name},name,id",
+            fields: "accounts,name,id",
             access_token: accessToken,
           },
         }
