@@ -30,7 +30,7 @@
     "axios": "^1.7.7",
     "date-fns": "^4.1.0",
     "expo": "~51.0.36",
-    "expo-auth-session": "^6.0.0",
+    "expo-auth-session": "~5.5.2",
     "expo-av": "^14.0.7",
     "expo-checkbox": "^3.0.0",
     "expo-clipboard": "^6.0.3",
@@ -59,7 +59,8 @@
     "react-native-toast-message": "^2.2.0",
     "react-native-web": "~0.19.10",
     "react-router-dom": "^6.26.1",
-    "timeago-react": "^3.0.6"
+    "timeago-react": "^3.0.6",
+    "expo-crypto": "~13.0.2"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",

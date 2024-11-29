@@ -8,6 +8,7 @@ const stylesFn = (theme: Theme) =>
     cardContainer: {
       borderColor: Colors(theme).aliceBlue,
       borderWidth: 1,
+      backgroundColor: Colors(theme).card,
       borderRadius: 8,
       padding: StyleConstant.paddingHorizontalForScreen,
       marginBottom: 16,
