@@ -1,11 +1,14 @@
-import React from "react";
-import { Button, TouchableOpacity } from "react-native";
-import { TextInput } from "react-native-paper";
+import React, { useEffect, useState } from "react";
+import { Button, Platform, TouchableOpacity } from "react-native";
+import { Icon, TextInput } from "react-native-paper";
 import Checkbox from "expo-checkbox";
 import { CreateCampaignstylesFn } from "@/styles/Dashboard.styles";
 import { useTheme } from "@react-navigation/native";
 import { Text, View } from "@/components/Themed";
 import Colors from "@/constants/Colors";
+import { TextModal } from "../TextInputModal/TextModal.web";
+import { Ionicons } from "@expo/vector-icons";
+import { router, useLocalSearchParams } from "expo-router";
 
 type Collectible = {
   name: string;
@@ -31,20 +34,70 @@ type Stage = {
   exampleConversations: string;
 };
 
-export const CampaignStepThree = (
-  stages: Stage[],
-  currentStep: number,
-  setCurrentStep: (step: number) => void,
-  handleAddStage: () => void,
-  handleRemoveStage: (index: number) => void,
+interface CampaignStepThreeProps {
+  stages: Stage[];
+  currentStep: number;
+  setCurrentStep: (step: number) => void;
+  handleAddStage: () => void;
+  handleRemoveStage: (index: number) => void;
   handleStageChange: <K extends keyof Stage>(
     index: number,
     key: K,
     value: Stage[K]
-  ) => void
-) => {
+  ) => void;
+}
+
+export const CampaignStepThree: React.FC<CampaignStepThreeProps> = ({
+  stages,
+  currentStep,
+  setCurrentStep,
+  handleAddStage,
+  handleRemoveStage,
+  handleStageChange,
+}) => {
   const theme = useTheme();
   const styles = CreateCampaignstylesFn(theme);
+
+  const [modalData, setModalData] = useState({
+    isOpen: false,
+    title: "",
+    placeholder: "",
+    value: "",
+    onSubmit: (value: string) => {},
+  });
+
+  const openModal = (
+    title: string,
+    placeholder: string,
+    value: string,
+    onSubmit: (value: string) => void
+  ) => {
+    setModalData({ isOpen: true, title, placeholder, value, onSubmit });
+  };
+
+  const closeModal = () => {
+    setModalData((prev) => ({ ...prev, isOpen: false }));
+  };
+
+  const value = useLocalSearchParams().value;
+
+  useEffect(() => {
+    if (value) {
+      const { textBoxName, textBoxValue } = JSON.parse(value as string);
+
+      const stageIndex = parseInt(textBoxName.split(" ")[3]);
+
+      if (textBoxName === "Edit Stage Purpose " + stageIndex) {
+        if (stages[stageIndex]) {
+          handleStageChange(stageIndex, "purpose", textBoxValue);
+        }
+      } else if (textBoxName === "Edit Example Conversations " + stageIndex) {
+        if (stages[stageIndex]) {
+          handleStageChange(stageIndex, "exampleConversations", textBoxValue);
+        }
+      }
+    }
+  }, [value, currentStep]);
 
   return (
     <View style={styles.step3Container}>
@@ -103,20 +156,87 @@ export const CampaignStepThree = (
             />
 
             <Text>Purpose of the Stage</Text>
-            <TextInput
-              style={styles.input3}
-              value={stage.purpose}
-              onChangeText={(text) => handleStageChange(index, "purpose", text)}
-            />
+            <View
+              style={{
+                flexDirection: "row",
+                alignItems: "center",
+                position: "relative",
+              }}
+            >
+              <TextInput
+                style={styles.input3}
+                value={stage.purpose}
+                onChangeText={(text) =>
+                  handleStageChange(index, "purpose", text)
+                }
+              />
+              <TouchableOpacity
+                onPress={() =>
+                  Platform.OS === "web"
+                    ? openModal(
+                        "Edit Stage Purpose",
+                        "Enter Stage Purpose",
+                        stage.purpose,
+                        (value) => handleStageChange(index, "purpose", value)
+                      )
+                    : router.push({
+                        pathname: "/(main)/(screens)/(campaigns)/textbox-page",
+                        params: {
+                          title: "Edit Stage Purpose " + index,
+                          value: stage.purpose,
+                          path: "/campaigns/create",
+                        },
+                      })
+                }
+                style={styles.editIcon}
+              >
+                <Ionicons name="pencil" size={24} color="black" />
+              </TouchableOpacity>
+            </View>
 
             <Text>Example Conversations</Text>
-            <TextInput
-              style={styles.input3}
-              value={stage.exampleConversations}
-              onChangeText={(text) =>
-                handleStageChange(index, "exampleConversations", text)
-              }
-            />
+            <View
+              style={{
+                flexDirection: "row",
+                alignItems: "center",
+                position: "relative",
+              }}
+            >
+              <TextInput
+                style={styles.input3}
+                value={stage.exampleConversations}
+                onChangeText={(text) =>
+                  handleStageChange(index, "exampleConversations", text)
+                }
+              />
+              <TouchableOpacity
+                onPress={() =>
+                  Platform.OS === "web"
+                    ? openModal(
+                        "Edit Example Conversations",
+                        "Enter Example Conversations",
+                        stage.exampleConversations,
+                        (value) =>
+                          handleStageChange(
+                            index,
+                            "exampleConversations",
+                            value
+                          )
+                      )
+                    : router.push({
+                        pathname: "/(main)/(screens)/(campaigns)/textbox-page",
+                        params: {
+                          title: "Edit Example Conversations " + index,
+                          value: stage.exampleConversations,
+                          path: "/campaigns/create",
+                        },
+                      })
+                }
+                style={styles.editIcon}
+              >
+                <Ionicons name="pencil" size={24} color="black" />
+              </TouchableOpacity>
+            </View>
 
             <Text>Collectibles</Text>
             {stage.collectibles.map((collectible, i) => (
@@ -294,6 +414,14 @@ export const CampaignStepThree = (
           </View>
         ))}
       </View>
+      <TextModal
+        isOpen={modalData.isOpen}
+        onClose={closeModal}
+        title={modalData.title}
+        placeholder={modalData.placeholder}
+        value={modalData.value}
+        onSubmit={modalData.onSubmit}
+      />
     </View>
   );
 };

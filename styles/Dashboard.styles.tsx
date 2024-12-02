@@ -91,6 +91,20 @@ export const CreateCampaignstylesFn = (theme: Theme) =>
       padding: 0,
       backgroundColor: Colors(theme).background,
     },
+    inputWrapper: {
+      marginBottom: 20,
+    },
+    inputRow: {
+      flexDirection: "row",
+      alignItems: "center",
+      position: "relative",
+    },
+    editIcon: {
+      position: "absolute",
+      right: 10,
+      top: 10,
+      padding: 10,
+    },
     collectibleContainer: {
       flexDirection: "column",
       gap: 8,
