@@ -3,10 +3,11 @@ import { TextInput } from "react-native-paper";
 import { CreateCampaignstylesFn } from "@/styles/Dashboard.styles";
 import { useTheme } from "@react-navigation/native";
 import { Text, View } from "@/components/Themed";
-import { Platform, TouchableOpacity } from "react-native";
+import { Platform, Pressable } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { TextModal } from "../TextInputModal/TextModal.web";
 import { router, useLocalSearchParams } from "expo-router";
+import { handleModalOrInputPage } from "@/helpers/TextInput";
 
 interface CampaignStepTwoProps {
   prescript: string;
@@ -73,9 +74,10 @@ const CampaignStepTwo: React.FC<CampaignStepTwoProps> = ({
 
   useEffect(() => {
     if (value) {
-      const { textBoxName, textBoxValue } = JSON.parse(value as string);
+      const { textbox } = JSON.parse(value as string);
+      const { title, value: textBoxValue } = textbox;
 
-      switch (textBoxName) {
+      switch (title) {
         case "Edit Prescript":
           setPrescript(textBoxValue);
           break;
@@ -105,28 +107,22 @@ const CampaignStepTwo: React.FC<CampaignStepTwoProps> = ({
               onChangeText={setPrescript}
               multiline
             />
-            <TouchableOpacity
+            <Pressable
               onPress={() =>
-                Platform.OS === "web"
-                  ? openModal(
-                      "Edit Prescript",
-                      "Enter Prescript",
-                      prescript, // Pass the latest value from state
-                      setPrescript
-                    )
-                  : router.push({
-                      pathname: "/(main)/(screens)/(campaigns)/textbox-page",
-                      params: {
-                        title: "Edit Prescript",
-                        value: prescript,
-                        path: "/campaigns/create",
-                      },
-                    })
+                handleModalOrInputPage({
+                  isWeb: Platform.OS === "web",
+                  openModal,
+                  router,
+                  fieldTitle: "Edit Prescript",
+                  fieldValue: prescript,
+                  setFieldValue: setPrescript,
+                  pathBack: "/campaigns/create",
+                })
               }
               style={styles.editIcon}
             >
               <Ionicons name="pencil" size={24} color="black" />
-            </TouchableOpacity>
+            </Pressable>
           </View>
         </View>
 
@@ -140,28 +136,22 @@ const CampaignStepTwo: React.FC<CampaignStepTwoProps> = ({
               onChangeText={setCampaignPurpose}
               multiline
             />
-            <TouchableOpacity
+            <Pressable
               onPress={() =>
-                Platform.OS === "web"
-                  ? openModal(
-                      "Edit Campaign Purpose",
-                      "Enter Campaign Purpose",
-                      campaignPurpose, // Pass the latest value from state
-                      setCampaignPurpose
-                    )
-                  : router.push({
-                      pathname: "/(main)/(screens)/(campaigns)/textbox-page",
-                      params: {
-                        title: "Edit Campaign Purpose",
-                        value: campaignPurpose,
-                        path: "/campaigns/create",
-                      },
-                    })
+                handleModalOrInputPage({
+                  isWeb: Platform.OS === "web",
+                  openModal,
+                  router,
+                  fieldTitle: "Edit Campaign Purpose",
+                  fieldValue: campaignPurpose,
+                  setFieldValue: setCampaignPurpose,
+                  pathBack: "/campaigns/create",
+                })
               }
               style={styles.editIcon}
             >
               <Ionicons name="pencil" size={24} color="black" />
-            </TouchableOpacity>
+            </Pressable>
           </View>
         </View>
 
@@ -175,28 +165,22 @@ const CampaignStepTwo: React.FC<CampaignStepTwoProps> = ({
               onChangeText={setActorDefinition}
               multiline
             />
-            <TouchableOpacity
+            <Pressable
               onPress={() =>
-                Platform.OS === "web"
-                  ? openModal(
-                      "Edit Actor Definition",
-                      "Enter Actor Definition",
-                      actorDefinition, // Pass the latest value from state
-                      setActorDefinition
-                    )
-                  : router.push({
-                      pathname: "/(main)/(screens)/(campaigns)/textbox-page",
-                      params: {
-                        title: "Edit Actor Definition",
-                        value: actorDefinition,
-                        path: "/campaigns/create",
-                      },
-                    })
+                handleModalOrInputPage({
+                  isWeb: Platform.OS === "web",
+                  openModal,
+                  router,
+                  fieldTitle: "Edit Actor Definition",
+                  fieldValue: actorDefinition,
+                  setFieldValue: setActorDefinition,
+                  pathBack: "/campaigns/create",
+                })
               }
               style={styles.editIcon}
             >
               <Ionicons name="pencil" size={24} color="black" />
-            </TouchableOpacity>
+            </Pressable>
           </View>
         </View>
 
@@ -210,28 +194,22 @@ const CampaignStepTwo: React.FC<CampaignStepTwoProps> = ({
               onChangeText={setDialogues}
               multiline
             />
-            <TouchableOpacity
+            <Pressable
               onPress={() =>
-                Platform.OS === "web"
-                  ? openModal(
-                      "Edit Dialogues",
-                      "Enter Dialogues",
-                      dialogues, // Pass the latest value from state
-                      setDialogues
-                    )
-                  : router.push({
-                      pathname: "/(main)/(screens)/(campaigns)/textbox-page",
-                      params: {
-                        title: "Edit Dialogues",
-                        value: dialogues,
-                        path: "/campaigns/create",
-                      },
-                    })
+                handleModalOrInputPage({
+                  isWeb: Platform.OS === "web",
+                  openModal,
+                  router,
+                  fieldTitle: "Edit Dialogues",
+                  fieldValue: dialogues,
+                  setFieldValue: setDialogues,
+                  pathBack: "/campaigns/create",
+                })
               }
               style={styles.editIcon}
             >
               <Ionicons name="pencil" size={24} color="black" />
-            </TouchableOpacity>
+            </Pressable>
           </View>
         </View>
       </View>

@@ -145,7 +145,6 @@ export const CreateCampaignstylesFn = (theme: Theme) =>
       borderWidth: 1,
       borderRadius: 4,
       width: "100%",
-      height: 40,
       marginVertical: 8,
       backgroundColor: Colors(theme).background,
     },

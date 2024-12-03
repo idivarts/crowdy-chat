@@ -2,11 +2,12 @@ import React, { useEffect, useState } from "react";
 import { TextInput } from "react-native-paper";
 import { useTheme } from "@react-navigation/native";
 import { Text, View } from "@/components/Themed";
-import { Platform, TouchableOpacity } from "react-native";
+import { Platform, Pressable } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { CreateCampaignstylesFn } from "@/styles/Dashboard.styles";
 import { TextModal } from "../TextInputModal/TextModal.web";
 import { router, useLocalSearchParams } from "expo-router";
+import { handleModalOrInputPage } from "@/helpers/TextInput";
 
 interface CampaignStepOneProps {
   campaignName: string;
@@ -32,12 +33,14 @@ const CampaignStepOne: React.FC<CampaignStepOneProps> = ({
   const theme = useTheme();
   const styles = CreateCampaignstylesFn(theme);
   const [openModal, setOpenModal] = useState(false);
+  const isWeb = Platform.OS === "web";
 
   const value = useLocalSearchParams().value;
 
   useEffect(() => {
     if (value) {
-      const { textBoxValue } = JSON.parse(value as string);
+      const { textbox } = JSON.parse(value as string);
+      const { title, value: textBoxValue } = textbox;
       setCampaignObjective(textBoxValue);
     }
   }, [value]);
@@ -78,18 +81,19 @@ const CampaignStepOne: React.FC<CampaignStepOneProps> = ({
               numberOfLines={6}
               onChangeText={setCampaignObjective}
             />
-            <TouchableOpacity
+            <Pressable
               onPress={() => {
-                Platform.OS === "web"
-                  ? setOpenModal(true)
-                  : router.navigate({
-                      pathname: "/(main)/(screens)/textbox-page",
-                      params: {
-                        title: "Campaign Objective",
-                        value: campaignObjective,
-                        path: "/campaigns/create",
-                      },
-                    });
+                handleModalOrInputPage({
+                  isWeb,
+                  openModal: (title, placeholder, value, onSubmit) => {
+                    setOpenModal(true);
+                  },
+                  router,
+                  fieldTitle: "Campaign Objective",
+                  fieldValue: campaignObjective,
+                  setFieldValue: setCampaignObjective,
+                  pathBack: "/campaigns/create",
+                });
               }}
               style={{
                 position: "absolute",
@@ -99,7 +103,7 @@ const CampaignStepOne: React.FC<CampaignStepOneProps> = ({
               }}
             >
               <Ionicons name="pencil" size={24} color="black" />
-            </TouchableOpacity>
+            </Pressable>
           </View>
         </View>
         <View>

@@ -29,8 +29,10 @@ const EditTextArea: React.FC = () => {
 
   const handleSubmit = () => {
     const valueToSubmit = {
-      textBoxName: title,
-      textBoxValue: value,
+      textbox: {
+        title,
+        value,
+      },
     };
 
     navigation.navigate({

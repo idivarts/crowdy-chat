@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
-import { Button, Platform, TouchableOpacity } from "react-native";
-import { Icon, TextInput } from "react-native-paper";
+import { Platform, Pressable } from "react-native";
+import { Button, Icon, TextInput } from "react-native-paper";
 import Checkbox from "expo-checkbox";
 import { CreateCampaignstylesFn } from "@/styles/Dashboard.styles";
 import { useTheme } from "@react-navigation/native";
@@ -9,6 +9,7 @@ import Colors from "@/constants/Colors";
 import { TextModal } from "../TextInputModal/TextModal.web";
 import { Ionicons } from "@expo/vector-icons";
 import { router, useLocalSearchParams } from "expo-router";
+import { handleModalOrInputPage } from "@/helpers/TextInput";
 
 type Collectible = {
   name: string;
@@ -83,15 +84,16 @@ export const CampaignStepThree: React.FC<CampaignStepThreeProps> = ({
 
   useEffect(() => {
     if (value) {
-      const { textBoxName, textBoxValue } = JSON.parse(value as string);
+      const { textbox } = JSON.parse(value as string);
+      const { title, value: textBoxValue } = textbox;
 
-      const stageIndex = parseInt(textBoxName.split(" ")[3]);
+      const stageIndex = parseInt(title.split(" ")[3]);
 
-      if (textBoxName === "Edit Stage Purpose " + stageIndex) {
+      if (title === "Edit Stage Purpose " + stageIndex) {
         if (stages[stageIndex]) {
           handleStageChange(stageIndex, "purpose", textBoxValue);
         }
-      } else if (textBoxName === "Edit Example Conversations " + stageIndex) {
+      } else if (title === "Edit Example Conversations " + stageIndex) {
         if (stages[stageIndex]) {
           handleStageChange(stageIndex, "exampleConversations", textBoxValue);
         }
@@ -112,15 +114,16 @@ export const CampaignStepThree: React.FC<CampaignStepThreeProps> = ({
         >
           <Text style={{ color: Colors(theme).text }}>Stages</Text>
           <Button
-            title="Add Stage"
             onPress={() => {
               handleAddStage();
               setCurrentStep(3.1 + stages.length);
             }}
-          />
+          >
+            Add Stage
+          </Button>
         </View>
         {stages.map((stage, index) => (
-          <TouchableOpacity
+          <Pressable
             key={index}
             onPress={() => setCurrentStep(3.1 + index)}
             style={
@@ -130,13 +133,13 @@ export const CampaignStepThree: React.FC<CampaignStepThreeProps> = ({
             }
           >
             <Text style={styles.sidebarItem}>Stage {index + 1}</Text>
-            <TouchableOpacity
+            <Pressable
               onPress={() => handleRemoveStage(index)}
               style={styles.sidebarItem}
             >
               <Text style={styles.sidebarItem}>Remove</Text>
-            </TouchableOpacity>
-          </TouchableOpacity>
+            </Pressable>
+          </Pressable>
         ))}
       </View>
       <View style={styles.mainContent}>
@@ -169,29 +172,26 @@ export const CampaignStepThree: React.FC<CampaignStepThreeProps> = ({
                 onChangeText={(text) =>
                   handleStageChange(index, "purpose", text)
                 }
+                multiline
+                numberOfLines={6}
               />
-              <TouchableOpacity
+              <Pressable
                 onPress={() =>
-                  Platform.OS === "web"
-                    ? openModal(
-                        "Edit Stage Purpose",
-                        "Enter Stage Purpose",
-                        stage.purpose,
-                        (value) => handleStageChange(index, "purpose", value)
-                      )
-                    : router.push({
-                        pathname: "/(main)/(screens)/(campaigns)/textbox-page",
-                        params: {
-                          title: "Edit Stage Purpose " + index,
-                          value: stage.purpose,
-                          path: "/campaigns/create",
-                        },
-                      })
+                  handleModalOrInputPage({
+                    isWeb: Platform.OS === "web",
+                    openModal,
+                    router,
+                    fieldTitle: "Edit Stage Purpose " + index,
+                    fieldValue: stage.purpose,
+                    setFieldValue: (value) =>
+                      handleStageChange(index, "purpose", value),
+                    pathBack: "/campaigns/create",
+                  })
                 }
                 style={styles.editIcon}
               >
                 <Ionicons name="pencil" size={24} color="black" />
-              </TouchableOpacity>
+              </Pressable>
             </View>
 
             <Text>Example Conversations</Text>
@@ -208,34 +208,26 @@ export const CampaignStepThree: React.FC<CampaignStepThreeProps> = ({
                 onChangeText={(text) =>
                   handleStageChange(index, "exampleConversations", text)
                 }
+                multiline
+                numberOfLines={6}
               />
-              <TouchableOpacity
+              <Pressable
                 onPress={() =>
-                  Platform.OS === "web"
-                    ? openModal(
-                        "Edit Example Conversations",
-                        "Enter Example Conversations",
-                        stage.exampleConversations,
-                        (value) =>
-                          handleStageChange(
-                            index,
-                            "exampleConversations",
-                            value
-                          )
-                      )
-                    : router.push({
-                        pathname: "/(main)/(screens)/(campaigns)/textbox-page",
-                        params: {
-                          title: "Edit Example Conversations " + index,
-                          value: stage.exampleConversations,
-                          path: "/campaigns/create",
-                        },
-                      })
+                  handleModalOrInputPage({
+                    isWeb: Platform.OS === "web",
+                    openModal,
+                    router,
+                    fieldTitle: "Edit Example Conversations " + index,
+                    fieldValue: stage.exampleConversations,
+                    setFieldValue: (value) =>
+                      handleStageChange(index, "exampleConversations", value),
+                    pathBack: "/campaigns/create",
+                  })
                 }
                 style={styles.editIcon}
               >
                 <Ionicons name="pencil" size={24} color="black" />
-              </TouchableOpacity>
+              </Pressable>
             </View>
 
             <Text>Collectibles</Text>
@@ -297,7 +289,7 @@ export const CampaignStepThree: React.FC<CampaignStepThreeProps> = ({
                     }}
                   />
                   <Text>Mandatory</Text>
-                  <TouchableOpacity
+                  <Pressable
                     onPress={() => {
                       const updatedCollectibles = stage.collectibles.filter(
                         (_, j) => j !== i
@@ -311,19 +303,20 @@ export const CampaignStepThree: React.FC<CampaignStepThreeProps> = ({
                     style={styles.removeCollectible}
                   >
                     <Text style={{ color: "#fff" }}>Remove</Text>
-                  </TouchableOpacity>
+                  </Pressable>
                 </View>
               </View>
             ))}
             <Button
-              title="Add Collectible"
               onPress={() =>
                 handleStageChange(index, "collectibles", [
                   ...stage.collectibles,
                   { name: "", type: "", description: "", mandatory: false },
                 ])
               }
-            />
+            >
+              Add Collectible
+            </Button>
 
             <Text>Reminders</Text>
             <View
