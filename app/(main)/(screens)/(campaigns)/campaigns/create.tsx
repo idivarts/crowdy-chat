@@ -243,35 +243,41 @@ const CreateCampaign = ({ campaignData }: { campaignData?: IEditCampaign }) => {
 
   const renderStepContent = () => {
     if (currentStep === 1) {
-      return CampaignStepOne(
-        campaignName,
-        setCampaignName,
-        campaignObjective,
-        setCampaignObjective,
-        replySpeed,
-        setReplySpeed,
-        reminderTiming,
-        setReminderTiming
+      return (
+        <CampaignStepOne
+          campaignName={campaignName}
+          setCampaignName={setCampaignName}
+          campaignObjective={campaignObjective}
+          setCampaignObjective={setCampaignObjective}
+          replySpeed={replySpeed}
+          setReplySpeed={setReplySpeed}
+          reminderTiming={reminderTiming}
+          setReminderTiming={setReminderTiming}
+        />
       );
     } else if (currentStep === 2) {
-      return CampaignStepTwo(
-        prescript,
-        setPrescript,
-        campaignPurpose,
-        setCampaignPurpose,
-        actorDefinition,
-        setActorDefinition,
-        dialogues,
-        setDialogues
+      return (
+        <CampaignStepTwo
+          prescript={prescript}
+          setPrescript={setPrescript}
+          campaignPurpose={campaignPurpose}
+          setCampaignPurpose={setCampaignPurpose}
+          actorDefinition={actorDefinition}
+          setActorDefinition={setActorDefinition}
+          dialogues={dialogues}
+          setDialogues={setDialogues}
+        />
       );
     } else {
-      return CampaignStepThree(
-        stages,
-        currentStep,
-        setCurrentStep,
-        handleAddStage,
-        handleRemoveStage,
-        handleStageChange
+      return (
+        <CampaignStepThree
+          stages={stages}
+          currentStep={currentStep}
+          setCurrentStep={setCurrentStep}
+          handleAddStage={handleAddStage}
+          handleRemoveStage={handleRemoveStage}
+          handleStageChange={handleStageChange}
+        />
       );
     }
   };

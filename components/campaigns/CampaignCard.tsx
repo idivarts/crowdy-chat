@@ -38,13 +38,19 @@ const CampaignCard = ({ item }: CampaignCardProps) => {
   };
 
   return (
-    <View
+    <TouchableOpacity
       style={[
         styles.cardContainer,
         {
           width: xl ? "49%" : "100%",
         },
       ]}
+      onPress={() => {
+        router.push({
+          pathname: `/campaign-detailed-view`,
+          params: { campaignId: item.id },
+        });
+      }}
     >
       <View style={styles.cardHeader}>
         <Image source={{ uri: item.image }} style={styles.campaignImage} />
@@ -53,16 +59,18 @@ const CampaignCard = ({ item }: CampaignCardProps) => {
             <Text style={styles.campaignName}>{item.name}</Text>
             <View style={styles.chatAssistantIdContainer}>
               <Text style={styles.chatAssistantId}>{item.assistantId}</Text>
-              <TouchableOpacity
-                onPress={() => copyToClipboard(item.assistantId || "")}
-                style={styles.copyIdIcon}
-              >
-                <Ionicons
-                  name="copy-outline"
-                  size={16}
-                  color={Colors(theme).text}
-                />
-              </TouchableOpacity>
+              {item.assistantId && (
+                <TouchableOpacity
+                  onPress={() => copyToClipboard(item.assistantId || "")}
+                  style={styles.copyIdIcon}
+                >
+                  <Ionicons
+                    name="copy-outline"
+                    size={16}
+                    color={Colors(theme).text}
+                  />
+                </TouchableOpacity>
+              )}
             </View>
           </View>
           <Menu
@@ -127,19 +135,6 @@ const CampaignCard = ({ item }: CampaignCardProps) => {
           <Text>{item.totalPages}</Text>
         </View>
       </View>
-      <View style={styles.cardFooter}>
-        <Button
-          mode="contained"
-          onPress={() => {
-            router.push({
-              pathname: `/campaign-detailed-view`,
-              params: { campaignId: item.id },
-            });
-          }}
-        >
-          Open Campaign Board
-        </Button>
-      </View>
       <Portal>
         <ConfirmationModal
           actionButtonLabel="Delete"
@@ -154,7 +149,7 @@ const CampaignCard = ({ item }: CampaignCardProps) => {
           }}
         />
       </Portal>
-    </View>
+    </TouchableOpacity>
   );
 };
 

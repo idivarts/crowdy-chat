@@ -5,7 +5,6 @@ import { Stack, useRouter } from "expo-router";
 import { useEffect } from "react";
 import { View } from "@/components/Themed";
 import GoBackButton from "@/components/ui/go-back-button";
-import { CampaignContextProvider } from "@/contexts/campaign-context.provider";
 import Colors from "@/constants/Colors";
 import { useTheme } from "@react-navigation/native";
 
@@ -26,7 +25,6 @@ const CampaignsLayout = () => {
     <Stack
       screenOptions={{
         animation: "ios",
-        headerShown: true,
         headerTitleAlign: "center",
       }}
     >
@@ -72,6 +70,13 @@ const CampaignsLayout = () => {
           headerStyle: {
             backgroundColor: Colors(theme).background,
           },
+        }}
+      />
+      <Stack.Screen
+        name="textbox-page"
+        options={{
+          headerShown: true,
+          headerTitle: "",
         }}
       />
     </Stack>
