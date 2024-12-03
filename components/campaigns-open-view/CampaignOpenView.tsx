@@ -7,7 +7,7 @@ import Header from "@/layouts/header";
 import CampaignsOpenViewHeader from "@/components/campaigns-open-view/CampaignsOpenViewHeader";
 import CampaignListView from "./Campaign-List";
 import { useLocalSearchParams } from "expo-router";
-import { collection, getDocs } from "firebase/firestore";
+import { collection, getDocs, query, where } from "firebase/firestore";
 import { FirestoreDB } from "@/shared-libs/utilities/firestore";
 import { useOrganizationContext } from "@/contexts";
 import Toast from "react-native-toast-message";
@@ -49,7 +49,9 @@ const CampaignsOpenView: React.FC = () => {
         "conversations"
       );
 
-      const data = await getDocs(conversationRef);
+      const dataQuery = query(conversationRef, where("status", "<=", 15));
+
+      const data = await getDocs(dataQuery);
 
       var res = data.docs.map((doc) => {
         return { ...doc.data(), id: doc.id };
