@@ -99,7 +99,6 @@ const Sources = () => {
           }}
         >
           {!lg && <DrawerToggle />}
-          {xl && <OrganizationSwitcherMenu />}
           <Appbar.Content title="Sources" />
           <Appbar.Action icon="plus" onPress={handleAddSource} />
           <ProfileCircle />

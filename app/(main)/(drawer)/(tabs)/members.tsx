@@ -10,7 +10,7 @@ import {
   Text,
   ActivityIndicator,
 } from "react-native-paper";
-import { ScrollView } from "react-native";
+import { Pressable, ScrollView } from "react-native";
 import Dropdown from "@/shared-uis/components/dropdown/Dropdown";
 import DropdownTrigger from "@/shared-uis/components/dropdown/DropdownTrigger";
 import DropdownOptions from "@/shared-uis/components/dropdown/DropdownOptions";
@@ -51,6 +51,8 @@ import AppLayout from "@/layouts/app-layout";
 import ProfileIcon from "@/components/profile/ProfileIcon";
 import ProfileCircle from "@/components/profile/ProfileCircle";
 import OrganizationSwitcherMenu from "@/components/org-switcher";
+import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
+import { faPlus } from "@fortawesome/free-solid-svg-icons";
 
 interface MemberDetails {
   userId?: string;
@@ -428,20 +430,35 @@ const MemberPage: React.FC = () => {
         }}
       >
         {!lg && <DrawerToggle />}
-        {xl && <OrganizationSwitcherMenu />}
         <Appbar.Content title="Members" />
-        <Appbar.Action icon="plus" onPress={handleAddMemberClick} />
         <ProfileCircle />
       </Appbar.Header>
 
       <ScrollView style={styles.container}>
-        <TextInput
-          label="Search by name"
-          mode="outlined"
-          value={searchTerm}
-          onChangeText={handleSearchChange}
-          style={styles.searchInput}
-        />
+        <View
+          style={{
+            flexDirection: "row",
+            alignItems: "center",
+          }}
+        >
+          <TextInput
+            label="Search by name"
+            mode="outlined"
+            value={searchTerm}
+            onChangeText={handleSearchChange}
+            style={styles.searchInput}
+          />
+          <Pressable onPress={handleAddMemberClick}>
+            <FontAwesomeIcon
+              icon={faPlus}
+              size={24}
+              color={Colors(theme).primary}
+              style={{
+                padding: 10,
+              }}
+            />
+          </Pressable>
+        </View>
         <DataTable>
           <DataTable.Header>
             <DataTable.Title>Name</DataTable.Title>
