@@ -20,10 +20,28 @@ import { Platform, ScrollView } from "react-native";
 import useBreakpoints from "@/hooks/use-breakpoints";
 import { DrawerActions } from "@react-navigation/native";
 import { useNavigation, useRouter } from "expo-router";
+import OrganizationSwitcherMenu from "../org-switcher";
+import { useOrganizationContext } from "@/contexts";
 
 interface DrawerMenuContentProps {}
 
 const DRAWER_MENU_CONTENT_ITEMS = [
+  {
+    href: "/campaigns",
+    icon: ({ focused }: IconPropFn) => (focused ? faStarSolid : faStar),
+    label: "Campaigns",
+  },
+  {
+    href: "/sources",
+    icon: ({ focused }: IconPropFn) => (focused ? faUserSolid : faUser),
+    label: "Sources",
+  },
+  {
+    href: "/leads",
+    icon: ({ focused }: IconPropFn) =>
+      focused ? faFileLinesSolid : faFileLines,
+    label: "Leads",
+  },
   {
     href: "/members",
     icon: ({ focused }: IconPropFn) =>
@@ -35,47 +53,38 @@ const DRAWER_MENU_CONTENT_ITEMS = [
     icon: ({ focused }: IconPropFn) => (focused ? faCommentSolid : faComment),
     label: "Open AI",
   },
-  {
-    href: "/campaigns",
-    icon: ({ focused }: IconPropFn) => (focused ? faStarSolid : faStar),
-    label: "Campaigns",
-  },
-  {
-    href: "/leads",
-    icon: ({ focused }: IconPropFn) =>
-      focused ? faFileLinesSolid : faFileLines,
-    label: "Leads",
-  },
-  {
-    href: "/sources",
-    icon: ({ focused }: IconPropFn) => (focused ? faUserSolid : faUser),
-    label: "Sources",
-  },
 ];
 
 const DrawerMenuContent: React.FC<DrawerMenuContentProps> = () => {
   const { xl } = useBreakpoints();
   const navigation = useNavigation();
   const router = useRouter();
+  const { currentOrganization } = useOrganizationContext();
   return (
     <View
       style={{
         flex: 1,
-        paddingTop: Platform.OS === "web" ? 12 : 64,
+        paddingTop: Platform.OS === "web" ? 0 : 64,
       }}
     >
-      <View>
+      <View
+        style={{
+          display: "flex",
+          flexDirection: "row",
+          alignItems: "center",
+          paddingVertical: 16,
+        }}
+      >
         <Text
           style={{
-            paddingHorizontal: 24,
-            paddingTop: 8,
-            paddingBottom: 16,
+            paddingLeft: 16,
             fontSize: 24,
             fontWeight: "bold",
           }}
         >
-          Crowdy Chat
+          {currentOrganization?.name}
         </Text>
+        <OrganizationSwitcherMenu />
       </View>
       <ScrollView
         style={{
@@ -91,7 +100,7 @@ const DrawerMenuContent: React.FC<DrawerMenuContentProps> = () => {
       </ScrollView>
       <View
         style={{
-          marginBottom: Platform.OS === "android" ? 24 : 44,
+          marginBottom: Platform.OS === "android" ? 24 : 5,
         }}
       >
         <BrandActionItem

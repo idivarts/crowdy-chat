@@ -24,6 +24,15 @@ export const stylesFn = (theme: Theme) =>
       flex: 1,
       alignItems: "flex-end",
     },
+    campaign: {
+      flex: 1,
+      alignItems: "center",
+      flexDirection: "row",
+    },
+    campaignText: {
+      fontSize: 12,
+      color: Colors(theme).text,
+    },
     loadingOverlay: {
       ...StyleSheet.absoluteFillObject,
       justifyContent: "center",
@@ -46,6 +55,7 @@ export const stylesFn = (theme: Theme) =>
     },
     underline: {
       textDecorationLine: "underline",
+      marginRight: 5,
     },
     owner: {
       fontSize: 14,

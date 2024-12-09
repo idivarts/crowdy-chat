@@ -66,7 +66,6 @@ const OpenAIComponent = () => {
         }}
       >
         {!lg && <DrawerToggle />}
-        {xl && <OrganizationSwitcherMenu />}
         <Appbar.Content title="Open AI" />
         <ProfileCircle />
       </Appbar.Header>

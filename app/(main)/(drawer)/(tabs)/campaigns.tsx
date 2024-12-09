@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { ActivityIndicator, Appbar } from "react-native-paper";
+import { ActivityIndicator, Appbar, Button } from "react-native-paper";
 import { router } from "expo-router";
 
 import AppLayout from "@/layouts/app-layout";
@@ -12,7 +12,7 @@ import { TextInput } from "react-native-paper";
 import { useCampaignContext } from "@/contexts/campaign-context.provider";
 import { Campaign } from "@/types/campaign";
 import { useOrganizationContext } from "@/contexts";
-import { FlatList, Platform } from "react-native";
+import { FlatList, Platform, Pressable, Text } from "react-native";
 import { useTheme } from "@react-navigation/native";
 import stylesFn from "@/styles/campaigns/CampaignsList.styles";
 import Colors from "@/constants/Colors";
@@ -75,26 +75,37 @@ const Campaigns = () => {
         }}
       >
         {!lg && <DrawerToggle />}
-        {xl && <OrganizationSwitcherMenu />}
         <Appbar.Content title="Campaigns" />
-        <Appbar.Action
-          icon="plus"
-          onPress={() => router.push("/campaigns/create")}
-        />
         <ProfileCircle />
       </Appbar.Header>
       <View style={styles.container}>
-        {campaigns.length > 0 && (
-          <TextInput
-            label="Search Campaigns"
-            mode="outlined"
-            style={{
-              backgroundColor: Colors(theme).background,
-            }}
-            onChangeText={handleSearch}
-            value={searchQuery}
-          />
-        )}
+        <View
+          style={{
+            flexDirection: "row",
+            alignItems: "center",
+            gap: 10,
+          }}
+        >
+          {campaigns.length > 0 && (
+            <TextInput
+              label="Search Campaigns"
+              mode="outlined"
+              style={{
+                backgroundColor: Colors(theme).background,
+                flex: 1,
+              }}
+              onChangeText={handleSearch}
+              value={searchQuery}
+            />
+          )}
+          <Button
+            icon="plus"
+            mode="contained"
+            onPress={() => router.push("/campaigns/create")}
+          >
+            Create a Campaign
+          </Button>
+        </View>
         {Platform.OS === "web" && (
           <View style={styles.campaignsSection}>
             {filteredCampaigns.length > 0 ? (

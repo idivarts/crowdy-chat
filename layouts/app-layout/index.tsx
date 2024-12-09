@@ -23,13 +23,13 @@ const AppLayout: React.FC<AppLayoutProps> = ({ children }) => {
       style={[
         styles.container,
         {
-          backgroundColor,
+          backgroundColor: Colors(theme).background,
           paddingTop: isAndroid ? StatusBar.currentHeight : 0,
         },
       ]}
     >
       {children}
-      <ExpoStatusBar style={theme.dark ? "dark" : "light"} />
+      <ExpoStatusBar style={!theme.dark ? "dark" : "light"} />
     </SafeAreaView>
   );
 };

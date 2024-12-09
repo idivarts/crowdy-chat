@@ -45,7 +45,7 @@ export const TextModal: FC<TextModalProps> = ({ ...props }) => {
             onChangeText={setText}
             style={styles.textInput}
             multiline
-            numberOfLines={6}
+            numberOfLines={20}
           />
           <View style={styles.buttonContainer}>
             <Button mode="contained" onPress={handleSave} style={styles.button}>
@@ -68,7 +68,7 @@ const styles = StyleSheet.create({
     padding: 20,
     marginHorizontal: 20,
     alignSelf: "center",
-    width: "50%",
+    width: "80%",
   },
   modalContent: {
     flexDirection: "column",
