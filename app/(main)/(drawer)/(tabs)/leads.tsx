@@ -4,6 +4,7 @@ import {
   ScrollView,
   ActivityIndicator,
   Platform,
+  Pressable,
 } from "react-native";
 import { Appbar, DataTable, Portal, TextInput } from "react-native-paper";
 
@@ -26,6 +27,8 @@ import AppLayout from "@/layouts/app-layout";
 import ProfileIcon from "@/components/profile/ProfileIcon";
 import ProfileCircle from "@/components/profile/ProfileCircle";
 import OrganizationSwitcherMenu from "@/components/org-switcher";
+import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
+import { faPlus, faTag } from "@fortawesome/free-solid-svg-icons";
 
 const Leads = () => {
   const theme = useTheme();
@@ -157,10 +160,7 @@ const Leads = () => {
           }}
         >
           {!lg && <DrawerToggle />}
-          {xl && <OrganizationSwitcherMenu />}
           <Appbar.Content title="Leads" />
-          <Appbar.Action icon="plus" onPress={showCreateLeadModal} />
-          <Appbar.Action icon="tag" onPress={showCreateTagModal} />
           <ProfileCircle />
         </Appbar.Header>
 
@@ -170,6 +170,49 @@ const Leads = () => {
             flex: 1,
           }}
         >
+          <View
+            style={{
+              marginBottom: 16,
+              flexDirection: "row",
+              alignItems: "center",
+            }}
+          >
+            <TextInput
+              label="Search Leads"
+              mode="outlined"
+              style={{
+                backgroundColor: Colors(theme).background,
+                flex: 1,
+              }}
+              onChangeText={handleSearch}
+              value={searchQuery}
+            />
+            <Pressable
+              onPress={showCreateLeadModal}
+              style={{
+                padding: 10,
+              }}
+            >
+              <FontAwesomeIcon
+                icon={faPlus}
+                size={20}
+                color={Colors(theme).primary}
+              />
+            </Pressable>
+
+            <Pressable
+              onPress={showCreateTagModal}
+              style={{
+                padding: 10,
+              }}
+            >
+              <FontAwesomeIcon
+                icon={faTag}
+                size={20}
+                color={Colors(theme).primary}
+              />
+            </Pressable>
+          </View>
           {!leads?.length ? (
             <EmptyState
               message="No leads found"
@@ -185,15 +228,6 @@ const Leads = () => {
                 flex: 1,
               }}
             >
-              <TextInput
-                label="Search Leads"
-                mode="outlined"
-                style={{
-                  backgroundColor: Colors(theme).background,
-                }}
-                onChangeText={handleSearch}
-                value={searchQuery}
-              />
               <ScrollView horizontal={Platform.OS !== "web"}>
                 <DataTable>
                   <View style={styles.headerContainer}>

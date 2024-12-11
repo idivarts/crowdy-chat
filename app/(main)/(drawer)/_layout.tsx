@@ -77,6 +77,14 @@ const DrawerLayout = () => {
               title: "Organization Profile",
             }}
           />
+          <Drawer.Screen
+            key="(screens)"
+            name="(organization)"
+            options={{
+              headerShown: false,
+              title: "Organization Profile",
+            }}
+          />
         </Drawer>
       </View>
     </CampaignContextProvider>

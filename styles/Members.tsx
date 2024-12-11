@@ -11,8 +11,8 @@ export const stylesFn = (theme: Theme) =>
       backgroundColor: Colors(theme).background,
     },
     searchInput: {
-      marginBottom: 16,
       backgroundColor: Colors(theme).background,
+      flex: 1,
     },
     scrollView: {
       paddingBottom: 160,
