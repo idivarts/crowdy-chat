@@ -1,30 +1,29 @@
-import React, { useEffect, useState } from 'react';
-import { ScrollView } from 'react-native';
+import React, { useEffect, useState } from "react";
+import { ScrollView } from "react-native";
 
-import ImagePicker from '@/shared-uis/components/image-picker/ImagePicker';
-import InputField from '@/components/ui/input/InputField';
-import useBreakpoints from '@/hooks/use-breakpoints';
-import AppLayout from '@/layouts/app-layout';
-import Button from '@/components/ui/button/Button';
-import { useOrganizationContext } from '@/contexts';
-import { ActivityIndicator } from 'react-native-paper';
-import { useTheme } from '@react-navigation/native';
-import stylesFn from '@/styles/organization/OrganizationProfile.styles';
-import { View } from '@/components/Themed';
+import ImagePicker from "@/shared-uis/components/image-picker/ImagePicker";
+import InputField from "@/components/ui/input/InputField";
+import useBreakpoints from "@/hooks/use-breakpoints";
+import AppLayout from "@/layouts/app-layout";
+import Button from "@/components/ui/button/Button";
+import { useOrganizationContext } from "@/contexts";
+import { ActivityIndicator, Appbar } from "react-native-paper";
+import { useTheme } from "@react-navigation/native";
+import stylesFn from "@/styles/organization/OrganizationProfile.styles";
+import { View } from "@/components/Themed";
+import { router } from "expo-router";
 
 const OrganizationProfile: React.FC = () => {
   const theme = useTheme();
   const styles = stylesFn(theme);
   const [isEditable, setIsEditable] = useState(false);
-  const {
-    currentOrganization: organization,
-    updateOrganization,
-  } = useOrganizationContext();
-  const [name, setName] = useState('');
-  const [image, setImage] = useState('');
-  const [description, setDescription] = useState('');
-  const [industry, setIndustry] = useState('');
-  const [website, setWebsite] = useState('');
+  const { currentOrganization: organization, updateOrganization } =
+    useOrganizationContext();
+  const [name, setName] = useState("");
+  const [image, setImage] = useState("");
+  const [description, setDescription] = useState("");
+  const [industry, setIndustry] = useState("");
+  const [website, setWebsite] = useState("");
   const { lg } = useBreakpoints();
 
   const handleEdit = () => {
@@ -56,11 +55,11 @@ const OrganizationProfile: React.FC = () => {
   };
 
   useEffect(() => {
-    setName(organization?.name || '');
-    setImage(organization?.image || '');
-    setDescription(organization?.description || '');
-    setIndustry(organization?.industry || '');
-    setWebsite(organization?.website || '');
+    setName(organization?.name || "");
+    setImage(organization?.image || "");
+    setDescription(organization?.description || "");
+    setIndustry(organization?.industry || "");
+    setWebsite(organization?.website || "");
   }, [organization]);
 
   if (!organization) {
@@ -69,37 +68,43 @@ const OrganizationProfile: React.FC = () => {
         <View
           style={{
             flex: 1,
-            justifyContent: 'center',
-            alignItems: 'center',
+            justifyContent: "center",
+            alignItems: "center",
           }}
         >
           <ActivityIndicator />
         </View>
       </AppLayout>
-    )
+    );
   }
 
   return (
     <AppLayout>
+      <Appbar.Header statusBarHeight={0}>
+        <Appbar.BackAction
+          onPress={() => {
+            router.back();
+          }}
+        />
+        <Appbar.Content title="Organization Profile" />
+      </Appbar.Header>
       <ScrollView
         contentContainerStyle={[
           styles.scrollViewContent,
           {
             paddingTop: lg ? 40 : 20,
-          }
+          },
         ]}
       >
         <View
           style={[
             styles.container,
             {
-              maxWidth: lg ? 1000 : '100%',
-            }
+              maxWidth: lg ? 1000 : "100%",
+            },
           ]}
         >
-          <View
-            style={styles.row}
-          >
+          <View style={styles.row}>
             <View style={styles.imagePickerContainer}>
               <ImagePicker
                 editable={isEditable}
@@ -145,33 +150,24 @@ const OrganizationProfile: React.FC = () => {
           </View>
           <View
             style={{
-              flexDirection: 'row',
+              flexDirection: "row",
               gap: 16,
-              justifyContent: 'flex-end',
-              alignItems: 'flex-end',
-              width: '100%',
+              justifyContent: "flex-end",
+              alignItems: "flex-end",
+              width: "100%",
             }}
           >
             {isEditable ? (
               <>
-                <Button
-                  mode="contained"
-                  onPress={handleSave}
-                >
+                <Button mode="contained" onPress={handleSave}>
                   Save
                 </Button>
-                <Button
-                  mode="contained"
-                  onPress={handleCancel}
-                >
+                <Button mode="contained" onPress={handleCancel}>
                   Cancel
                 </Button>
               </>
             ) : (
-              <Button
-                mode='contained'
-                onPress={handleEdit}
-              >
+              <Button mode="contained" onPress={handleEdit}>
                 Edit
               </Button>
             )}
@@ -181,7 +177,5 @@ const OrganizationProfile: React.FC = () => {
     </AppLayout>
   );
 };
-
-
 
 export default OrganizationProfile;

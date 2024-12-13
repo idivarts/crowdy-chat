@@ -8,6 +8,7 @@ export interface PageUnit {
   isInstagram: boolean;
   isWebhookConnected: boolean;
   reminderTimeMultiplier: number;
+  campaignId: string;
   replyTimeMin: number;
   replyTimeMax: number;
   sourceType: SourceType;
