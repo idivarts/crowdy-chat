@@ -1,6 +1,6 @@
 import Colors from "@/constants/Colors";
 import { Theme } from "@react-navigation/native";
-import { StyleSheet } from "react-native";
+import { Platform, StyleSheet } from "react-native";
 
 export const stylesFn = (theme: Theme) =>
   StyleSheet.create({
@@ -19,6 +19,8 @@ export const stylesFn = (theme: Theme) =>
     },
     leftSection: {
       flex: 2,
+      flexDirection: Platform.OS === "web" ? "row" : "column",
+      gap: Platform.OS === "web" ? 10 : 0,
     },
     rightSection: {
       flex: 1,
@@ -50,8 +52,8 @@ export const stylesFn = (theme: Theme) =>
     },
 
     link: {
-      marginTop: 5,
       color: "#007bff",
+      flexDirection: Platform.OS === "web" ? "row" : "column",
     },
     underline: {
       textDecorationLine: "underline",

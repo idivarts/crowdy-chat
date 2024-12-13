@@ -166,19 +166,24 @@ const ConnectedPage: React.FC<ConnectedPageProps> = ({ page: pageProps }) => {
       <Card style={styles.card}>
         <View style={styles.row}>
           <View style={styles.leftSection}>
-            <Text style={styles.title}>{page.name}</Text>
-            <Text style={styles.link} onPress={() => handleExpandEvents(page)}>
-              {page.userName && (
-                <Text style={styles.underline}>
-                  {page.userName ? "@" + page.userName : ""}
-                </Text>
-              )}
-              <View style={styles.campaign}>
-                <Text style={styles.campaignText}>
-                  Campaign: {campaignName || "No Connected Campaign"}
-                </Text>
-              </View>
-            </Text>
+            <View>
+              <Text style={styles.title}>{page.name}</Text>
+              <Text
+                style={styles.link}
+                onPress={() => handleExpandEvents(page)}
+              >
+                {page.userName && (
+                  <Text style={styles.underline}>
+                    {page.userName ? "@" + page.userName : ""}
+                  </Text>
+                )}
+              </Text>
+            </View>
+            <View style={styles.campaign}>
+              <Text style={styles.campaignText}>
+                Campaign: {campaignName || "No Connected Campaign"}
+              </Text>
+            </View>
           </View>
           <View style={styles.rightSection}>
             <Text style={styles.owner}>{page.ownerName}</Text>
