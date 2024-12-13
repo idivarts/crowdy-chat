@@ -103,7 +103,12 @@ const Campaigns = () => {
             mode="contained"
             onPress={() => router.push("/campaigns/create")}
           >
-            Create a Campaign
+            {/* Create a Campaign */}
+            {Platform.OS === "web" ? (
+              <Text>Create a Campaign</Text>
+            ) : (
+              <Text>Create</Text>
+            )}
           </Button>
         </View>
         {Platform.OS === "web" && (
