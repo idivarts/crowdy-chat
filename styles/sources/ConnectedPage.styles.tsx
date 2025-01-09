@@ -4,18 +4,15 @@ import { Platform, StyleSheet } from "react-native";
 
 export const stylesFn = (theme: Theme) =>
   StyleSheet.create({
-    card: {
-      marginVertical: 10,
-      borderRadius: 8,
-      borderWidth: 0.5,
-      borderColor: "#ddd",
-    },
+    card: {},
     row: {
       flexDirection: "row",
       alignItems: "center",
       padding: 10,
       borderRadius: 8,
       justifyContent: "space-between",
+      borderWidth: 0.3,
+      borderColor: Colors(theme).gray300,
     },
     leftSection: {
       flex: 2,

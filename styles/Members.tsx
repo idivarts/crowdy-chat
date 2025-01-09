@@ -8,6 +8,7 @@ export const stylesFn = (theme: Theme) =>
     container: {
       flex: 1,
       padding: StyleConstant.paddingHorizontalForScreen,
+      paddingTop: 0,
       backgroundColor: Colors(theme).background,
     },
     searchInput: {
@@ -20,6 +21,7 @@ export const stylesFn = (theme: Theme) =>
     },
     scrollViewContent: {
       paddingBottom: 16,
+      width: "100%",
     },
     actionsCell: {
       flexDirection: "row",
@@ -43,11 +45,8 @@ export const stylesFn = (theme: Theme) =>
       backgroundColor: Colors(theme).background,
       flexDirection: "row",
       flexWrap: "wrap",
-      marginVertical: 10,
     },
-    chip: {
-      margin: 4,
-    },
+    chip: {},
     addButton: {
       marginTop: 10,
     },

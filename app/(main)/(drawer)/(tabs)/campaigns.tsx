@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { ActivityIndicator, Appbar, Button } from "react-native-paper";
-import { router } from "expo-router";
+import { router, useNavigation } from "expo-router";
 
 import AppLayout from "@/layouts/app-layout";
 import { View } from "@/components/Themed";
@@ -13,12 +13,15 @@ import { useCampaignContext } from "@/contexts/campaign-context.provider";
 import { Campaign } from "@/types/campaign";
 import { useOrganizationContext } from "@/contexts";
 import { FlatList, Platform, Pressable, Text } from "react-native";
-import { useTheme } from "@react-navigation/native";
+import { DrawerActions, useTheme } from "@react-navigation/native";
 import stylesFn from "@/styles/campaigns/CampaignsList.styles";
 import Colors from "@/constants/Colors";
 import ProfileIcon from "@/components/profile/ProfileIcon";
 import ProfileCircle from "@/components/profile/ProfileCircle";
 import OrganizationSwitcherMenu from "@/components/org-switcher";
+import ScreenHeader from "@/components/screen-header";
+import { faBars } from "@fortawesome/free-solid-svg-icons";
+import CampaignCard from "@/components/campaigns/CampaignCard";
 
 const Campaigns = () => {
   const theme = useTheme();
@@ -26,6 +29,7 @@ const Campaigns = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [filteredCampaigns, setFilteredCampaigns] = useState<Campaign[]>([]);
   const { lg, xl } = useBreakPoints();
+  const navigation = useNavigation();
 
   const { campaigns } = useCampaignContext();
   const { currentOrganization } = useOrganizationContext();
@@ -67,23 +71,22 @@ const Campaigns = () => {
 
   return (
     <AppLayout>
-      <Appbar.Header
-        statusBarHeight={0}
-        style={{
-          backgroundColor: Colors(theme).background,
-          gap: 10,
+      <ScreenHeader
+        title="Campaigns"
+        rightAction
+        leftIcon={!xl ? faBars : null}
+        rightActionButton={<ProfileCircle />}
+        action={() => {
+          navigation.dispatch(DrawerActions.openDrawer());
         }}
-      >
-        {!lg && <DrawerToggle />}
-        <Appbar.Content title="Campaigns" />
-        <ProfileCircle />
-      </Appbar.Header>
+      />
       <View style={styles.container}>
         <View
           style={{
             flexDirection: "row",
             alignItems: "center",
             gap: 10,
+            marginBottom: 6,
           }}
         >
           {campaigns.length > 0 && (
@@ -92,7 +95,8 @@ const Campaigns = () => {
               mode="outlined"
               style={{
                 backgroundColor: Colors(theme).background,
-                flex: 1,
+                flexGrow: 1,
+                height: 40,
               }}
               onChangeText={handleSearch}
               value={searchQuery}
@@ -102,6 +106,7 @@ const Campaigns = () => {
             icon="plus"
             mode="contained"
             onPress={() => router.push("/campaigns/create")}
+            style={{ height: 42, marginTop: 4, borderRadius: 4 }}
           >
             {/* Create a Campaign */}
             {Platform.OS === "web" ? (
@@ -136,10 +141,8 @@ const Campaigns = () => {
           <View style={styles.campaignsSection}>
             {filteredCampaigns.length > 0 ? (
               <FlatList
-                data={[,]}
-                renderItem={({ item }) => (
-                  <CampaignsFilledState campaigns={filteredCampaigns} />
-                )}
+                data={filteredCampaigns}
+                renderItem={({ item }) => <CampaignCard item={item} />}
                 showsVerticalScrollIndicator={false}
               />
             ) : (

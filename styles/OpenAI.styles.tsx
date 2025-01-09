@@ -9,6 +9,7 @@ export const stylesFn = (theme: Theme) =>
       justifyContent: "center",
       alignItems: "center",
       padding: 20,
+      paddingVertical: 0,
     },
     card: {
       elevation: 4,
@@ -16,15 +17,16 @@ export const stylesFn = (theme: Theme) =>
       maxWidth: 400,
       padding: 20,
       borderWidth: Platform.OS === "web" ? 0 : 0.2,
+      gap: 10,
     },
     cardTitle: {
-      color: "#2196F3",
+      color: Colors(theme).text,
       fontWeight: "bold",
+      marginBottom: 0,
     },
     instructions: {
       fontSize: 16,
       textAlign: "center",
-      marginBottom: 20,
       lineHeight: 24,
     },
     textInput: {
@@ -40,6 +42,8 @@ export const stylesFn = (theme: Theme) =>
       alignItems: "center",
       width: "100%",
       marginTop: 10,
+      borderWidth: 0.3,
+      borderColor: Colors(theme).gray300,
     },
     iconContainer: {
       height: 50,
@@ -53,6 +57,7 @@ export const stylesFn = (theme: Theme) =>
     },
     cardActions: {
       justifyContent: "center",
+      padding: 0,
     },
     button: {
       width: "50%",

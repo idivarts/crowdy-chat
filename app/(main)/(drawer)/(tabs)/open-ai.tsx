@@ -9,7 +9,7 @@ import {
 import Toaster from "@/shared-uis/components/toaster/Toaster";
 import { stylesFn } from "@/styles/OpenAI.styles";
 import { useOrganizationContext } from "@/contexts";
-import { useTheme } from "@react-navigation/native";
+import { DrawerActions, useTheme } from "@react-navigation/native";
 import Colors from "@/constants/Colors";
 import { Text, View } from "@/components/Themed";
 import AppLayout from "@/layouts/app-layout";
@@ -18,6 +18,10 @@ import { useBreakPoints } from "@/hooks";
 import ProfileIcon from "@/components/profile/ProfileIcon";
 import ProfileCircle from "@/components/profile/ProfileCircle";
 import OrganizationSwitcherMenu from "@/components/org-switcher";
+import { faBars, faRobot } from "@fortawesome/free-solid-svg-icons";
+import { useNavigation } from "expo-router";
+import ScreenHeader from "@/components/screen-header";
+import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 
 const OpenAIComponent = () => {
   const theme = useTheme();
@@ -55,27 +59,35 @@ const OpenAIComponent = () => {
     setIsEditing(true);
   };
   const { lg, xl } = useBreakPoints();
+  const navigation = useNavigation();
 
   return (
     <AppLayout>
-      <Appbar.Header
-        statusBarHeight={0}
-        style={{
-          backgroundColor: Colors(theme).background,
-          gap: 10,
+      <ScreenHeader
+        title="Open AI"
+        rightAction
+        leftIcon={!xl ? faBars : null}
+        rightActionButton={<ProfileCircle />}
+        action={() => {
+          navigation.dispatch(DrawerActions.openDrawer());
         }}
-      >
-        {!lg && <DrawerToggle />}
-        <Appbar.Content title="Open AI" />
-        <ProfileCircle />
-      </Appbar.Header>
+      />
       <View style={styles.container}>
-        <Card style={styles.card}>
-          <Card.Title
-            title="OpenAI API Configuration"
-            titleStyle={styles.cardTitle}
-            left={(props) => <IconButton {...props} icon="robot" size={30} />}
-          />
+        <View style={styles.card}>
+          <View
+            style={{
+              flexDirection: "row",
+              justifyContent: "space-between",
+              alignItems: "center",
+            }}
+          >
+            <Text style={styles.cardTitle}>OpenAI API Configuration</Text>
+            <FontAwesomeIcon
+              icon={faRobot}
+              size={24}
+              color={Colors(theme).text}
+            />
+          </View>
           <Card.Content
             style={{
               paddingHorizontal: 0,
@@ -130,7 +142,7 @@ const OpenAIComponent = () => {
               {isEditing ? "Save Key" : "Edit Key"}
             </Button>
           </Card.Actions>
-        </Card>
+        </View>
       </View>
     </AppLayout>
   );

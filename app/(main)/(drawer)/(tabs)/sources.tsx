@@ -15,7 +15,11 @@ import { HttpService } from "@/services/httpService";
 import Toaster from "@/shared-uis/components/toaster/Toaster";
 import { PageUnit } from "@/interfaces/SourcePageInterfaces";
 import FacebookLoginButton from "@/components/sources/ConnectWithFacebook";
-import { useIsFocused, useTheme } from "@react-navigation/native";
+import {
+  DrawerActions,
+  useIsFocused,
+  useTheme,
+} from "@react-navigation/native";
 import { Text, View } from "@/components/Themed";
 import Colors from "@/constants/Colors";
 import { collection, getDocs } from "firebase/firestore";
@@ -28,6 +32,9 @@ import ProfileIcon from "@/components/profile/ProfileIcon";
 import Profile from "@/components/profile/Profile";
 import ProfileCircle from "@/components/profile/ProfileCircle";
 import OrganizationSwitcherMenu from "@/components/org-switcher";
+import ScreenHeader from "@/components/screen-header";
+import { faBars } from "@fortawesome/free-solid-svg-icons";
+import { useNavigation } from "expo-router";
 
 const Sources = () => {
   const theme = useTheme();
@@ -88,38 +95,37 @@ const Sources = () => {
     setEmailModalVisible(false);
   };
 
+  const navigation = useNavigation();
+
   return (
     <AppLayout>
+      <ScreenHeader
+        title="Sources"
+        rightAction
+        leftIcon={!xl ? faBars : null}
+        rightActionButton={<ProfileCircle />}
+        action={() => {
+          navigation.dispatch(DrawerActions.openDrawer());
+        }}
+      />
       <View style={styles.container}>
-        <Appbar.Header
-          statusBarHeight={0}
-          style={{
-            backgroundColor: Colors(theme).background,
-            gap: 10,
-          }}
-        >
-          {!lg && <DrawerToggle />}
-          <Appbar.Content title="Sources" />
-          <Appbar.Action icon="plus" onPress={handleAddSource} />
-          <ProfileCircle />
-        </Appbar.Header>
-        <View style={{ flex: 1, padding: 20 }}>
+        <View style={{ flex: 1, padding: 20, paddingTop: 0 }}>
           <View
             style={{
               alignItems: "center",
               width: "100%",
+
               flex: 1,
             }}
           >
             {loading && <ActivityIndicator animating={true} color="#000" />}
             {!loading &&
               (otherPages.length !== 0 ? (
-                <View style={{ width: "100%", flex: 1 }}>
+                <View style={{ width: "100%", gap: 16 }}>
                   <Text
                     style={{
                       fontSize: 20,
                       fontWeight: "bold",
-                      marginVertical: 10,
                     }}
                   >
                     Connected Pages
@@ -131,6 +137,9 @@ const Sources = () => {
                     )}
                     keyExtractor={(item) => item.id}
                     style={{ width: "100%" }}
+                    contentContainerStyle={{
+                      gap: 16,
+                    }}
                     showsVerticalScrollIndicator={false}
                   />
                 </View>

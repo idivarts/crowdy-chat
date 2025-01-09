@@ -44,7 +44,7 @@ import {
   createUserWithEmailAndPassword,
 } from "firebase/auth";
 import MembersModal from "@/components/modals/Members/MembersModal";
-import { useTheme } from "@react-navigation/native";
+import { DrawerActions, useTheme } from "@react-navigation/native";
 import { View } from "@/components/Themed";
 import Colors from "@/constants/Colors";
 import AppLayout from "@/layouts/app-layout";
@@ -52,7 +52,9 @@ import ProfileIcon from "@/components/profile/ProfileIcon";
 import ProfileCircle from "@/components/profile/ProfileCircle";
 import OrganizationSwitcherMenu from "@/components/org-switcher";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
-import { faPlus } from "@fortawesome/free-solid-svg-icons";
+import { faBars, faPlus } from "@fortawesome/free-solid-svg-icons";
+import ScreenHeader from "@/components/screen-header";
+import { useNavigation } from "expo-router";
 
 interface MemberDetails {
   userId?: string;
@@ -336,27 +338,54 @@ const MemberPage: React.FC = () => {
   ) => {
     const authUser = AuthApp.currentUser;
     return (
-      <DataTable.Row
+      <View
         key={index}
         style={{
           backgroundColor: Colors(theme).background,
           zIndex: -10 - index,
+          paddingHorizontal: 0,
+          flexDirection: "row",
+          marginVertical: 16,
+          alignItems: "center",
+          justifyContent: "space-between",
+          gap: 16,
         }}
       >
-        <DataTable.Cell>{member.name || "No Name"}</DataTable.Cell>
-        <DataTable.Cell>{member.email}</DataTable.Cell>
-        <DataTable.Cell>
+        <View
+          style={{
+            minWidth: 20,
+            height: 25,
+          }}
+        >
+          <Text>{member.name || "No Name"}</Text>
+        </View>
+        <View
+          style={{
+            minWidth: 20,
+            height: 25,
+          }}
+        >
+          <Text>{member.email}</Text>
+        </View>
+
+        <View
+          style={{
+            minWidth: 25,
+            height: 25,
+            flex: 1,
+          }}
+        >
           <View
             style={[
               styles.chipContainer,
               { backgroundColor: Colors(theme).background },
             ]}
           >
-            {member.permissions.read && <Chip style={styles.chip}>Read</Chip>}
+            {member.permissions.read && <Text style={styles.chip}>Read</Text>}
             {member.permissions.write && <Chip style={styles.chip}>Write</Chip>}
-            {member.permissions.admin && <Chip style={styles.chip}>Admin</Chip>}
+            {member.permissions.admin && <Text style={styles.chip}>Admin</Text>}
           </View>
-        </DataTable.Cell>
+        </View>
         <DataTable.Cell style={styles.actionsCell}>
           <Dropdown>
             <DropdownTrigger>
@@ -389,7 +418,7 @@ const MemberPage: React.FC = () => {
             </DropdownOptions>
           </Dropdown>
         </DataTable.Cell>
-      </DataTable.Row>
+      </View>
     );
   };
 
@@ -399,6 +428,7 @@ const MemberPage: React.FC = () => {
       member.name?.toLowerCase().includes(searchTerm.toLowerCase()) || false
     );
   });
+  const navigation = useNavigation();
 
   useEffect(() => {
     if (currentOrganization) {
@@ -422,23 +452,28 @@ const MemberPage: React.FC = () => {
 
   return (
     <AppLayout>
-      <Appbar.Header
-        statusBarHeight={0}
-        style={{
-          backgroundColor: Colors(theme).background,
-          gap: 10,
+      <ScreenHeader
+        title="Members"
+        rightAction
+        leftIcon={!xl ? faBars : null}
+        rightActionButton={<ProfileCircle />}
+        action={() => {
+          navigation.dispatch(DrawerActions.openDrawer());
+        }}
+      />
+
+      <ScrollView
+        style={styles.container}
+        contentContainerStyle={{
+          gap: 16,
         }}
       >
-        {!lg && <DrawerToggle />}
-        <Appbar.Content title="Members" />
-        <ProfileCircle />
-      </Appbar.Header>
-
-      <ScrollView style={styles.container}>
         <View
           style={{
             flexDirection: "row",
             alignItems: "center",
+            justifyContent: "space-between",
+            gap: 16,
           }}
         >
           <TextInput
@@ -460,11 +495,40 @@ const MemberPage: React.FC = () => {
           </Pressable>
         </View>
         <DataTable>
-          <DataTable.Header>
-            <DataTable.Title>Name</DataTable.Title>
-            <DataTable.Title>Email</DataTable.Title>
-            <DataTable.Title>Permissions</DataTable.Title>
-            <DataTable.Title numeric>Actions</DataTable.Title>
+          <DataTable.Header
+            style={{
+              paddingHorizontal: 0,
+            }}
+          >
+            <DataTable.Title
+              style={{
+                paddingVertical: 0,
+              }}
+            >
+              Name
+            </DataTable.Title>
+            <DataTable.Title
+              style={{
+                paddingVertical: 0,
+              }}
+            >
+              Email
+            </DataTable.Title>
+            <DataTable.Title
+              style={{
+                paddingVertical: 0,
+              }}
+            >
+              Permissions
+            </DataTable.Title>
+            <DataTable.Title
+              style={{
+                paddingVertical: 0,
+              }}
+              numeric
+            >
+              Actions
+            </DataTable.Title>
           </DataTable.Header>
           {filteredMembers.length === 0 ? (
             <View style={styles.noDataContainer}>
