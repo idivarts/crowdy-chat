@@ -33,6 +33,7 @@ const CampaignsOpenViewHeader: React.FC<CampaignsOpenViewHeaderProps> = ({
       statusBarHeight={0}
       style={{
         backgroundColor: Colors(theme).background,
+        marginTop: Platform.OS === "web" ? 0 : 10,
       }}
     >
       <Pressable key={0} onPress={() => router.navigate("/campaigns")}>

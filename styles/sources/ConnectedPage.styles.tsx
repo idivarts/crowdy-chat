@@ -1,24 +1,23 @@
 import Colors from "@/constants/Colors";
 import { Theme } from "@react-navigation/native";
-import { StyleSheet } from "react-native";
+import { Platform, StyleSheet } from "react-native";
 
 export const stylesFn = (theme: Theme) =>
   StyleSheet.create({
-    card: {
-      marginVertical: 10,
-      borderRadius: 8,
-      borderWidth: 0.5,
-      borderColor: "#ddd",
-    },
+    card: {},
     row: {
       flexDirection: "row",
       alignItems: "center",
       padding: 10,
       borderRadius: 8,
       justifyContent: "space-between",
+      borderWidth: 0.3,
+      borderColor: Colors(theme).gray300,
     },
     leftSection: {
       flex: 2,
+      flexDirection: Platform.OS === "web" ? "row" : "column",
+      gap: Platform.OS === "web" ? 10 : 0,
     },
     rightSection: {
       flex: 1,
@@ -50,8 +49,8 @@ export const stylesFn = (theme: Theme) =>
     },
 
     link: {
-      marginTop: 5,
       color: "#007bff",
+      flexDirection: Platform.OS === "web" ? "row" : "column",
     },
     underline: {
       textDecorationLine: "underline",

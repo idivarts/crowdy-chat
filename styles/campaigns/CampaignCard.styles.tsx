@@ -6,17 +6,12 @@ import { StyleSheet } from "react-native";
 const stylesFn = (theme: Theme) =>
   StyleSheet.create({
     cardContainer: {
-      borderColor: Colors(theme).aliceBlue,
-      borderWidth: 1,
+      borderColor: Colors(theme).gray300,
+      borderWidth: 0.3,
       backgroundColor: Colors(theme).card,
       borderRadius: 8,
       padding: StyleConstant.paddingHorizontalForScreen,
-      marginBottom: 16,
-      shadowColor: Colors(theme).black,
-      shadowOffset: { width: 0, height: 2 },
-      shadowOpacity: 0.1,
-      shadowRadius: 8,
-      elevation: 2,
+      marginBottom: 24,
       zIndex: 1,
     },
     cardHeader: {

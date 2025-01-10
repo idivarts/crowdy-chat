@@ -9,7 +9,6 @@ const stylesFn = (theme: Theme) =>
       alignItems: "center",
       paddingVertical: 8,
       paddingHorizontal: 16,
-      backgroundColor: Colors(theme).lightgray,
     },
     checkboxContainer: {
       justifyContent: "center",

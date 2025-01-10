@@ -163,9 +163,9 @@ const ConnectedPage: React.FC<ConnectedPageProps> = ({ page: pageProps }) => {
 
   return (
     <>
-      <Card style={styles.card}>
-        <View style={styles.row}>
-          <View style={styles.leftSection}>
+      <View style={styles.row}>
+        <View style={styles.leftSection}>
+          <View>
             <Text style={styles.title}>{page.name}</Text>
             <Text style={styles.link} onPress={() => handleExpandEvents(page)}>
               {page.userName && (
@@ -173,84 +173,84 @@ const ConnectedPage: React.FC<ConnectedPageProps> = ({ page: pageProps }) => {
                   {page.userName ? "@" + page.userName : ""}
                 </Text>
               )}
-              <View style={styles.campaign}>
-                <Text style={styles.campaignText}>
-                  Campaign: {campaignName || "No Connected Campaign"}
-                </Text>
-              </View>
             </Text>
           </View>
-          <View style={styles.rightSection}>
-            <Text style={styles.owner}>{page.ownerName}</Text>
-            <Text style={styles.platform}>{page.sourceType}</Text>
+          <View style={styles.campaign}>
+            <Text style={styles.campaignText}>
+              Campaign: {campaignName || "No Connected Campaign"}
+            </Text>
           </View>
-          <View>
-            <IconButton icon="send" style={styles.iconButton} />
-          </View>
-          <Menu
-            visible={menuVisible}
-            onDismiss={toggleMenu}
-            anchor={
-              <IconButton
-                icon="dots-vertical"
-                onPress={toggleMenu}
-                style={styles.iconButton}
-              />
-            }
-            contentStyle={{
-              marginTop: 40,
-              backgroundColor: Colors(theme).background,
-              borderWidth: 0.5,
-              borderColor: Colors(theme).aliceBlue,
-            }}
-          >
-            {page.isWebhookConnected && (
-              <>
-                <Menu.Item
-                  onPress={() =>
-                    openConfirmationModal(
-                      "Are you sure you want to sync all chats?",
-                      () => syncChat(true)
-                    )
-                  }
-                  title="Sync all Chat"
-                  style={styles.menuStyle}
-                  titleStyle={styles.menuTitleStyle}
-                />
-                <Menu.Item
-                  onPress={() =>
-                    openConfirmationModal(
-                      "Are you sure you want to disconnect the webhook?",
-                      disConnectWebhook
-                    )
-                  }
-                  title="Disconnect Webhook"
-                  style={styles.menuStyle}
-                  titleStyle={styles.menuTitleStyle}
-                />
-              </>
-            )}
-            {!page.isWebhookConnected && (
+        </View>
+        <View style={styles.rightSection}>
+          <Text style={styles.owner}>{page.ownerName}</Text>
+          <Text style={styles.platform}>{page.sourceType}</Text>
+        </View>
+        <View>
+          <IconButton icon="send" style={styles.iconButton} />
+        </View>
+        <Menu
+          visible={menuVisible}
+          onDismiss={toggleMenu}
+          anchor={
+            <IconButton
+              icon="dots-vertical"
+              onPress={toggleMenu}
+              style={styles.iconButton}
+            />
+          }
+          contentStyle={{
+            marginTop: 40,
+            backgroundColor: Colors(theme).background,
+            borderWidth: 0.5,
+            borderColor: Colors(theme).aliceBlue,
+          }}
+        >
+          {page.isWebhookConnected && (
+            <>
               <Menu.Item
                 onPress={() =>
                   openConfirmationModal(
-                    "Are you sure you want to connect the webhook?",
-                    connectToWebhook
+                    "Are you sure you want to sync all chats?",
+                    () => syncChat(true)
                   )
                 }
-                title="Connect Webhook"
+                title="Sync all Chat"
                 style={styles.menuStyle}
                 titleStyle={styles.menuTitleStyle}
               />
-            )}
-          </Menu>
+              <Menu.Item
+                onPress={() =>
+                  openConfirmationModal(
+                    "Are you sure you want to disconnect the webhook?",
+                    disConnectWebhook
+                  )
+                }
+                title="Disconnect Webhook"
+                style={styles.menuStyle}
+                titleStyle={styles.menuTitleStyle}
+              />
+            </>
+          )}
+          {!page.isWebhookConnected && (
+            <Menu.Item
+              onPress={() =>
+                openConfirmationModal(
+                  "Are you sure you want to connect the webhook?",
+                  connectToWebhook
+                )
+              }
+              title="Connect Webhook"
+              style={styles.menuStyle}
+              titleStyle={styles.menuTitleStyle}
+            />
+          )}
+        </Menu>
+      </View>
+      {loading && (
+        <View style={styles.loadingOverlay}>
+          <ActivityIndicator size="large" />
         </View>
-        {loading && (
-          <View style={styles.loadingOverlay}>
-            <ActivityIndicator size="large" />
-          </View>
-        )}
-      </Card>
+      )}
 
       <ConfirmationModal
         visible={confirmationModalVisible}

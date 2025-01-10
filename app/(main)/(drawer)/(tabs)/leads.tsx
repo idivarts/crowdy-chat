@@ -14,7 +14,11 @@ import Colors from "@/constants/Colors";
 import { DrawerToggle } from "@/components/ui";
 import { useBreakPoints } from "@/hooks";
 import ExpoCheckbox from "expo-checkbox/build/ExpoCheckbox";
-import { useIsFocused, useTheme } from "@react-navigation/native";
+import {
+  DrawerActions,
+  useIsFocused,
+  useTheme,
+} from "@react-navigation/native";
 import stylesFn from "@/styles/leads/LeadsTable.styles";
 import { Text, View } from "@/components/Themed";
 import { collection, doc, getDocs, updateDoc } from "firebase/firestore";
@@ -28,7 +32,9 @@ import ProfileIcon from "@/components/profile/ProfileIcon";
 import ProfileCircle from "@/components/profile/ProfileCircle";
 import OrganizationSwitcherMenu from "@/components/org-switcher";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
-import { faPlus, faTag } from "@fortawesome/free-solid-svg-icons";
+import { faBars, faPlus, faTag } from "@fortawesome/free-solid-svg-icons";
+import ScreenHeader from "@/components/screen-header";
+import { useNavigation } from "expo-router";
 
 const Leads = () => {
   const theme = useTheme();
@@ -145,34 +151,34 @@ const Leads = () => {
     }
   }, [leads, searchQuery]);
 
+  const navigation = useNavigation();
+
   return (
     <AppLayout>
+      <ScreenHeader
+        title="Leads"
+        rightAction
+        leftIcon={!xl ? faBars : null}
+        rightActionButton={<ProfileCircle />}
+        action={() => {
+          navigation.dispatch(DrawerActions.openDrawer());
+        }}
+      />
       <View
         style={{
           flex: 1,
         }}
       >
-        <Appbar.Header
-          statusBarHeight={0}
-          style={{
-            backgroundColor: Colors(theme).background,
-            gap: 10,
-          }}
-        >
-          {!lg && <DrawerToggle />}
-          <Appbar.Content title="Leads" />
-          <ProfileCircle />
-        </Appbar.Header>
-
         <View
           style={{
             padding: StyleConstant.paddingHorizontalForScreen,
+            paddingTop: 0,
             flex: 1,
+            gap: 10,
           }}
         >
           <View
             style={{
-              marginBottom: 16,
               flexDirection: "row",
               alignItems: "center",
             }}

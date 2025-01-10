@@ -1,3 +1,4 @@
+import React from "react";
 import { Image, Pressable, TouchableOpacity } from "react-native";
 import { Text, View } from "../Themed";
 import { Ionicons, MaterialIcons } from "@expo/vector-icons";
