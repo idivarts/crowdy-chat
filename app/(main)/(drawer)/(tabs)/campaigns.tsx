@@ -13,7 +13,6 @@ import { useOrganizationContext } from "@/contexts";
 import { FlatList, Platform, Text } from "react-native";
 import { DrawerActions, useTheme } from "@react-navigation/native";
 import stylesFn from "@/styles/campaigns/CampaignsList.styles";
-import Colors from "@/constants/Colors";
 import ProfileCircle from "@/components/profile/ProfileCircle";
 import ScreenHeader from "@/components/screen-header";
 import { faBars } from "@fortawesome/free-solid-svg-icons";
@@ -89,13 +88,10 @@ const Campaigns = () => {
         >
           {campaigns.length > 0 && (
             <TextInput
-              label="Search Campaigns"
-              mode="outlined"
-              style={{
-                backgroundColor: Colors(theme).background,
-                flexGrow: 1,
-                height: 40,
+              containerStyle={{
+                flex: 1,
               }}
+              label="Search Campaigns"
               onChangeText={handleSearch}
               value={searchQuery}
             />

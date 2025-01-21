@@ -79,13 +79,15 @@ const CampaignsOpenViewHeader: React.FC<CampaignsOpenViewHeaderProps> = ({
             </Button>
             <View style={styles.searchContainer}>
               <TextInput
+                containerStyle={{
+                  flex: 1,
+                }}
                 label="Search Campaigns"
                 mode="outlined"
                 outlineStyle={{
                   borderColor: Colors(theme).border,
                 }}
                 style={[
-                  styles.searchInput,
                   {
                     textAlignVertical: "center",
                     marginBottom: 6,

@@ -1,16 +1,14 @@
 import React, { useEffect, useState } from "react";
-import { Linking, TouchableOpacity } from "react-native";
-import { Card, IconButton, Menu, ActivityIndicator } from "react-native-paper";
+import { Linking } from "react-native";
+import { IconButton, Menu, ActivityIndicator } from "react-native-paper";
 import { stylesFn } from "@/styles/sources/ConnectedPage.styles";
-import { HttpService } from "@/services/httpService";
 import Toaster from "@/shared-uis/components/toaster/Toaster";
 import ConfirmationModal from "../ConfirmationModal";
 import { useTheme } from "@react-navigation/native";
 import { Text, View } from "../Themed";
-import axios from "axios";
 import { useOrganizationContext } from "@/contexts";
 import { AuthApp } from "@/shared-libs/utilities/auth";
-import { doc, getDoc, updateDoc } from "firebase/firestore";
+import { doc, getDoc } from "firebase/firestore";
 import { FirestoreDB } from "@/shared-libs/utilities/firestore";
 import { SourceType } from "@/shared-libs/firestore/crowdy-chat/models/sources";
 import SourceService from "@/services/sources.service";
@@ -41,7 +39,7 @@ const ConnectedPage: React.FC<ConnectedPageProps> = ({ page: pageProps }) => {
   const [confirmationModalVisible, setConfirmationModalVisible] =
     useState(false);
   const [modalMessage, setModalMessage] = useState("");
-  const [modalAction, setModalAction] = useState<() => void>(() => {});
+  const [modalAction, setModalAction] = useState<() => void>(() => { });
   const [loading, setLoading] = useState(false);
   const { currentOrganization } = useOrganizationContext();
   const [campaignName, setCampaignName] = useState("");
@@ -97,7 +95,7 @@ const ConnectedPage: React.FC<ConnectedPageProps> = ({ page: pageProps }) => {
           Toaster.success("Successfully Synced Chat");
         })
         .catch((e) => {
-          console.log(e);
+          console.error(e);
         });
     } catch (e) {
       Toaster.error("Something went wrong!");
@@ -123,7 +121,7 @@ const ConnectedPage: React.FC<ConnectedPageProps> = ({ page: pageProps }) => {
           setPage({ ...page, isWebhookConnected: false });
         })
         .catch((e) => {
-          console.log(e);
+          console.error(e);
         });
       Toaster.success("Successfully Disconnected Webhook");
     } catch (e) {

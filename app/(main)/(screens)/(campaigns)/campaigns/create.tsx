@@ -187,7 +187,6 @@ const CreateCampaign = ({ campaignData }: { campaignData?: IEditCampaign }) => {
       }
 
       if (!validation?.success) {
-        console.log(validation?.error.issues);
         return Toaster.error(validation?.error.issues[0].message);
       }
 

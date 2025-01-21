@@ -1,4 +1,3 @@
-import Colors from "@/constants/Colors";
 import { StyleConstant } from "@/constants/Style";
 import { Theme } from "@react-navigation/native";
 import { StyleSheet } from "react-native";
