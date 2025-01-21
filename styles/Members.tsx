@@ -23,6 +23,28 @@ export const stylesFn = (theme: Theme) =>
       paddingBottom: 16,
       width: "100%",
     },
+    headerContainer: {
+      flexDirection: "row",
+      alignItems: "center",
+      paddingVertical: 8,
+      paddingHorizontal: 16,
+    },
+    rowTextContainer: {
+      width: 150,
+      paddingVertical: 8,
+    },
+    headerTextContainer: {
+      width: 150,
+      paddingVertical: 8,
+    },
+    rowContainer: {
+      flexDirection: "row",
+      alignItems: "center",
+      minHeight: 56,
+      borderBottomWidth: 1,
+      borderColor: Colors(theme).lightgray,
+      paddingHorizontal: 16,
+    },
     actionsCell: {
       flexDirection: "row",
       justifyContent: "flex-end",
@@ -44,9 +66,15 @@ export const stylesFn = (theme: Theme) =>
     chipContainer: {
       backgroundColor: Colors(theme).background,
       flexDirection: "row",
+      gap: 4,
+      textAlign: "center",
       flexWrap: "wrap",
+      alignItems: "center",
     },
     chip: {},
+    chipText: {
+      textAlign: "center",
+    },
     addButton: {
       marginTop: 10,
     },

@@ -10,7 +10,7 @@ import {
   Text,
   ActivityIndicator,
 } from "react-native-paper";
-import { Pressable, ScrollView } from "react-native";
+import { Platform, Pressable, ScrollView } from "react-native";
 import Dropdown from "@/shared-uis/components/dropdown/Dropdown";
 import DropdownTrigger from "@/shared-uis/components/dropdown/DropdownTrigger";
 import DropdownOptions from "@/shared-uis/components/dropdown/DropdownOptions";
@@ -338,55 +338,28 @@ const MemberPage: React.FC = () => {
   ) => {
     const authUser = AuthApp.currentUser;
     return (
-      <View
-        key={index}
-        style={{
-          backgroundColor: Colors(theme).background,
-          zIndex: -10 - index,
-          paddingHorizontal: 0,
-          flexDirection: "row",
-          marginVertical: 16,
-          alignItems: "center",
-          justifyContent: "space-between",
-          gap: 16,
-        }}
-      >
-        <View
-          style={{
-            minWidth: 20,
-            height: 25,
-          }}
-        >
+      <DataTable.Row key={index} style={styles.rowContainer}>
+        <DataTable.Cell style={styles.rowTextContainer}>
           <Text>{member.name || "No Name"}</Text>
-        </View>
-        <View
-          style={{
-            minWidth: 20,
-            height: 25,
-          }}
-        >
+        </DataTable.Cell>
+        <DataTable.Cell style={styles.rowTextContainer}>
           <Text>{member.email}</Text>
-        </View>
+        </DataTable.Cell>
 
-        <View
-          style={{
-            minWidth: 25,
-            height: 25,
-            flex: 1,
-          }}
-        >
-          <View
-            style={[
-              styles.chipContainer,
-              { backgroundColor: Colors(theme).background },
-            ]}
-          >
-            {member.permissions.read && <Text style={styles.chip}>Read</Text>}
-            {member.permissions.write && <Chip style={styles.chip}>Write</Chip>}
-            {member.permissions.admin && <Text style={styles.chip}>Admin</Text>}
-          </View>
-        </View>
-        <DataTable.Cell style={styles.actionsCell}>
+        <DataTable.Cell style={styles.rowTextContainer}>
+          <Text style={styles.chipText}>
+            {member.permissions.admin
+              ? "Admin"
+              : member.permissions.write
+              ? member.permissions.read
+                ? "Read, Write"
+                : "Write"
+              : member.permissions.read
+              ? "Read"
+              : "No Permissions"}
+          </Text>
+        </DataTable.Cell>
+        <DataTable.Cell style={styles.rowTextContainer}>
           <Dropdown>
             <DropdownTrigger>
               <MaterialIcons
@@ -418,7 +391,7 @@ const MemberPage: React.FC = () => {
             </DropdownOptions>
           </Dropdown>
         </DataTable.Cell>
-      </View>
+      </DataTable.Row>
     );
   };
 
@@ -494,56 +467,39 @@ const MemberPage: React.FC = () => {
             />
           </Pressable>
         </View>
-        <DataTable>
-          <DataTable.Header
-            style={{
-              paddingHorizontal: 0,
-            }}
-          >
-            <DataTable.Title
-              style={{
-                paddingVertical: 0,
-              }}
-            >
-              Name
-            </DataTable.Title>
-            <DataTable.Title
-              style={{
-                paddingVertical: 0,
-              }}
-            >
-              Email
-            </DataTable.Title>
-            <DataTable.Title
-              style={{
-                paddingVertical: 0,
-              }}
-            >
-              Permissions
-            </DataTable.Title>
-            <DataTable.Title
-              style={{
-                paddingVertical: 0,
-              }}
-              numeric
-            >
-              Actions
-            </DataTable.Title>
-          </DataTable.Header>
-          {filteredMembers.length === 0 ? (
-            <View style={styles.noDataContainer}>
-              <Text style={styles.noDataText}>No members found</Text>
+        <ScrollView horizontal={Platform.OS !== "web"}>
+          <DataTable>
+            <View style={styles.headerContainer}>
+              <DataTable.Cell style={styles.headerTextContainer}>
+                Name
+              </DataTable.Cell>
+              <DataTable.Cell style={styles.headerTextContainer}>
+                Email
+              </DataTable.Cell>
+              <DataTable.Cell style={styles.headerTextContainer}>
+                Permissions
+              </DataTable.Cell>
+              <DataTable.Cell style={styles.headerTextContainer}>
+                Actions
+              </DataTable.Cell>
             </View>
-          ) : (
-            <ScrollView
-              contentContainerStyle={styles.scrollViewContent}
-              style={styles.scrollView}
-            >
-              {filteredMembers.map(renderMember)}
-            </ScrollView>
-          )}
-        </DataTable>
+
+            {filteredMembers.length === 0 ? (
+              <View style={styles.noDataContainer}>
+                <Text style={styles.noDataText}>No members found</Text>
+              </View>
+            ) : (
+              <ScrollView
+                contentContainerStyle={styles.scrollViewContent}
+                style={styles.scrollView}
+              >
+                {filteredMembers.map(renderMember)}
+              </ScrollView>
+            )}
+          </DataTable>
+        </ScrollView>
       </ScrollView>
+
       <Portal>
         <MembersModal
           visible={isModalOpen}
