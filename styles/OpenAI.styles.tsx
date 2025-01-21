@@ -12,12 +12,13 @@ export const stylesFn = (theme: Theme) =>
       paddingVertical: 0,
     },
     card: {
+      borderColor: Colors(theme).border,
+      borderRadius: 5,
+      borderWidth: 1,
       elevation: 4,
-      borderRadius: 12,
+      gap: 10,
       maxWidth: 400,
       padding: 20,
-      borderWidth: Platform.OS === "web" ? 0 : 0.2,
-      gap: 10,
     },
     cardTitle: {
       color: Colors(theme).text,
@@ -38,12 +39,7 @@ export const stylesFn = (theme: Theme) =>
       fontSize: 16,
     },
     inputContainer: {
-      flexDirection: "row",
-      alignItems: "center",
-      width: "100%",
       marginTop: 10,
-      borderWidth: 0.3,
-      borderColor: Colors(theme).gray300,
     },
     iconContainer: {
       height: 50,
@@ -58,11 +54,5 @@ export const stylesFn = (theme: Theme) =>
     cardActions: {
       justifyContent: "center",
       padding: 0,
-    },
-    button: {
-      width: "50%",
-      borderRadius: 25,
-      backgroundColor: "#2196F3",
-      color: "#FFF",
     },
   });

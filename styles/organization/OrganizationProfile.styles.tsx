@@ -12,12 +12,12 @@ const stylesFn = (theme: Theme) =>
     container: {
       padding: StyleConstant.paddingHorizontalForScreen,
       paddingTop: 0,
-      gap: 20,
+      gap: 12,
       justifyContent: "space-between",
       width: "100%",
     },
     row: {
-      gap: 20,
+      gap: 12,
     },
     image: {
       borderRadius: 75,

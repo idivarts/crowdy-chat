@@ -1,8 +1,6 @@
 import { DrawerToggle } from "@/components/ui";
-import { useAuthContext } from "@/contexts";
 import { useBreakPoints } from "@/hooks";
-import { Stack, useRouter } from "expo-router";
-import { useEffect } from "react";
+import { Stack } from "expo-router";
 import { View } from "@/components/Themed";
 import GoBackButton from "@/components/ui/go-back-button";
 import Colors from "@/constants/Colors";
@@ -11,15 +9,6 @@ import { useTheme } from "@react-navigation/native";
 const CampaignsLayout = () => {
   const { lg } = useBreakPoints();
   const theme = useTheme();
-
-  const { isLoading, session } = useAuthContext();
-  const router = useRouter();
-
-  useEffect(() => {
-    if (!isLoading && !session) {
-      router.replace("/(auth)/login");
-    }
-  }, [isLoading, session]);
 
   return (
     <Stack

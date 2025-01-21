@@ -1,13 +1,16 @@
 import React, { useEffect, useState } from "react";
-import { TextInput } from "react-native-paper";
 import { CreateCampaignstylesFn } from "@/styles/Dashboard.styles";
 import { useTheme } from "@react-navigation/native";
 import { Text, View } from "@/components/Themed";
-import { Platform, Pressable } from "react-native";
-import { Ionicons } from "@expo/vector-icons";
+import { Platform } from "react-native";
 import { TextModal } from "../TextInputModal/TextModal.web";
 import { router, useLocalSearchParams } from "expo-router";
 import { handleModalOrInputPage } from "@/helpers/TextInput";
+import TextInput from "@/components/ui/text-input/TextInput";
+import { IconButton } from "react-native-paper";
+import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
+import { faPencil } from "@fortawesome/free-solid-svg-icons";
+import { useBreakPoints } from "@/hooks";
 
 interface CampaignStepTwoProps {
   prescript: string;
@@ -33,13 +36,15 @@ const CampaignStepTwo: React.FC<CampaignStepTwoProps> = ({
   const theme = useTheme();
   const styles = CreateCampaignstylesFn(theme);
 
+  const { lg } = useBreakPoints();
+
   // States for modals
   const [modalData, setModalData] = useState({
     isOpen: false,
     title: "",
     placeholder: "",
     value: "",
-    onSubmit: (value: string) => {},
+    onSubmit: (value: string) => { },
   });
 
   const openModal = (
@@ -95,19 +100,23 @@ const CampaignStepTwo: React.FC<CampaignStepTwoProps> = ({
   }, [value]);
 
   return (
-    <View style={{ width: "80%" }}>
+    <View
+      style={{
+        width: lg ? 480 : "100%",
+      }}
+    >
       <View style={styles.stepContainer2}>
         {/* Prescript Field */}
         <View style={styles.inputWrapper}>
           <Text>Prescript</Text>
           <View style={styles.inputRow}>
             <TextInput
-              style={styles.textArea}
+              placeholder="Enter prescript"
               value={prescript}
               onChangeText={setPrescript}
               multiline
             />
-            <Pressable
+            <IconButton
               onPress={() =>
                 handleModalOrInputPage({
                   isWeb: Platform.OS === "web",
@@ -119,10 +128,19 @@ const CampaignStepTwo: React.FC<CampaignStepTwoProps> = ({
                   pathBack: "/campaigns/create",
                 })
               }
-              style={styles.editIcon}
-            >
-              <Ionicons name="pencil" size={24} color="black" />
-            </Pressable>
+              style={{
+                position: "absolute",
+                right: 0,
+                top: 0,
+              }}
+              icon={() =>
+                <FontAwesomeIcon
+                  icon={faPencil}
+                  size={22}
+                  color={theme.dark ? "white" : "black"}
+                />
+              }
+            />
           </View>
         </View>
 
@@ -131,12 +149,12 @@ const CampaignStepTwo: React.FC<CampaignStepTwoProps> = ({
           <Text>Purpose of the Campaign</Text>
           <View style={styles.inputRow}>
             <TextInput
-              style={styles.textArea}
+              placeholder="Enter campaign purpose"
               value={campaignPurpose}
               onChangeText={setCampaignPurpose}
               multiline
             />
-            <Pressable
+            <IconButton
               onPress={() =>
                 handleModalOrInputPage({
                   isWeb: Platform.OS === "web",
@@ -148,10 +166,19 @@ const CampaignStepTwo: React.FC<CampaignStepTwoProps> = ({
                   pathBack: "/campaigns/create",
                 })
               }
-              style={styles.editIcon}
-            >
-              <Ionicons name="pencil" size={24} color="black" />
-            </Pressable>
+              style={{
+                position: "absolute",
+                right: 0,
+                top: 0,
+              }}
+              icon={() =>
+                <FontAwesomeIcon
+                  icon={faPencil}
+                  size={22}
+                  color={theme.dark ? "white" : "black"}
+                />
+              }
+            />
           </View>
         </View>
 
@@ -160,12 +187,12 @@ const CampaignStepTwo: React.FC<CampaignStepTwoProps> = ({
           <Text>Actor Definition</Text>
           <View style={styles.inputRow}>
             <TextInput
-              style={styles.textArea}
+              placeholder="Enter actor definition"
               value={actorDefinition}
               onChangeText={setActorDefinition}
               multiline
             />
-            <Pressable
+            <IconButton
               onPress={() =>
                 handleModalOrInputPage({
                   isWeb: Platform.OS === "web",
@@ -177,10 +204,19 @@ const CampaignStepTwo: React.FC<CampaignStepTwoProps> = ({
                   pathBack: "/campaigns/create",
                 })
               }
-              style={styles.editIcon}
-            >
-              <Ionicons name="pencil" size={24} color="black" />
-            </Pressable>
+              style={{
+                position: "absolute",
+                right: 0,
+                top: 0,
+              }}
+              icon={() =>
+                <FontAwesomeIcon
+                  icon={faPencil}
+                  size={22}
+                  color={theme.dark ? "white" : "black"}
+                />
+              }
+            />
           </View>
         </View>
 
@@ -189,12 +225,12 @@ const CampaignStepTwo: React.FC<CampaignStepTwoProps> = ({
           <Text>Dialogues and Examples</Text>
           <View style={styles.inputRow}>
             <TextInput
-              style={styles.textArea}
+              placeholder="Enter dialogues and examples"
               value={dialogues}
               onChangeText={setDialogues}
               multiline
             />
-            <Pressable
+            <IconButton
               onPress={() =>
                 handleModalOrInputPage({
                   isWeb: Platform.OS === "web",
@@ -206,10 +242,19 @@ const CampaignStepTwo: React.FC<CampaignStepTwoProps> = ({
                   pathBack: "/campaigns/create",
                 })
               }
-              style={styles.editIcon}
-            >
-              <Ionicons name="pencil" size={24} color="black" />
-            </Pressable>
+              style={{
+                position: "absolute",
+                right: 0,
+                top: 0,
+              }}
+              icon={() =>
+                <FontAwesomeIcon
+                  icon={faPencil}
+                  size={22}
+                  color={theme.dark ? "white" : "black"}
+                />
+              }
+            />
           </View>
         </View>
       </View>

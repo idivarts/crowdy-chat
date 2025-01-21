@@ -19,7 +19,6 @@ import {
   collection,
   doc,
   getDoc,
-  where,
   updateDoc,
   onSnapshot,
 } from "firebase/firestore";
@@ -28,27 +27,30 @@ import Toaster from "@/shared-uis/components/toaster/Toaster";
 import { useRouter } from "expo-router";
 import { User } from "@/types/User";
 import { IUser } from "@/shared-libs/firestore/crowdy-chat/models/users";
+import { resetAndNavigate } from "@/helpers/router";
 
 interface AuthContextProps {
+  fetchUser: () => void;
+  forgotPassword: (email: string) => void;
+  getUser: (id: string) => void;
+  isLoading: boolean;
+  session?: string | null;
   signIn: (email: string, password: string) => void;
   signOut: () => void;
   signUp: (email: string, password: string) => void;
-  forgotPassword: (email: string) => void;
-  fetchUser: () => void;
-  session?: string | null;
-  isLoading: boolean;
   updateUser: (userId: string, user: Partial<User>) => Promise<void>;
   user?: User | null;
 }
 
 const AuthContext = createContext<AuthContextProps>({
+  fetchUser: () => null,
+  forgotPassword: (email: string) => null,
+  getUser: (id: string) => null,
+  isLoading: false,
+  session: null,
   signIn: (email: string, password: string) => null,
   signOut: () => null,
   signUp: (email: string, password: string) => null,
-  forgotPassword: (email: string) => null,
-  fetchUser: () => null,
-  session: null,
-  isLoading: false,
   updateUser: (userId: string, user: Partial<User>) => Promise.resolve(),
   user: null,
 });
@@ -133,7 +135,7 @@ export const AuthContextProvider: React.FC<PropsWithChildren> = ({
   };
 
   const signUp = async (email: string, password: string) => {
-    const user = await createUserWithEmailAndPassword(AuthApp, email, password)
+    await createUserWithEmailAndPassword(AuthApp, email, password)
       .then(async (userCredential) => {
         const colRef = collection(FirestoreDB, "users");
         const docRef = doc(colRef, userCredential.user.uid);
@@ -158,7 +160,7 @@ export const AuthContextProvider: React.FC<PropsWithChildren> = ({
               "Email Verified",
               "Your email has been successfully verified."
             );
-            router.replace("/campaigns");
+            resetAndNavigate("/create-new-organization");
           } else {
             setTimeout(checkVerification, 2000);
           }
@@ -188,17 +190,6 @@ export const AuthContextProvider: React.FC<PropsWithChildren> = ({
 
   const forgotPassword = async (email: string) => {
     try {
-      //check from datastore collection
-      // const userCollectionRef = collection(FirestoreDB, "user");
-      // const emailQuery = query(userCollectionRef, where("email", "==", email));
-      // const querySnapshot = await getDocs(emailQuery);
-      // if (querySnapshot.empty) {
-      //   Toaster.error(
-      //     "Password Reset Error",
-      //     "No account found with this email."
-      //   );
-      //   return;
-      // }
       await sendPasswordResetEmail(AuthApp, email);
       Toaster.success(
         "Password Reset Email Sent",
@@ -221,16 +212,16 @@ export const AuthContextProvider: React.FC<PropsWithChildren> = ({
     }
   };
 
-  const getUser = async () => {
+  const getUser = async (
+    id: string,
+  ) => {
     try {
-      const user = AuthApp.currentUser;
       if (user) {
         const colRef = collection(FirestoreDB, "users");
-        const query = where("email", "==", user.email);
-        const userSnapshot = await getDoc(doc(colRef, user.uid));
+        const userSnapshot = await getDoc(doc(colRef, id));
         const userData = userSnapshot.data() as IUser;
         setUser({
-          id: user.uid,
+          id: id,
           ...userData,
         });
       }
@@ -254,13 +245,14 @@ export const AuthContextProvider: React.FC<PropsWithChildren> = ({
   return (
     <AuthContext.Provider
       value={{
-        signIn,
-        signUp,
-        signOut,
-        forgotPassword,
         fetchUser,
-        session,
+        forgotPassword,
+        getUser,
         isLoading,
+        session,
+        signIn,
+        signOut,
+        signUp,
         updateUser,
         user,
       }}

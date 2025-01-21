@@ -1,4 +1,3 @@
-import { DrawerContentScrollView } from "@react-navigation/drawer";
 import { Text, View } from "../Themed";
 import {
   faComment,
@@ -23,7 +22,7 @@ import { useNavigation, useRouter } from "expo-router";
 import OrganizationSwitcherMenu from "../org-switcher";
 import { useOrganizationContext } from "@/contexts";
 
-interface DrawerMenuContentProps {}
+interface DrawerMenuContentProps { }
 
 const DRAWER_MENU_CONTENT_ITEMS = [
   {
@@ -104,7 +103,7 @@ const DrawerMenuContent: React.FC<DrawerMenuContentProps> = () => {
         }}
       >
         <BrandActionItem
-          key="create-brand"
+          key="create-new-organization"
           icon="plus"
           showChevron={false}
           onPress={() => {
@@ -114,7 +113,7 @@ const DrawerMenuContent: React.FC<DrawerMenuContentProps> = () => {
           title="Create New Organization"
         />
         <BrandActionItem
-          key="create-brand"
+          key="organization-profile"
           icon="account-edit"
           showChevron={false}
           onPress={() => {

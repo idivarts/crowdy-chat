@@ -45,6 +45,7 @@ export const stylesFn = (theme: Theme) =>
       backgroundColor: Colors(theme).background,
       flexDirection: "row",
       flexWrap: "wrap",
+      gap: 6,
     },
     chip: {},
     addButton: {

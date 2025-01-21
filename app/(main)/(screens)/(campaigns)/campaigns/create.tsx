@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Button, ScrollView } from "react-native";
+import { ScrollView } from "react-native";
 import { CreateCampaignstylesFn } from "@/styles/Dashboard.styles";
 import {
   stepOneSchema,
@@ -20,6 +20,7 @@ import { IEditCampaign } from "@/interfaces/EditCampaignInterfaces";
 import { useTheme } from "@react-navigation/native";
 import { View } from "@/components/Themed";
 import Colors from "@/constants/Colors";
+import Button from "@/components/ui/button/Button";
 
 const CreateCampaign = ({ campaignData }: { campaignData?: IEditCampaign }) => {
   const theme = useTheme();
@@ -316,7 +317,6 @@ const CreateCampaign = ({ campaignData }: { campaignData?: IEditCampaign }) => {
       {renderProgressDots()}
       <View style={styles.BottomRow}>
         <Button
-          title={currentStep === 1 ? "Close" : "Previous"}
           onPress={() => {
             if (currentStep === 1) {
               navigation.goBack();
@@ -326,13 +326,16 @@ const CreateCampaign = ({ campaignData }: { campaignData?: IEditCampaign }) => {
               setCurrentStep(currentStep - 1);
             }
           }}
-        />
+        >
+          {currentStep === 1 ? "Close" : "Previous"}
+        </Button>
         <Button
-          title={currentStep < 3 ? "Next" : "Submit"}
           onPress={() => {
             handleNext();
           }}
-        />
+        >
+          {currentStep < 3 ? "Next" : "Submit"}
+        </Button>
       </View>
     </View>
   );

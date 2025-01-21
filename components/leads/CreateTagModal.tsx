@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 import { Modal } from 'react-native';
-import InputField from '../ui/input/InputField';
 import { useBreakPoints } from '@/hooks';
 import Button from '../ui/button/Button';
 import { useTheme } from '@react-navigation/native';
 import stylesFn from '@/styles/leads/CreateTagModal.styles';
 import { Text, View } from '../Themed';
+import TextInput from '../ui/text-input/TextInput';
 
 interface CreateTagModalProps {
   visible: boolean;
@@ -43,7 +43,7 @@ const CreateTagModal: React.FC<CreateTagModalProps> = ({
           ]}
         >
           <Text style={styles.modalTitle}>Create Tag</Text>
-          <InputField
+          <TextInput
             placeholder="Tag Name"
             value={tagName}
             onChangeText={setTagName}

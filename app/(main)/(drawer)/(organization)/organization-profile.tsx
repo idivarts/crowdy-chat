@@ -2,16 +2,16 @@ import React, { useEffect, useState } from "react";
 import { ScrollView } from "react-native";
 
 import ImagePicker from "@/shared-uis/components/image-picker/ImagePicker";
-import InputField from "@/components/ui/input/InputField";
 import useBreakpoints from "@/hooks/use-breakpoints";
 import AppLayout from "@/layouts/app-layout";
 import Button from "@/components/ui/button/Button";
 import { useOrganizationContext } from "@/contexts";
-import { ActivityIndicator, Appbar } from "react-native-paper";
+import { ActivityIndicator } from "react-native-paper";
 import { useTheme } from "@react-navigation/native";
 import stylesFn from "@/styles/organization/OrganizationProfile.styles";
 import { View } from "@/components/Themed";
-import { router } from "expo-router";
+import TextInput from "@/components/ui/text-input/TextInput";
+import ScreenHeader from "@/components/screen-header";
 
 const OrganizationProfile: React.FC = () => {
   const theme = useTheme();
@@ -80,14 +80,9 @@ const OrganizationProfile: React.FC = () => {
 
   return (
     <AppLayout>
-      <Appbar.Header statusBarHeight={0}>
-        <Appbar.BackAction
-          onPress={() => {
-            router.back();
-          }}
-        />
-        <Appbar.Content title="Organization Profile" />
-      </Appbar.Header>
+      <ScreenHeader
+        title="Organization Profile"
+      />
       <ScrollView
         contentContainerStyle={[
           styles.scrollViewContent,
@@ -111,10 +106,11 @@ const OrganizationProfile: React.FC = () => {
                 image={image}
                 onUploadImage={onUploadImage}
                 setImage={setImage}
+                theme={theme}
               />
             </View>
 
-            <InputField
+            <TextInput
               label="Name"
               editable={isEditable}
               value={name}
@@ -122,7 +118,7 @@ const OrganizationProfile: React.FC = () => {
               placeholder="Enter organization name"
             />
 
-            <InputField
+            <TextInput
               label="Description"
               value={description}
               editable={isEditable}
@@ -132,7 +128,7 @@ const OrganizationProfile: React.FC = () => {
               numberOfLines={4}
             />
 
-            <InputField
+            <TextInput
               label="Industry"
               value={industry}
               editable={isEditable}
@@ -140,7 +136,7 @@ const OrganizationProfile: React.FC = () => {
               placeholder="Enter your industry"
             />
 
-            <InputField
+            <TextInput
               label="Website"
               editable={isEditable}
               value={website}
@@ -150,10 +146,11 @@ const OrganizationProfile: React.FC = () => {
           </View>
           <View
             style={{
+              alignItems: "flex-end",
               flexDirection: "row",
               gap: 16,
               justifyContent: "flex-end",
-              alignItems: "flex-end",
+              marginTop: 6,
               width: "100%",
             }}
           >

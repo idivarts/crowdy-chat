@@ -11,7 +11,7 @@ const stylesFn = (theme: Theme) =>
     },
     container: {
       padding: StyleConstant.paddingHorizontalForScreen,
-      gap: 20,
+      gap: 12,
       width: "100%",
     },
     row: {

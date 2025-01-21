@@ -66,8 +66,6 @@ export const OrganizationContextProvider: React.FC<PropsWithChildren> = ({
 
     if (!result) {
       router.push("/(organization)/create-new-organization");
-    } else {
-      router.push("/campaigns");
     }
   };
 
@@ -201,7 +199,7 @@ export const OrganizationContextProvider: React.FC<PropsWithChildren> = ({
         // If current organization is set, update it with the latest data
         setCurrentOrganization(
           data.find((org) => org?.id === currentOrganization?.id) ||
-            currentOrganization
+          currentOrganization
         );
       } else {
         // By default, set the first organization as current organization

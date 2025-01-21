@@ -1,14 +1,11 @@
 import React, { useEffect, useState } from "react";
 import {
-  Appbar,
-  TextInput,
   DataTable,
   Portal,
-  Provider,
   Chip,
-  DefaultTheme,
   Text,
   ActivityIndicator,
+  IconButton,
 } from "react-native-paper";
 import { Pressable, ScrollView } from "react-native";
 import Dropdown from "@/shared-uis/components/dropdown/Dropdown";
@@ -17,12 +14,11 @@ import DropdownOptions from "@/shared-uis/components/dropdown/DropdownOptions";
 import DropdownOption from "@/shared-uis/components/dropdown/DropdownOption";
 import DropdownButton from "@/shared-uis/components/dropdown/DropdownButton";
 import { MaterialIcons } from "@expo/vector-icons";
-import { z, ZodError } from "zod";
+import { ZodError } from "zod";
 import { stylesFn } from "@/styles/Members";
 import { useOrganizationContext } from "@/contexts/organization-context.provider";
 import { MemberSchema } from "@/components/schemas/MemberPageSchema";
 import Toaster from "@/shared-uis/components/toaster/Toaster";
-import { DrawerToggle } from "@/components/ui";
 import {
   collection,
   doc,
@@ -48,13 +44,12 @@ import { DrawerActions, useTheme } from "@react-navigation/native";
 import { View } from "@/components/Themed";
 import Colors from "@/constants/Colors";
 import AppLayout from "@/layouts/app-layout";
-import ProfileIcon from "@/components/profile/ProfileIcon";
 import ProfileCircle from "@/components/profile/ProfileCircle";
-import OrganizationSwitcherMenu from "@/components/org-switcher";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { faBars, faPlus } from "@fortawesome/free-solid-svg-icons";
 import ScreenHeader from "@/components/screen-header";
 import { useNavigation } from "expo-router";
+import TextInput from "@/components/ui/text-input/TextInput";
 
 interface MemberDetails {
   userId?: string;
@@ -76,13 +71,11 @@ const MemberPage: React.FC = () => {
   const [searchTerm, setSearchTerm] = useState<string>("");
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const { currentOrganization } = useOrganizationContext();
-  const { lg, xl } = useBreakPoints();
+  const { xl } = useBreakPoints();
   const [editingIndex, setEditingIndex] = useState<number | null>(null);
 
   const fetchMembers = async () => {
     try {
-      let authUser = AuthApp.currentUser;
-
       // Correctly reference the collection
       let memberColRef = collection(
         FirestoreDB,
@@ -233,7 +226,7 @@ const MemberPage: React.FC = () => {
               email: newMember.email,
               name: newMember.name,
             };
-            const docUserRef = await setDoc(
+            await setDoc(
               doc(userColRef, user.user.uid),
               newUser
             );
@@ -248,7 +241,7 @@ const MemberPage: React.FC = () => {
               },
             };
 
-            const docRef = await setDoc(
+            await setDoc(
               doc(memberColRef, user.user.uid),
               memberData
             );
@@ -267,7 +260,7 @@ const MemberPage: React.FC = () => {
               },
             };
 
-            const docRef = await setDoc(
+            await setDoc(
               doc(memberColRef, userDoc.id),
               memberData
             );
@@ -293,12 +286,6 @@ const MemberPage: React.FC = () => {
 
   const handleDeleteMember = async (index: number) => {
     try {
-      const organizationColRef = collection(FirestoreDB, "organizations");
-      const organizationDocRef = doc(
-        organizationColRef,
-        currentOrganization?.id
-      );
-
       if (!currentOrganization?.id) {
         Toaster.error("Organization not found");
         return;
@@ -477,22 +464,26 @@ const MemberPage: React.FC = () => {
           }}
         >
           <TextInput
+            containerStyle={{
+              flex: 1,
+            }}
             label="Search by name"
             mode="outlined"
             value={searchTerm}
             onChangeText={handleSearchChange}
             style={styles.searchInput}
           />
-          <Pressable onPress={handleAddMemberClick}>
-            <FontAwesomeIcon
-              icon={faPlus}
-              size={24}
-              color={Colors(theme).primary}
-              style={{
-                padding: 10,
-              }}
-            />
-          </Pressable>
+          <IconButton
+            icon={() =>
+              <FontAwesomeIcon
+                icon={faPlus}
+                size={20}
+                color={Colors(theme).primary}
+              />
+            }
+            size={20}
+            onPress={handleAddMemberClick}
+          />
         </View>
         <DataTable>
           <DataTable.Header

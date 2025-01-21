@@ -20,8 +20,6 @@ import {
   faUser as faUserSolid,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
-import AppLayout from "@/layouts/app-layout";
-import OrganizationSwitcherMenu from "@/components/org-switcher";
 
 const TabLayout = () => {
   const { xl } = useBreakPoints();

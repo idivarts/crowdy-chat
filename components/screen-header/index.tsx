@@ -39,6 +39,7 @@ const ScreenHeader: React.FC<ScreenHeaderProps> = ({
         backgroundColor: Colors(theme).background,
         elevation: 0,
         height: 54,
+        gap: 12,
       }}
       statusBarHeight={0}
     >
@@ -66,7 +67,16 @@ const ScreenHeader: React.FC<ScreenHeaderProps> = ({
 
       <Appbar.Content title={title} color={Colors(theme).text} />
 
-      {rightAction && rightActionButton}
+      <View
+        style={{
+          marginTop: 2,
+          marginRight: 10,
+        }}
+        lightColor={Colors(theme).transparent}
+        darkColor={Colors(theme).transparent}
+      >
+        {rightAction && rightActionButton}
+      </View>
     </Appbar.Header>
   );
 };

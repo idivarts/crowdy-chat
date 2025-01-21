@@ -7,6 +7,7 @@ import stylesFn from "@/styles/button/Button.styles";
 interface ButtonProps extends React.ComponentProps<typeof PaperButton> { }
 
 const Button: React.FC<ButtonProps> = ({
+  style,
   children,
   ...props
 }) => {
@@ -15,7 +16,11 @@ const Button: React.FC<ButtonProps> = ({
 
   return (
     <PaperButton
-      style={styles.button}
+      mode="contained"
+      style={[
+        styles.button,
+        style,
+      ]}
       {...props}
     >
       {children}

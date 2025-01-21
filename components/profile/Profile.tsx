@@ -1,4 +1,4 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import { Pressable } from "react-native";
 import { useRouter } from "expo-router";
 import Toaster from "@/shared-uis/components/toaster/Toaster";
@@ -20,7 +20,7 @@ const Profile = () => {
   const handleSignout = () => {
     signOut();
     Toaster.success("Logged out successfully!");
-    router.replace("/(auth)/login");
+    router.replace("/login");
   };
 
   return (

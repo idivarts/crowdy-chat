@@ -1,6 +1,6 @@
 import { Theme } from "@react-navigation/native";
 
-const tintColorLight = "#1976d2";
+const tintColorLight = "#F67E00";
 const tintColorDark = "#fff";
 
 export default (theme: Theme) => ({
@@ -24,11 +24,13 @@ export default (theme: Theme) => ({
   backdrop: "rgba(0, 0, 0, 0.5)",
   black: "#000",
   lightgray: "lightgray",
-  onSurface: "#1976d2",
+  onSurface: "#F67E00",
   orange: "#F64740",
   platinum: "#DBDBDB",
-  primary: "#1976d2",
+  primary: "#F67E00",
+  outline: "#F67E00",
   transparent: "transparent",
+  secondaryContainer: "#F67E00",
   red: "red",
   gray100: "#555",
   gray200: "#f9f9f9",

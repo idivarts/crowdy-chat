@@ -1,34 +1,32 @@
 import { useEffect, useState } from "react";
-import { ActivityIndicator, Appbar, Button } from "react-native-paper";
+import { ActivityIndicator } from "react-native-paper";
 import { router, useNavigation } from "expo-router";
 
 import AppLayout from "@/layouts/app-layout";
 import { View } from "@/components/Themed";
-import { DrawerToggle } from "@/components/ui";
 import { useBreakPoints } from "@/hooks";
 import EmptyState from "@/components/EmptyState";
 import CampaignsFilledState from "@/components/campaigns/CampaignsFilledState";
-import { TextInput } from "react-native-paper";
 import { useCampaignContext } from "@/contexts/campaign-context.provider";
 import { Campaign } from "@/types/campaign";
 import { useOrganizationContext } from "@/contexts";
-import { FlatList, Platform, Pressable, Text } from "react-native";
+import { FlatList, Platform, Text } from "react-native";
 import { DrawerActions, useTheme } from "@react-navigation/native";
 import stylesFn from "@/styles/campaigns/CampaignsList.styles";
 import Colors from "@/constants/Colors";
-import ProfileIcon from "@/components/profile/ProfileIcon";
 import ProfileCircle from "@/components/profile/ProfileCircle";
-import OrganizationSwitcherMenu from "@/components/org-switcher";
 import ScreenHeader from "@/components/screen-header";
 import { faBars } from "@fortawesome/free-solid-svg-icons";
 import CampaignCard from "@/components/campaigns/CampaignCard";
+import Button from "@/components/ui/button/Button";
+import TextInput from "@/components/ui/text-input/TextInput";
 
 const Campaigns = () => {
   const theme = useTheme();
   const styles = stylesFn(theme);
   const [searchQuery, setSearchQuery] = useState("");
   const [filteredCampaigns, setFilteredCampaigns] = useState<Campaign[]>([]);
-  const { lg, xl } = useBreakPoints();
+  const { xl } = useBreakPoints();
   const navigation = useNavigation();
 
   const { campaigns } = useCampaignContext();
