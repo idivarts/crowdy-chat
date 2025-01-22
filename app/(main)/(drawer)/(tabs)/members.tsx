@@ -1,54 +1,54 @@
-import React, { useEffect, useState } from "react";
-import {
-  DataTable,
-  Portal,
-  Text,
-  ActivityIndicator,
-  IconButton,
-} from "react-native-paper";
-import { Platform, ScrollView } from "react-native";
-import Dropdown from "@/shared-uis/components/dropdown/Dropdown";
-import DropdownTrigger from "@/shared-uis/components/dropdown/DropdownTrigger";
-import DropdownOptions from "@/shared-uis/components/dropdown/DropdownOptions";
-import DropdownOption from "@/shared-uis/components/dropdown/DropdownOption";
-import DropdownButton from "@/shared-uis/components/dropdown/DropdownButton";
-import { MaterialIcons } from "@expo/vector-icons";
-import { ZodError } from "zod";
-import { stylesFn } from "@/styles/Members";
-import { useOrganizationContext } from "@/contexts/organization-context.provider";
+import MembersModal from "@/components/modals/Members/MembersModal";
+import ProfileCircle from "@/components/profile/ProfileCircle";
 import { MemberSchema } from "@/components/schemas/MemberPageSchema";
+import ScreenHeader from "@/components/screen-header";
+import { View } from "@/components/Themed";
+import TextInput from "@/components/ui/text-input/TextInput";
+import Colors from "@/constants/Colors";
+import { useOrganizationContext } from "@/contexts/organization-context.provider";
+import { useBreakPoints } from "@/hooks";
+import AppLayout from "@/layouts/app-layout";
+import { IMembers } from "@/shared-libs/firestore/crowdy-chat/models/members";
+import { IUser } from "@/shared-libs/firestore/crowdy-chat/models/users";
+import { AuthApp } from "@/shared-libs/utilities/auth";
+import { FirestoreDB } from "@/shared-libs/utilities/firestore";
+import Dropdown from "@/shared-uis/components/dropdown/Dropdown";
+import DropdownButton from "@/shared-uis/components/dropdown/DropdownButton";
+import DropdownOption from "@/shared-uis/components/dropdown/DropdownOption";
+import DropdownOptions from "@/shared-uis/components/dropdown/DropdownOptions";
+import DropdownTrigger from "@/shared-uis/components/dropdown/DropdownTrigger";
 import Toaster from "@/shared-uis/components/toaster/Toaster";
+import { stylesFn } from "@/styles/Members";
+import { MaterialIcons } from "@expo/vector-icons";
+import { faBars, faPlus } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
+import { DrawerActions, useTheme } from "@react-navigation/native";
+import { useNavigation } from "expo-router";
+import {
+  createUserWithEmailAndPassword,
+  sendEmailVerification,
+} from "firebase/auth";
 import {
   collection,
-  doc,
-  query,
-  where,
-  getDocs,
   deleteDoc,
-  updateDoc,
-  setDoc,
+  doc,
   getDoc,
+  getDocs,
+  query,
+  setDoc,
+  updateDoc,
+  where,
 } from "firebase/firestore";
-import { useBreakPoints } from "@/hooks";
-import { FirestoreDB } from "@/shared-libs/utilities/firestore";
-import { IMembers } from "@/shared-libs/firestore/crowdy-chat/models/members";
-import { AuthApp } from "@/shared-libs/utilities/auth";
-import { IUser } from "@/shared-libs/firestore/crowdy-chat/models/users";
+import React, { useEffect, useState } from "react";
+import { ScrollView } from "react-native";
 import {
-  sendEmailVerification,
-  createUserWithEmailAndPassword,
-} from "firebase/auth";
-import MembersModal from "@/components/modals/Members/MembersModal";
-import { DrawerActions, useTheme } from "@react-navigation/native";
-import { View } from "@/components/Themed";
-import Colors from "@/constants/Colors";
-import AppLayout from "@/layouts/app-layout";
-import ProfileCircle from "@/components/profile/ProfileCircle";
-import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
-import { faBars, faPlus } from "@fortawesome/free-solid-svg-icons";
-import ScreenHeader from "@/components/screen-header";
-import { useNavigation } from "expo-router";
-import TextInput from "@/components/ui/text-input/TextInput";
+  ActivityIndicator,
+  DataTable,
+  IconButton,
+  Portal,
+  Text,
+} from "react-native-paper";
+import { ZodError } from "zod";
 
 interface MemberDetails {
   userId?: string;
