@@ -329,24 +329,22 @@ const MemberPage: React.FC = () => {
         style={styles.rowContainer}
       >
         <DataTable.Cell>
-          <Text>{member.name || "No Name"}</Text>
+          {member.name || "No Name"}
         </DataTable.Cell>
         <DataTable.Cell>
-          <Text>{member.email}</Text>
+          {member.email}
         </DataTable.Cell>
 
         <DataTable.Cell>
-          <Text style={styles.chipText}>
-            {member.permissions.admin
-              ? "Admin"
-              : member.permissions.write
-                ? member.permissions.read
-                  ? "Read, Write"
-                  : "Write"
-                : member.permissions.read
-                  ? "Read"
-                  : "No Permissions"}
-          </Text>
+          {member.permissions.admin
+            ? "Admin"
+            : member.permissions.write
+              ? member.permissions.read
+                ? "Read, Write"
+                : "Write"
+              : member.permissions.read
+                ? "Read"
+                : "No Permissions"}
         </DataTable.Cell>
         <DataTable.Cell style={styles.actionsCell}>
           <Dropdown>
