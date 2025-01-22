@@ -6,7 +6,7 @@ import {
   ActivityIndicator,
   IconButton,
 } from "react-native-paper";
-import { Platform, ScrollView } from "react-native";
+import { ScrollView } from "react-native";
 import Dropdown from "@/shared-uis/components/dropdown/Dropdown";
 import DropdownTrigger from "@/shared-uis/components/dropdown/DropdownTrigger";
 import DropdownOptions from "@/shared-uis/components/dropdown/DropdownOptions";
