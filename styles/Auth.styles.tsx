@@ -12,12 +12,13 @@ export const stylesFn = (theme: Theme) =>
       backgroundColor: Colors(theme).background,
     },
     logo: {
-      fontSize: 24,
+      width: 80,
+      height: 80,
       marginBottom: 20,
     },
     formContainer: {
       borderWidth: 1,
-      borderColor: "#ccc",
+      borderColor: Colors(theme).text,
       borderRadius: 5,
       padding: 20,
       height: 400,
@@ -25,6 +26,17 @@ export const stylesFn = (theme: Theme) =>
       display: "flex",
       justifyContent: "center",
       alignItems: "center",
+      shadowColor: Colors(theme).border,
+      shadowOffset: {
+        width: 0,
+        height: 2,
+      },
+      shadowOpacity: 0.25,
+      shadowRadius: 3.84,
+      elevation: 5,
+    },
+    input: {
+      marginBottom: 20,
     },
     title: {
       position: "absolute",
@@ -35,22 +47,12 @@ export const stylesFn = (theme: Theme) =>
       paddingHorizontal: 10,
       fontSize: 16,
     },
-    input: {
-      padding: 10,
-      marginVertical: 10,
-      borderWidth: 1,
-      width: 300,
-      borderColor: "#ccc",
-      color: Colors(theme).text,
-      borderRadius: 5,
-    },
     linksContainer: {
-      marginTop: 15,
+      marginTop: 20,
       alignItems: "center",
     },
     link: {
-      color: "blue",
-      marginTop: 10,
+      marginBottom: 10,
     },
     error: {
       color: "red",

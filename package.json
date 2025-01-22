@@ -16,6 +16,8 @@
     "preset": "jest-expo"
   },
   "dependencies": {
+    "@dnd-kit/core": "^6.3.1",
+    "@dnd-kit/sortable": "^10.0.0",
     "@expo/vector-icons": "^14.0.2",
     "@fortawesome/fontawesome-svg-core": "^6.7.1",
     "@fortawesome/free-regular-svg-icons": "^6.7.1",
@@ -34,6 +36,7 @@
     "expo-av": "^14.0.7",
     "expo-checkbox": "^3.0.0",
     "expo-clipboard": "^6.0.3",
+    "expo-crypto": "~13.0.2",
     "expo-dev-client": "~4.0.27",
     "expo-document-picker": "^12.0.2",
     "expo-font": "~12.0.9",
@@ -59,8 +62,7 @@
     "react-native-toast-message": "^2.2.0",
     "react-native-web": "~0.19.10",
     "react-router-dom": "^6.26.1",
-    "timeago-react": "^3.0.6",
-    "expo-crypto": "~13.0.2"
+    "timeago-react": "^3.0.6"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",

@@ -4,17 +4,19 @@ import {
   ScrollView,
   ActivityIndicator,
   Platform,
-  Pressable,
 } from "react-native";
-import { Appbar, DataTable, Portal, TextInput } from "react-native-paper";
+import { DataTable, IconButton, Portal } from "react-native-paper";
 
 import CreateLeadModal from "@/components/leads/CreateLeadModal";
 import CreateTagModal from "@/components/leads/CreateTagModal";
 import Colors from "@/constants/Colors";
-import { DrawerToggle } from "@/components/ui";
 import { useBreakPoints } from "@/hooks";
 import ExpoCheckbox from "expo-checkbox/build/ExpoCheckbox";
-import { useIsFocused, useTheme } from "@react-navigation/native";
+import {
+  DrawerActions,
+  useIsFocused,
+  useTheme,
+} from "@react-navigation/native";
 import stylesFn from "@/styles/leads/LeadsTable.styles";
 import { Text, View } from "@/components/Themed";
 import { collection, doc, getDocs, updateDoc } from "firebase/firestore";
@@ -24,11 +26,12 @@ import { StyleConstant } from "@/constants/Style";
 import EmptyState from "@/components/EmptyState";
 import { ILeads } from "@/shared-libs/firestore/crowdy-chat/models/leads";
 import AppLayout from "@/layouts/app-layout";
-import ProfileIcon from "@/components/profile/ProfileIcon";
 import ProfileCircle from "@/components/profile/ProfileCircle";
-import OrganizationSwitcherMenu from "@/components/org-switcher";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
-import { faPlus, faTag } from "@fortawesome/free-solid-svg-icons";
+import { faBars, faPlus, faTag } from "@fortawesome/free-solid-svg-icons";
+import ScreenHeader from "@/components/screen-header";
+import { useNavigation } from "expo-router";
+import TextInput from "@/components/ui/text-input/TextInput";
 
 const Leads = () => {
   const theme = useTheme();
@@ -39,7 +42,7 @@ const Leads = () => {
   const [selectedLeads, setSelectedLeads] = useState<any>([]);
   const [filteredLeads, setFilteredLeads] = useState<any[]>(leads);
   const [searchQuery, setSearchQuery] = useState("");
-  const { xl, lg } = useBreakPoints();
+  const { xl } = useBreakPoints();
   const [loadingLeads, setLoadingLeads] = useState<{ [key: string]: boolean }>(
     {}
   );
@@ -145,73 +148,71 @@ const Leads = () => {
     }
   }, [leads, searchQuery]);
 
+  const navigation = useNavigation();
+
   return (
     <AppLayout>
+      <ScreenHeader
+        title="Leads"
+        rightAction
+        leftIcon={!xl ? faBars : null}
+        rightActionButton={<ProfileCircle />}
+        action={() => {
+          navigation.dispatch(DrawerActions.openDrawer());
+        }}
+      />
       <View
         style={{
           flex: 1,
         }}
       >
-        <Appbar.Header
-          statusBarHeight={0}
-          style={{
-            backgroundColor: Colors(theme).background,
-            gap: 10,
-          }}
-        >
-          {!lg && <DrawerToggle />}
-          <Appbar.Content title="Leads" />
-          <ProfileCircle />
-        </Appbar.Header>
-
         <View
           style={{
             padding: StyleConstant.paddingHorizontalForScreen,
+            paddingTop: 0,
             flex: 1,
+            gap: 10,
           }}
         >
           <View
             style={{
-              marginBottom: 16,
               flexDirection: "row",
               alignItems: "center",
+              justifyContent: "space-between",
+              gap: 8,
             }}
           >
             <TextInput
-              label="Search Leads"
-              mode="outlined"
-              style={{
-                backgroundColor: Colors(theme).background,
+              containerStyle={{
                 flex: 1,
               }}
+              label="Search Leads"
+              mode="outlined"
               onChangeText={handleSearch}
               value={searchQuery}
             />
-            <Pressable
+            <IconButton
+              icon={() =>
+                <FontAwesomeIcon
+                  icon={faPlus}
+                  size={20}
+                  color={Colors(theme).primary}
+                />
+              }
+              size={20}
               onPress={showCreateLeadModal}
-              style={{
-                padding: 10,
-              }}
-            >
-              <FontAwesomeIcon
-                icon={faPlus}
-                size={20}
-                color={Colors(theme).primary}
-              />
-            </Pressable>
-
-            <Pressable
+            />
+            <IconButton
+              icon={() =>
+                <FontAwesomeIcon
+                  icon={faTag}
+                  size={20}
+                  color={Colors(theme).primary}
+                />
+              }
+              size={20}
               onPress={showCreateTagModal}
-              style={{
-                padding: 10,
-              }}
-            >
-              <FontAwesomeIcon
-                icon={faTag}
-                size={20}
-                color={Colors(theme).primary}
-              />
-            </Pressable>
+            />
           </View>
           {!leads?.length ? (
             <EmptyState

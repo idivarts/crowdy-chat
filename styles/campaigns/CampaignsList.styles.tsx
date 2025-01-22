@@ -1,4 +1,3 @@
-import Colors from "@/constants/Colors";
 import { StyleConstant } from "@/constants/Style";
 import { Theme } from "@react-navigation/native";
 import { StyleSheet } from "react-native";
@@ -8,6 +7,7 @@ const stylesFn = (theme: Theme) =>
     container: {
       flex: 1,
       padding: StyleConstant.paddingHorizontalForScreen,
+      paddingTop: 0,
       gap: 16,
     },
     campaignsSection: {
@@ -29,7 +29,7 @@ const stylesFn = (theme: Theme) =>
       marginBottom: 16,
     },
     filledStateContainer: {
-      gap: 16,
+      gap: 10,
       flexDirection: "row",
       justifyContent: "space-evenly",
       flexWrap: "wrap",

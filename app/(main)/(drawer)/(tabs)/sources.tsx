@@ -1,38 +1,38 @@
 import ConnectedPage from "@/components/sources/ConnectedPage";
-import { DrawerToggle } from "@/components/ui";
 import { useBreakPoints } from "@/hooks";
 import React, { useEffect, useState } from "react";
 import {
-  Appbar,
   Modal,
   Portal,
-  Button,
-  TextInput,
   ActivityIndicator,
 } from "react-native-paper";
 import { stylesFn } from "@/styles/sources/Sources.styles";
-import { HttpService } from "@/services/httpService";
 import Toaster from "@/shared-uis/components/toaster/Toaster";
 import { PageUnit } from "@/interfaces/SourcePageInterfaces";
 import FacebookLoginButton from "@/components/sources/ConnectWithFacebook";
-import { useIsFocused, useTheme } from "@react-navigation/native";
+import {
+  DrawerActions,
+  useIsFocused,
+  useTheme,
+} from "@react-navigation/native";
 import { Text, View } from "@/components/Themed";
-import Colors from "@/constants/Colors";
 import { collection, getDocs } from "firebase/firestore";
 import { FirestoreDB } from "@/shared-libs/utilities/firestore";
 import { useOrganizationContext } from "@/contexts";
 import { FlatList } from "react-native";
 import EmptyState from "@/components/EmptyState";
 import AppLayout from "@/layouts/app-layout";
-import ProfileIcon from "@/components/profile/ProfileIcon";
-import Profile from "@/components/profile/Profile";
 import ProfileCircle from "@/components/profile/ProfileCircle";
-import OrganizationSwitcherMenu from "@/components/org-switcher";
+import ScreenHeader from "@/components/screen-header";
+import { faBars } from "@fortawesome/free-solid-svg-icons";
+import { useNavigation } from "expo-router";
+import TextInput from "@/components/ui/text-input/TextInput";
+import Button from "@/components/ui/button/Button";
 
 const Sources = () => {
   const theme = useTheme();
   const styles = stylesFn(theme);
-  const { lg, xl } = useBreakPoints();
+  const { xl } = useBreakPoints();
   const [modalVisible, setModalVisible] = useState(false);
   const [emailModalVisible, setEmailModalVisible] = useState(false);
   const [sendGridApiKey, setSendGridApiKey] = useState("");
@@ -88,38 +88,37 @@ const Sources = () => {
     setEmailModalVisible(false);
   };
 
+  const navigation = useNavigation();
+
   return (
     <AppLayout>
+      <ScreenHeader
+        title="Sources"
+        rightAction
+        leftIcon={!xl ? faBars : null}
+        rightActionButton={<ProfileCircle />}
+        action={() => {
+          navigation.dispatch(DrawerActions.openDrawer());
+        }}
+      />
       <View style={styles.container}>
-        <Appbar.Header
-          statusBarHeight={0}
-          style={{
-            backgroundColor: Colors(theme).background,
-            gap: 10,
-          }}
-        >
-          {!lg && <DrawerToggle />}
-          <Appbar.Content title="Sources" />
-          <Appbar.Action icon="plus" onPress={handleAddSource} />
-          <ProfileCircle />
-        </Appbar.Header>
-        <View style={{ flex: 1, padding: 20 }}>
+        <View style={{ flex: 1, padding: 20, paddingTop: 0 }}>
           <View
             style={{
               alignItems: "center",
               width: "100%",
+
               flex: 1,
             }}
           >
             {loading && <ActivityIndicator animating={true} color="#000" />}
             {!loading &&
               (otherPages.length !== 0 ? (
-                <View style={{ width: "100%", flex: 1 }}>
+                <View style={{ width: "100%", gap: 16 }}>
                   <Text
                     style={{
                       fontSize: 20,
                       fontWeight: "bold",
-                      marginVertical: 10,
                     }}
                   >
                     Connected Pages
@@ -131,6 +130,9 @@ const Sources = () => {
                     )}
                     keyExtractor={(item) => item.id}
                     style={{ width: "100%" }}
+                    contentContainerStyle={{
+                      gap: 16,
+                    }}
                     showsVerticalScrollIndicator={false}
                   />
                 </View>

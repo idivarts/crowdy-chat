@@ -6,7 +6,7 @@ import {
   useTheme,
 } from "@react-navigation/native";
 import { useFonts } from "expo-font";
-import { Stack, usePathname, useRouter } from "expo-router";
+import { Stack, usePathname, useSegments } from "expo-router";
 import * as SplashScreen from "expo-splash-screen";
 import { useEffect } from "react";
 import "react-native-reanimated";
@@ -18,10 +18,10 @@ import {
   useAuthContext,
 } from "@/contexts/auth-context.provider";
 import { PaperProvider } from "react-native-paper";
-import { AuthScreens, MainScreens, PublicScreens } from "@/layouts/screens";
 import CustomPaperTheme from "@/constants/Theme";
-import { OrganizationContextProvider, useOrganizationContext } from "@/contexts/organization-context.provider";
+import { OrganizationContextProvider } from "@/contexts/organization-context.provider";
 import { FirebaseStorageContextProvider } from "@/contexts/firebase-storage-context.provider";
+import { resetAndNavigate } from "@/helpers/router";
 
 export {
   // Catch any errors thrown by the Layout component.
@@ -81,22 +81,31 @@ const RootLayout = () => {
 
 const RootLayoutStack = () => {
   const colorScheme = useColorScheme();
-  const { session, user } = useAuthContext();
+  const pathname = usePathname();
+  const segments = useSegments();
+  const { isLoading, session, user } = useAuthContext();
 
   const appTheme = user?.settings?.theme || colorScheme;
 
-  // const router = useRouter();
-  // const pathname = usePathname();
+  useEffect(() => {
+    const inAuthGroup = segments[0] === "(auth)";
+    const inMainGroup = segments[0] === "(main)";
+    const inOrgGroup = segments[0] === "(organization)";
 
-  // useEffect(() => {
-  //   // Redirect from root (/) to /login
-  //   if (pathname === '/') {
-  //     if (!session)
-  //       router.replace('/(auth)/login');
-  //     else
-  //       router.replace('/(main)/compaigns');
-  //   }
-  // }, [router, session]);
+    if (isLoading) return;
+
+    if (
+      session
+      && (inAuthGroup || pathname === "/")
+    ) {
+      resetAndNavigate("/campaigns");
+    } else if (
+      !session
+      && (inMainGroup || inOrgGroup || pathname === "/")
+    ) {
+      resetAndNavigate("/login");
+    }
+  }, [session, isLoading]);
 
   return (
     <ThemeProvider value={appTheme === "dark" ? DarkTheme : ExpoDefaultTheme}>
@@ -106,8 +115,10 @@ const RootLayoutStack = () => {
           headerShown: false,
         }}
       >
-        <PublicScreens />
-        {session ? <MainScreens /> : <AuthScreens />}
+        <Stack.Screen name="(main)" options={{ headerShown: false }} />
+        <Stack.Screen name="(auth)" options={{ headerShown: false }} />
+        <Stack.Screen name="index" />
+        <Stack.Screen name="+not-found" />
       </Stack>
       <Toast />
     </ThemeProvider>

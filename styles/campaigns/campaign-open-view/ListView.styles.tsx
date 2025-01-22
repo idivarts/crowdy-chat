@@ -8,17 +8,13 @@ export const stylesFn = (theme: Theme) =>
     container: {
       flex: 1,
       backgroundColor: Colors(theme).background,
-      padding: 4,
     },
     tableContainer: {
       marginBottom: 20,
       backgroundColor: Colors(theme).background,
       borderRadius: 8,
       overflow: "hidden",
-      shadowOffset: { width: 0, height: 2 },
-      shadowOpacity: 0.23,
-      shadowRadius: 2.62,
-      elevation: 4,
+      gap: 16,
     },
     userInfo: {
       flexDirection: "column",
@@ -33,12 +29,14 @@ export const stylesFn = (theme: Theme) =>
     groupTitle: {
       fontSize: 18,
       fontWeight: "bold",
-      padding: 16,
+      paddingHorizontal: 16,
+      marginBottom: 4,
+      marginTop: 4,
     },
     groupByContainer: {
       flexDirection: "row",
       alignItems: "center",
-      padding: 16,
+      paddingHorizontal: 16,
     },
     headerCell: {
       flex: 1,

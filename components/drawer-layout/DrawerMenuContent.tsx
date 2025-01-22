@@ -1,4 +1,3 @@
-import { DrawerContentScrollView } from "@react-navigation/drawer";
 import { Text, View } from "../Themed";
 import {
   faComment,
@@ -11,7 +10,9 @@ import {
   faComment as faCommentSolid,
   faFileLines as faFileLinesSolid,
   faHandshake as faHandshakeSolid,
+  faPlus,
   faStar as faStarSolid,
+  faUserEdit,
   faUser as faUserSolid,
 } from "@fortawesome/free-solid-svg-icons";
 import DrawerMenuItem, { IconPropFn } from "./DrawerMenuItem";
@@ -23,7 +24,7 @@ import { useNavigation, useRouter } from "expo-router";
 import OrganizationSwitcherMenu from "../org-switcher";
 import { useOrganizationContext } from "@/contexts";
 
-interface DrawerMenuContentProps {}
+interface DrawerMenuContentProps { }
 
 const DRAWER_MENU_CONTENT_ITEMS = [
   {
@@ -104,8 +105,8 @@ const DrawerMenuContent: React.FC<DrawerMenuContentProps> = () => {
         }}
       >
         <BrandActionItem
-          key="create-brand"
-          icon="plus"
+          key="create-new-organization"
+          icon={faPlus}
           showChevron={false}
           onPress={() => {
             router.push("/create-new-organization");
@@ -114,8 +115,8 @@ const DrawerMenuContent: React.FC<DrawerMenuContentProps> = () => {
           title="Create New Organization"
         />
         <BrandActionItem
-          key="create-brand"
-          icon="account-edit"
+          key="organization-profile"
+          icon={faUserEdit}
           showChevron={false}
           onPress={() => {
             router.push("/(main)/organization-profile");

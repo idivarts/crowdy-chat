@@ -1,11 +1,13 @@
 import React, { useState } from "react";
-import { Modal, Portal, Button, TextInput } from "react-native-paper";
+import { Modal, Portal } from "react-native-paper";
 import Toaster from "@/shared-uis/components/toaster/Toaster";
 import { HttpService } from "@/services/httpService";
 import { PageUnit } from "@/interfaces/SourcePageInterfaces";
 import { AssistantModalstylesFn } from "@/styles/sources/Modals.styles";
 import { useTheme } from "@react-navigation/native";
 import { View } from "./Themed";
+import TextInput from "./ui/text-input/TextInput";
+import Button from "./ui/button/Button";
 
 const AssistantModal: React.FC<{
   page: PageUnit;

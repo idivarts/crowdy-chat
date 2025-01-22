@@ -1,7 +1,6 @@
 import { TabView } from "./CampaignOpenView";
 import React from "react";
-import { Appbar, Button, IconButton, TextInput } from "react-native-paper";
-import GoBackButton from "../ui/go-back-button";
+import { Appbar, IconButton } from "react-native-paper";
 import CampaignsOpenViewFilter from "./CampaignsOpenViewFilter";
 import { useTheme } from "@react-navigation/native";
 import stylesFn from "@/styles/campaigns/CampaignsOpenViewHeader.styles";
@@ -9,6 +8,8 @@ import { View } from "../Themed";
 import { Platform, Pressable } from "react-native";
 import { router } from "expo-router";
 import Colors from "@/constants/Colors";
+import Button from "../ui/button/Button";
+import TextInput from "../ui/text-input/TextInput";
 
 interface CampaignsOpenViewHeaderProps {
   tabView: TabView;
@@ -33,6 +34,7 @@ const CampaignsOpenViewHeader: React.FC<CampaignsOpenViewHeaderProps> = ({
       statusBarHeight={0}
       style={{
         backgroundColor: Colors(theme).background,
+        marginTop: Platform.OS === "web" ? 0 : 10,
       }}
     >
       <Pressable key={0} onPress={() => router.navigate("/campaigns")}>
@@ -77,13 +79,15 @@ const CampaignsOpenViewHeader: React.FC<CampaignsOpenViewHeaderProps> = ({
             </Button>
             <View style={styles.searchContainer}>
               <TextInput
+                containerStyle={{
+                  flex: 1,
+                }}
                 label="Search Campaigns"
                 mode="outlined"
                 outlineStyle={{
                   borderColor: Colors(theme).border,
                 }}
                 style={[
-                  styles.searchInput,
                   {
                     textAlignVertical: "center",
                     marginBottom: 6,

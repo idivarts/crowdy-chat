@@ -9,22 +9,25 @@ export const stylesFn = (theme: Theme) =>
       justifyContent: "center",
       alignItems: "center",
       padding: 20,
+      paddingVertical: 0,
     },
     card: {
+      borderColor: Colors(theme).border,
+      borderRadius: 5,
+      borderWidth: 1,
       elevation: 4,
-      borderRadius: 12,
+      gap: 10,
       maxWidth: 400,
       padding: 20,
-      borderWidth: Platform.OS === "web" ? 0 : 0.2,
     },
     cardTitle: {
-      color: "#2196F3",
+      color: Colors(theme).text,
       fontWeight: "bold",
+      marginBottom: 0,
     },
     instructions: {
       fontSize: 16,
       textAlign: "center",
-      marginBottom: 20,
       lineHeight: 24,
     },
     textInput: {
@@ -36,9 +39,6 @@ export const stylesFn = (theme: Theme) =>
       fontSize: 16,
     },
     inputContainer: {
-      flexDirection: "row",
-      alignItems: "center",
-      width: "100%",
       marginTop: 10,
     },
     iconContainer: {
@@ -53,11 +53,6 @@ export const stylesFn = (theme: Theme) =>
     },
     cardActions: {
       justifyContent: "center",
-    },
-    button: {
-      width: "50%",
-      borderRadius: 25,
-      backgroundColor: "#2196F3",
-      color: "#FFF",
+      padding: 0,
     },
   });

@@ -1,31 +1,32 @@
 import { useEffect, useState } from "react";
-import { ActivityIndicator, Appbar, Button } from "react-native-paper";
-import { router } from "expo-router";
+import { ActivityIndicator } from "react-native-paper";
+import { router, useNavigation } from "expo-router";
 
 import AppLayout from "@/layouts/app-layout";
 import { View } from "@/components/Themed";
-import { DrawerToggle } from "@/components/ui";
 import { useBreakPoints } from "@/hooks";
 import EmptyState from "@/components/EmptyState";
 import CampaignsFilledState from "@/components/campaigns/CampaignsFilledState";
-import { TextInput } from "react-native-paper";
 import { useCampaignContext } from "@/contexts/campaign-context.provider";
 import { Campaign } from "@/types/campaign";
 import { useOrganizationContext } from "@/contexts";
-import { FlatList, Platform, Pressable, Text } from "react-native";
-import { useTheme } from "@react-navigation/native";
+import { FlatList, Platform, Text } from "react-native";
+import { DrawerActions, useTheme } from "@react-navigation/native";
 import stylesFn from "@/styles/campaigns/CampaignsList.styles";
-import Colors from "@/constants/Colors";
-import ProfileIcon from "@/components/profile/ProfileIcon";
 import ProfileCircle from "@/components/profile/ProfileCircle";
-import OrganizationSwitcherMenu from "@/components/org-switcher";
+import ScreenHeader from "@/components/screen-header";
+import { faBars } from "@fortawesome/free-solid-svg-icons";
+import CampaignCard from "@/components/campaigns/CampaignCard";
+import Button from "@/components/ui/button/Button";
+import TextInput from "@/components/ui/text-input/TextInput";
 
 const Campaigns = () => {
   const theme = useTheme();
   const styles = stylesFn(theme);
   const [searchQuery, setSearchQuery] = useState("");
   const [filteredCampaigns, setFilteredCampaigns] = useState<Campaign[]>([]);
-  const { lg, xl } = useBreakPoints();
+  const { xl } = useBreakPoints();
+  const navigation = useNavigation();
 
   const { campaigns } = useCampaignContext();
   const { currentOrganization } = useOrganizationContext();
@@ -67,33 +68,30 @@ const Campaigns = () => {
 
   return (
     <AppLayout>
-      <Appbar.Header
-        statusBarHeight={0}
-        style={{
-          backgroundColor: Colors(theme).background,
-          gap: 10,
+      <ScreenHeader
+        title="Campaigns"
+        rightAction
+        leftIcon={!xl ? faBars : null}
+        rightActionButton={<ProfileCircle />}
+        action={() => {
+          navigation.dispatch(DrawerActions.openDrawer());
         }}
-      >
-        {!lg && <DrawerToggle />}
-        <Appbar.Content title="Campaigns" />
-        <ProfileCircle />
-      </Appbar.Header>
+      />
       <View style={styles.container}>
         <View
           style={{
             flexDirection: "row",
             alignItems: "center",
             gap: 10,
+            marginBottom: 6,
           }}
         >
           {campaigns.length > 0 && (
             <TextInput
-              label="Search Campaigns"
-              mode="outlined"
-              style={{
-                backgroundColor: Colors(theme).background,
+              containerStyle={{
                 flex: 1,
               }}
+              label="Search Campaigns"
               onChangeText={handleSearch}
               value={searchQuery}
             />
@@ -102,8 +100,14 @@ const Campaigns = () => {
             icon="plus"
             mode="contained"
             onPress={() => router.push("/campaigns/create")}
+            style={{ height: 42, marginTop: 4, borderRadius: 4 }}
           >
-            Create a Campaign
+            {/* Create a Campaign */}
+            {Platform.OS === "web" ? (
+              <Text>Create a Campaign</Text>
+            ) : (
+              <Text>Create</Text>
+            )}
           </Button>
         </View>
         {Platform.OS === "web" && (
@@ -131,10 +135,8 @@ const Campaigns = () => {
           <View style={styles.campaignsSection}>
             {filteredCampaigns.length > 0 ? (
               <FlatList
-                data={[,]}
-                renderItem={({ item }) => (
-                  <CampaignsFilledState campaigns={filteredCampaigns} />
-                )}
+                data={filteredCampaigns}
+                renderItem={({ item }) => <CampaignCard item={item} />}
                 showsVerticalScrollIndicator={false}
               />
             ) : (

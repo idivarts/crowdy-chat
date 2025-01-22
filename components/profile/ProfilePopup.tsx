@@ -1,11 +1,10 @@
 import React, { useState, useEffect } from "react";
 import {
-  Button,
   Modal,
   Image,
   TouchableOpacity,
 } from "react-native";
-import { Switch, TextInput } from "react-native-paper";
+import { Switch } from "react-native-paper";
 import * as ImagePicker from "expo-image-picker";
 import Toaster from "@/shared-uis/components/toaster/Toaster";
 import { stylesFn } from "@/styles/header/EditProfile.styles";
@@ -20,7 +19,6 @@ import {
   EmailAuthProvider,
 } from "firebase/auth";
 import {
-  getStorage,
   ref,
   uploadString,
   getDownloadURL,
@@ -29,6 +27,8 @@ import Toast from "react-native-toast-message";
 import { useAuthContext } from "@/contexts";
 import { useTheme } from "@react-navigation/native";
 import { Text, View } from "../Themed";
+import TextInput from "../ui/text-input/TextInput";
+import Button from "../ui/button/Button";
 
 interface ProfilePopupProps {
   isVisible: boolean;
@@ -45,10 +45,7 @@ const ProfilePopup: React.FC<ProfilePopupProps> = ({ isVisible, onClose }) => {
   const [oldPassword, setOldPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [confirmNewPassword, setConfirmNewPassword] = useState("");
-  const [profileImage, setProfileImage] = useState(
-    user?.image ||
-    "https://pinnacle.works/wp-content/uploads/2022/06/dummy-image.jpg"
-  );
+  const [profileImage, setProfileImage] = useState(user?.image || "");
   const [isSwitchOn, setIsSwitchOn] = useState(false);
   const theme = useTheme();
   const styles = stylesFn(theme);
@@ -188,35 +185,32 @@ const ProfilePopup: React.FC<ProfilePopupProps> = ({ isVisible, onClose }) => {
           <View style={styles.section}>
             <TouchableOpacity onPress={openImagePicker}>
               <Image
-                source={{ uri: profileImage }}
+                source={
+                  profileImage ? {
+                    uri: profileImage
+                  } : require("@/assets/images/placeholder-image.png")
+                }
                 style={styles.profileImage}
               />
             </TouchableOpacity>
             <TextInput
-              style={styles.input}
               placeholder="Profile Name"
               value={profileName}
               onChangeText={setProfileName}
             />
-          </View>
-
-          <View style={styles.section}>
             <TextInput
-              style={styles.input}
               placeholder="Old Password"
               secureTextEntry
               value={oldPassword}
               onChangeText={setOldPassword}
             />
             <TextInput
-              style={styles.input}
               placeholder="New Password"
               secureTextEntry
               value={newPassword}
               onChangeText={setNewPassword}
             />
             <TextInput
-              style={styles.input}
               placeholder="Confirm New Password"
               secureTextEntry
               value={confirmNewPassword}
@@ -238,8 +232,16 @@ const ProfilePopup: React.FC<ProfilePopupProps> = ({ isVisible, onClose }) => {
           </View>
 
           <View style={styles.footer}>
-            <Button title="Save" onPress={handleSave} />
-            <Button title="Cancel" onPress={handleCancel} />
+            <Button
+              onPress={handleSave}
+            >
+              Save
+            </Button>
+            <Button
+              onPress={handleCancel}
+            >
+              Cancel
+            </Button>
           </View>
         </View>
       </View>

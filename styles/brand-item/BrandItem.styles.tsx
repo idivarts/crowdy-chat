@@ -5,13 +5,13 @@ import { StyleSheet } from "react-native";
 const stylesFn = (theme: Theme) => StyleSheet.create({
   container: {
     flexDirection: "row",
-    gap: 10,
+    gap: 12,
     alignItems: "center",
     justifyContent: "space-between",
     borderBottomWidth: StyleSheet.hairlineWidth,
     borderBottomColor: Colors(theme).aliceBlue,
-    paddingLeft: 14,
-    paddingVertical: 4,
+    paddingHorizontal: 24,
+    paddingVertical: 14,
   },
   innerContainer: {
     flexDirection: "row",

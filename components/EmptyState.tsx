@@ -1,6 +1,5 @@
 import { Image } from "react-native";
 import Button from "./ui/button/Button";
-import { router } from "expo-router";
 import { useTheme } from "@react-navigation/native";
 import stylesFn from "@/styles/campaigns/CampaignsList.styles";
 import { Text, View } from "./Themed";
