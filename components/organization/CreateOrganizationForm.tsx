@@ -94,7 +94,7 @@ const CreateOrganizationForm: React.FC<CreateOrganizationFormProps> = ({
             </View>
             <TextInput
               containerStyle={{
-                flex: 1,
+                flex: lg ? 1 : 0,
               }}
               label="Name"
               placeholder="Enter organization name"

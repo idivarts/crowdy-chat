@@ -28,7 +28,6 @@ export const stylesFn = (theme: Theme) => StyleSheet.create({
     minHeight: 56,
     borderBottomWidth: 1,
     borderColor: Colors(theme).lightgray,
-    paddingHorizontal: 16,
   },
   actionsCell: {
     flexDirection: "row",

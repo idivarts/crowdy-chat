@@ -1,3 +1,4 @@
+import { imageUrl } from "@/helpers/imageurl";
 import { useBreakPoints } from "@/hooks";
 import { Avatar } from "react-native-paper";
 
@@ -12,9 +13,7 @@ export const Logo: React.FC<LogoProps> = ({
 
   return (
     <Avatar.Image
-      source={{
-        uri: imageSrc ?? 'https://via.placeholder.com/150'
-      }}
+      source={imageUrl(imageSrc)}
       size={lg ? 40 : 28}
     />
   );

@@ -16,6 +16,7 @@ import { Portal } from "react-native-paper";
 import { useTheme } from "@react-navigation/native";
 import stylesFn from "@/styles/campaigns/CampaignCard.styles";
 import Colors from "@/constants/Colors";
+import { imageUrl } from "@/helpers/imageurl";
 
 interface CampaignCardProps {
   item: Campaign;
@@ -53,7 +54,7 @@ const CampaignCard = ({ item }: CampaignCardProps) => {
       }}
     >
       <View style={styles.cardHeader}>
-        <Image source={{ uri: item.image }} style={styles.campaignImage} />
+        <Image source={imageUrl(item.image)} style={styles.campaignImage} />
         <View style={styles.cardHeaderContainer}>
           <View style={styles.cardHeaderText}>
             <Text style={styles.campaignName}>{item.name}</Text>

@@ -458,7 +458,7 @@ const MemberPage: React.FC = () => {
             onPress={handleAddMemberClick}
           />
         </View>
-        <ScrollView horizontal={Platform.OS !== "web"}>
+        <ScrollView>
           <DataTable>
             <DataTable.Header>
               <DataTable.Title>Name</DataTable.Title>

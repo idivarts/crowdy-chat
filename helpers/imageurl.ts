@@ -10,6 +10,6 @@ export const imageUrl = (image: string | NodeRequire | undefined) => {
   } else if (image) {
     return image;
   } else {
-    return require("@/assets/images/empty-illusatration.png");
+    return require("@/assets/images/placeholder-image.jpg");
   }
 };
