@@ -43,40 +43,39 @@ const ScreenHeader: React.FC<ScreenHeaderProps> = ({
       }}
       statusBarHeight={0}
     >
-      <View
-        style={{
-          marginTop: 2,
-          marginLeft: 10,
-        }}
-        lightColor={Colors(theme).transparent}
-        darkColor={Colors(theme).transparent}
-      >
-        <Pressable onPress={handleAction}>
-          {leftIcon && (
-            <FontAwesomeIcon
-              icon={leftIcon}
-              size={20}
-              color={Colors(theme).text}
-              style={{
-                alignItems: "center",
-              }}
-            />
-          )}
+      {leftIcon && (
+        <Pressable
+          onPress={handleAction}
+          style={{
+            marginTop: 2,
+            marginLeft: 10,
+          }}
+        >
+          <FontAwesomeIcon
+            icon={leftIcon}
+            size={20}
+            color={Colors(theme).text}
+            style={{
+              alignItems: "center",
+            }}
+          />
         </Pressable>
-      </View>
+      )}
 
       <Appbar.Content title={title} color={Colors(theme).text} />
 
-      <View
-        style={{
-          marginTop: 2,
-          marginRight: 10,
-        }}
-        lightColor={Colors(theme).transparent}
-        darkColor={Colors(theme).transparent}
-      >
-        {rightAction && rightActionButton}
-      </View>
+      {rightAction && rightActionButton && (
+        <View
+          style={{
+            marginTop: 2,
+            marginRight: 10,
+          }}
+          lightColor={Colors(theme).transparent}
+          darkColor={Colors(theme).transparent}
+        >
+          {rightActionButton}
+        </View>
+      )}
     </Appbar.Header>
   );
 };

@@ -10,7 +10,9 @@ import {
   faComment as faCommentSolid,
   faFileLines as faFileLinesSolid,
   faHandshake as faHandshakeSolid,
+  faPlus,
   faStar as faStarSolid,
+  faUserEdit,
   faUser as faUserSolid,
 } from "@fortawesome/free-solid-svg-icons";
 import DrawerMenuItem, { IconPropFn } from "./DrawerMenuItem";
@@ -104,7 +106,7 @@ const DrawerMenuContent: React.FC<DrawerMenuContentProps> = () => {
       >
         <BrandActionItem
           key="create-new-organization"
-          icon="plus"
+          icon={faPlus}
           showChevron={false}
           onPress={() => {
             router.push("/create-new-organization");
@@ -114,7 +116,7 @@ const DrawerMenuContent: React.FC<DrawerMenuContentProps> = () => {
         />
         <BrandActionItem
           key="organization-profile"
-          icon="account-edit"
+          icon={faUserEdit}
           showChevron={false}
           onPress={() => {
             router.push("/(main)/organization-profile");
