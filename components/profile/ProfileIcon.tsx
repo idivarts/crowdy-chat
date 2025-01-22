@@ -10,6 +10,7 @@ import stylesFn from "@/styles/profile/Profile.styles";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { faPerson } from "@fortawesome/free-solid-svg-icons";
 import { IconProp } from "@fortawesome/fontawesome-svg-core";
+import { imageUrl } from "@/helpers/imageurl";
 
 interface ProfileIconProps {
   iconColor?: string;
@@ -96,7 +97,7 @@ const ProfileIcon: React.FC<ProfileIconProps> = ({
     >
       {profileImage ? (
         <Image
-          source={{ uri: profileImage }}
+          source={imageUrl(profileImage)}
           style={[
             styles.profileIconContainer,
             { width: size, height: size, borderRadius: size / 2 },

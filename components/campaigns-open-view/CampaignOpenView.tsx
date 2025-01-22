@@ -11,11 +11,7 @@ import { collection, getDocs, query, where } from "firebase/firestore";
 import { FirestoreDB } from "@/shared-libs/utilities/firestore";
 import { useOrganizationContext } from "@/contexts";
 import Toast from "react-native-toast-message";
-
-export enum TabView {
-  CAMPAIGNS_BOARD_VIEW = "Board",
-  CAMPAIGNS_LIST_VIEW = "List",
-}
+import { TabView } from "@/types/CampaignsBoard";
 
 const CampaignsOpenView: React.FC = () => {
   // const [tabView, setTabView] = useState<TabView>(TabView.CAMPAIGNS_BOARD_VIEW);

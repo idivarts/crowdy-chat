@@ -1,6 +1,6 @@
 import { Stack } from "expo-router";
 
-const DrawerLayout = () => {
+const ScreenLayout = () => {
   return (
     <Stack
       screenOptions={{
@@ -19,4 +19,4 @@ const DrawerLayout = () => {
   );
 };
 
-export default DrawerLayout;
+export default ScreenLayout;

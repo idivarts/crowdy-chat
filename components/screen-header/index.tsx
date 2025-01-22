@@ -62,7 +62,16 @@ const ScreenHeader: React.FC<ScreenHeaderProps> = ({
         </Pressable>
       )}
 
-      <Appbar.Content title={title} color={Colors(theme).text} />
+      <Appbar.Content
+        title={title}
+        color={Colors(theme).text}
+        style={{
+          alignItems: "flex-start",
+        }}
+        titleStyle={{
+          textAlign: "left",
+        }}
+      />
 
       {rightAction && rightActionButton && (
         <View

@@ -1,4 +1,3 @@
-import { TabView } from "./CampaignOpenView";
 import React from "react";
 import { Appbar, IconButton } from "react-native-paper";
 import CampaignsOpenViewFilter from "./CampaignsOpenViewFilter";
@@ -10,6 +9,7 @@ import { router } from "expo-router";
 import Colors from "@/constants/Colors";
 import Button from "../ui/button/Button";
 import TextInput from "../ui/text-input/TextInput";
+import { TabView } from "@/types/CampaignsBoard";
 
 interface CampaignsOpenViewHeaderProps {
   tabView: TabView;
