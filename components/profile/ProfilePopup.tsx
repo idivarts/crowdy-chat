@@ -24,11 +24,11 @@ import {
   getDownloadURL,
 } from "firebase/storage";
 import Toast from "react-native-toast-message";
-import { useAuthContext } from "@/contexts";
 import { useTheme } from "@react-navigation/native";
 import { Text, View } from "../Themed";
 import TextInput from "../ui/text-input/TextInput";
 import Button from "../ui/button/Button";
+import { useAuthContext } from "@/contexts/auth-context.provider";
 
 interface ProfilePopupProps {
   isVisible: boolean;
