@@ -1,18 +1,8 @@
 import { View } from "@/components/Themed";
-import { useAuthContext } from "@/contexts";
 import AppLayout from "@/layouts/app-layout";
-import { Stack, useRouter } from "expo-router";
-import { useEffect } from "react";
+import { Stack } from "expo-router";
 
 const CampaignsLayout = () => {
-  const { isLoading, session } = useAuthContext();
-  const router = useRouter();
-  useEffect(() => {
-    if (!isLoading && !session) {
-      router.replace("/(auth)/login");
-    }
-  }, [isLoading, session]);
-
   return (
     <AppLayout>
       <View
@@ -38,12 +28,6 @@ const CampaignsLayout = () => {
               headerShown: false,
             }}
           />
-          {/* <Stack.Screen
-            name="campaigns-open-view/:pageId"
-            options={{
-              headerShown: false,
-            }}
-          /> */}
         </Stack>
       </View>
     </AppLayout>

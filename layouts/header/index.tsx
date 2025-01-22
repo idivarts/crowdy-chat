@@ -1,4 +1,4 @@
-import { Button } from "react-native";
+import React from "react";
 
 import { Logo } from "@/components/ui";
 import HeaderSection from "./HeaderSection";
@@ -9,6 +9,7 @@ import { useRouter } from "expo-router";
 import OrganizationSwitcher from "@/components/ui/organization-switcher";
 import useBreakpoints from "@/hooks/use-breakpoints";
 import { ProfilePopupContextProvider } from "@/contexts/profile-popup-context.provider";
+import Button from "@/components/ui/button/Button";
 
 const Header: React.FC = () => {
   const { session } = useAuthContext();
@@ -20,10 +21,12 @@ const Header: React.FC = () => {
     <ProfilePopupContextProvider>
       <HeaderContainer>
         <HeaderSection gap={lg ? 20 : 10}>
-          <Logo imageSrc={currentOrganization?.image} />
           {
             session && (
-              <OrganizationSwitcher />
+              <>
+                <Logo imageSrc={currentOrganization?.image} />
+                <OrganizationSwitcher />
+              </>
             )
           }
         </HeaderSection>
@@ -34,13 +37,15 @@ const Header: React.FC = () => {
             ) : (
               <>
                 <Button
-                  title="Signup"
-                  onPress={() => router.push('/(auth)/signup')}
-                />
+                  onPress={() => router.push('/signup')}
+                >
+                  Signup
+                </Button>
                 <Button
-                  title="Login"
-                  onPress={() => router.push('/(auth)/login')}
-                />
+                  onPress={() => router.push('/login')}
+                >
+                  Login
+                </Button>
               </>
             )
           }

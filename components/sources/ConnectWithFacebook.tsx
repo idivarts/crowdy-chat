@@ -1,12 +1,13 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import Toaster from "@/shared-uis/components/toaster/Toaster";
-import { Button, ActivityIndicator } from "react-native-paper";
+import { ActivityIndicator } from "react-native-paper";
 import { useOrganizationContext } from "@/contexts";
 import { AuthApp } from "@/shared-libs/utilities/auth";
 import * as WebBrowser from "expo-web-browser";
 import * as AuthSession from "expo-auth-session";
 import { View } from "react-native";
+import Button from "../ui/button/Button";
 
 interface FacebookLoginButtonProps {
   onFacebookLogin: (userId: string | null) => void;

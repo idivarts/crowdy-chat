@@ -5,7 +5,6 @@ import { Ionicons, MaterialIcons } from "@expo/vector-icons";
 import Toaster from "@/shared-uis/components/toaster/Toaster";
 import { useBreakPoints } from "@/hooks";
 import * as Clipboard from "expo-clipboard";
-import Button from "../ui/button/Button";
 import { Campaign } from "@/types/campaign";
 import { useRouter } from "expo-router";
 import MenuItem from "../ui/menu/MenuItem";

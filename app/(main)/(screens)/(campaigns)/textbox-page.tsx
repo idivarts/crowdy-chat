@@ -1,18 +1,14 @@
 import React, { useState } from "react";
-import { TextInput } from "react-native-paper";
 import { useTheme } from "@react-navigation/native";
 import { Text, View } from "@/components/Themed";
-import { TouchableOpacity } from "react-native";
-import { Ionicons } from "@expo/vector-icons";
-import { Button } from "react-native-paper";
-import { CreateCampaignstylesFn } from "@/styles/Dashboard.styles";
 import { useLocalSearchParams, useRouter } from "expo-router";
 import AppLayout from "@/layouts/app-layout";
 import Colors from "@/constants/Colors";
+import TextInput from "@/components/ui/text-input/TextInput";
+import Button from "@/components/ui/button/Button";
 
 const EditTextArea: React.FC = () => {
   const theme = useTheme();
-  const styles = CreateCampaignstylesFn(theme);
   const navigation = useRouter();
 
   const { title, value: initialValue, path } = useLocalSearchParams();

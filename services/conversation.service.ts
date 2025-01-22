@@ -128,7 +128,7 @@ export default class ConversationService {
         }
       )
       .catch((err) => {
-        console.log("Error updating phase:", err);
+        console.error("Error updating phase:", err);
       });
   };
 }

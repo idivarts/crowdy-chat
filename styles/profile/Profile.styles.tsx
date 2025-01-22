@@ -7,7 +7,7 @@ const stylesFn = (theme: Theme) => StyleSheet.create({
   },
   profileIconContainer: {
     alignItems: "center",
-    backgroundColor: Colors(theme).primary,
+    backgroundColor: Colors(theme).transparent,
     justifyContent: "center",
   },
   profilePopupContainer: {

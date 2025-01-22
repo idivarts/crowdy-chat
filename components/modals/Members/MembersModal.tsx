@@ -1,9 +1,9 @@
 import React from "react";
-import { Button, Chip, Modal, TextInput } from "react-native-paper";
+import { Chip, Modal } from "react-native-paper";
 import { stylesFn } from "@/styles/Members";
-import { useTheme } from "@react-navigation/native";
 import { View } from "@/components/Themed";
-import Colors from "@/constants/Colors";
+import TextInput from "@/components/ui/text-input/TextInput";
+import Button from "@/components/ui/button/Button";
 
 interface MembersModalProps {
   visible: boolean;

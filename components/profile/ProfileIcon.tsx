@@ -7,17 +7,20 @@ import { AuthApp } from "@/shared-libs/utilities/auth";
 import { useAuthContext } from "@/contexts";
 import { useTheme } from "@react-navigation/native";
 import stylesFn from "@/styles/profile/Profile.styles";
+import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
+import { faPerson } from "@fortawesome/free-solid-svg-icons";
+import { IconProp } from "@fortawesome/fontawesome-svg-core";
 
 interface ProfileIconProps {
   iconColor?: string;
-  iconName?: ComponentProps<typeof Ionicons>["name"];
+  icon?: IconProp;
   size?: number;
   profileURL?: string;
 }
 
 const ProfileIcon: React.FC<ProfileIconProps> = ({
   size = 40,
-  iconName = "person",
+  icon = faPerson,
   iconColor,
   profileURL,
 }) => {
@@ -28,8 +31,6 @@ const ProfileIcon: React.FC<ProfileIconProps> = ({
   );
   const [loading, setLoading] = useState(true);
   const [user, setUser] = useState(AuthApp.currentUser);
-  // useas different name
-  // const {user} = useAuthContext();
   const { user: AuthUser } = useAuthContext();
 
   useEffect(() => {
@@ -102,8 +103,8 @@ const ProfileIcon: React.FC<ProfileIconProps> = ({
           ]}
         />
       ) : (
-        <Ionicons
-          name={iconName}
+        <FontAwesomeIcon
+          icon={icon}
           size={size}
           color={iconColor || Colors(theme).primary}
         />

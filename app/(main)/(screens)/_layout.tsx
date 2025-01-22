@@ -1,8 +1,6 @@
-import { useBreakPoints } from "@/hooks";
 import { Stack } from "expo-router";
 
 const DrawerLayout = () => {
-  const { lg } = useBreakPoints();
   return (
     <Stack
       screenOptions={{
@@ -13,12 +11,6 @@ const DrawerLayout = () => {
     >
       <Stack.Screen
         name="(campaigns)"
-        options={{
-          headerShown: false,
-        }}
-      />
-      <Stack.Screen
-        name="(organization)"
         options={{
           headerShown: false,
         }}

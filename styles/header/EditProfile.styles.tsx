@@ -27,18 +27,10 @@ export const stylesFn = (theme: Theme) =>
       marginBottom: 10,
     },
     section: {
-      width: "90%",
-      marginBottom: 20,
+      alignSelf: "stretch",
+      gap: 10,
       justifyContent: "center",
       alignItems: "center",
-    },
-    input: {
-      width: "100%",
-      borderWidth: 1,
-      borderColor: "#ccc",
-      borderRadius: 5,
-      backgroundColor: Colors(theme).background,
-      marginBottom: 10,
     },
     profileImage: {
       width: 100,

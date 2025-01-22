@@ -1,15 +1,19 @@
 import React, { useEffect, useState } from "react";
 import { Platform, Pressable } from "react-native";
-import { Button, Icon, TextInput } from "react-native-paper";
 import Checkbox from "expo-checkbox";
 import { CreateCampaignstylesFn } from "@/styles/Dashboard.styles";
 import { useTheme } from "@react-navigation/native";
 import { Text, View } from "@/components/Themed";
 import Colors from "@/constants/Colors";
 import { TextModal } from "../TextInputModal/TextModal.web";
-import { Ionicons } from "@expo/vector-icons";
 import { router, useLocalSearchParams } from "expo-router";
 import { handleModalOrInputPage } from "@/helpers/TextInput";
+import Button from "@/components/ui/button/Button";
+import TextInput from "@/components/ui/text-input/TextInput";
+import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
+import { faPencil } from "@fortawesome/free-solid-svg-icons";
+import { IconButton } from "react-native-paper";
+import { useBreakPoints } from "@/hooks";
 
 type Collectible = {
   name: string;
@@ -59,12 +63,14 @@ export const CampaignStepThree: React.FC<CampaignStepThreeProps> = ({
   const theme = useTheme();
   const styles = CreateCampaignstylesFn(theme);
 
+  const { lg } = useBreakPoints();
+
   const [modalData, setModalData] = useState({
     isOpen: false,
     title: "",
     placeholder: "",
     value: "",
-    onSubmit: (value: string) => {},
+    onSubmit: (value: string) => { },
   });
 
   const openModal = (
@@ -103,7 +109,14 @@ export const CampaignStepThree: React.FC<CampaignStepThreeProps> = ({
 
   return (
     <View style={styles.step3Container}>
-      <View style={styles.sidebar}>
+      <View
+        style={[
+          styles.sidebar,
+          {
+            width: lg ? "30%" : "40%",
+          }
+        ]}
+      >
         <View
           style={{
             display: "flex",
@@ -126,23 +139,42 @@ export const CampaignStepThree: React.FC<CampaignStepThreeProps> = ({
           <Pressable
             key={index}
             onPress={() => setCurrentStep(3.1 + index)}
-            style={
+            style={[
+              styles.sidebarItem,
               currentStep === 3.1 + index
                 ? styles.stageActive
                 : styles.stageInactive
-            }
+            ]}
           >
-            <Text style={styles.sidebarItem}>Stage {index + 1}</Text>
+            <Text
+              style={{
+                color: currentStep === 3.1 + index ? "white" : "black",
+              }}
+            >
+              Stage {index + 1}
+            </Text>
             <Pressable
               onPress={() => handleRemoveStage(index)}
-              style={styles.sidebarItem}
             >
-              <Text style={styles.sidebarItem}>Remove</Text>
+              <Text
+                style={{
+                  color: currentStep === 3.1 + index ? "white" : "black",
+                }}
+              >
+                Remove
+              </Text>
             </Pressable>
           </Pressable>
         ))}
       </View>
-      <View style={styles.mainContent}>
+      <View
+        style={[
+          styles.mainContent,
+          {
+            width: lg ? "70%" : "60%",
+          }
+        ]}
+      >
         {stages.map((stage, index) => (
           <View
             key={index}
@@ -151,14 +183,12 @@ export const CampaignStepThree: React.FC<CampaignStepThreeProps> = ({
               ...styles.stageContainer,
             }}
           >
-            <Text>Stage Name</Text>
             <TextInput
-              style={styles.input3}
+              label="Stage Name"
+              placeholder="Enter Stage Name"
               value={stage.name}
               onChangeText={(text) => handleStageChange(index, "name", text)}
             />
-
-            <Text>Purpose of the Stage</Text>
             <View
               style={{
                 flexDirection: "row",
@@ -167,7 +197,7 @@ export const CampaignStepThree: React.FC<CampaignStepThreeProps> = ({
               }}
             >
               <TextInput
-                style={styles.input3}
+                label="Purpose of the Stage"
                 value={stage.purpose}
                 onChangeText={(text) =>
                   handleStageChange(index, "purpose", text)
@@ -175,7 +205,7 @@ export const CampaignStepThree: React.FC<CampaignStepThreeProps> = ({
                 multiline
                 numberOfLines={6}
               />
-              <Pressable
+              <IconButton
                 onPress={() =>
                   handleModalOrInputPage({
                     isWeb: Platform.OS === "web",
@@ -188,13 +218,21 @@ export const CampaignStepThree: React.FC<CampaignStepThreeProps> = ({
                     pathBack: "/campaigns/create",
                   })
                 }
-                style={styles.editIcon}
-              >
-                <Ionicons name="pencil" size={24} color="black" />
-              </Pressable>
+                style={{
+                  position: "absolute",
+                  right: 0,
+                  top: 6,
+                }}
+                icon={() =>
+                  <FontAwesomeIcon
+                    icon={faPencil}
+                    size={22}
+                    color={theme.dark ? "white" : "black"}
+                  />
+                }
+              />
             </View>
 
-            <Text>Example Conversations</Text>
             <View
               style={{
                 flexDirection: "row",
@@ -203,7 +241,8 @@ export const CampaignStepThree: React.FC<CampaignStepThreeProps> = ({
               }}
             >
               <TextInput
-                style={styles.input3}
+                label="Example Conversations"
+                placeholder="Enter Example Conversations"
                 value={stage.exampleConversations}
                 onChangeText={(text) =>
                   handleStageChange(index, "exampleConversations", text)
@@ -211,7 +250,7 @@ export const CampaignStepThree: React.FC<CampaignStepThreeProps> = ({
                 multiline
                 numberOfLines={6}
               />
-              <Pressable
+              <IconButton
                 onPress={() =>
                   handleModalOrInputPage({
                     isWeb: Platform.OS === "web",
@@ -224,17 +263,25 @@ export const CampaignStepThree: React.FC<CampaignStepThreeProps> = ({
                     pathBack: "/campaigns/create",
                   })
                 }
-                style={styles.editIcon}
-              >
-                <Ionicons name="pencil" size={24} color="black" />
-              </Pressable>
+                style={{
+                  position: "absolute",
+                  right: 0,
+                  top: 6,
+                }}
+                icon={() =>
+                  <FontAwesomeIcon
+                    icon={faPencil}
+                    size={22}
+                    color={theme.dark ? "white" : "black"}
+                  />
+                }
+              />
             </View>
 
             <Text>Collectibles</Text>
             {stage.collectibles.map((collectible, i) => (
               <View key={i} style={styles.collectibleContainer}>
                 <TextInput
-                  style={styles.input3}
                   placeholder="Name"
                   value={collectible.name}
                   onChangeText={(text) => {
@@ -248,7 +295,6 @@ export const CampaignStepThree: React.FC<CampaignStepThreeProps> = ({
                   }}
                 />
                 <TextInput
-                  style={styles.input3}
                   placeholder="Type"
                   value={collectible.type}
                   onChangeText={(text) => {
@@ -262,7 +308,6 @@ export const CampaignStepThree: React.FC<CampaignStepThreeProps> = ({
                   }}
                 />
                 <TextInput
-                  style={styles.input3}
                   placeholder="Description"
                   value={collectible.description}
                   onChangeText={(text) => {
@@ -289,7 +334,7 @@ export const CampaignStepThree: React.FC<CampaignStepThreeProps> = ({
                     }}
                   />
                   <Text>Mandatory</Text>
-                  <Pressable
+                  <Button
                     onPress={() => {
                       const updatedCollectibles = stage.collectibles.filter(
                         (_, j) => j !== i
@@ -300,10 +345,9 @@ export const CampaignStepThree: React.FC<CampaignStepThreeProps> = ({
                         updatedCollectibles
                       );
                     }}
-                    style={styles.removeCollectible}
                   >
-                    <Text style={{ color: "#fff" }}>Remove</Text>
-                  </Pressable>
+                    Remove
+                  </Button>
                 </View>
               </View>
             ))}
@@ -330,9 +374,6 @@ export const CampaignStepThree: React.FC<CampaignStepThreeProps> = ({
               <View
                 style={[
                   styles.row,
-                  {
-                    marginBottom: 8,
-                  },
                 ]}
               >
                 <Checkbox
@@ -348,18 +389,17 @@ export const CampaignStepThree: React.FC<CampaignStepThreeProps> = ({
               </View>
               {stage.reminders.state && (
                 <>
-                  <Text>Reminder Timing</Text>
                   <TextInput
-                    style={styles.input3}
+                    label="Reminder Timing"
+                    placeholder="Enter Reminder Timing"
                     keyboardType="numeric"
                     value={stage.reminderTiming}
                     onChangeText={(text) =>
                       handleStageChange(index, "reminderTiming", text)
                     }
                   />
-                  <Text>Reminder Count</Text>
                   <TextInput
-                    style={styles.input3}
+                    label="Reminder Count"
                     keyboardType="numeric"
                     placeholder="Reminder Count"
                     value={stage.reminders.reminderCount}
@@ -372,8 +412,8 @@ export const CampaignStepThree: React.FC<CampaignStepThreeProps> = ({
                     }}
                   />
                   <TextInput
-                    style={styles.input3}
-                    placeholder="Reminder Examples"
+                    label="Reminder Examples"
+                    placeholder="Enter Reminder Examples"
                     value={stage.reminders.reminderExamples}
                     onChangeText={(text) =>
                       handleStageChange(index, "reminders", {
