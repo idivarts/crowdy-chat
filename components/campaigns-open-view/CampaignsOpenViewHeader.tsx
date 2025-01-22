@@ -1,15 +1,15 @@
-import React from "react";
-import { Appbar, IconButton } from "react-native-paper";
-import CampaignsOpenViewFilter from "./CampaignsOpenViewFilter";
-import { useTheme } from "@react-navigation/native";
-import stylesFn from "@/styles/campaigns/CampaignsOpenViewHeader.styles";
-import { View } from "../Themed";
-import { Platform, Pressable } from "react-native";
-import { router } from "expo-router";
 import Colors from "@/constants/Colors";
+import stylesFn from "@/styles/campaigns/CampaignsOpenViewHeader.styles";
+import { TabView } from "@/types/CampaignsBoard";
+import { useTheme } from "@react-navigation/native";
+import { router } from "expo-router";
+import React from "react";
+import { Platform, Pressable } from "react-native";
+import { Appbar, IconButton } from "react-native-paper";
+import { View } from "../Themed";
 import Button from "../ui/button/Button";
 import TextInput from "../ui/text-input/TextInput";
-import { TabView } from "@/types/CampaignsBoard";
+import CampaignsOpenViewFilter from "./CampaignsOpenViewFilter";
 
 interface CampaignsOpenViewHeaderProps {
   tabView: TabView;
