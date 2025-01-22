@@ -23,7 +23,7 @@ const CampaignsLayout = () => {
             }}
           />
           <Stack.Screen
-            name="campaign-detailed-view/:pageId"
+            name="campaign-detailed-view/[pageID]"
             options={{
               headerShown: false,
             }}

@@ -1,6 +1,6 @@
 import AppLayout from "@/layouts/app-layout";
 import { View } from "@/components/Themed";
-import { ScrollView } from "react-native";
+import { Platform, ScrollView } from "react-native";
 import ImagePicker from "@/shared-uis/components/image-picker/ImagePicker";
 import { useBreakPoints } from "@/hooks";
 import Button from "../ui/button/Button";
@@ -94,7 +94,10 @@ const CreateOrganizationForm: React.FC<CreateOrganizationFormProps> = ({
             </View>
             <TextInput
               containerStyle={{
-                flex: lg ? 1 : 0,
+                flex: Platform.select({
+                  web: 1,
+                  default: 0,
+                }),
               }}
               label="Name"
               placeholder="Enter organization name"
