@@ -18,7 +18,7 @@ import {
   ref,
   uploadString,
 } from "firebase/storage";
-import React, { useEffect, useState } from "react";
+import { default as React, useEffect, useState } from "react";
 import {
   Image,
   Modal,
