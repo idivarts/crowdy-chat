@@ -3,7 +3,7 @@ import stylesFn from "@/styles/campaigns/CampaignsOpenViewHeader.styles";
 import { TabView } from "@/types/CampaignsBoard";
 import { useTheme } from "@react-navigation/native";
 import { router } from "expo-router";
-import React from "react";
+import { default as React } from "react";
 import { Platform, Pressable } from "react-native";
 import { Appbar, IconButton } from "react-native-paper";
 import { View } from "../Themed";
