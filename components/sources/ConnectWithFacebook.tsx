@@ -1,12 +1,12 @@
-import axios from "axios";
-import React, { useEffect, useState } from "react";
-import Toaster from "@/shared-uis/components/toaster/Toaster";
-import { ActivityIndicator } from "react-native-paper";
 import { useOrganizationContext } from "@/contexts";
-import { AuthApp } from "@/shared-libs/utilities/auth";
-import * as WebBrowser from "expo-web-browser";
+import Toaster from "@/shared-uis/components/toaster/Toaster";
+import { AuthApp } from "@/utils/auth";
+import axios from "axios";
 import * as AuthSession from "expo-auth-session";
+import * as WebBrowser from "expo-web-browser";
+import React, { useEffect, useState } from "react";
 import { View } from "react-native";
+import { ActivityIndicator } from "react-native-paper";
 import Button from "../ui/button/Button";
 
 interface FacebookLoginButtonProps {

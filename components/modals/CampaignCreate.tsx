@@ -1,33 +1,29 @@
 //@ts-nocheck
+import { useOrganizationContext } from "@/contexts";
+import { ICampaigns } from "@/shared-libs/firestore/crowdy-chat/models/campaigns";
+import Toaster from "@/shared-uis/components/toaster/Toaster";
+import { CreateCampaignstylesFn } from "@/styles/Dashboard.styles";
+import { FirestoreDB } from "@/utils/firestore";
+import { Ionicons } from "@expo/vector-icons";
+import { addDoc, collection, doc, updateDoc } from "firebase/firestore";
 import React, { useState } from "react";
 import {
-  TextInput,
   Button,
-  ScrollView,
-  StyleSheet,
-  TouchableOpacity,
   Modal,
+  ScrollView,
+  TouchableOpacity
 } from "react-native";
-import Checkbox from "expo-checkbox";
+import { Portal } from "react-native-paper";
+import { Collectible, Stage } from "../campaigns/LeadStageTypes";
 import {
   stepOneSchema,
-  stepTwoSchema,
   stepThreeSchema,
+  stepTwoSchema,
 } from "../schemas/CampaignCreateSchema";
-import { CampaignStepOne } from "./CreateCampaignStages/CampaignStageOne";
-import { CampaignStepTwo } from "./CreateCampaignStages/CampaignStageTwo";
-import { CampaignStepThree } from "./CreateCampaignStages/CampaignStageThree";
-import Toaster from "@/shared-uis/components/toaster/Toaster";
-import { Icon, Portal } from "react-native-paper";
-import { Ionicons } from "@expo/vector-icons";
-import { addDoc, collection, updateDoc, doc } from "firebase/firestore";
-import { FirestoreDB } from "@/shared-libs/utilities/firestore";
-import { ICampaigns } from "@/shared-libs/firestore/crowdy-chat/models/campaigns";
-import { ILeads } from "@/shared-libs/firestore/crowdy-chat/models/leads";
-import { useOrganizationContext } from "@/contexts";
-import { Stage, Collectible, Reminder } from "../campaigns/LeadStageTypes";
-import { CreateCampaignstylesFn } from "@/styles/Dashboard.styles";
 import { Text, View } from "../Themed";
+import { CampaignStepOne } from "./CreateCampaignStages/CampaignStageOne";
+import { CampaignStepThree } from "./CreateCampaignStages/CampaignStageThree";
+import { CampaignStepTwo } from "./CreateCampaignStages/CampaignStageTwo";
 
 const CreateCampaign = () => {
   const theme = useTheme();
