@@ -46,7 +46,7 @@ const SIDE_BAR_MENU_BOTTOM = [
 ];
 
 const SideBarMenu: React.FC = () => {
-  const { organizations } = useOrganizationContext();
+  const { organizations, currentOrganization } = useOrganizationContext();
   const pathname = usePathname();
   const theme = useTheme();
   const styles = stylesFn(theme);
@@ -85,6 +85,8 @@ const SideBarMenu: React.FC = () => {
               </Text>
               {organizations.map((organization) => (
                 <SideBarMenuItem
+                  active={currentOrganization?.id === organization.id}
+                  key={organization.id}
                   organization={organization}
                   label={organization.name}
                 />
@@ -102,6 +104,7 @@ const SideBarMenu: React.FC = () => {
         >
           {SIDE_BAR_MENU_BOTTOM.map((item) => (
             <Pressable
+              key={item.href}
               onPress={() => {
                 router.push(item.href as Href);
               }}

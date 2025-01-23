@@ -229,7 +229,7 @@ const Leads = () => {
                 flex: 1,
               }}
             >
-              <ScrollView horizontal={Platform.OS !== "web"}>
+              <ScrollView>
                 <DataTable>
                   <View style={styles.headerContainer}>
                     <DataTable.Cell style={styles.checkboxContainer}>

@@ -1,34 +1,34 @@
-import React, { useState, useEffect } from "react";
+import { useAuthContext } from "@/contexts/auth-context.provider";
+import { IUser } from "@/shared-libs/firestore/crowdy-chat/models/users";
+import { AuthApp } from "@/shared-libs/utilities/auth";
+import { FirestoreDB } from "@/shared-libs/utilities/firestore";
+import { StorageApp } from "@/shared-libs/utilities/storage";
+import Toaster from "@/shared-uis/components/toaster/Toaster";
+import { stylesFn } from "@/styles/header/EditProfile.styles";
+import { useTheme } from "@react-navigation/native";
+import * as ImagePicker from "expo-image-picker";
 import {
-  Modal,
+  EmailAuthProvider,
+  reauthenticateWithCredential,
+  updatePassword,
+} from "firebase/auth";
+import { doc, getDoc, updateDoc } from "firebase/firestore";
+import {
+  getDownloadURL,
+  ref,
+  uploadString,
+} from "firebase/storage";
+import { default as React, useEffect, useState } from "react";
+import {
   Image,
+  Modal,
   TouchableOpacity,
 } from "react-native";
 import { Switch } from "react-native-paper";
-import * as ImagePicker from "expo-image-picker";
-import Toaster from "@/shared-uis/components/toaster/Toaster";
-import { stylesFn } from "@/styles/header/EditProfile.styles";
-import { doc, updateDoc, getDoc } from "firebase/firestore";
-import { FirestoreDB } from "@/shared-libs/utilities/firestore";
-import { AuthApp } from "@/shared-libs/utilities/auth";
-import { IUser } from "@/shared-libs/firestore/crowdy-chat/models/users";
-import { StorageApp } from "@/shared-libs/utilities/storage";
-import {
-  updatePassword,
-  reauthenticateWithCredential,
-  EmailAuthProvider,
-} from "firebase/auth";
-import {
-  ref,
-  uploadString,
-  getDownloadURL,
-} from "firebase/storage";
 import Toast from "react-native-toast-message";
-import { useAuthContext } from "@/contexts";
-import { useTheme } from "@react-navigation/native";
 import { Text, View } from "../Themed";
-import TextInput from "../ui/text-input/TextInput";
 import Button from "../ui/button/Button";
+import TextInput from "../ui/text-input/TextInput";
 
 interface ProfilePopupProps {
   isVisible: boolean;

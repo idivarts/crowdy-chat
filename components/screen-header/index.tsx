@@ -1,4 +1,3 @@
-import { View } from "../Themed";
 import Colors from "@/constants/Colors";
 import { faArrowLeft, IconDefinition } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
@@ -6,6 +5,7 @@ import { useTheme } from "@react-navigation/native";
 import { useNavigation } from "expo-router";
 import { Pressable } from "react-native";
 import { Appbar } from "react-native-paper";
+import { View } from "../Themed";
 
 interface ScreenHeaderProps {
   leftIcon?: IconDefinition | null;
@@ -62,7 +62,16 @@ const ScreenHeader: React.FC<ScreenHeaderProps> = ({
         </Pressable>
       )}
 
-      <Appbar.Content title={title} color={Colors(theme).text} />
+      <Appbar.Content
+        title={title}
+        color={Colors(theme).text}
+        style={{
+          alignItems: "flex-start",
+        }}
+        titleStyle={{
+          textAlign: "left",
+        }}
+      />
 
       {rightAction && rightActionButton && (
         <View

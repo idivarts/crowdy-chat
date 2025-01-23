@@ -1,13 +1,13 @@
-import AppLayout from "@/layouts/app-layout";
 import { View } from "@/components/Themed";
-import { ScrollView } from "react-native";
-import ImagePicker from "@/shared-uis/components/image-picker/ImagePicker";
 import { useBreakPoints } from "@/hooks";
-import Button from "../ui/button/Button";
-import { useState } from "react";
+import AppLayout from "@/layouts/app-layout";
+import ImagePicker from "@/shared-uis/components/image-picker/ImagePicker";
 import Toaster from "@/shared-uis/components/toaster/Toaster";
-import { useTheme } from "@react-navigation/native";
 import stylesFn from "@/styles/organization/CreateOrganizationForm.styles";
+import { useTheme } from "@react-navigation/native";
+import { useState } from "react";
+import { Platform, ScrollView } from "react-native";
+import Button from "../ui/button/Button";
 import TextInput from "../ui/text-input/TextInput";
 
 export interface OrganizationForm {
@@ -94,7 +94,10 @@ const CreateOrganizationForm: React.FC<CreateOrganizationFormProps> = ({
             </View>
             <TextInput
               containerStyle={{
-                flex: 1,
+                flex: Platform.select({
+                  web: 1,
+                  default: 0,
+                }),
               }}
               label="Name"
               placeholder="Enter organization name"

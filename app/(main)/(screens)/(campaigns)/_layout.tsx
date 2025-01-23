@@ -18,25 +18,10 @@ const CampaignsLayout = () => {
       }}
     >
       <Stack.Screen
-        name="campaigns"
-        options={{
-          headerLeft: () => (lg ? null : <DrawerToggle />),
-          title: "Campaigns",
-          headerShown: false,
-        }}
-      />
-      <Stack.Screen
         name="campaigns/create"
         options={{
           headerLeft: () => (
-            <View
-              style={{
-                flexDirection: "row",
-                alignItems: "center",
-              }}
-            >
-              <GoBackButton />
-            </View>
+            <GoBackButton />
           ),
           title: "Create Campaign",
           headerShown: true,
@@ -50,9 +35,7 @@ const CampaignsLayout = () => {
         name="campaigns/edit/[pageID]"
         options={{
           headerLeft: () => (
-            <View style={{ flexDirection: "row", alignItems: "center" }}>
-              <GoBackButton />
-            </View>
+            <GoBackButton />
           ),
           title: "Edit Campaign",
           headerShown: true,

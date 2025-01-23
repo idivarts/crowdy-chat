@@ -66,3 +66,8 @@ export type CampaignsBoardColumn = {
   title: string;
   tasks: IConversationUnit[];
 }[];
+
+export enum TabView {
+  CAMPAIGNS_BOARD_VIEW = "Board",
+  CAMPAIGNS_LIST_VIEW = "List",
+}

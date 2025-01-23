@@ -1,15 +1,15 @@
 import { View } from "@/components/Themed";
 import Colors from "@/constants/Colors";
-import { Ionicons } from "@expo/vector-icons";
-import { Image, ActivityIndicator } from "react-native";
-import { ComponentProps, useEffect, useState } from "react";
-import { AuthApp } from "@/shared-libs/utilities/auth";
 import { useAuthContext } from "@/contexts";
-import { useTheme } from "@react-navigation/native";
+import { imageUrl } from "@/helpers/imageurl";
+import { AuthApp } from "@/shared-libs/utilities/auth";
 import stylesFn from "@/styles/profile/Profile.styles";
-import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
-import { faPerson } from "@fortawesome/free-solid-svg-icons";
 import { IconProp } from "@fortawesome/fontawesome-svg-core";
+import { faPerson } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
+import { useTheme } from "@react-navigation/native";
+import { useEffect, useState } from "react";
+import { ActivityIndicator, Image } from "react-native";
 
 interface ProfileIconProps {
   iconColor?: string;
@@ -96,7 +96,7 @@ const ProfileIcon: React.FC<ProfileIconProps> = ({
     >
       {profileImage ? (
         <Image
-          source={{ uri: profileImage }}
+          source={imageUrl(profileImage)}
           style={[
             styles.profileIconContainer,
             { width: size, height: size, borderRadius: size / 2 },
