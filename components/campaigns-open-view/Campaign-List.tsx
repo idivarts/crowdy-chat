@@ -1,20 +1,20 @@
-import React, { useEffect, useState } from "react";
-import { ActivityIndicator, ScrollView } from "react-native";
-import { Divider, Menu, IconButton } from "react-native-paper";
-import { IConversationUnit } from "@/types/CampaignsBoard";
+import Colors from "@/constants/Colors";
+import { useOrganizationContext } from "@/contexts";
 import { ConversationService } from "@/services";
 import { stylesFn } from "@/styles/campaigns/campaign-open-view/ListView.styles";
-import RenderTable from "./RenderListTable";
+import { IConversationUnit } from "@/types/CampaignsBoard";
+import { AuthApp } from "@/utils/auth";
+import { FirestoreDB } from "@/utils/firestore";
 import { useTheme } from "@react-navigation/native";
-import { Text, View } from "../Themed";
-import { collection, getDocs } from "firebase/firestore";
-import { FirestoreDB } from "@/shared-libs/utilities/firestore";
-import { AuthApp } from "@/shared-libs/utilities/auth";
-import { useOrganizationContext } from "@/contexts";
 import { useLocalSearchParams } from "expo-router";
-import Colors from "@/constants/Colors";
-import ChatModal from "./ChatModal";
+import { collection, getDocs } from "firebase/firestore";
+import React, { useEffect, useState } from "react";
+import { ActivityIndicator, ScrollView } from "react-native";
+import { Divider, IconButton, Menu } from "react-native-paper";
 import EmptyState from "../EmptyState";
+import { Text, View } from "../Themed";
+import ChatModal from "./ChatModal";
+import RenderTable from "./RenderListTable";
 
 type ChatBoard = {
   id: number;
@@ -214,7 +214,7 @@ const CampaignListView: React.FC<CampaignListViewProps> = (
           image={require("@/assets/images/empty-illusatration.png")}
           message="No conversations found"
           buttonPresent={false}
-          onPress={() => {}}
+          onPress={() => { }}
         />
       </View>
     );

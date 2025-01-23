@@ -1,18 +1,14 @@
-import React, { useState } from "react";
-import { TextInput, StyleSheet, ScrollView } from "react-native";
-import ConversationService, {
-  IConversationByIdResponse,
-  IConversationUpdateResponse,
-} from "@/services/conversation.service";
-import { UpdateConversationSubject } from "@/subjects/conversation.update.subject";
-import Toaster from "@/shared-uis/components/toaster/Toaster";
-import { IconButton } from "react-native-paper";
-import * as Clipboard from "expo-clipboard";
-import { Text, View } from "../Themed";
 import { useOrganizationContext } from "@/contexts";
-import { AuthApp } from "@/shared-libs/utilities/auth";
-import { IConversation } from "@/shared-libs/firestore/crowdy-chat/models/conversations";
+import ConversationService from "@/services/conversation.service";
 import { IConversationUnit } from "@/services/interfaces/conversations";
+import Toaster from "@/shared-uis/components/toaster/Toaster";
+import { UpdateConversationSubject } from "@/subjects/conversation.update.subject";
+import { AuthApp } from "@/utils/auth";
+import * as Clipboard from "expo-clipboard";
+import React, { useState } from "react";
+import { ScrollView, StyleSheet, TextInput } from "react-native";
+import { IconButton } from "react-native-paper";
+import { Text, View } from "../Themed";
 
 interface IProps {
   conversation: IConversationUnit;

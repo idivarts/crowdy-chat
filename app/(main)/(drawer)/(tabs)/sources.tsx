@@ -1,33 +1,33 @@
+import EmptyState from "@/components/EmptyState";
+import ProfileCircle from "@/components/profile/ProfileCircle";
+import ScreenHeader from "@/components/screen-header";
 import ConnectedPage from "@/components/sources/ConnectedPage";
-import { useBreakPoints } from "@/hooks";
-import React, { useEffect, useState } from "react";
-import {
-  Modal,
-  Portal,
-  ActivityIndicator,
-} from "react-native-paper";
-import { stylesFn } from "@/styles/sources/Sources.styles";
-import Toaster from "@/shared-uis/components/toaster/Toaster";
-import { PageUnit } from "@/interfaces/SourcePageInterfaces";
 import FacebookLoginButton from "@/components/sources/ConnectWithFacebook";
+import { Text, View } from "@/components/Themed";
+import Button from "@/components/ui/button/Button";
+import TextInput from "@/components/ui/text-input/TextInput";
+import { useOrganizationContext } from "@/contexts";
+import { useBreakPoints } from "@/hooks";
+import { PageUnit } from "@/interfaces/SourcePageInterfaces";
+import AppLayout from "@/layouts/app-layout";
+import Toaster from "@/shared-uis/components/toaster/Toaster";
+import { stylesFn } from "@/styles/sources/Sources.styles";
+import { FirestoreDB } from "@/utils/firestore";
+import { faBars } from "@fortawesome/free-solid-svg-icons";
 import {
   DrawerActions,
   useIsFocused,
   useTheme,
 } from "@react-navigation/native";
-import { Text, View } from "@/components/Themed";
-import { collection, getDocs } from "firebase/firestore";
-import { FirestoreDB } from "@/shared-libs/utilities/firestore";
-import { useOrganizationContext } from "@/contexts";
-import { FlatList } from "react-native";
-import EmptyState from "@/components/EmptyState";
-import AppLayout from "@/layouts/app-layout";
-import ProfileCircle from "@/components/profile/ProfileCircle";
-import ScreenHeader from "@/components/screen-header";
-import { faBars } from "@fortawesome/free-solid-svg-icons";
 import { useNavigation } from "expo-router";
-import TextInput from "@/components/ui/text-input/TextInput";
-import Button from "@/components/ui/button/Button";
+import { collection, getDocs } from "firebase/firestore";
+import React, { useEffect, useState } from "react";
+import { FlatList } from "react-native";
+import {
+  ActivityIndicator,
+  Modal,
+  Portal,
+} from "react-native-paper";
 
 const Sources = () => {
   const theme = useTheme();

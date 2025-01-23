@@ -1,37 +1,36 @@
 import React, { useEffect, useState } from "react";
 import {
-  TouchableOpacity,
-  ScrollView,
   ActivityIndicator,
-  Platform,
+  ScrollView,
+  TouchableOpacity
 } from "react-native";
 import { DataTable, IconButton, Portal } from "react-native-paper";
 
+import EmptyState from "@/components/EmptyState";
 import CreateLeadModal from "@/components/leads/CreateLeadModal";
 import CreateTagModal from "@/components/leads/CreateTagModal";
+import ProfileCircle from "@/components/profile/ProfileCircle";
+import ScreenHeader from "@/components/screen-header";
+import { Text, View } from "@/components/Themed";
+import TextInput from "@/components/ui/text-input/TextInput";
 import Colors from "@/constants/Colors";
+import { StyleConstant } from "@/constants/Style";
+import { useOrganizationContext } from "@/contexts";
 import { useBreakPoints } from "@/hooks";
-import ExpoCheckbox from "expo-checkbox/build/ExpoCheckbox";
+import AppLayout from "@/layouts/app-layout";
+import { ILeads } from "@/shared-libs/firestore/crowdy-chat/models/leads";
+import stylesFn from "@/styles/leads/LeadsTable.styles";
+import { FirestoreDB } from "@/utils/firestore";
+import { faBars, faPlus, faTag } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import {
   DrawerActions,
   useIsFocused,
   useTheme,
 } from "@react-navigation/native";
-import stylesFn from "@/styles/leads/LeadsTable.styles";
-import { Text, View } from "@/components/Themed";
-import { collection, doc, getDocs, updateDoc } from "firebase/firestore";
-import { FirestoreDB } from "@/shared-libs/utilities/firestore";
-import { useOrganizationContext } from "@/contexts";
-import { StyleConstant } from "@/constants/Style";
-import EmptyState from "@/components/EmptyState";
-import { ILeads } from "@/shared-libs/firestore/crowdy-chat/models/leads";
-import AppLayout from "@/layouts/app-layout";
-import ProfileCircle from "@/components/profile/ProfileCircle";
-import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
-import { faBars, faPlus, faTag } from "@fortawesome/free-solid-svg-icons";
-import ScreenHeader from "@/components/screen-header";
+import ExpoCheckbox from "expo-checkbox/build/ExpoCheckbox";
 import { useNavigation } from "expo-router";
-import TextInput from "@/components/ui/text-input/TextInput";
+import { collection, doc, getDocs, updateDoc } from "firebase/firestore";
 
 const Leads = () => {
   const theme = useTheme();

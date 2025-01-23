@@ -1,16 +1,15 @@
-import { doc, updateDoc } from "@firebase/firestore";
-import { FirestoreDB } from "@/shared-libs/utilities/firestore";
-import { collection, getDocs, deleteDoc, addDoc } from "firebase/firestore";
-import { useOrganizationContext } from "@/contexts";
 import { Stage } from "@/components/campaigns/LeadStageTypes";
-import Toaster from "@/shared-uis/components/toaster/Toaster";
 import {
-  IEditCampaign,
   ICollectible,
+  IEditCampaign,
   IEditLeadStage,
 } from "@/interfaces/EditCampaignInterfaces";
-import { AuthApp } from "@/shared-libs/utilities/auth";
 import CampaignService from "@/services/campaigns.service";
+import Toaster from "@/shared-uis/components/toaster/Toaster";
+import { AuthApp } from "@/utils/auth";
+import { FirestoreDB } from "@/utils/firestore";
+import { doc, updateDoc } from "@firebase/firestore";
+import { addDoc, collection, deleteDoc, getDocs } from "firebase/firestore";
 
 export const updateCampaign = async (
   campaignData: IEditCampaign,

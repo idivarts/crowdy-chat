@@ -1,22 +1,20 @@
+import Colors from "@/constants/Colors";
+import { useOrganizationContext } from "@/contexts";
+import SourceCampaignService from "@/services/sources-campaign.service";
+import { ISources } from "@/shared-libs/firestore/crowdy-chat/models/sources";
+import { AuthApp } from "@/utils/auth";
+import { FirestoreDB } from "@/utils/firestore";
+import { useTheme } from "@react-navigation/native";
+import { router, useLocalSearchParams } from "expo-router";
+import { collection, getDocs } from "firebase/firestore";
 import React, { useEffect, useState } from "react";
 import {
-  Platform,
-  Pressable,
-  TouchableOpacity,
   ActivityIndicator,
+  Pressable,
+  TouchableOpacity
 } from "react-native";
 import { Icon, Menu } from "react-native-paper";
 import { Text, View } from "../Themed";
-import { collection, getDocs } from "firebase/firestore";
-import { FirestoreDB } from "@/shared-libs/utilities/firestore";
-import { ISources } from "@/shared-libs/firestore/crowdy-chat/models/sources";
-import SourceCampaignService from "@/services/sources-campaign.service";
-import { AuthApp } from "@/shared-libs/utilities/auth";
-import { useOrganizationContext } from "@/contexts";
-import Toaster from "@/shared-uis/components/toaster/Toaster";
-import Colors from "@/constants/Colors";
-import { useTheme } from "@react-navigation/native";
-import { router, useLocalSearchParams } from "expo-router";
 
 const CampaignsOpenViewFilter = (props: any) => {
   const theme = useTheme();

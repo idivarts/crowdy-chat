@@ -1,10 +1,10 @@
 import { useAuthContext } from "@/contexts/auth-context.provider";
 import { IUser } from "@/shared-libs/firestore/crowdy-chat/models/users";
-import { AuthApp } from "@/shared-libs/utilities/auth";
-import { FirestoreDB } from "@/shared-libs/utilities/firestore";
-import { StorageApp } from "@/shared-libs/utilities/storage";
 import Toaster from "@/shared-uis/components/toaster/Toaster";
 import { stylesFn } from "@/styles/header/EditProfile.styles";
+import { AuthApp } from "@/utils/auth";
+import { FirestoreDB } from "@/utils/firestore";
+import { StorageApp } from "@/utils/storage";
 import { useTheme } from "@react-navigation/native";
 import * as ImagePicker from "expo-image-picker";
 import {
