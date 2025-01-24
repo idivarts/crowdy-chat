@@ -1,22 +1,22 @@
-import React, { useEffect, useState } from "react";
-import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
-import { ActivityIndicator, Text } from "react-native";
-import { View } from "../Themed";
+import Colors from "@/constants/Colors";
+import { useOrganizationContext } from "@/contexts";
+import { ConversationService } from "@/services";
+import {
+  CampaignsBoardColumn,
+  IConversationUnit,
+} from "@/types/CampaignsBoard";
+import { AuthApp } from "@/utils/auth";
+import { FirestoreDB } from "@/utils/firestore";
 import { useTheme } from "@react-navigation/native";
 import { useLocalSearchParams } from "expo-router";
-import Colors from "@/constants/Colors";
-import ConversationCard from "./ConversationCard";
-import ChatModal from "./ChatModal";
-import {
-  IConversationUnit,
-  CampaignsBoardColumn,
-} from "@/types/CampaignsBoard";
-import { AuthApp } from "@/shared-libs/utilities/auth";
-import { useOrganizationContext } from "@/contexts";
 import { collection, getDocs } from "firebase/firestore";
-import { FirestoreDB } from "@/shared-libs/utilities/firestore";
-import { ConversationService } from "@/services";
+import React, { useEffect, useState } from "react";
+import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
+import { ActivityIndicator } from "react-native";
 import EmptyState from "../EmptyState";
+import { View } from "../Themed";
+import ChatModal from "./ChatModal";
+import ConversationCard from "./ConversationCard";
 
 interface CampaignsBoardWebProps {
   getAllConversations: () => any;
@@ -149,7 +149,7 @@ const CampaignsBoardWeb: React.FC<CampaignsBoardWebProps> = (
           image={require("@/assets/images/empty-illusatration.png")}
           message="No conversations found"
           buttonPresent={false}
-          onPress={() => {}}
+          onPress={() => { }}
         />
       </View>
     );

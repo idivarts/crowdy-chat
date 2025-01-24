@@ -1,26 +1,26 @@
-import React, { useEffect, useState } from "react";
-import { ScrollView } from "react-native";
-import { CreateCampaignstylesFn } from "@/styles/Dashboard.styles";
+import { Stage } from "@/components/campaigns/LeadStageTypes";
+import { CampaignStepOne } from "@/components/modals/CreateCampaignStages/CampaignStageOne";
+import { CampaignStepThree } from "@/components/modals/CreateCampaignStages/CampaignStageThree";
+import { CampaignStepTwo } from "@/components/modals/CreateCampaignStages/CampaignStageTwo";
 import {
   stepOneSchema,
-  stepTwoSchema,
   stepThreeSchema,
+  stepTwoSchema,
 } from "@/components/schemas/CampaignCreateSchema";
-import { CampaignStepOne } from "@/components/modals/CreateCampaignStages/CampaignStageOne";
-import { CampaignStepTwo } from "@/components/modals/CreateCampaignStages/CampaignStageTwo";
-import { CampaignStepThree } from "@/components/modals/CreateCampaignStages/CampaignStageThree";
-import Toaster from "@/shared-uis/components/toaster/Toaster";
-import { useNavigation, useRouter } from "expo-router";
-import { AuthApp } from "@/shared-libs/utilities/auth";
-import { useOrganizationContext } from "@/contexts";
-import { Stage } from "@/components/campaigns/LeadStageTypes";
-import { updateCampaign } from "@/helpers/UpdateCampaign";
-import { createCampaign } from "@/helpers/CreateCampaign";
-import { IEditCampaign } from "@/interfaces/EditCampaignInterfaces";
-import { useTheme } from "@react-navigation/native";
 import { View } from "@/components/Themed";
-import Colors from "@/constants/Colors";
 import Button from "@/components/ui/button/Button";
+import Colors from "@/constants/Colors";
+import { useOrganizationContext } from "@/contexts";
+import { createCampaign } from "@/helpers/CreateCampaign";
+import { updateCampaign } from "@/helpers/UpdateCampaign";
+import { IEditCampaign } from "@/interfaces/EditCampaignInterfaces";
+import Toaster from "@/shared-uis/components/toaster/Toaster";
+import { CreateCampaignstylesFn } from "@/styles/Dashboard.styles";
+import { AuthApp } from "@/utils/auth";
+import { useTheme } from "@react-navigation/native";
+import { useNavigation, useRouter } from "expo-router";
+import React, { useEffect, useState } from "react";
+import { ScrollView } from "react-native";
 
 const CreateCampaign = ({ campaignData }: { campaignData?: IEditCampaign }) => {
   const theme = useTheme();

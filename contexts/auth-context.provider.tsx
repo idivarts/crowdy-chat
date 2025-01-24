@@ -1,12 +1,26 @@
+import { resetAndNavigate } from "@/helpers/router";
 import { useStorageState } from "@/hooks";
-import { AuthApp } from "@/shared-libs/utilities/auth";
+import { IUser } from "@/shared-libs/firestore/crowdy-chat/models/users";
+import Toaster from "@/shared-uis/components/toaster/Toaster";
+import { User } from "@/types/User";
+import { AuthApp } from "@/utils/auth";
+import { FirestoreDB } from "@/utils/firestore";
+import { useRouter } from "expo-router";
 import {
-  signInWithEmailAndPassword,
   createUserWithEmailAndPassword,
   sendEmailVerification,
-  signOut as signOutAuth,
   sendPasswordResetEmail,
+  signInWithEmailAndPassword,
+  signOut as signOutAuth,
 } from "firebase/auth";
+import {
+  collection,
+  doc,
+  getDoc,
+  onSnapshot,
+  setDoc,
+  updateDoc,
+} from "firebase/firestore";
 import {
   createContext,
   useContext,
@@ -14,20 +28,6 @@ import {
   useState,
   type PropsWithChildren,
 } from "react";
-import {
-  setDoc,
-  collection,
-  doc,
-  getDoc,
-  updateDoc,
-  onSnapshot,
-} from "firebase/firestore";
-import { FirestoreDB } from "@/shared-libs/utilities/firestore";
-import Toaster from "@/shared-uis/components/toaster/Toaster";
-import { useRouter } from "expo-router";
-import { User } from "@/types/User";
-import { IUser } from "@/shared-libs/firestore/crowdy-chat/models/users";
-import { resetAndNavigate } from "@/helpers/router";
 
 interface AuthContextProps {
   fetchUser: () => void;

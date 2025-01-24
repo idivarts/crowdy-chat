@@ -1,8 +1,10 @@
 import { OrganizationForm } from "@/components/organization/CreateOrganizationForm";
+import { useStorageState } from "@/hooks";
 import { IMembers } from "@/shared-libs/firestore/crowdy-chat/models/members";
 import { IOrganizations } from "@/shared-libs/firestore/crowdy-chat/models/organizations";
-import { FirestoreDB } from "@/shared-libs/utilities/firestore";
 import Toaster from "@/shared-uis/components/toaster/Toaster";
+import { Organization } from "@/types/Organization";
+import { FirestoreDB } from "@/utils/firestore";
 import { useRouter } from "expo-router";
 import {
   addDoc,
@@ -17,16 +19,14 @@ import {
   where,
 } from "firebase/firestore";
 import {
-  useContext,
   createContext,
   type PropsWithChildren,
-  useState,
+  useContext,
   useEffect,
+  useState,
 } from "react";
-import { useFirebaseStorageContext } from "./firebase-storage-context.provider";
-import { Organization } from "@/types/Organization";
 import { useAuthContext } from "./auth-context.provider";
-import { useStorageState } from "@/hooks";
+import { useFirebaseStorageContext } from "./firebase-storage-context.provider";
 
 interface OrganizationContextProps {
   changeOrganization: (org: Organization) => Promise<void>;

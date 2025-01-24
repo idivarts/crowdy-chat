@@ -1,18 +1,18 @@
+import Colors from "@/constants/Colors";
+import { useOrganizationContext } from "@/contexts";
+import SourceService from "@/services/sources.service";
+import { SourceType } from "@/shared-libs/firestore/crowdy-chat/models/sources";
+import Toaster from "@/shared-uis/components/toaster/Toaster";
+import { stylesFn } from "@/styles/sources/ConnectedPage.styles";
+import { AuthApp } from "@/utils/auth";
+import { FirestoreDB } from "@/utils/firestore";
+import { useTheme } from "@react-navigation/native";
+import { doc, getDoc } from "firebase/firestore";
 import React, { useEffect, useState } from "react";
 import { Linking } from "react-native";
-import { IconButton, Menu, ActivityIndicator } from "react-native-paper";
-import { stylesFn } from "@/styles/sources/ConnectedPage.styles";
-import Toaster from "@/shared-uis/components/toaster/Toaster";
+import { ActivityIndicator, IconButton, Menu } from "react-native-paper";
 import ConfirmationModal from "../ConfirmationModal";
-import { useTheme } from "@react-navigation/native";
 import { Text, View } from "../Themed";
-import { useOrganizationContext } from "@/contexts";
-import { AuthApp } from "@/shared-libs/utilities/auth";
-import { doc, getDoc } from "firebase/firestore";
-import { FirestoreDB } from "@/shared-libs/utilities/firestore";
-import { SourceType } from "@/shared-libs/firestore/crowdy-chat/models/sources";
-import SourceService from "@/services/sources.service";
-import Colors from "@/constants/Colors";
 
 type page = {
   assistantId: string;

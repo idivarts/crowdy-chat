@@ -21,7 +21,12 @@ jobs:
       uses: actions/setup-node@v3
       with:
         node-version: ${{ matrix.node-version }}
-    - run: npm i --legacy-peer-deps
+    - run: npm i
+    - name: Load Config JS
+      env:
+        CC_FIREBASE_CONFIG: ${{ secrets.CC_FIREBASE_CONFIG }}
+      run: |
+        echo $CC_FIREBASE_CONFIG | base64 -d > firebase-config.js
     - run: npm run build
     - name: serverless deploy
       uses: serverless/github-action@v3.2

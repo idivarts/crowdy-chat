@@ -1,17 +1,17 @@
-import { useEffect, useState } from "react";
-import { Platform } from "react-native";
-import AppLayout from "@/layouts/app-layout";
-import CampaignsBoardWeb from "@/components/campaigns-open-view/CampaignsBoard.web";
 import CampaignsBoard from "@/components/campaigns-open-view/CampaignsBoard";
-import Header from "@/layouts/header";
+import CampaignsBoardWeb from "@/components/campaigns-open-view/CampaignsBoard.web";
 import CampaignsOpenViewHeader from "@/components/campaigns-open-view/CampaignsOpenViewHeader";
-import CampaignListView from "./Campaign-List";
+import { useOrganizationContext } from "@/contexts";
+import AppLayout from "@/layouts/app-layout";
+import Header from "@/layouts/header";
+import { TabView } from "@/types/CampaignsBoard";
+import { FirestoreDB } from "@/utils/firestore";
 import { useLocalSearchParams } from "expo-router";
 import { collection, getDocs, query, where } from "firebase/firestore";
-import { FirestoreDB } from "@/shared-libs/utilities/firestore";
-import { useOrganizationContext } from "@/contexts";
+import { useEffect, useState } from "react";
+import { Platform } from "react-native";
 import Toast from "react-native-toast-message";
-import { TabView } from "@/types/CampaignsBoard";
+import CampaignListView from "./Campaign-List";
 
 const CampaignsOpenView: React.FC = () => {
   // const [tabView, setTabView] = useState<TabView>(TabView.CAMPAIGNS_BOARD_VIEW);

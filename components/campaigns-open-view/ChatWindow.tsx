@@ -1,44 +1,38 @@
-import React, { useEffect, useState } from "react";
-import {
-  ActivityIndicator,
-  IconButton,
-  Modal,
-  Portal,
-  Switch,
-  TextInput,
-  Tooltip,
-} from "react-native-paper";
-import { IConversationUnit } from "@/types/CampaignsBoard";
-import Toaster from "@/shared-uis/components/toaster/Toaster";
-import { MessageObject } from "@/types/Message";
-import {
-  Dimensions,
-  FlatList,
-  Linking,
-  Platform,
-  TouchableOpacity,
-} from "react-native";
-import MessageItem from "./MessageItem";
-import InformationPanel from "./InformationPanel";
-import { useBreakPoints } from "@/hooks";
 import Colors from "@/constants/Colors";
-import { useTheme } from "@react-navigation/native";
-import { Text, View } from "../Themed";
-import { doc, getDoc } from "firebase/firestore";
-import { FirestoreDB } from "@/shared-libs/utilities/firestore";
-import { IConversation } from "@/shared-libs/firestore/crowdy-chat/models/conversations";
+import { useOrganizationContext } from "@/contexts";
+import { useBreakPoints } from "@/hooks";
 import {
   ConversationService,
   MessageService,
   PageActionsService,
 } from "@/services";
-import axios from "axios";
-import { AuthApp } from "@/shared-libs/utilities/auth";
-import ConfirmationModal from "../ConfirmationModal";
-import { useLocalSearchParams } from "expo-router";
-import { useOrganizationContext } from "@/contexts";
-import { RenderToolkit } from "./RenderToolkit";
+import Toaster from "@/shared-uis/components/toaster/Toaster";
+import { IConversationUnit } from "@/types/CampaignsBoard";
+import { MessageObject } from "@/types/Message";
+import { AuthApp } from "@/utils/auth";
+import { FirestoreDB } from "@/utils/firestore";
+import { doc, getDoc } from "firebase/firestore";
+import React, { useEffect, useState } from "react";
+import {
+  Dimensions,
+  FlatList,
+  Platform,
+  TouchableOpacity
+} from "react-native";
+import {
+  ActivityIndicator,
+  IconButton,
+  Modal,
+  Portal,
+  TextInput,
+  Tooltip
+} from "react-native-paper";
 import Toast from "react-native-toast-message";
+import ConfirmationModal from "../ConfirmationModal";
+import { Text, View } from "../Themed";
+import InformationPanel from "./InformationPanel";
+import MessageItem from "./MessageItem";
+import { RenderToolkit } from "./RenderToolkit";
 
 interface IProps {
   handleCloseModal: () => void;
@@ -63,7 +57,7 @@ const ChatWindow: React.FC<IProps> = (props) => {
   const [confirmationModalVisible, setConfirmationModalVisible] =
     useState(false);
   const [modalMessage, setModalMessage] = useState("");
-  const [modalAction, setModalAction] = useState<() => void>(() => {});
+  const [modalAction, setModalAction] = useState<() => void>(() => { });
   const { currentOrganization } = useOrganizationContext();
   const loadMessages = async (after: any) => {
     setLoading(true);
@@ -166,7 +160,7 @@ const ChatWindow: React.FC<IProps> = (props) => {
       currentOrganization?.id,
       user
     )
-      .then((r) => {})
+      .then((r) => { })
       .catch((e) => {
         Toaster.error("Somthing went wrong");
         setMessages((prevMessages) =>
@@ -191,7 +185,7 @@ const ChatWindow: React.FC<IProps> = (props) => {
       currentOrganization?.id,
       user
     )
-      .then((r) => {})
+      .then((r) => { })
       .catch((e) => {
         Toaster.error("Somthing went wrong");
       });

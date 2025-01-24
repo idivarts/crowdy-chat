@@ -1,15 +1,15 @@
-import { FirestoreDB } from "@/shared-libs/utilities/firestore";
+import Toaster from "@/shared-uis/components/toaster/Toaster";
 import { Campaign } from "@/types/campaign";
+import { FirestoreDB } from "@/utils/firestore";
 import { collection, deleteDoc, doc, getDocs } from "firebase/firestore";
 import {
-  useContext,
   createContext,
   type PropsWithChildren,
-  useState,
+  useContext,
   useEffect,
+  useState,
 } from "react";
 import { useOrganizationContext } from "./organization-context.provider";
-import Toaster from "@/shared-uis/components/toaster/Toaster";
 
 interface CampaignContextProps {
   campaigns: Campaign[];
