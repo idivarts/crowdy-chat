@@ -19,7 +19,7 @@ export interface OrganizationForm {
 }
 
 interface CreateOrganizationFormProps {
-  onSubmit: (data: OrganizationForm) => void;
+  onSubmit: (data: OrganizationForm) => Promise<void>;
 }
 
 const CreateOrganizationForm: React.FC<CreateOrganizationFormProps> = ({
@@ -29,6 +29,7 @@ const CreateOrganizationForm: React.FC<CreateOrganizationFormProps> = ({
   const styles = stylesFn(theme);
   const { lg } = useBreakPoints();
   const [image, setImage] = useState<string>("");
+  const [submitting, setSubmitting] = useState<boolean>(false);
   const [organizationFormData, setOrganizationFormData] =
     useState<OrganizationForm>({
       name: "",
@@ -50,11 +51,17 @@ const CreateOrganizationForm: React.FC<CreateOrganizationFormProps> = ({
   };
 
   const handleSubmit = () => {
+    setSubmitting(true);
+
     if (!organizationFormData.name) {
       Toaster.error("Name is required");
+      setSubmitting(false);
       return;
     }
-    onSubmit(organizationFormData);
+
+    onSubmit(organizationFormData).then(() => {
+      setSubmitting(false);
+    });
   };
 
   return (
@@ -130,6 +137,7 @@ const CreateOrganizationForm: React.FC<CreateOrganizationFormProps> = ({
           />
 
           <Button
+            loading={submitting}
             mode="contained"
             onPress={handleSubmit}
             style={{
